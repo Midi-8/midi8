@@ -1,0 +1,266 @@
+@import "tailwindcss";
+
+/* ─── Midi8 Design System — Monocromático + Cobre (#EA580C) ─── */
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --accent: #EA580C; /* Cobre / Laranja Queimado */
+  --accent-light: #F97316;
+  --accent-glow: rgba(234, 88, 12, 0.15);
+  --accent-glow-strong: rgba(234, 88, 12, 0.35);
+  --copper: #EA580C;
+  --surface: #111113;
+  --surface-light: #1a1a1e;
+  --border: rgba(63, 63, 70, 0.5);
+  --border-light: rgba(82, 82, 91, 0.4);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-glow: var(--accent-glow);
+  --color-accent-glow-strong: var(--accent-glow-strong);
+  --color-copper: var(--copper);
+  --color-surface: var(--surface);
+  --color-surface-light: var(--surface-light);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --animate-fade-in: fade-in 0.8s ease-out forwards;
+  --animate-slide-up: slide-up 0.6s ease-out forwards;
+  --animate-glow-pulse: glow-pulse 3s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+}
+
+/* ─── Animations ─── */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ─── Base ─── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(234, 88, 12, 0.3);
+  color: #fff;
+}
+
+/* ─── Dot Grid Background (Monocromático) ─── */
+
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ─── Radial Hero Glow (Monocromático Puro) ─── */
+
+.hero-glow {
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 0%,
+    rgba(255, 255, 255, 0.04) 0%,
+    transparent 70%
+  );
+}
+
+/* ─── Bento Card (Monocromático — 3D tilt em JS) ─── */
+
+.bento-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bento-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 8px 32px -8px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+/* ─── Glass Card (Showcase Floating Cards) ─── */
+
+.glass-card {
+  background: rgba(15, 15, 18, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid #27272a; /* border fina zinc-800 */
+  border-radius: 20px;
+  box-shadow:
+    0 4px 24px -1px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 24px 64px -12px rgba(0, 0, 0, 0.7),
+    0 12px 32px -4px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ─── CTA Button (Cobre #EA580C primary) ─── */
+
+.cta-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.cta-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cta-button:hover {
+  transform: translateY(-1px);
+  background: #f06115;
+  box-shadow:
+    0 0 0 1px rgba(234, 88, 12, 0.5),
+    0 4px 16px -2px rgba(234, 88, 12, 0.4),
+    0 12px 40px -8px rgba(234, 88, 12, 0.3);
+}
+
+.cta-button:hover::before {
+  opacity: 1;
+}
+
+.cta-secondary {
+  background: transparent;
+  color: var(--foreground);
+  border: 1px solid var(--border-light);
+}
+
+.cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 4px 16px -4px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Copper Status Badge (micro-destaque técnico #EA580C) ─── */
+
+.copper-badge,
+.mint-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  font-size: 0.6875rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #EA580C;
+  background: rgba(234, 88, 12, 0.08);
+  border: 1px solid rgba(234, 88, 12, 0.25);
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+/* ─── Section spacing ─── */
+
+.section-padding {
+  padding: 120px 24px;
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 80px 16px;
+  }
+}
+
+/* ─── Tech Badge (Monocromático) ─── */
+
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-family: var(--font-geist-mono), monospace;
+  color: rgba(255, 255, 255, 0.65);
+  transition: all 0.3s ease;
+}
+
+.tech-badge:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 16px -4px rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+/* ─── Scrollbar ─── */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
