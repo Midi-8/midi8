@@ -1,15 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { getCalApi } from "@calcom/embed-react";
 
 export default function Footer() {
-  const [currentYear, setCurrentYear] = useState(2026);
-
-  useEffect(() => {
-    setCurrentYear(new Date().getFullYear());
-  }, []);
+  const currentYear = 2026;
 
   // Cal.com initialization with dark theme and copper branding
   useEffect(() => {
