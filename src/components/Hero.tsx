@@ -2,7 +2,6 @@
 
 import { useRef, useEffect } from "react";
 import { motion, useMotionValue, useTransform, MotionValue } from "framer-motion";
-import { getCalApi } from "@calcom/embed-react";
 
 // ─── Framer Motion prop types ─────────────────────────────────────────────────
 interface HeroProps {
@@ -97,18 +96,6 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
   type Ripple = { x: number; y: number; born: number; life: number; strength: number };
   const ripplesRef = useRef<Ripple[]>([]);
 
-  // ── Cal.com init ──
-  useEffect(() => {
-    (async () => {
-      const cal = await getCalApi();
-      cal("ui", {
-        theme: "dark",
-        styles: { branding: { brandColor: "#EA580C" } },
-        hideEventTypeDetails: false,
-        layout: "month_view",
-      });
-    })();
-  }, []);
 
   // ── Dark Liquid Metal WebGL-equivalent on Canvas 2D with Perlin Noise ──
   useEffect(() => {
@@ -314,15 +301,6 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
     return () => clearInterval(id);
   }, [isMobile]);
 
-  // ── Cal.com modal ──
-  const handleOpenCal = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    const cal = await getCalApi();
-    cal("modal", {
-      calLink: "midi8/reuniao-estrategica",
-      config: { layout: "month_view", theme: "dark" },
-    });
-  };
 
   // ── Spatial scroll 3D zoom transforms ──
   const defaultProgress = useMotionValue(0);
@@ -422,12 +400,8 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
 
           {/* CTA row */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
-              type="button"
-              onClick={handleOpenCal}
-              data-cal-link="midi8/reuniao-estrategica"
-              data-cal-namespace=""
-              data-cal-config='{"layout":"month_view","theme":"dark"}'
+            <a
+              href="#contacto"
               className="cta-button cursor-pointer w-full sm:w-auto"
             >
               <span className="relative z-10">Agendar Reunião</span>
@@ -440,7 +414,7 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </button>
+            </a>
             <a
               href="#solucoes"
               className="cta-button cta-secondary w-full sm:w-auto"

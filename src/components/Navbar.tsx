@@ -3,10 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { getCalApi } from "@calcom/embed-react";
-
 const navLinks = [
-  { label: "Soluções", href: "#solucoes" },
+  { label: "Soluções", href: "/solucoes" },
   { label: "A Empresa", href: "/sobre" },
 ];
 
@@ -19,28 +17,6 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    (async function () {
-      const cal = await getCalApi();
-      cal("ui", {
-        theme: "dark",
-        styles: { branding: { brandColor: "#EA580C" } },
-        hideEventTypeDetails: false,
-        layout: "month_view",
-      });
-    })();
-  }, []);
-
-  const handleOpenCal = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    setMobileOpen(false);
-    const cal = await getCalApi();
-    cal("modal", {
-      calLink: "midi8/reuniao-estrategica",
-      config: { layout: "month_view", theme: "dark" },
-    });
-  };
 
   return (
     <>
@@ -72,7 +48,7 @@ export default function Navbar() {
           {/* ── Desktop Navigation ── */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 className="relative px-4 py-2 text-sm text-zinc-400 hover:text-white transition-colors duration-200 group"
@@ -80,19 +56,15 @@ export default function Navbar() {
                 {link.label}
                 {/* Underline accent on hover */}
                 <span className="absolute bottom-1 left-4 right-4 h-px bg-[#EA580C] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              </a>
+              </Link>
             ))}
           </div>
 
           {/* ── CTA + Mobile Hamburger ── */}
           <div className="flex items-center gap-3">
             {/* Desktop CTA */}
-            <button
-              type="button"
-              onClick={handleOpenCal}
-              data-cal-link="midi8/reuniao-estrategica"
-              data-cal-namespace=""
-              data-cal-config='{"layout":"month_view","theme":"dark"}'
+            <Link
+              href="#contacto"
               className="hidden md:inline-flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold text-white bg-[#EA580C] hover:bg-[#f06115] transition-all duration-200 cursor-pointer shadow-[0_0_20px_rgba(234,88,12,0)] hover:shadow-[0_0_20px_rgba(234,88,12,0.35)] border border-[#EA580C]/50"
             >
               Agendar Reunião
@@ -109,7 +81,7 @@ export default function Navbar() {
                   d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
-            </button>
+            </Link>
 
             {/* Mobile hamburger */}
             <button
@@ -149,7 +121,7 @@ export default function Navbar() {
           >
             {/* Top bar replica */}
             <div className="h-[64px] flex items-center px-6 border-b border-white/[0.04]">
-              <Link href="/" className="flex items-center gap-2.5">
+              <Link href="/" className="flex items-center gap-2.5" onClick={() => setMobileOpen(false)}>
                 <div className="w-7 h-7 rounded-md bg-zinc-900 border border-zinc-800 flex items-center justify-center">
                   <span className="text-[11px] font-bold text-white">M8</span>
                 </div>
@@ -162,42 +134,50 @@ export default function Navbar() {
             {/* Nav links */}
             <nav className="flex-1 flex flex-col items-center justify-center gap-2 px-8">
               {navLinks.map((link, i) => (
-                <motion.a
+                <motion.div
                   key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.06 + 0.05 }}
-                  className="w-full text-center py-4 text-2xl font-semibold text-zinc-200 hover:text-white border-b border-white/[0.04] transition-colors"
+                  className="w-full text-center"
                 >
-                  {link.label}
-                </motion.a>
+                  <Link
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block w-full py-4 text-2xl font-semibold text-zinc-200 hover:text-white border-b border-white/[0.04] transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
               ))}
 
-              <motion.button
-                type="button"
-                onClick={handleOpenCal}
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: navLinks.length * 0.06 + 0.1 }}
-                className="mt-8 w-full flex items-center justify-center gap-2 py-4 rounded-xl text-lg font-semibold text-white bg-[#EA580C] hover:bg-[#f06115] transition-colors cursor-pointer"
+                className="w-full mt-8"
               >
-                Agendar Reunião
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2.2}
+                <Link
+                  href="#contacto"
+                  onClick={() => setMobileOpen(false)}
+                  className="w-full flex items-center justify-center gap-2 py-4 rounded-xl text-lg font-semibold text-white bg-[#EA580C] hover:bg-[#f06115] transition-colors cursor-pointer"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </motion.button>
+                  Agendar Reunião
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2.2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </Link>
+              </motion.div>
             </nav>
 
             {/* Bottom footer strip */}
