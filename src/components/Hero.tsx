@@ -98,7 +98,10 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
 
 
   // ── Dark Liquid Metal WebGL-equivalent on Canvas 2D with Perlin Noise ──
+  // Mobile: no rAF — CSS `.hero-liquid-css` instead (battery). Desktop: unchanged.
   useEffect(() => {
+    if (isMobile) return;
+
     const canvas = canvasRef.current;
     const section = sectionRef.current;
     if (!canvas || !section) return;
@@ -110,7 +113,6 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
     let running = true;
     let startTime = performance.now();
 
-    // Resize handler
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const resize = () => {
       const w = section.offsetWidth;
@@ -119,41 +121,37 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
       canvas.height = h * dpr;
       canvas.style.width  = w + "px";
       canvas.style.height = h + "px";
+      // Reset before scale — mobile browser chrome show/hide must not stack CTM
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
     };
     resize();
     window.addEventListener("resize", resize, { passive: true });
+    const ro = new ResizeObserver(() => resize());
+    ro.observe(section);
 
-    // Smooth mouse interpolation factor
     const SMOOTH = 0.045;
 
-    // ── Render Loop ──
     const render = () => {
       if (!running) return;
       raf = requestAnimationFrame(render);
 
       const W = canvas.width  / dpr;
       const H = canvas.height / dpr;
-      const t = (performance.now() - startTime) * 0.0004; // slow time scale
+      if (W < 1 || H < 1) return;
+      const t = (performance.now() - startTime) * 0.0004;
 
-      // Smooth mouse lerp
       mouseX.current += (targetMouseX.current - mouseX.current) * SMOOTH;
       mouseY.current += (targetMouseY.current - mouseY.current) * SMOOTH;
 
-      // ── Build pixel map using Perlin fBm ──
-      // We sample on a coarser grid for performance, then we'll draw filled rects
-      const STEP = isMobile ? 6 : 4; // pixel block size
+      const STEP = 4;
       const cols = Math.ceil(W / STEP) + 1;
       const rows = Math.ceil(H / STEP) + 1;
 
-      // Cursor world position
       const cx = mouseX.current * W;
       const cy = mouseY.current * H;
+      const LIGHT_RADIUS = Math.min(W, H) * 0.38;
 
-      // Copper light range (distance-based falloff)
-      const LIGHT_RADIUS = Math.min(W, H) * (isMobile ? 0.30 : 0.38);
-
-      // Prune expired ripples
       const now = performance.now();
       ripplesRef.current = ripplesRef.current.filter(
         (r) => now - r.born < r.life
@@ -166,16 +164,13 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
           const px = col * STEP;
           const py = row * STEP;
 
-          // Normalised noise coordinates (scale drives density)
           const nx = (px / W)  * 3.2 + t * 0.6;
           const ny = (py / H)  * 3.2 + t * 0.45;
 
-          // Base fBm value in [-1, 1]
           let noise = fbm(nx, ny);
 
-          // Add ripple contributions
           for (const r of ripplesRef.current) {
-            const age   = (now - r.born) / r.life; // [0..1]
+            const age   = (now - r.born) / r.life;
             const dx    = px - r.x;
             const dy    = py - r.y;
             const dist  = Math.sqrt(dx * dx + dy * dy);
@@ -184,55 +179,45 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
             noise += wave * decay * r.strength * 0.65;
           }
 
-          // Map noise to darkness depth [0..1] (positive crests = brighter)
-          const crestNorm = (noise + 1) * 0.5; // [0..1]
+          const crestNorm = (noise + 1) * 0.5;
 
-          // Distance to cursor → copper spotlight
           const dx   = px - cx;
           const dy   = py - cy;
           const dist = Math.sqrt(dx * dx + dy * dy);
           const lightFalloff = Math.max(0, 1 - dist / LIGHT_RADIUS);
           const copperStrength = Math.pow(lightFalloff, 1.8) * crestNorm;
 
-          // ── Compute final colour ──
-          // Base: zinc-950 (10,10,10) → zinc-800 (39,39,42) based on crest
           const baseR = Math.round(10  + crestNorm * 29);
           const baseG = Math.round(10  + crestNorm * 29);
           const baseB = Math.round(12  + crestNorm * 30);
 
-          // Copper: #EA580C = rgb(234, 88, 12)
           const copR = Math.round(baseR + (234 - baseR) * copperStrength);
           const copG = Math.round(baseG + (88  - baseG) * copperStrength);
           const copB = Math.round(baseB + (12  - baseB) * copperStrength);
 
           ctx.fillStyle = `rgb(${copR},${copG},${copB})`;
-          ctx.fillRect(px, py, STEP + 1, STEP + 1); // +1 to avoid gaps
+          ctx.fillRect(px, py, STEP + 1, STEP + 1);
         }
       }
 
-      // ── Ambient copper corona around cursor (canvas radial overlay) ──
-      if (!isMobile) {
-        const corona = ctx.createRadialGradient(cx, cy, 0, cx, cy, LIGHT_RADIUS * 0.95);
-        corona.addColorStop(0,   "rgba(234,88,12,0.18)");
-        corona.addColorStop(0.3, "rgba(234,88,12,0.07)");
-        corona.addColorStop(1,   "rgba(234,88,12,0)");
-        ctx.globalCompositeOperation = "screen";
-        ctx.fillStyle = corona;
-        ctx.beginPath();
-        ctx.arc(cx, cy, LIGHT_RADIUS, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalCompositeOperation = "source-over";
-      }
+      const corona = ctx.createRadialGradient(cx, cy, 0, cx, cy, LIGHT_RADIUS * 0.95);
+      corona.addColorStop(0,   "rgba(234,88,12,0.18)");
+      corona.addColorStop(0.3, "rgba(234,88,12,0.07)");
+      corona.addColorStop(1,   "rgba(234,88,12,0)");
+      ctx.globalCompositeOperation = "screen";
+      ctx.fillStyle = corona;
+      ctx.beginPath();
+      ctx.arc(cx, cy, LIGHT_RADIUS, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalCompositeOperation = "source-over";
     };
 
     render();
 
-    // ── IntersectionObserver: pause when off-screen ──
     const observer = new IntersectionObserver(
       (entries) => {
         running = entries[0].isIntersecting;
         if (running) {
-          startTime = performance.now() - (performance.now() - startTime); // resume
           render();
         } else {
           cancelAnimationFrame(raf);
@@ -246,6 +231,7 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
       running = false;
       cancelAnimationFrame(raf);
       observer.disconnect();
+      ro.disconnect();
       window.removeEventListener("resize", resize);
     };
   }, [isMobile]);
@@ -332,13 +318,17 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
             }
       }
     >
-      {/* ─── Dark Liquid Metal Canvas ─── */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
-        style={{ imageRendering: "pixelated" }}
-        aria-hidden="true"
-      />
+      {/* ─── Dark Liquid Metal: canvas (desktop) / CSS (mobile) ─── */}
+      {isMobile ? (
+        <div className="hero-liquid-css absolute inset-0" aria-hidden="true" />
+      ) : (
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full"
+          style={{ imageRendering: "pixelated" }}
+          aria-hidden="true"
+        />
+      )}
 
       {/* ─── Soft top + bottom vignettes ─── */}
       <div className="absolute inset-0 pointer-events-none">
