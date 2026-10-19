@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useSyncExternalStore } from "react";
 import { motion, useMotionValue, useTransform, MotionValue } from "framer-motion";
 
 // ─── Framer Motion prop types ─────────────────────────────────────────────────
@@ -81,10 +81,13 @@ function fbm(x: number, y: number, octaves = 5): number {
   return value / max; // normalise to [-1, 1]
 }
 
+const emptySubscribe = () => () => {};
+
 // ─── Hero Component ───────────────────────────────────────────────────────────
 export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
   const canvasRef  = useRef<HTMLCanvasElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const isMounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   // Mouse position as fraction [0..1]
   const mouseX = useRef(0.5);
@@ -98,9 +101,9 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
 
 
   // ── Dark Liquid Metal WebGL-equivalent on Canvas 2D with Perlin Noise ──
-  // Mobile: no rAF — CSS `.hero-liquid-css` instead (battery). Desktop: unchanged.
+  // Mobile & SSR: no rAF — CSS `.hero-liquid-css` instead (battery/hydration). Desktop: dynamic.
   useEffect(() => {
-    if (isMobile) return;
+    if (!isMounted || isMobile) return;
 
     const canvas = canvasRef.current;
     const section = sectionRef.current;
@@ -111,7 +114,7 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
 
     let raf: number;
     let running = true;
-    let startTime = performance.now();
+    const startTime = performance.now();
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const resize = () => {
@@ -133,7 +136,7 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
     const SMOOTH = 0.045;
 
     const render = () => {
-      if (!running) return;
+      if (!running || isMobile) return;
       raf = requestAnimationFrame(render);
 
       const W = canvas.width  / dpr;
@@ -234,7 +237,7 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
       ro.disconnect();
       window.removeEventListener("resize", resize);
     };
-  }, [isMobile]);
+  }, [isMounted, isMobile]);
 
   // ── Mouse / Touch event handlers ──
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
@@ -318,8 +321,8 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
             }
       }
     >
-      {/* ─── Dark Liquid Metal: canvas (desktop) / CSS (mobile) ─── */}
-      {isMobile ? (
+      {/* ─── Dark Liquid Metal: canvas (desktop mounted) / CSS (mobile & SSR) ─── */}
+      {!isMounted || isMobile ? (
         <div className="hero-liquid-css absolute inset-0" aria-hidden="true" />
       ) : (
         <canvas

@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+
 const navLinks = [
   { label: "Soluções", href: "/solucoes" },
   { label: "A Empresa", href: "/sobre" },
@@ -11,12 +13,30 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // ── Bloqueio de scroll no body quando o menu mobile está aberto ──
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }
+  }, [mobileOpen]);
+
+  // ── Fecho automático ao alterar de rota (render-time adjustment) ──
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setMobileOpen(false);
+  }
 
   return (
     <>
@@ -25,7 +45,7 @@ export default function Navbar() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
+          scrolled || mobileOpen
             ? "bg-zinc-950/75 backdrop-blur-xl border-b border-white/[0.04] shadow-[0_1px_0_rgba(255,255,255,0.03)]"
             : "bg-transparent"
         }`}
@@ -34,6 +54,7 @@ export default function Navbar() {
           {/* ── Logo ── */}
           <Link
             href="/"
+            onClick={() => setMobileOpen(false)}
             className="flex items-center gap-2.5 group shrink-0"
             aria-label="Midi8 — Página inicial"
           >
@@ -64,7 +85,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             {/* Desktop CTA */}
             <Link
-              href="#contacto"
+              href="/#contacto"
               className="hidden md:inline-flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold text-white bg-[#EA580C] hover:bg-[#f06115] transition-all duration-200 cursor-pointer shadow-[0_0_20px_rgba(234,88,12,0)] hover:shadow-[0_0_20px_rgba(234,88,12,0.35)] border border-[#EA580C]/50"
             >
               Agendar Reunião
@@ -117,20 +138,8 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-zinc-950/98 backdrop-blur-2xl md:hidden flex flex-col"
+            className="fixed top-0 left-0 w-full h-[100dvh] z-40 bg-zinc-950/98 backdrop-blur-2xl md:hidden flex flex-col pt-[64px]"
           >
-            {/* Top bar replica */}
-            <div className="h-[64px] flex items-center px-6 border-b border-white/[0.04]">
-              <Link href="/" className="flex items-center gap-2.5" onClick={() => setMobileOpen(false)}>
-                <div className="w-7 h-7 rounded-md bg-zinc-900 border border-zinc-800 flex items-center justify-center">
-                  <span className="text-[11px] font-bold text-white">M8</span>
-                </div>
-                <span className="text-sm font-semibold text-white tracking-tight">
-                  Midi8
-                </span>
-              </Link>
-            </div>
-
             {/* Nav links */}
             <nav className="flex-1 flex flex-col items-center justify-center gap-2 px-8">
               {navLinks.map((link, i) => (
@@ -158,7 +167,7 @@ export default function Navbar() {
                 className="w-full mt-8"
               >
                 <Link
-                  href="#contacto"
+                  href="/#contacto"
                   onClick={() => setMobileOpen(false)}
                   className="w-full flex items-center justify-center gap-2 py-4 rounded-xl text-lg font-semibold text-white bg-[#EA580C] hover:bg-[#f06115] transition-colors cursor-pointer"
                 >

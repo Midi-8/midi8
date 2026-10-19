@@ -1,119 +1,119 @@
 # Midi8 — Engenharia de Software e Infraestrutura
 
-Website institucional e plataforma corporativa da **Midi8**, concebido para refletir uma abordagem "Deep Tech" de engenharia de software de alto desempenho, arquiteturas resilientes e estética técnica de alta precisão.
+Plataforma corporativa e website institucional da Midi8, orientada a engenharia de software de alta performance, arquiteturas resilientes e sistemas distribuídos.
 
 ---
 
 ## Visão Geral
 
-A Midi8 projeta, desenvolve e opera infraestruturas digitais de missão crítica. Esta aplicação combina computação gráfica em tempo real via HTML5 Canvas (simulação de metal líquido escuro com ruído procedural de Perlin), navegação espacial contínua ao longo do eixo Z (Framer Motion), rotas dedicadas para o **Manifesto da Empresa** e **Capacidade Técnica**, e um rodapé corporativo completo com conversão direta.
+O projeto foi construído para aliar estética técnica de alta precisão com eficiência computacional e arquitetura estrita. A aplicação implementa um motor híbrido de renderização gráfica (Canvas 2D procedimental com ruído Perlin para desktop e gradiente CSS acelerado por hardware para dispositivos móveis), orquestração espacial em profundidade tridimensional, rotas dedicadas para o Manifesto e Catálogo de Soluções, e um fluxo de conversão institucional autónomo.
 
 ---
 
-## Destaques de Arquitetura e Engenharia de UI
+## Pilares de Engenharia e Arquitetura
 
-- **Hero "Dark Liquid Metal":**
-  - Simulação procedural em tempo real com Fractal Brownian Motion (fBm) de 5 oitavas sobre ruído Perlin em Canvas 2D.
-  - Iluminação rasante dinâmica em tom Cobre (`#EA580C`) com interpolação contínua (LERP) do cursor e ondas de clique (*ripples*) com decaimento exponencial.
-  - **Eficiência Operacional:** Pausa automática do ciclo de renderização (`cancelAnimationFrame`) via `IntersectionObserver` quando o elemento sai do viewport.
-- **Navegação Espacial (Z-Axis Scroll):**
-  - Orquestração cinemática em câmara fixa (`240vh` em desktop): zoom e fade no Hero enquanto a grelha de serviços (*Bento Box*) emerge em profundidade tridimensional.
-  - Degradação graciosa para dispositivos móveis via `useSyncExternalStore`, desativando sobrecarga de gestos 3D e renderizando fluxo linear vertical de alto rendimento.
-- **Design System Monocromático com Acento em Cobre:**
-  - Base em `zinc-950` (`#09090b` / `#0a0a0a`), painéis em vidro fosco (`backdrop-blur-md`) e bordas discretas em `zinc-800`.
-  - Acento estrito em Cobre / Laranja Queimado (`#EA580C`) para estados ativos, micro-interações e pontos de conversão.
-  - Tipografia de precisão utilizando Geist Sans e Geist Mono via `next/font`.
-- **Arquitetura Multi-Rota no App Router:**
-  - `/` — Landing page corporativa com câmara 3D, Bento Box, Portfólio Showcase, Tech Stack e Rodapé.
-  - `/sobre` — Manifesto Deep Tech, Pilares de Engenharia (Resiliência, Zero-Trust, Performance Extrema) e Governação Técnica em 3 níveis.
-  - `/solucoes` — Matriz 2x2 de Capacidade Técnica (Web Distribuída, Automação de Processos, IA & Dados, Consultoria Técnica).
-- **Rodapé Corporativo & Conversão Autônoma:**
-  - Rodapé em grelha responsiva de 12 colunas, navegação cruzada via SPA (`next/link`), contacto institucional (`hello@midi8.com`), redes (LinkedIn, GitHub) e barra legal.
-  - CTAs redirecionados para `#contacto` com scroll suave, eliminando dependências externas e riscos de rastreamento.
+### 1. Motor Gráfico e Eficiência Energética
+- **Desktop:** Simulação de metal líquido escuro com ruído Fractal Brownian Motion (fBm) de 5 oitavas em Canvas 2D, iluminação dinâmica em tom Cobre (`#EA580C`) e interpolação contínua (LERP) do cursor com decaimento exponencial de ondas de choque (*ripples*).
+- **Mobile:** Suspensão total do loop `requestAnimationFrame` e dos cálculos matemáticos de ruído procedimental. Em ecrãs táteis e durante o Server-Side Rendering (SSR), o Canvas é substituído pela classe `.hero-liquid-css`, animada nativamente na GPU para preservar a bateria e eliminar o aquecimento do dispositivo.
+- **Estabilidade de Redimensionamento:** Reset explícito da matriz de transformação (`ctx.setTransform(1, 0, 0, 1, 0, 0)`) antes da escala do Device Pixel Ratio (`dpr`), prevenindo distorções cumulativas provocadas pelo aparecimento e recolhimento das barras nativas de navegação mobile.
+- **Prevenção de Fugas de Memória:** O ciclo de renderização é gerido através de `IntersectionObserver`, suspendendo o processamento quando a secção sai do viewport e desalocando listeners no desmontar do componente.
+
+### 2. Responsividade Mobile e UX Tátil
+- **Bloqueio de Scroll no Body:** Ativação de `document.body.style.overflow = "hidden"` sempre que o menu de navegação móvel está aberto, impedindo o deslizamento acidental da página de fundo.
+- **Viewport Dinâmico:** Contenção dimensional com `h-[100dvh]` para absorver flutuações de altura causadas pelas barras de pesquisa do Safari iOS e Chrome Android.
+- **Desativação de Tilt 3D:** Neutralização imediata de rotações espaciais e holofotes radiais nos cartões em dispositivos táteis, assegurando rolagem linear e contínua sem quebras de frame (*scroll jank*).
+
+### 3. Navegação SPA e Roteamento
+- **Arquitetura Multi-Rota (App Router):**
+  - `/`: Página principal com introdução cinemática, Bento Box de serviços, portfólio de produção e stack técnico.
+  - `/sobre`: Manifesto corporativo, pilares de engenharia (Resiliência, Zero-Trust, Performance Extrema) e níveis de auditoria técnica.
+  - `/solucoes`: Matriz de capacidade técnica detalhada (Sistemas Distribuídos, Automação ETL, IA Corporativa, Consultoria de Suporte à Decisão).
+- **Navegação Sem Recarregamento:** Utilização integral de `<Link>` do `next/link` com prefetching automático.
+- **Roteamento Absoluto de Contacto:** Pontos de conversão na navegação configurados com `href="/#contacto"`, garantindo que o acionamento a partir de qualquer subpágina encaminhe diretamente para o formulário e âncora do rodapé institucional.
+- **Conversão Autónoma:** Eliminação de dependências externas de agendamento de terceiros (Cal.com), reduzindo a pegada de scripts e riscos de rastreamento de dados.
+
+### 4. Design System e Identidade Visual
+- **Paleta Base:** Dark Mode estrito assente em `zinc-950` (`#09090b` / `#0a0a0a`), superfícies translúcidas em `zinc-900` e bordas finas em `zinc-800` (`rgba(63, 63, 70, 0.5)`).
+- **Acento Técnico:** Cobre / Laranja Queimado (`#EA580C`, `--copper`) reservado para pontos focais, métricas ativas e gatilhos de interação.
+- **Tipografia:** Tipos de letra Geist Sans e Geist Mono via `next/font/google`.
 
 ---
 
 ## Stack Tecnológico
 
-- **Framework:** Next.js 16 (App Router, Turbopack, Partial Prefetching)
-- **Linguagem:** TypeScript 5 (Modo estrito)
-- **Biblioteca de UI:** React 19
-- **Estilização:** Tailwind CSS v4
-- **Animações e Física:** Framer Motion 14
-- **Tipografia:** Geist Sans & Geist Mono (`next/font/google`)
-- **Qualidade de Código:** ESLint 9
+- **Framework:** Next.js 16.4.0 (Turbopack, App Router, Static Prerendering)
+- **Biblioteca Base:** React 19.3.0
+- **Linguagem:** TypeScript 5.0 (Strict mode)
+- **Estilização:** Tailwind CSS v4.0
+- **Animação e Física:** Framer Motion 14.1.0
+- **Qualidade e Linting:** ESLint 9
 
 ---
 
-## Estrutura do Projeto
+## Estrutura do Repositório
 
 ```
 midi8/
-├── public/                     # Ativos estáticos e ícones
+├── public/                     # Ativos estáticos e favicon
 ├── src/
 │   ├── app/
-│   │   ├── globals.css         # Variáveis CSS, Tailwind v4 e utilitários
-│   │   ├── layout.tsx          # Root Layout com fontes, SEO e Navbar persistente
-│   │   ├── page.tsx            # Landing Page e orquestrador de profundidade 3D
+│   │   ├── globals.css         # Tokens CSS, Tailwind v4 e utilitários
+│   │   ├── layout.tsx          # Root Layout com tipografia e metadados SEO
+│   │   ├── page.tsx            # Página inicial e orquestração espacial
 │   │   ├── sobre/
-│   │   │   └── page.tsx        # Server Component com SEO da rota /sobre
+│   │   │   └── page.tsx        # Rota corporativa: Manifesto e Pilares
 │   │   └── solucoes/
-│   │       └── page.tsx        # Server Component com SEO da rota /solucoes
+│   │       └── page.tsx        # Rota técnica: Matriz de Serviços
 │   └── components/
-│       ├── BentoServices.tsx   # Bento Box assimétrica com tilt 3D e Crown Jewel neural
-│       ├── Footer.tsx          # Rodapé corporativo de 12 colunas e links legais
-│       ├── Hero.tsx            # Motor procedural Canvas 2D (Dark Liquid Metal)
-│       ├── Navbar.tsx          # Barra de navegação com prefetch SPA e menu mobile
-│       ├── Showcase.tsx        # Cartões flutuantes de projetos em produção
-│       ├── SobreContent.tsx    # Client Component do Manifesto e Governação Técnica
-│       ├── SolucoesContent.tsx # Client Component da Matriz 2x2 de Capacidade Técnica
-│       └── TechStack.tsx       # Matriz horizontal de tecnologias nucleares
-├── package.json                # Dependências limpas (zero bloat de terceiros)
+│       ├── BentoServices.tsx   # Bento Box responsiva com Crown Jewel neural
+│       ├── Footer.tsx          # Rodapé institucional de 12 colunas com âncora #contacto
+│       ├── Hero.tsx            # Motor gráfico Canvas 2D / CSS com deteção móvel
+│       ├── Navbar.tsx          # Navegação com viewport dinâmico e bloqueio de scroll
+│       ├── Showcase.tsx        # Portfólio de projetos em produção
+│       ├── SobreContent.tsx    # Componente visual da página Manifesto
+│       ├── SolucoesContent.tsx # Componente visual da matriz de capacidade técnica
+│       └── TechStack.tsx       # Matriz horizontal de tecnologias dominadas
+├── package.json                # Declaração estrita de dependências limpas
 ├── tsconfig.json               # Configurações do compilador TypeScript
-└── README.md                   # Documentação técnica e arquitetura do projeto
+└── README.md                   # Documentação técnica do projeto
 ```
 
 ---
 
-## Instalação e Execução
+## Instruções de Execução
 
 ### Pré-requisitos
-
 - Node.js 18.17 ou superior
-- npm (ou pnpm / yarn)
+- npm 9 ou superior
 
-### Passos de Instalação
+### Instalação
+```bash
+git clone https://github.com/Midi-8/midi8.git
+cd midi8
+npm install
+```
 
-1. Clonar o repositório:
-   ```bash
-   git clone https://github.com/miguelmarquessilva/midi8.git
-   cd midi8
-   ```
+### Desenvolvimento
+```bash
+npm run dev
+```
+Servidor acessível em `http://localhost:3000`.
 
-2. Instalar as dependências:
-   ```bash
-   npm install
-   ```
+### Verificação e Compilação
+```bash
+# Verificação estática de código e tipagem
+npm run lint
 
-3. Iniciar o servidor de desenvolvimento:
-   ```bash
-   npm run dev
-   ```
+# Compilação de produção com otimização estática
+npm run build
 
-4. Aceder em [http://localhost:3000](http://localhost:3000).
-
----
-
-## Scripts Disponíveis
-
-- `npm run dev`: Inicia o servidor local com Turbopack ativo.
-- `npm run build`: Compilação e geração estática de todas as rotas com verificação estrita de tipos TypeScript.
-- `npm run start`: Inicia o servidor em modo de produção.
-- `npm run lint`: Executa a auditoria de linting estático com o ESLint.
+# Execução do bundle de produção localmente
+npm run start
+```
 
 ---
 
-## Licença e Propriedade
+## Propriedade e Licença
 
-© 2026 Midi8. Todos os direitos reservados.  
-Uso interno e comercial restrito aos termos autorizados pela organização.
+(c) 2026 Midi8. Todos os direitos reservados.  
+Código proprietário para infraestrutura e plataforma institucional da organização.

@@ -27,15 +27,14 @@ export default function Home() {
   const spatialContainerRef = useRef<HTMLDivElement>(null);
   const isMobile = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  // Desktop only: target must be mounted. layoutEffect:false avoids SSR/hydration warn.
+  // Desktop only: target must be mounted.
   // Mobile: no target — spatial scroll is unused.
   const { scrollYProgress } = useScroll(
     isMobile
-      ? { layoutEffect: false }
+      ? undefined
       : {
           target: spatialContainerRef,
           offset: ["start start", "end end"],
-          layoutEffect: false,
         }
   );
 
@@ -77,7 +76,7 @@ export default function Home() {
       )}
 
       {/* ─── Remaining Sections ─── */}
-      <Showcase />
+      <Showcase isMobile={isMobile} />
       <TechStack />
       <Footer />
     </main>

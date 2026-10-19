@@ -1,6 +1,20 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
+
+function subscribeResize(callback: () => void) {
+  window.addEventListener("resize", callback);
+  return () => window.removeEventListener("resize", callback);
+}
+
+function getSnapshot() {
+  return window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 1024;
+}
+
+function getServerSnapshot() {
+  return false;
+}
 
 const projects = [
   {
@@ -47,7 +61,10 @@ const cardVariants = {
   },
 };
 
-export default function Showcase() {
+export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolean } = {}) {
+  const isMobileLocal = useSyncExternalStore(subscribeResize, getSnapshot, getServerSnapshot);
+  const isMobile = isMobileProp ?? isMobileLocal;
+
   return (
     <section id="portfolio" className="section-padding relative">
       {/* Subtle separator */}
@@ -84,20 +101,32 @@ export default function Showcase() {
             <motion.div
               key={project.name}
               variants={cardVariants}
-              animate={{
-                y: [0, index === 0 ? -8 : -10, 0],
-              }}
-              transition={{
-                y: {
-                  duration: 5 + index * 1.2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                },
-              }}
-              whileHover={{
-                y: -14,
-                transition: { duration: 0.3, ease: "easeOut" },
-              }}
+              animate={
+                isMobile
+                  ? undefined
+                  : {
+                      y: [0, index === 0 ? -8 : -10, 0],
+                    }
+              }
+              transition={
+                isMobile
+                  ? undefined
+                  : {
+                      y: {
+                        duration: 5 + index * 1.2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      },
+                    }
+              }
+              whileHover={
+                isMobile
+                  ? undefined
+                  : {
+                      y: -14,
+                      transition: { duration: 0.3, ease: "easeOut" },
+                    }
+              }
               className="glass-card overflow-hidden group relative"
             >
               {/* Top gradient accent strip (monocromático) */}
