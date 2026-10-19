@@ -97,7 +97,8 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
   const ripplesRef = useRef<Ripple[]>([]);
 
 
-  // ── Dark Liquid Metal: desktop = Perlin rAF; mobile = CSS (no canvas) ──
+  // ── Dark Liquid Metal WebGL-equivalent on Canvas 2D with Perlin Noise ──
+  // Mobile: no rAF — CSS `.hero-liquid-css` instead (battery). Desktop: unchanged.
   useEffect(() => {
     if (isMobile) return;
 
@@ -108,40 +109,46 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const STEP = 4;
-    const OCTAVES = 5;
-    const LIGHT_FACTOR = 0.38;
-    const SMOOTH = 0.045;
-
-    let raf = 0;
+    let raf: number;
     let running = true;
     let startTime = performance.now();
 
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const resize = () => {
       const w = section.offsetWidth;
       const h = section.offsetHeight;
-      if (w < 1 || h < 1) return;
       canvas.width  = w * dpr;
       canvas.height = h * dpr;
       canvas.style.width  = w + "px";
       canvas.style.height = h + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
+    const ro = new ResizeObserver(() => resize());
+    ro.observe(section);
 
-    const paintFrame = (t: number) => {
+    const SMOOTH = 0.045;
+
+    const render = () => {
+      if (!running) return;
+      raf = requestAnimationFrame(render);
+
       const W = canvas.width  / dpr;
       const H = canvas.height / dpr;
       if (W < 1 || H < 1) return;
+      const t = (performance.now() - startTime) * 0.0004;
 
       mouseX.current += (targetMouseX.current - mouseX.current) * SMOOTH;
       mouseY.current += (targetMouseY.current - mouseY.current) * SMOOTH;
 
+      const STEP = 4;
       const cols = Math.ceil(W / STEP) + 1;
       const rows = Math.ceil(H / STEP) + 1;
+
       const cx = mouseX.current * W;
       const cy = mouseY.current * H;
-      const LIGHT_RADIUS = Math.min(W, H) * LIGHT_FACTOR;
+      const LIGHT_RADIUS = Math.min(W, H) * 0.38;
 
       const now = performance.now();
       ripplesRef.current = ripplesRef.current.filter(
@@ -155,16 +162,16 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
           const px = col * STEP;
           const py = row * STEP;
 
-          const nx = (px / W) * 3.2 + t * 0.6;
-          const ny = (py / H) * 3.2 + t * 0.45;
+          const nx = (px / W)  * 3.2 + t * 0.6;
+          const ny = (py / H)  * 3.2 + t * 0.45;
 
-          let noise = fbm(nx, ny, OCTAVES);
+          let noise = fbm(nx, ny);
 
           for (const r of ripplesRef.current) {
             const age   = (now - r.born) / r.life;
-            const rdx   = px - r.x;
-            const rdy   = py - r.y;
-            const dist  = Math.sqrt(rdx * rdx + rdy * rdy);
+            const dx    = px - r.x;
+            const dy    = py - r.y;
+            const dist  = Math.sqrt(dx * dx + dy * dy);
             const wave  = Math.sin(dist * 0.045 - age * 14) * Math.exp(-dist * 0.008);
             const decay = 1 - age;
             noise += wave * decay * r.strength * 0.65;
@@ -203,62 +210,27 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
       ctx.globalCompositeOperation = "source-over";
     };
 
-    const render = () => {
-      if (!running) return;
-      raf = requestAnimationFrame(render);
-      const t = (performance.now() - startTime) * 0.0004;
-      paintFrame(t);
-    };
-
-    const start = () => {
-      resize();
-      if (!running) {
-        running = true;
-        startTime = performance.now();
-      }
-      cancelAnimationFrame(raf);
-      render();
-    };
-
-    start();
-    // Layout may settle after first paint (sticky chamber)
-    const layoutRaf = requestAnimationFrame(() => {
-      resize();
-    });
-
-    window.addEventListener("resize", resize, { passive: true });
+    render();
 
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries[0]?.isIntersecting ?? true;
-        if (visible) {
-          start();
+        running = entries[0].isIntersecting;
+        if (running) {
+          render();
         } else {
-          running = false;
           cancelAnimationFrame(raf);
         }
       },
-      { threshold: 0, rootMargin: "40px" }
+      { threshold: 0.05 }
     );
     observer.observe(section);
-
-    const onVisibility = () => {
-      if (document.hidden) {
-        running = false;
-        cancelAnimationFrame(raf);
-      } else {
-        start();
-      }
-    };
-    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       running = false;
       cancelAnimationFrame(raf);
-      cancelAnimationFrame(layoutRaf);
       observer.disconnect();
+      ro.disconnect();
       window.removeEventListener("resize", resize);
-      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [isMobile]);
 
