@@ -10,12 +10,21 @@ import Footer from "@/components/Footer";
 
 // ─── Hydration-safe mobile detection via useSyncExternalStore ─────────────────
 function subscribe(callback: () => void) {
+  const mqPointer = window.matchMedia("(pointer: coarse)");
+  const mqWidth = window.matchMedia("(max-width: 1023px)");
   window.addEventListener("resize", callback);
-  return () => window.removeEventListener("resize", callback);
+  mqPointer.addEventListener("change", callback);
+  mqWidth.addEventListener("change", callback);
+  return () => {
+    window.removeEventListener("resize", callback);
+    mqPointer.removeEventListener("change", callback);
+    mqWidth.removeEventListener("change", callback);
+  };
 }
 function getSnapshot() {
   return (
-    window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 1024
+    window.matchMedia("(pointer: coarse)").matches ||
+    window.matchMedia("(max-width: 1023px)").matches
   );
 }
 function getServerSnapshot() {

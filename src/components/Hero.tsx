@@ -97,9 +97,10 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
   const ripplesRef = useRef<Ripple[]>([]);
 
 
-  // ── Dark Liquid Metal WebGL-equivalent on Canvas 2D with Perlin Noise ──
-  // Mobile: one static frame (no rAF) to protect battery/CPU.
+  // ── Dark Liquid Metal: desktop = Perlin rAF; mobile = CSS (no canvas) ──
   useEffect(() => {
+    if (isMobile) return;
+
     const canvas = canvasRef.current;
     const section = sectionRef.current;
     if (!canvas || !section) return;
@@ -108,14 +109,19 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
     if (!ctx) return;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const STEP = isMobile ? 8 : 4;
-    const OCTAVES = isMobile ? 2 : 5;
-    const LIGHT_FACTOR = isMobile ? 0.30 : 0.38;
+    const STEP = 4;
+    const OCTAVES = 5;
+    const LIGHT_FACTOR = 0.38;
     const SMOOTH = 0.045;
+
+    let raf = 0;
+    let running = true;
+    let startTime = performance.now();
 
     const resize = () => {
       const w = section.offsetWidth;
       const h = section.offsetHeight;
+      if (w < 1 || h < 1) return;
       canvas.width  = w * dpr;
       canvas.height = h * dpr;
       canvas.style.width  = w + "px";
@@ -123,14 +129,13 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const paintFrame = (t: number, animateMouse: boolean) => {
+    const paintFrame = (t: number) => {
       const W = canvas.width  / dpr;
       const H = canvas.height / dpr;
+      if (W < 1 || H < 1) return;
 
-      if (animateMouse) {
-        mouseX.current += (targetMouseX.current - mouseX.current) * SMOOTH;
-        mouseY.current += (targetMouseY.current - mouseY.current) * SMOOTH;
-      }
+      mouseX.current += (targetMouseX.current - mouseX.current) * SMOOTH;
+      mouseY.current += (targetMouseY.current - mouseY.current) * SMOOTH;
 
       const cols = Math.ceil(W / STEP) + 1;
       const rows = Math.ceil(H / STEP) + 1;
@@ -139,11 +144,9 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
       const LIGHT_RADIUS = Math.min(W, H) * LIGHT_FACTOR;
 
       const now = performance.now();
-      if (!isMobile) {
-        ripplesRef.current = ripplesRef.current.filter(
-          (r) => now - r.born < r.life
-        );
-      }
+      ripplesRef.current = ripplesRef.current.filter(
+        (r) => now - r.born < r.life
+      );
 
       ctx.clearRect(0, 0, W, H);
 
@@ -157,16 +160,14 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
 
           let noise = fbm(nx, ny, OCTAVES);
 
-          if (!isMobile) {
-            for (const r of ripplesRef.current) {
-              const age   = (now - r.born) / r.life;
-              const rdx   = px - r.x;
-              const rdy   = py - r.y;
-              const dist  = Math.sqrt(rdx * rdx + rdy * rdy);
-              const wave  = Math.sin(dist * 0.045 - age * 14) * Math.exp(-dist * 0.008);
-              const decay = 1 - age;
-              noise += wave * decay * r.strength * 0.65;
-            }
+          for (const r of ripplesRef.current) {
+            const age   = (now - r.born) / r.life;
+            const rdx   = px - r.x;
+            const rdy   = py - r.y;
+            const dist  = Math.sqrt(rdx * rdx + rdy * rdy);
+            const wave  = Math.sin(dist * 0.045 - age * 14) * Math.exp(-dist * 0.008);
+            const decay = 1 - age;
+            noise += wave * decay * r.strength * 0.65;
           }
 
           const crestNorm = (noise + 1) * 0.5;
@@ -190,67 +191,74 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
         }
       }
 
-      if (!isMobile) {
-        const corona = ctx.createRadialGradient(cx, cy, 0, cx, cy, LIGHT_RADIUS * 0.95);
-        corona.addColorStop(0,   "rgba(234,88,12,0.18)");
-        corona.addColorStop(0.3, "rgba(234,88,12,0.07)");
-        corona.addColorStop(1,   "rgba(234,88,12,0)");
-        ctx.globalCompositeOperation = "screen";
-        ctx.fillStyle = corona;
-        ctx.beginPath();
-        ctx.arc(cx, cy, LIGHT_RADIUS, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalCompositeOperation = "source-over";
-      }
+      const corona = ctx.createRadialGradient(cx, cy, 0, cx, cy, LIGHT_RADIUS * 0.95);
+      corona.addColorStop(0,   "rgba(234,88,12,0.18)");
+      corona.addColorStop(0.3, "rgba(234,88,12,0.07)");
+      corona.addColorStop(1,   "rgba(234,88,12,0)");
+      ctx.globalCompositeOperation = "screen";
+      ctx.fillStyle = corona;
+      ctx.beginPath();
+      ctx.arc(cx, cy, LIGHT_RADIUS, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalCompositeOperation = "source-over";
     };
-
-    // ── Mobile: single static paint, repaint only on resize ──
-    if (isMobile) {
-      const onResize = () => {
-        resize();
-        paintFrame(0, false);
-      };
-      onResize();
-      window.addEventListener("resize", onResize, { passive: true });
-      return () => {
-        window.removeEventListener("resize", onResize);
-      };
-    }
-
-    // ── Desktop: continuous rAF loop ──
-    let raf = 0;
-    let running = true;
-    let startTime = performance.now();
 
     const render = () => {
       if (!running) return;
       raf = requestAnimationFrame(render);
       const t = (performance.now() - startTime) * 0.0004;
-      paintFrame(t, true);
+      paintFrame(t);
     };
 
-    resize();
-    render();
+    const start = () => {
+      resize();
+      if (!running) {
+        running = true;
+        startTime = performance.now();
+      }
+      cancelAnimationFrame(raf);
+      render();
+    };
+
+    start();
+    // Layout may settle after first paint (sticky chamber)
+    const layoutRaf = requestAnimationFrame(() => {
+      resize();
+    });
+
     window.addEventListener("resize", resize, { passive: true });
 
     const observer = new IntersectionObserver(
       (entries) => {
-        running = entries[0].isIntersecting;
-        if (running) {
-          render();
+        const visible = entries[0]?.isIntersecting ?? true;
+        if (visible) {
+          start();
         } else {
+          running = false;
           cancelAnimationFrame(raf);
         }
       },
-      { threshold: 0.05 }
+      { threshold: 0, rootMargin: "40px" }
     );
     observer.observe(section);
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        running = false;
+        cancelAnimationFrame(raf);
+      } else {
+        start();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       running = false;
       cancelAnimationFrame(raf);
+      cancelAnimationFrame(layoutRaf);
       observer.disconnect();
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [isMobile]);
 
@@ -336,13 +344,17 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
             }
       }
     >
-      {/* ─── Dark Liquid Metal Canvas ─── */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
-        style={{ imageRendering: "pixelated" }}
-        aria-hidden="true"
-      />
+      {/* ─── Dark Liquid Metal: canvas (desktop) / CSS (mobile) ─── */}
+      {isMobile ? (
+        <div className="hero-liquid-css absolute inset-0" aria-hidden="true" />
+      ) : (
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full"
+          style={{ imageRendering: "pixelated" }}
+          aria-hidden="true"
+        />
+      )}
 
       {/* ─── Soft top + bottom vignettes ─── */}
       <div className="absolute inset-0 pointer-events-none">

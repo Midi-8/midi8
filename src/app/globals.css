@@ -95,6 +95,39 @@ body {
   );
 }
 
+/* ─── Mobile hero: CSS liquid (no canvas rAF) ─── */
+
+@keyframes hero-liquid-drift {
+  0% {
+    background-position: 0% 40%, 100% 60%, 50% 0%, 0% 0%;
+  }
+  50% {
+    background-position: 100% 60%, 0% 40%, 40% 80%, 0% 0%;
+  }
+  100% {
+    background-position: 0% 40%, 100% 60%, 50% 0%, 0% 0%;
+  }
+}
+
+.hero-liquid-css {
+  background-color: #09090b;
+  background-image:
+    radial-gradient(ellipse 70% 55% at 28% 42%, rgba(234, 88, 12, 0.22), transparent 58%),
+    radial-gradient(ellipse 65% 50% at 72% 58%, rgba(63, 63, 70, 0.55), transparent 55%),
+    radial-gradient(ellipse 45% 35% at 50% 18%, rgba(255, 255, 255, 0.05), transparent 65%),
+    linear-gradient(160deg, #09090b 0%, #141416 45%, #09090b 100%);
+  background-size: 180% 180%, 170% 170%, 140% 140%, 100% 100%;
+  animation: hero-liquid-drift 16s ease-in-out infinite;
+  will-change: background-position;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-liquid-css {
+    animation: none;
+    background-position: 40% 45%, 60% 55%, 50% 20%, 0% 0%;
+  }
+}
+
 /* ─── Bento Card (Monocromático — 3D tilt em JS) ─── */
 
 .bento-card {
