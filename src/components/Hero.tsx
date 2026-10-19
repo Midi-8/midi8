@@ -98,6 +98,7 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
 
 
   // ── Dark Liquid Metal WebGL-equivalent on Canvas 2D with Perlin Noise ──
+  // Mobile: one static frame (no rAF) to protect battery/CPU.
   useEffect(() => {
     const canvas = canvasRef.current;
     const section = sectionRef.current;
@@ -106,12 +107,12 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let raf: number;
-    let running = true;
-    let startTime = performance.now();
-
-    // Resize handler
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const STEP = isMobile ? 8 : 4;
+    const OCTAVES = isMobile ? 2 : 5;
+    const LIGHT_FACTOR = isMobile ? 0.30 : 0.38;
+    const SMOOTH = 0.045;
+
     const resize = () => {
       const w = section.offsetWidth;
       const h = section.offsetHeight;
@@ -119,45 +120,30 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
       canvas.height = h * dpr;
       canvas.style.width  = w + "px";
       canvas.style.height = h + "px";
-      ctx.scale(dpr, dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
-    resize();
-    window.addEventListener("resize", resize, { passive: true });
 
-    // Smooth mouse interpolation factor
-    const SMOOTH = 0.045;
-
-    // ── Render Loop ──
-    const render = () => {
-      if (!running) return;
-      raf = requestAnimationFrame(render);
-
+    const paintFrame = (t: number, animateMouse: boolean) => {
       const W = canvas.width  / dpr;
       const H = canvas.height / dpr;
-      const t = (performance.now() - startTime) * 0.0004; // slow time scale
 
-      // Smooth mouse lerp
-      mouseX.current += (targetMouseX.current - mouseX.current) * SMOOTH;
-      mouseY.current += (targetMouseY.current - mouseY.current) * SMOOTH;
+      if (animateMouse) {
+        mouseX.current += (targetMouseX.current - mouseX.current) * SMOOTH;
+        mouseY.current += (targetMouseY.current - mouseY.current) * SMOOTH;
+      }
 
-      // ── Build pixel map using Perlin fBm ──
-      // We sample on a coarser grid for performance, then we'll draw filled rects
-      const STEP = isMobile ? 6 : 4; // pixel block size
       const cols = Math.ceil(W / STEP) + 1;
       const rows = Math.ceil(H / STEP) + 1;
-
-      // Cursor world position
       const cx = mouseX.current * W;
       const cy = mouseY.current * H;
+      const LIGHT_RADIUS = Math.min(W, H) * LIGHT_FACTOR;
 
-      // Copper light range (distance-based falloff)
-      const LIGHT_RADIUS = Math.min(W, H) * (isMobile ? 0.30 : 0.38);
-
-      // Prune expired ripples
       const now = performance.now();
-      ripplesRef.current = ripplesRef.current.filter(
-        (r) => now - r.born < r.life
-      );
+      if (!isMobile) {
+        ripplesRef.current = ripplesRef.current.filter(
+          (r) => now - r.born < r.life
+        );
+      }
 
       ctx.clearRect(0, 0, W, H);
 
@@ -166,51 +152,44 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
           const px = col * STEP;
           const py = row * STEP;
 
-          // Normalised noise coordinates (scale drives density)
-          const nx = (px / W)  * 3.2 + t * 0.6;
-          const ny = (py / H)  * 3.2 + t * 0.45;
+          const nx = (px / W) * 3.2 + t * 0.6;
+          const ny = (py / H) * 3.2 + t * 0.45;
 
-          // Base fBm value in [-1, 1]
-          let noise = fbm(nx, ny);
+          let noise = fbm(nx, ny, OCTAVES);
 
-          // Add ripple contributions
-          for (const r of ripplesRef.current) {
-            const age   = (now - r.born) / r.life; // [0..1]
-            const dx    = px - r.x;
-            const dy    = py - r.y;
-            const dist  = Math.sqrt(dx * dx + dy * dy);
-            const wave  = Math.sin(dist * 0.045 - age * 14) * Math.exp(-dist * 0.008);
-            const decay = 1 - age;
-            noise += wave * decay * r.strength * 0.65;
+          if (!isMobile) {
+            for (const r of ripplesRef.current) {
+              const age   = (now - r.born) / r.life;
+              const rdx   = px - r.x;
+              const rdy   = py - r.y;
+              const dist  = Math.sqrt(rdx * rdx + rdy * rdy);
+              const wave  = Math.sin(dist * 0.045 - age * 14) * Math.exp(-dist * 0.008);
+              const decay = 1 - age;
+              noise += wave * decay * r.strength * 0.65;
+            }
           }
 
-          // Map noise to darkness depth [0..1] (positive crests = brighter)
-          const crestNorm = (noise + 1) * 0.5; // [0..1]
+          const crestNorm = (noise + 1) * 0.5;
 
-          // Distance to cursor → copper spotlight
           const dx   = px - cx;
           const dy   = py - cy;
           const dist = Math.sqrt(dx * dx + dy * dy);
           const lightFalloff = Math.max(0, 1 - dist / LIGHT_RADIUS);
           const copperStrength = Math.pow(lightFalloff, 1.8) * crestNorm;
 
-          // ── Compute final colour ──
-          // Base: zinc-950 (10,10,10) → zinc-800 (39,39,42) based on crest
           const baseR = Math.round(10  + crestNorm * 29);
           const baseG = Math.round(10  + crestNorm * 29);
           const baseB = Math.round(12  + crestNorm * 30);
 
-          // Copper: #EA580C = rgb(234, 88, 12)
           const copR = Math.round(baseR + (234 - baseR) * copperStrength);
           const copG = Math.round(baseG + (88  - baseG) * copperStrength);
           const copB = Math.round(baseB + (12  - baseB) * copperStrength);
 
           ctx.fillStyle = `rgb(${copR},${copG},${copB})`;
-          ctx.fillRect(px, py, STEP + 1, STEP + 1); // +1 to avoid gaps
+          ctx.fillRect(px, py, STEP + 1, STEP + 1);
         }
       }
 
-      // ── Ambient copper corona around cursor (canvas radial overlay) ──
       if (!isMobile) {
         const corona = ctx.createRadialGradient(cx, cy, 0, cx, cy, LIGHT_RADIUS * 0.95);
         corona.addColorStop(0,   "rgba(234,88,12,0.18)");
@@ -225,14 +204,39 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
       }
     };
 
-    render();
+    // ── Mobile: single static paint, repaint only on resize ──
+    if (isMobile) {
+      const onResize = () => {
+        resize();
+        paintFrame(0, false);
+      };
+      onResize();
+      window.addEventListener("resize", onResize, { passive: true });
+      return () => {
+        window.removeEventListener("resize", onResize);
+      };
+    }
 
-    // ── IntersectionObserver: pause when off-screen ──
+    // ── Desktop: continuous rAF loop ──
+    let raf = 0;
+    let running = true;
+    let startTime = performance.now();
+
+    const render = () => {
+      if (!running) return;
+      raf = requestAnimationFrame(render);
+      const t = (performance.now() - startTime) * 0.0004;
+      paintFrame(t, true);
+    };
+
+    resize();
+    render();
+    window.addEventListener("resize", resize, { passive: true });
+
     const observer = new IntersectionObserver(
       (entries) => {
         running = entries[0].isIntersecting;
         if (running) {
-          startTime = performance.now() - (performance.now() - startTime); // resume
           render();
         } else {
           cancelAnimationFrame(raf);
