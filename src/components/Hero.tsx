@@ -121,7 +121,9 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
       canvas.height = h * dpr;
       canvas.style.width  = w + "px";
       canvas.style.height = h + "px";
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // Reset before scale — mobile browser chrome show/hide must not stack CTM
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
     };
     resize();
     window.addEventListener("resize", resize, { passive: true });

@@ -27,11 +27,17 @@ export default function Home() {
   const spatialContainerRef = useRef<HTMLDivElement>(null);
   const isMobile = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  // Track scroll progress over the pinned spatial container
-  const { scrollYProgress } = useScroll({
-    target: spatialContainerRef,
-    offset: ["start start", "end end"],
-  });
+  // Desktop only: target must be mounted. layoutEffect:false avoids SSR/hydration warn.
+  // Mobile: no target — spatial scroll is unused.
+  const { scrollYProgress } = useScroll(
+    isMobile
+      ? { layoutEffect: false }
+      : {
+          target: spatialContainerRef,
+          offset: ["start start", "end end"],
+          layoutEffect: false,
+        }
+  );
 
   return (
     <main className="flex-1 bg-zinc-950 text-foreground overflow-x-clip">
