@@ -1,14 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import Wordmark from "@/components/Wordmark";
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF, SOCIAL } from "@/lib/contact";
 
 export default function Footer() {
   const currentYear = 2026;
 
   return (
-    <footer id="contacto" className="relative bg-zinc-950 text-foreground border-t border-zinc-800/60 overflow-hidden">
+    <footer className="relative text-foreground border-t border-border overflow-hidden">
       {/* Top subtle copper accent line */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-px bg-gradient-to-r from-transparent via-[#EA580C]/40 to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent pointer-events-none" />
 
       {/* Main Footer Grid */}
       <div className="max-w-7xl mx-auto px-6 py-16 sm:py-20">
@@ -21,21 +23,16 @@ export default function Footer() {
               className="inline-flex items-center gap-2.5 group w-fit"
               aria-label="MIDI8 — Página Inicial"
             >
-              <div className="w-7 h-7 rounded-md bg-zinc-900 border border-zinc-800 flex items-center justify-center group-hover:border-zinc-600 group-hover:shadow-[0_0_16px_rgba(234,88,12,0.3)] transition-all duration-300">
-                <span className="text-[11px] font-bold text-white">M8</span>
-              </div>
-              <span className="text-lg font-bold text-white tracking-tight">
-                MIDI8
-              </span>
+              <Wordmark className="h-6 w-auto text-foreground transition-opacity duration-300 group-hover:opacity-80" />
             </Link>
 
-            <p className="text-sm text-zinc-400 max-w-sm leading-relaxed">
+            <p className="text-sm text-muted max-w-sm leading-relaxed">
               Engenharia de Software e Infraestrutura.
             </p>
 
             <div className="pt-2 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#EA580C] animate-pulse" />
-              <span className="text-[11px] font-mono uppercase tracking-widest text-zinc-500">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              <span className="text-[11px] font-mono uppercase tracking-widest text-subtle">
                 Sistemas Corporativos de Alta Escala
               </span>
             </div>
@@ -43,14 +40,14 @@ export default function Footer() {
 
           {/* ── 2. Bloco de Navegação (Centro-Esquerda - 2 cols) ── */}
           <div className="lg:col-span-2 flex flex-col gap-3">
-            <p className="text-xs font-mono font-semibold uppercase tracking-wider text-white">
+            <p className="text-xs font-mono font-semibold uppercase tracking-wider text-foreground">
               Plataforma
             </p>
             <ul className="flex flex-col gap-2.5 text-sm">
               <li>
                 <Link
                   href="/solucoes"
-                  className="text-zinc-400 hover:text-[#EA580C] transition-colors duration-200 inline-block py-0.5"
+                  className="text-muted hover:text-accent transition-colors duration-200 inline-block py-0.5"
                 >
                   Soluções
                 </Link>
@@ -58,7 +55,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/sobre"
-                  className="text-zinc-400 hover:text-[#EA580C] transition-colors duration-200 inline-block py-0.5"
+                  className="text-muted hover:text-accent transition-colors duration-200 inline-block py-0.5"
                 >
                   A Empresa
                 </Link>
@@ -68,24 +65,34 @@ export default function Footer() {
 
           {/* ── 3. Bloco de Contacto e Conversão (Centro-Direita - 4 cols) ── */}
           <div className="lg:col-span-4 flex flex-col gap-4">
-            <p className="text-xs font-mono font-semibold uppercase tracking-wider text-white">
+            <p className="text-xs font-mono font-semibold uppercase tracking-wider text-foreground">
               Contacto
             </p>
             
             <a
-              href="mailto:hello@midi8.com"
-              className="text-sm font-mono text-zinc-400 hover:text-white transition-colors duration-200 w-fit inline-flex items-center gap-2"
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="text-sm font-mono text-muted hover:text-foreground transition-colors duration-200 w-fit inline-flex items-center gap-2"
             >
-              <svg className="w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <svg className="w-4 h-4 text-subtle" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
               </svg>
-              hello@midi8.com
+              {CONTACT_EMAIL}
+            </a>
+
+            <a
+              href={CONTACT_PHONE_HREF}
+              className="text-sm font-mono text-muted hover:text-foreground transition-colors duration-200 w-fit inline-flex items-center gap-2"
+            >
+              <svg className="w-4 h-4 text-subtle" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+              </svg>
+              {CONTACT_PHONE}
             </a>
 
             <div>
-              <a
-                href="mailto:hello@midi8.com?subject=Agendamento%20de%20Reuni%C3%A3o%20T%C3%A9cnica"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold text-white bg-[#EA580C] hover:bg-[#f06115] transition-all duration-200 cursor-pointer shadow-[0_0_16px_rgba(234,88,12,0.2)] hover:shadow-[0_0_24px_rgba(234,88,12,0.4)] border border-[#EA580C]/60"
+              <Link
+                href="/contacto"
+                className="cta-button cta-sm"
               >
                 <span>Agendar Reunião Técnica</span>
                 <svg
@@ -101,21 +108,21 @@ export default function Footer() {
                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </svg>
-              </a>
+              </Link>
             </div>
           </div>
 
           {/* ── 4. Bloco de Redes/Sociais (Direita - 2 cols) ── */}
           <div className="lg:col-span-2 flex flex-col gap-3">
-            <p className="text-xs font-mono font-semibold uppercase tracking-wider text-white">
+            <p className="text-xs font-mono font-semibold uppercase tracking-wider text-foreground">
               Redes
             </p>
             <div className="flex flex-col gap-2.5 text-sm">
               <a
-                href="https://linkedin.com/company/midi8"
+                href={SOCIAL.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-zinc-400 hover:text-[#EA580C] transition-colors duration-200 w-fit"
+                className="inline-flex items-center gap-2 text-muted hover:text-accent transition-colors duration-200 w-fit"
                 aria-label="LinkedIn Midi8"
               >
                 <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
@@ -125,10 +132,10 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://github.com/midi8"
+                href={SOCIAL.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-zinc-400 hover:text-[#EA580C] transition-colors duration-200 w-fit"
+                className="inline-flex items-center gap-2 text-muted hover:text-accent transition-colors duration-200 w-fit"
                 aria-label="GitHub Midi8"
               >
                 <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
@@ -140,6 +147,21 @@ export default function Footer() {
                 </svg>
                 <span>GitHub</span>
               </a>
+
+              <a
+                href={SOCIAL.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-muted hover:text-accent transition-colors duration-200 w-fit"
+                aria-label="Instagram Midi8"
+              >
+                <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none" />
+                </svg>
+                <span>Instagram</span>
+              </a>
             </div>
           </div>
 
@@ -147,8 +169,8 @@ export default function Footer() {
       </div>
 
       {/* ── 5. Barra Inferior (Legal) ── */}
-      <div className="border-t border-zinc-800/80 bg-zinc-950/80">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500">
+      <div className="border-t border-border">
+        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-subtle">
           <p>
             © {currentYear} Midi8. Todos os direitos reservados.
           </p>
@@ -156,13 +178,13 @@ export default function Footer() {
           <div className="flex items-center gap-6">
             <Link
               href="#"
-              className="hover:text-zinc-300 transition-colors duration-200"
+              className="hover:text-secondary transition-colors duration-200"
             >
               Política de Privacidade
             </Link>
             <Link
               href="#"
-              className="hover:text-zinc-300 transition-colors duration-200"
+              className="hover:text-secondary transition-colors duration-200"
             >
               Termos e Condições
             </Link>

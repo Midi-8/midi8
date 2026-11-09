@@ -32,13 +32,11 @@ export default function TechStack() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <p className="text-sm font-mono text-zinc-500 tracking-widest uppercase mb-3">
-            Tech Stack
-          </p>
+          <p className="eyebrow mb-4">Tech Stack</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
             Ferramentas que dominamos.
           </h2>
-          <p className="text-zinc-500 mt-4 max-w-lg mx-auto text-sm">
+          <p className="text-muted mt-4 max-w-lg mx-auto text-sm">
             Trabalhamos com as tecnologias mais robustas do ecossistema moderno.
             Sempre a ferramenta certa para o problema certo.
           </p>
@@ -61,7 +59,7 @@ export default function TechStack() {
               transition={{ duration: 0.4, delay: i * 0.04 }}
               className="tech-badge"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#EA580C] shadow-[0_0_6px_rgba(234,88,12,0.6)]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
               {tech.name}
             </motion.span>
           ))}

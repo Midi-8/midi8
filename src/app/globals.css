@@ -1,72 +1,84 @@
 @import "tailwindcss";
 
-/* ─── Midi8 Design System — Monocromático + Cobre (#EA580C) ─── */
+/* ═══════════════════════════════════════════════════════════════════════
+   Midi8 Design System — monocromático + cobre, superfícies Liquid Glass.
+   Tokens em :root, expostos ao Tailwind em @theme inline (text-muted,
+   bg-surface, border-border…). Componentes em @layer components para que
+   utilitários (w-full, hidden, md:inline-flex…) os possam ajustar.
+   ═══════════════════════════════════════════════════════════════════════ */
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --accent: #EA580C; /* Cobre / Laranja Queimado */
-  --accent-light: #F97316;
-  --accent-glow: rgba(234, 88, 12, 0.15);
-  --accent-glow-strong: rgba(234, 88, 12, 0.35);
-  --copper: #EA580C;
-  --surface: #111113;
-  --surface-light: #1a1a1e;
-  --border: rgba(63, 63, 70, 0.5);
-  --border-light: rgba(82, 82, 91, 0.4);
+  /* ── Cor: fundo e texto ── */
+  --background: #111114;
+  --foreground: #f5f5f7;   /* títulos, texto forte */
+  --secondary: #d4d4d8;    /* texto corrido destacado */
+  --muted: #a1a1aa;        /* texto corrido */
+  --subtle: #85858f;       /* legendas (AA sobre o fundo) */
+  --faint: #52525b;        /* só decorativo, nunca texto essencial */
+
+  /* ── Cor: marca (cobre) ── */
+  --accent: #ea580c;
+  --accent-hover: #f06115;
+  --accent-light: #f97316;
+  --accent-rgb: 234 88 12;
+
+  /* ── Superfícies e linhas ── */
+  --surface: #17171b;
+  --surface-light: #1f1f24;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.22);
+  --danger: #f87171;
+
+  /* ── Neumorphism (só no formulário de contacto) ── */
+  --neu-bg: #1b1b20;
+  --neu-dark: rgba(0, 0, 0, 0.55);
+  --neu-light: rgba(255, 255, 255, 0.045);
+
+  /* ── Vidro ── */
+  --glass-tint: linear-gradient(160deg, rgba(255, 255, 255, 0.065) 0%, rgba(255, 255, 255, 0.02) 55%, rgba(255, 255, 255, 0.035) 100%);
+  --glass-tint-strong: linear-gradient(160deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.04) 100%);
+  --glass-blur: blur(20px) saturate(150%);
+  --glass-rim: linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.07) 28%, rgba(255, 255, 255, 0.025) 62%, rgba(255, 255, 255, 0.1) 100%);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 24px 48px -24px rgba(0, 0, 0, 0.6);
+  --glass-shadow-hover: 0 1px 1px rgba(0, 0, 0, 0.25), 0 32px 64px -28px rgba(0, 0, 0, 0.75);
+
+  /* ── Forma e movimento ── */
+  --radius-card: 22px;
+  --radius-chip: 8px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-faint: var(--faint);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-accent-light: var(--accent-light);
-  --color-accent-glow: var(--accent-glow);
-  --color-accent-glow-strong: var(--accent-glow-strong);
-  --color-copper: var(--copper);
   --color-surface: var(--surface);
   --color-surface-light: var(--surface-light);
   --color-border: var(--border);
   --color-border-light: var(--border-light);
+  --color-border-strong: var(--border-strong);
+  --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-
-  --animate-fade-in: fade-in 0.8s ease-out forwards;
-  --animate-slide-up: slide-up 0.6s ease-out forwards;
-  --animate-glow-pulse: glow-pulse 3s ease-in-out infinite;
-  --animate-float: float 6s ease-in-out infinite;
-}
-
-/* ─── Animations ─── */
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes glow-pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
 }
 
 /* ─── Base ─── */
 
 html {
   scroll-behavior: smooth;
+  background: var(--background);
 }
 
+/* Sem fundo no body: pintaria por cima do fundo fixo (z-index -1). O fundo fica no html. */
 body {
-  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -74,178 +86,116 @@ body {
 }
 
 ::selection {
-  background: rgba(234, 88, 12, 0.3);
-  color: #fff;
+  background: rgb(var(--accent-rgb) / 0.3);
+  color: var(--foreground);
 }
 
-/* ─── Dot Grid Background (Monocromático) ─── */
+/* Intro de marca: os glifos sobem para o lugar, o 8 entra pelo corte, o ecrã abre.
+   Só transform/opacity, em keyframes CSS (corre desde o primeiro paint). */
 
-.dot-grid {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 24px 24px;
+.logo-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--background);
+  animation: intro-out 0.6s var(--ease) 1.55s forwards;
 }
 
-/* ─── Radial Hero Glow (Monocromático Puro) ─── */
-
-.hero-glow {
-  background: radial-gradient(
-    ellipse 60% 50% at 50% 0%,
-    rgba(255, 255, 255, 0.04) 0%,
-    transparent 70%
-  );
+.logo-intro[data-skip] {
+  animation: intro-out 0.35s var(--ease) forwards;
 }
 
-/* ─── Mobile hero: CSS liquid (no canvas rAF) ─── */
-
-@keyframes hero-liquid-drift {
-  0% {
-    background-position: 0% 40%, 100% 60%, 50% 0%, 0% 0%;
-  }
-  50% {
-    background-position: 100% 60%, 0% 40%, 40% 80%, 0% 0%;
-  }
-  100% {
-    background-position: 0% 40%, 100% 60%, 50% 0%, 0% 0%;
-  }
+html[data-intro="skip"] .logo-intro {
+  display: none;
 }
 
-.hero-liquid-css {
-  background-color: #09090b;
+.logo-intro__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  animation: intro-stage-out 0.55s var(--ease) 1.4s forwards;
+}
+
+.logo-intro[data-skip] .logo-intro__stage {
+  animation: intro-stage-out 0.3s var(--ease) forwards;
+}
+
+.logo-intro__mark {
+  width: min(72vw, 620px);
+  height: auto;
+  color: var(--foreground);
+}
+
+.logo-intro__rise {
+  transform-box: fill-box;
+  transform: translateY(110%);
+  animation: intro-rise 0.7s var(--ease) forwards;
+}
+
+.logo-intro__slide {
+  transform-box: fill-box;
+  transform: translateX(105%);
+  animation: intro-slide 0.75s var(--ease) forwards;
+}
+
+.logo-intro__line {
+  width: min(72vw, 620px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.6;
+  transform: scaleX(0);
+  animation: intro-grow 0.8s var(--ease) 0.75s forwards;
+}
+
+@keyframes intro-rise { to { transform: translateY(0); } }
+@keyframes intro-slide { to { transform: translateX(0); } }
+@keyframes intro-grow { to { transform: scaleX(1); } }
+@keyframes intro-stage-out { to { opacity: 0; transform: scale(0.96); } }
+@keyframes intro-out { to { opacity: 0; visibility: hidden; } }
+
+/* ─── Fundo global: metal líquido (LiquidBackground) ───
+   Desktop: <canvas class="liquid-bg"> desenhado em JS.
+   Mobile/SSR: .liquid-css, camada maior que o ecrã a derivar só com transform. */
+
+.liquid-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.liquid-css {
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--background);
   background-image:
-    radial-gradient(ellipse 70% 55% at 28% 42%, rgba(234, 88, 12, 0.28), transparent 58%),
-    radial-gradient(ellipse 65% 50% at 72% 58%, rgba(63, 63, 70, 0.65), transparent 55%),
-    radial-gradient(ellipse 45% 35% at 50% 18%, rgba(255, 255, 255, 0.06), transparent 65%),
-    linear-gradient(160deg, #09090b 0%, #141416 45%, #09090b 100%);
-  background-size: 200% 200%, 190% 190%, 160% 160%, 100% 100%;
-  animation: hero-liquid-drift 12s ease-in-out infinite;
-  will-change: background-position;
+    radial-gradient(ellipse 38% 30% at 36% 40%, rgb(var(--accent-rgb) / 0.2), transparent 60%),
+    radial-gradient(ellipse 40% 32% at 64% 60%, rgba(70, 70, 80, 0.55), transparent 60%),
+    radial-gradient(ellipse 30% 22% at 50% 26%, rgba(255, 255, 255, 0.05), transparent 65%),
+    linear-gradient(160deg, var(--background) 0%, var(--surface-light) 50%, var(--background) 100%);
+  animation: liquid-drift 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes liquid-drift {
+  from { transform: translate3d(-5%, -4%, 0) rotate(-4deg); }
+  to   { transform: translate3d(5%, 4%, 0) rotate(6deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-liquid-css {
+  .liquid-css {
     animation: none;
-    background-position: 40% 45%, 60% 55%, 50% 20%, 0% 0%;
   }
 }
 
-/* ─── Bento Card (Monocromático — 3D tilt em JS) ─── */
-
-.bento-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  transition: border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.bento-card:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.04),
-    0 8px 32px -8px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
-/* ─── Glass Card (Showcase Floating Cards) ─── */
-
-.glass-card {
-  background: rgba(15, 15, 18, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid #27272a; /* border fina zinc-800 */
-  border-radius: 20px;
-  box-shadow:
-    0 4px 24px -1px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  transition: border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.glass-card:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 24px 64px -12px rgba(0, 0, 0, 0.7),
-    0 12px 32px -4px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-/* ─── CTA Button (Cobre #EA580C primary) ─── */
-
-.cta-button {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 32px;
-  background: var(--accent);
-  color: #fff;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-  text-decoration: none;
-}
-
-.cta-button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.cta-button:hover {
-  transform: translateY(-1px);
-  background: #f06115;
-  box-shadow:
-    0 0 0 1px rgba(234, 88, 12, 0.5),
-    0 4px 16px -2px rgba(234, 88, 12, 0.4),
-    0 12px 40px -8px rgba(234, 88, 12, 0.3);
-}
-
-.cta-button:hover::before {
-  opacity: 1;
-}
-
-.cta-secondary {
-  background: transparent;
-  color: var(--foreground);
-  border: 1px solid var(--border-light);
-}
-
-.cta-secondary:hover {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.25);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.05),
-    0 4px 16px -4px rgba(0, 0, 0, 0.4);
-}
-
-/* ─── Copper Status Badge (micro-destaque técnico #EA580C) ─── */
-
-.copper-badge,
-.mint-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 10px;
-  font-size: 0.6875rem;
-  font-family: var(--font-geist-mono), monospace;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: #EA580C;
-  background: rgba(234, 88, 12, 0.08);
-  border: 1px solid rgba(234, 88, 12, 0.25);
-  border-radius: 6px;
-  text-transform: uppercase;
-}
-
-/* ─── Section spacing ─── */
+/* ─── Espaçamento de secção ─── */
 
 .section-padding {
   padding: 120px 24px;
@@ -257,26 +207,367 @@ body {
   }
 }
 
-/* ─── Tech Badge (Monocromático) ─── */
+/* ═══ Componentes ═══ */
 
-.tech-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 0.8125rem;
-  font-family: var(--font-geist-mono), monospace;
-  color: rgba(255, 255, 255, 0.65);
-  transition: all 0.3s ease;
-}
+@layer components {
+  /* ── Vidro: tinta incolor + rebordo de luz (::before em máscara) + sombra ──
+     Filhos de um painel de vidro não pintam superfície própria opaca. */
+  .glass,
+  .bento-card,
+  .glass-card {
+    position: relative;
+    background: var(--glass-tint);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border-radius: var(--radius-card);
+    box-shadow: var(--glass-highlight), var(--glass-shadow);
+    transition: box-shadow 0.5s var(--ease);
+  }
 
-.tech-badge:hover {
-  border-color: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 0 16px -4px rgba(255, 255, 255, 0.08);
-  color: #fff;
+  .glass::before,
+  .bento-card::before,
+  .glass-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: var(--glass-rim);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.8;
+    transition: opacity 0.5s var(--ease);
+    pointer-events: none;
+  }
+
+  .bento-card:hover,
+  .glass-card:hover {
+    box-shadow: var(--glass-highlight), var(--glass-shadow-hover);
+  }
+
+  .bento-card:hover::before,
+  .glass-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Barra de navegação e menu em ecrã inteiro */
+  .glass-bar {
+    background: color-mix(in srgb, var(--background) 62%, transparent);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: inset 0 -1px 0 var(--border);
+  }
+
+  .glass-sheet {
+    background: color-mix(in srgb, var(--background) 84%, transparent);
+    -webkit-backdrop-filter: blur(32px) saturate(160%);
+    backdrop-filter: blur(32px) saturate(160%);
+  }
+
+  /* Poço rebaixado dentro de um painel (telemetria, níveis, resumos) */
+  .well {
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Contentor de ícone */
+  .icon-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    color: var(--secondary);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 0 1px var(--border);
+    transition: color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+
+  .group:hover .icon-tile {
+    color: var(--foreground);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 0 0 1px var(--border-light);
+  }
+
+  .icon-tile--accent,
+  .group:hover .icon-tile--accent {
+    color: var(--accent);
+    background: linear-gradient(160deg, rgb(var(--accent-rgb) / 0.14), rgb(var(--accent-rgb) / 0.04));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgb(var(--accent-rgb) / 0.28);
+  }
+
+  /* Etiquetas pequenas dentro de cartões */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 8px;
+    border-radius: var(--radius-chip);
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 0.6875rem;
+    line-height: 1.125rem;
+    color: var(--muted);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: inset 0 0 0 1px var(--border);
+    transition: color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+
+  .chip--accent {
+    color: var(--accent);
+    background: rgb(var(--accent-rgb) / 0.07);
+    box-shadow: inset 0 0 0 1px rgb(var(--accent-rgb) / 0.26);
+  }
+
+  /* Pílula de estado no topo das páginas */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--secondary);
+    background: var(--glass-tint);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 0 1px var(--border);
+  }
+
+  /* Sobretítulo de secção */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* Título com gradiente neutro */
+  .text-gradient {
+    background: linear-gradient(90deg, var(--foreground) 0%, var(--secondary) 45%, var(--muted) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* ── Botões ── */
+  .cta-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 26px;
+    border: none;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      0 1px 2px rgba(0, 0, 0, 0.3),
+      0 8px 24px -12px rgb(var(--accent-rgb) / 0.6);
+    transition: background-color 0.25s var(--ease), box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+
+  .cta-button:hover {
+    background: var(--accent-hover);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 1px 2px rgba(0, 0, 0, 0.3),
+      0 12px 32px -12px rgb(var(--accent-rgb) / 0.7);
+  }
+
+  .cta-button:active {
+    transform: scale(0.98);
+  }
+
+  .cta-button:focus-visible {
+    outline: 2px solid var(--accent-light);
+    outline-offset: 3px;
+  }
+
+  .cta-secondary {
+    background: var(--glass-tint);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    color: var(--foreground);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 0 0 1px var(--border-light);
+  }
+
+  .cta-secondary:hover {
+    background: var(--glass-tint-strong);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 0 0 1px var(--border-strong);
+  }
+
+  .cta-sm {
+    padding: 8px 16px;
+    font-size: 0.8125rem;
+  }
+
+  /* ── Badges ── */
+  .copper-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgb(var(--accent-rgb) / 0.08);
+    box-shadow: inset 0 0 0 1px rgb(var(--accent-rgb) / 0.24);
+  }
+
+  .tech-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 0.8125rem;
+    color: var(--secondary);
+    background: var(--glass-tint);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 0 0 1px var(--border);
+    transition: color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+
+  .tech-badge:hover {
+    color: var(--foreground);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 0 1px var(--border-light);
+  }
+
+  /* ── Neumorphism: painel sólido; campos rebaixados, opções e botão em relevo ── */
+  .neu-panel {
+    background: var(--neu-bg);
+    border-radius: 28px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      0 0 0 1px rgba(255, 255, 255, 0.03),
+      0 40px 80px -40px rgba(0, 0, 0, 0.8);
+  }
+
+  .neu-field {
+    width: 100%;
+    padding: 14px 16px;
+    border: none;
+    border-radius: 14px;
+    background: var(--neu-bg);
+    color: var(--foreground);
+    font-size: 0.9375rem;
+    box-shadow: inset 4px 4px 10px var(--neu-dark), inset -4px -4px 10px var(--neu-light);
+    transition: box-shadow 0.25s var(--ease);
+  }
+
+  .neu-field::placeholder {
+    color: var(--subtle);
+  }
+
+  .neu-field:focus {
+    outline: none;
+    box-shadow:
+      inset 4px 4px 10px var(--neu-dark),
+      inset -4px -4px 10px var(--neu-light),
+      0 0 0 2px rgb(var(--accent-rgb) / 0.45);
+  }
+
+  .neu-field[aria-invalid="true"] {
+    box-shadow:
+      inset 4px 4px 10px var(--neu-dark),
+      inset -4px -4px 10px var(--neu-light),
+      0 0 0 1px color-mix(in srgb, var(--danger) 70%, transparent);
+  }
+
+  .neu-option {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: var(--neu-bg);
+    color: var(--muted);
+    font-size: 0.875rem;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 5px 5px 12px var(--neu-dark), -4px -4px 10px var(--neu-light);
+    transition: color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  }
+
+  .neu-option:hover {
+    color: var(--foreground);
+  }
+
+  .neu-option:has(input:checked) {
+    color: var(--accent);
+    box-shadow: inset 4px 4px 9px var(--neu-dark), inset -3px -3px 8px var(--neu-light);
+  }
+
+  .neu-option:has(input:focus-visible) {
+    outline: 2px solid var(--accent-light);
+    outline-offset: 3px;
+  }
+
+  .neu-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 15px 28px;
+    border: none;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      6px 6px 14px var(--neu-dark),
+      -4px -4px 12px var(--neu-light);
+    transition: background-color 0.25s var(--ease), box-shadow 0.2s var(--ease);
+  }
+
+  .neu-submit:hover {
+    background: var(--accent-hover);
+  }
+
+  .neu-submit:active {
+    box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.35), inset -2px -2px 6px rgba(255, 255, 255, 0.12);
+  }
+
+  .neu-submit:focus-visible {
+    outline: 2px solid var(--accent-light);
+    outline-offset: 3px;
+  }
+
+  .neu-submit:disabled {
+    opacity: 0.7;
+    cursor: progress;
+  }
 }
 
 /* ─── Scrollbar ─── */
