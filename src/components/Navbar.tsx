@@ -7,9 +7,16 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
+  { label: "Portfólio", href: "/#portfolio" },
   { label: "Soluções", href: "/solucoes" },
   { label: "A Empresa", href: "/sobre" },
 ];
+
+// Âncoras (/#portfolio) nunca ficam "ativas"; rotas ficam ativas também nas sub-rotas.
+function isRouteActive(href: string, pathname: string): boolean {
+  if (href.includes("#")) return false;
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -64,17 +71,27 @@ export default function Navbar() {
 
           {/* ── Desktop Navigation ── */}
           <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="relative px-4 py-2 text-sm text-muted hover:text-foreground transition-colors duration-200 group"
-              >
-                {link.label}
-                {/* Underline accent on hover */}
-                <span className="absolute bottom-1 left-4 right-4 h-px bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const active = isRouteActive(link.href, pathname);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`relative px-4 py-2 text-sm transition-colors duration-200 group ${
+                    active ? "text-foreground font-medium" : "text-muted hover:text-foreground"
+                  }`}
+                >
+                  {link.label}
+                  {/* Sublinhado: fixo na rota ativa, no hover nas restantes */}
+                  <span
+                    className={`absolute bottom-1 left-4 right-4 h-px bg-accent transition-transform duration-300 origin-left ${
+                      active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    }`}
+                  />
+                </Link>
+              );
+            })}
           </div>
 
           {/* ── CTA + Mobile Hamburger ── */}
@@ -149,9 +166,15 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block w-full py-4 text-2xl font-semibold text-secondary hover:text-foreground border-b border-border transition-colors"
+                    aria-current={isRouteActive(link.href, pathname) ? "page" : undefined}
+                    className={`block w-full py-4 text-2xl font-semibold border-b border-border transition-colors ${
+                      isRouteActive(link.href, pathname) ? "text-foreground" : "text-secondary hover:text-foreground"
+                    }`}
                   >
                     {link.label}
+                    {isRouteActive(link.href, pathname) && (
+                      <span className="block mx-auto mt-1 w-8 h-0.5 bg-accent rounded-full" />
+                    )}
                   </Link>
                 </motion.div>
               ))}

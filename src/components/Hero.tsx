@@ -4,6 +4,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Wordmark from "@/components/Wordmark";
+import { TOTAL_PROJECTS } from "@/data/projects";
 
 interface HeroProps {
   isMobile?: boolean;
@@ -104,7 +105,7 @@ export default function Hero({ isMobile = false }: HeroProps) {
             className="mt-20 pt-8 border-t border-border grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto"
           >
             {[
-              { value: "3+",   label: "Projetos em Produção" },
+              { value: `${TOTAL_PROJECTS}+`, label: "Projetos em Produção" },
               { value: "100%", label: "Taxa de Entrega" },
               { value: "24h",  label: "Tempo de Resposta" },
               { value: "∞",    label: "Compromisso" },
