@@ -10,7 +10,6 @@ const projects = [
     description:
       "Presença digital completa para empresa de construção civil. Design premium, otimizado para SEO e conversão de contactos comerciais.",
     tags: ["Next.js", "Tailwind CSS", "SEO"],
-    status: "Em Produção",
     gradient: "from-foreground/[0.04] via-transparent to-transparent",
   },
   {
@@ -19,7 +18,6 @@ const projects = [
     description:
       "Sistema completo de menu digital com QR code, painel de gestão e Kitchen Display System (KDS) mobile para operações de restauração em tempo real.",
     tags: ["React", "Supabase", "React Native", "Real-time"],
-    status: "Em Produção",
     gradient: "from-foreground/[0.04] via-transparent to-transparent",
   },
 ];
@@ -123,10 +121,6 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                   <span className="chip text-secondary">
                     <span className="w-1.5 h-1.5 rounded-full bg-muted" />
                     {project.type}
-                  </span>
-                  <span className="copper-badge">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                    {project.status}
                   </span>
                 </div>
 

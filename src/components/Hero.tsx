@@ -35,20 +35,6 @@ export default function Hero({ isMobile = false }: HeroProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          {/* Status badge */}
-          <div className="pill mb-10">
-            <span className="relative flex h-1.5 w-1.5">
-              <span
-                className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-80"
-                style={{ background: "var(--accent)" }}
-              />
-              <span
-                className="relative inline-flex rounded-full h-1.5 w-1.5"
-                style={{ background: "var(--accent)" }}
-              />
-            </span>
-            A aceitar novos projetos
-          </div>
 
           {/* H1: o logótipo é o título */}
           <h1 className="mb-8">

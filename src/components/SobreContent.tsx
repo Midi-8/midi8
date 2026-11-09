@@ -10,7 +10,6 @@ const engineeringPillars = [
     title: "Resiliência por Design",
     description:
       "Sistemas concebidos para operar em cenários adversos sem degradação catastrófica. Implementamos circuit breakers, retry budgets com jitter exponencial, balanceamento inteligente e auto-recuperação sem intervenção humana.",
-    badge: "99.99% SLO",
     metrics: [
       { label: "Failover Autónomo", value: "< 250ms" },
       { label: "Isolamento de Falhas", value: "Bulkheading" },
@@ -26,7 +25,6 @@ const engineeringPillars = [
     title: "Arquitetura Zero-Trust",
     description:
       "Nenhuma entidade — interna ou externa — é confiada por padrão. Autenticação criptográfica fim-a-fim, validação contínua de permissões por token efêmero, isolamento de workloads corporativos e conformidade estrita de dados.",
-    badge: "Segurança Ativa",
     metrics: [
       { label: "Modelo de Confiança", value: "Zero-Trust" },
       { label: "Gestão de Segredos", value: "mTLS & Vault" },
@@ -42,7 +40,6 @@ const engineeringPillars = [
     title: "Performance Extrema",
     description:
       "A velocidade é uma funcionalidade essencial de negócio. Eliminamos sobrecargas de framework, otimizamos tempos de execução em Edge, aplicamos algoritmos O(1)/O(n log n) e mantemos orçamentos rígidos de memória e CPU.",
-    badge: "P99 < 80ms",
     metrics: [
       { label: "Distribuição", value: "Edge Native" },
       { label: "Core Web Vitals", value: "100/100" },
@@ -155,9 +152,6 @@ export default function SobreContent() {
                   <div className="icon-tile w-10 h-10 rounded-xl">
                     {pillar.icon}
                   </div>
-                  <span className="copper-badge">
-                    {pillar.badge}
-                  </span>
                 </div>
 
                 <p className="text-[11px] font-mono text-subtle tracking-wider mb-2">
