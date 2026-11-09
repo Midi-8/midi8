@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useSyncExternalStore } from "react";
 import { motion, useMotionValue, useTransform, MotionValue } from "framer-motion";
+import { TOTAL_PROJECTS } from "@/data/projects";
 
 // ─── Framer Motion prop types ─────────────────────────────────────────────────
 interface HeroProps {
@@ -433,7 +434,7 @@ export default function Hero({ scrollYProgress, isMobile = false }: HeroProps) {
             className="mt-20 pt-8 border-t border-white/[0.06] grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto"
           >
             {[
-              { value: "3+",   label: "Projetos em Produção" },
+              { value: `${TOTAL_PROJECTS}+`,   label: "Projetos em Produção" },
               { value: "100%", label: "Taxa de Entrega" },
               { value: "24h",  label: "Tempo de Resposta" },
               { value: "∞",    label: "Compromisso" },
