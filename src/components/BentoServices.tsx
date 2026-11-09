@@ -97,84 +97,68 @@ function TiltCard({
   );
 }
 
-/* ─── Crown Jewel Interactive Neural Visualizer ─── */
+/* ─── Crown Jewel: mockup de browser com um site a montar-se ─── */
 
-function NeuralActivityWidget() {
+const reveal = (i: number) => ({
+  initial: { opacity: 0, y: 8 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.5, delay: 0.15 + i * 0.12 },
+});
+
+function SiteBuildWidget() {
   return (
-    <div className="well relative w-full py-4 px-5 my-5 overflow-hidden">
-      {/* Header bar */}
-      <div className="flex items-center justify-between mb-3 text-[11px] font-mono text-muted border-b border-border/60 pb-2">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-          <span className="text-secondary tracking-wider">PIPELINE DE PROCESSAMENTO VETORIAL</span>
+    <div className="well relative w-full my-5 overflow-hidden">
+      {/* Barra do browser */}
+      <div className="flex items-center gap-3 px-4 py-2.5 border-b border-border">
+        <div className="flex gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-border-strong" />
+          <span className="w-2.5 h-2.5 rounded-full bg-border-strong" />
+          <span className="w-2.5 h-2.5 rounded-full bg-border-strong" />
         </div>
-        <span className="text-accent font-semibold tracking-wider">ATIVO // 99.8% PREC.</span>
-      </div>
-
-      {/* Animated Synapse Nodes Matrix */}
-      <div className="relative h-14 flex items-center justify-between px-2">
-        {/* Node 1: Raw Ingestion */}
-        <div className="flex flex-col items-center gap-1 z-10">
-          <div className="icon-tile w-7 h-7 rounded-lg">
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7M4 7c0-2 1.5-3 3.5-3h9c2 0 3.5 1 3.5 3M4 7h16" />
-            </svg>
-          </div>
-          <span className="text-[10px] font-mono text-muted">INGESTÃO</span>
-        </div>
-
-        {/* Animated Synapse Beam 1 */}
-        <div className="flex-1 mx-2 relative h-[2px] bg-border-light overflow-hidden">
-          <motion.div
-            className="absolute top-0 bottom-0 w-8 bg-gradient-to-r from-transparent via-accent to-transparent"
-            animate={{ left: ["-20%", "120%"] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "linear" }}
-          />
-        </div>
-
-        {/* Node 2: Embeddings & Vector Space */}
-        <div className="flex flex-col items-center gap-1 z-10">
-          <div className="icon-tile icon-tile--accent w-8 h-8 rounded-lg">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <span className="text-[10px] font-mono text-accent font-semibold">LATENTE</span>
-        </div>
-
-        {/* Animated Synapse Beam 2 */}
-        <div className="flex-1 mx-2 relative h-[2px] bg-border-light overflow-hidden">
-          <motion.div
-            className="absolute top-0 bottom-0 w-8 bg-gradient-to-r from-transparent via-foreground to-transparent"
-            animate={{ left: ["-20%", "120%"] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "linear", delay: 0.7 }}
-          />
-        </div>
-
-        {/* Node 3: Decision & Action */}
-        <div className="flex flex-col items-center gap-1 z-10">
-          <div className="icon-tile w-7 h-7 rounded-lg">
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <span className="text-[10px] font-mono text-muted">DECISÃO</span>
+        <div className="flex-1 flex items-center justify-center gap-1.5 rounded-md bg-surface/60 px-3 py-1 text-[11px] font-mono text-subtle">
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+          </svg>
+          www.a-sua-empresa.pt
         </div>
       </div>
 
-      {/* Telemetry metrics strip */}
-      <div className="grid grid-cols-3 gap-2 pt-2 mt-2 border-t border-border text-center font-mono">
+      {/* Página a montar-se */}
+      <div className="p-4 sm:p-5 flex flex-col gap-3">
+        <motion.div {...reveal(0)} className="flex items-center justify-between">
+          <span className="h-2 w-14 rounded-full bg-foreground/70" />
+          <div className="flex gap-2">
+            <span className="h-1.5 w-8 rounded-full bg-border-strong" />
+            <span className="h-1.5 w-8 rounded-full bg-border-strong" />
+            <span className="h-1.5 w-8 rounded-full bg-border-strong" />
+          </div>
+        </motion.div>
+        <motion.div {...reveal(1)} className="flex flex-col gap-2 py-2">
+          <span className="h-3 w-3/4 rounded-full bg-foreground/80" />
+          <span className="h-3 w-1/2 rounded-full bg-foreground/40" />
+          <span className="mt-2 h-5 w-24 rounded-full bg-accent" />
+        </motion.div>
+        <div className="grid grid-cols-3 gap-2">
+          {[2, 3, 4].map((i) => (
+            <motion.div key={i} {...reveal(i)} className="h-12 rounded-lg bg-surface-light/70 border border-border" />
+          ))}
+        </div>
+      </div>
+
+      {/* O que cada site leva de série */}
+      <div className="grid grid-cols-3 gap-2 px-4 py-3 border-t border-border text-center font-mono">
         <div>
-          <span className="text-[10px] text-subtle block">LATÊNCIA</span>
-          <span className="text-xs text-foreground font-medium">&lt; 14ms</span>
+          <span className="text-[10px] text-subtle block">PERFORMANCE</span>
+          <span className="text-xs text-foreground font-medium">Core Web Vitals</span>
         </div>
         <div>
-          <span className="text-[10px] text-subtle block">THROUGHPUT</span>
-          <span className="text-xs text-accent font-medium">4.8 GB/s</span>
+          <span className="text-[10px] text-subtle block">SEO</span>
+          <span className="text-xs text-accent font-medium">Técnico</span>
         </div>
         <div>
-          <span className="text-[10px] text-subtle block">ARQUITETURA</span>
-          <span className="text-xs text-secondary font-medium">RAG + LLM</span>
+          <span className="text-[10px] text-subtle block">DESIGN</span>
+          <span className="text-xs text-secondary font-medium">Mobile-first</span>
         </div>
       </div>
     </div>
@@ -211,7 +195,7 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-muted font-mono max-w-xs">
-            Ecossistema integrado com IA e Engenharia de Software de alta performance.
+            Sites e plataformas web de alta performance, com IA e automação onde fazem a diferença.
           </p>
         </motion.div>
 
@@ -219,7 +203,7 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
           {/* ─── Satellite Column Left (3 cols on desktop) ─── */}
           <div className="lg:col-span-3 flex flex-col gap-5 order-2 lg:order-1">
-            {/* Satellite 1: Soluções Web & Apps */}
+            {/* Satellite 1: Inteligência Artificial */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -235,33 +219,33 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
                   <div className="flex items-center justify-between mb-4 relative z-10">
                     <div className="icon-tile w-9 h-9 rounded-lg">
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
                       </svg>
                     </div>
                     <span className="copper-badge">
                       <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                      Escalável
+                      Dados
                     </span>
                   </div>
 
                   <h3 className="text-base font-semibold text-foreground mb-2 relative z-10">
-                    Soluções Web & Apps
+                    Inteligência Artificial
                   </h3>
                   <p className="text-xs text-muted leading-relaxed relative z-10">
-                    Websites institucionais, plataformas SaaS e aplicações móveis concebidas para velocidade extrema, SEO e conversão empresarial.
+                    Agentes autónomos, automação com LLMs e pipelines de dados que transformam informação dispersa em decisões.
                   </p>
                 </div>
 
                 {/* Micro-interaction Tags with Copper Accents */}
                 <div className="flex flex-wrap gap-1.5 pt-4 mt-2 relative z-10">
                   <span className="chip chip--accent">
-                    Escalável
+                    RAG
                   </span>
                   <span className="chip">
-                    Next.js 16
+                    Agentes
                   </span>
                   <span className="chip">
-                    React 19
+                    Pipelines ETL
                   </span>
                 </div>
               </TiltCard>
@@ -336,33 +320,33 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
                     <div className="flex items-center gap-3">
                       <div className="icon-tile icon-tile--accent w-11 h-11 rounded-xl">
                         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
                         </svg>
                       </div>
                       <div>
                         <span className="text-[10px] font-mono tracking-widest text-accent uppercase block font-semibold">
-                          NÚCLEO ESTRATÉGICO // JOIA DA COROA
+                          NÚCLEO // DESENVOLVIMENTO WEB
                         </span>
                         <h3 className="text-xl sm:text-2xl font-bold text-foreground">
-                          Inteligência Artificial & Tratamento de Dados
+                          Websites & Plataformas Web
                         </h3>
                       </div>
                     </div>
 
                     <span className="copper-badge shrink-0 hidden sm:inline-flex">
                       <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                      Produção Ativa
+                      Em Produção
                     </span>
                   </div>
 
                   {/* Core Description */}
                   <p className="text-sm text-secondary leading-relaxed relative z-10 mb-2">
-                    Modelos preditivos corporativos, automação com agentes autónomos e pipelines de processamento vetorial em larga escala. Transformamos dados brutos em inteligência operacional de alta precisão.
+                    Sites institucionais, landing pages, lojas online e aplicações web à medida. Design próprio, carregamento instantâneo e SEO técnico desde a primeira linha, feitos para transformar visitas em clientes.
                   </p>
 
-                  {/* Live Interactive Telemetry & Vector Flow Visualizer */}
+                  {/* Mockup: um site a montar-se */}
                   <div className="relative z-10">
-                    <NeuralActivityWidget />
+                    <SiteBuildWidget />
                   </div>
                 </div>
 
@@ -370,32 +354,20 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
                 <div className="relative z-10 pt-2 border-t border-border/60">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[11px] font-mono text-subtle uppercase tracking-wider">
-                      CAPACIDADES NUCLEARES:
+                      O QUE ENTREGAMOS:
                     </span>
                     <span className="text-[11px] font-mono text-accent">
-                      ZERO-LATENCY RAG
+                      NEXT.JS · REACT
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <span className="chip chip--accent">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                      Tempo Real
-                    </span>
-                    <span className="chip chip--accent">
-                      Agentes Autónomos
-                    </span>
-                    <span className="chip chip--accent">
-                      Pipelines ETL
-                    </span>
-                    <span className="chip">
-                      Fine-Tuning LLMs
-                    </span>
-                    <span className="chip">
-                      Deep Learning
-                    </span>
-                    <span className="chip chip--accent">
-                      Escalável
-                    </span>
+                    <span className="chip chip--accent">Sites Institucionais</span>
+                    <span className="chip chip--accent">Landing Pages</span>
+                    <span className="chip chip--accent">E-commerce</span>
+                    <span className="chip">Web Apps</span>
+                    <span className="chip">SEO Técnico</span>
+                    <span className="chip">Gestão de Conteúdo</span>
+                    <span className="chip">Alojamento & Manutenção</span>
                   </div>
                 </div>
               </TiltCard>
