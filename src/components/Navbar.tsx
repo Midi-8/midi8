@@ -5,10 +5,35 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
-const navLinks = [
+interface NavLinkItem {
+  label: string;
+  href: string;
+  isAnchor?: boolean;
+}
+
+const navLinks: NavLinkItem[] = [
+  // Âncora para a secção de portfólio (acessível a partir de qualquer rota)
+  { label: "Portfólio", href: "/#portfolio", isAnchor: true },
   { label: "Soluções", href: "/solucoes" },
   { label: "A Empresa", href: "/sobre" },
 ];
+
+/**
+ * Determina se um link de navegação corresponde à rota ativa atual.
+ * - Links com âncora (ex.: /#portfolio): são âncoras na página principal e não rotas autónomas,
+ *   pelo que não são marcados como rota ativa permanente para evitar ambiguidade visual.
+ * - Rota raiz ('/'): só é ativa se o pathname for exatamente '/'.
+ * - Outras rotas: ativas em correspondência exata ou em subrotas (ex.: /solucoes/xyz ativa /solucoes).
+ */
+export function isRouteActive(href: string, pathname: string): boolean {
+  if (href.includes("#")) {
+    return false;
+  }
+  if (href === "/") {
+    return pathname === "/";
+  }
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -68,17 +93,28 @@ export default function Navbar() {
 
           {/* ── Desktop Navigation ── */}
           <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="relative px-4 py-2 text-sm text-zinc-400 hover:text-white transition-colors duration-200 group"
-              >
-                {link.label}
-                {/* Underline accent on hover */}
-                <span className="absolute bottom-1 left-4 right-4 h-px bg-[#EA580C] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const active = isRouteActive(link.href, pathname);
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`relative px-4 py-2 text-sm transition-colors duration-200 group ${
+                    active ? "text-white font-medium" : "text-zinc-400 hover:text-white"
+                  }`}
+                >
+                  {link.label}
+                  {/* Underline accent: visível se ativo ou no hover, com transição suave sem layout shift */}
+                  <span
+                    className={`absolute bottom-1 left-4 right-4 h-[2px] bg-[#EA580C] transition-transform duration-300 origin-left ${
+                      active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    }`}
+                  />
+                </Link>
+              );
+            })}
           </div>
 
           {/* ── CTA + Mobile Hamburger ── */}
@@ -142,23 +178,33 @@ export default function Navbar() {
           >
             {/* Nav links */}
             <nav className="flex-1 flex flex-col items-center justify-center gap-2 px-8">
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.06 + 0.05 }}
-                  className="w-full text-center"
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="block w-full py-4 text-2xl font-semibold text-zinc-200 hover:text-white border-b border-white/[0.04] transition-colors"
+              {navLinks.map((link, i) => {
+                const active = isRouteActive(link.href, pathname);
+
+                return (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.06 + 0.05 }}
+                    className="w-full text-center"
                   >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      aria-current={active ? "page" : undefined}
+                      className={`relative block w-full py-4 text-2xl font-semibold border-b border-white/[0.04] transition-colors ${
+                        active ? "text-white" : "text-zinc-300 hover:text-white"
+                      }`}
+                    >
+                      <span>{link.label}</span>
+                      {active && (
+                        <span className="block mx-auto mt-1 w-8 h-[2px] bg-[#EA580C] rounded-full" />
+                      )}
+                    </Link>
+                  </motion.div>
+                );
+              })}
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
