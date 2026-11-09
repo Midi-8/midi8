@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useSyncExternalStore } from "react";
+import { useState, useRef, useEffect, useCallback, useSyncExternalStore } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { projects, type Project } from "@/data/projects";
 
@@ -50,7 +50,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   // Fecha o modal e devolve o foco ao elemento acionador
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     const closedProjectId = activeProject?.id;
     setActiveProject(null);
     if (closedProjectId && triggerButtonRefs.current[closedProjectId]) {
@@ -58,7 +58,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
         triggerButtonRefs.current[closedProjectId]?.focus();
       }, 50);
     }
-  };
+  }, [activeProject?.id]);
 
   // Focus trap, Escape key listener e bloqueio de scroll
   useEffect(() => {
@@ -113,7 +113,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
       document.body.style.overflow = originalOverflow;
       document.body.style.paddingRight = originalPaddingRight;
     };
-  }, [activeProject]);
+  }, [activeProject, handleCloseModal]);
 
   return (
     <section id="portfolio" className="section-padding relative scroll-mt-24">
@@ -509,7 +509,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                       Case Study em Preparação
                     </h4>
                     <p className="text-xs text-zinc-400 max-w-md mx-auto leading-relaxed">
-                      // TODO(MIDI8): Os dados técnicos aprofundados deste sistema em produção encontram-se atualmente em fase de consolidação e auditoria de métricas de impacto.
+                      {"// TODO(MIDI8): Os dados técnicos aprofundados deste sistema em produção encontram-se atualmente em fase de consolidação e auditoria de métricas de impacto."}
                     </p>
                   </div>
                 )}
