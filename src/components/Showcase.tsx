@@ -185,11 +185,6 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
 
                     {/* Ícone e Título */}
                     <div className="mb-5 flex items-center gap-3.5">
-                      <div className="icon-tile w-11 h-11 rounded-xl shrink-0">
-                        <span className="text-sm font-bold text-foreground">
-                          {project.name.charAt(0)}
-                        </span>
-                      </div>
                       <div>
                         <h3 className="text-lg sm:text-xl font-bold text-foreground">
                           {project.name}
@@ -318,11 +313,6 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
               {/* Cabeçalho do modal */}
               <div className="p-6 sm:p-8 border-b border-border flex items-start justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="icon-tile w-12 h-12 rounded-xl shrink-0">
-                    <span className="text-base font-bold text-foreground">
-                      {activeProject.name.charAt(0)}
-                    </span>
-                  </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-1">
                       <span className="text-xs font-mono text-accent tracking-wide uppercase">
