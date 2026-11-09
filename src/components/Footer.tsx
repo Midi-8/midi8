@@ -155,13 +155,13 @@ export default function Footer() {
 
           <div className="flex items-center gap-6">
             <Link
-              href="#"
+              href="/privacidade"
               className="hover:text-zinc-300 transition-colors duration-200"
             >
               Política de Privacidade
             </Link>
             <Link
-              href="#"
+              href="/termos"
               className="hover:text-zinc-300 transition-colors duration-200"
             >
               Termos e Condições
