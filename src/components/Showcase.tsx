@@ -1,20 +1,7 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
-
-function subscribeResize(callback: () => void) {
-  window.addEventListener("resize", callback);
-  return () => window.removeEventListener("resize", callback);
-}
-
-function getSnapshot() {
-  return window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 1024;
-}
-
-function getServerSnapshot() {
-  return false;
-}
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const projects = [
   {
@@ -24,8 +11,7 @@ const projects = [
       "Presença digital completa para empresa de construção civil. Design premium, otimizado para SEO e conversão de contactos comerciais.",
     tags: ["Next.js", "Tailwind CSS", "SEO"],
     status: "Em Produção",
-    gradient: "from-white/[0.04] via-transparent to-transparent",
-    iconGradient: "from-zinc-700 to-zinc-900",
+    gradient: "from-foreground/[0.04] via-transparent to-transparent",
   },
   {
     name: "Café do Rio / Gulas",
@@ -34,8 +20,7 @@ const projects = [
       "Sistema completo de menu digital com QR code, painel de gestão e Kitchen Display System (KDS) mobile para operações de restauração em tempo real.",
     tags: ["React", "Supabase", "React Native", "Real-time"],
     status: "Em Produção",
-    gradient: "from-white/[0.04] via-transparent to-transparent",
-    iconGradient: "from-zinc-700 to-zinc-900",
+    gradient: "from-foreground/[0.04] via-transparent to-transparent",
   },
 ];
 
@@ -62,7 +47,7 @@ const cardVariants = {
 };
 
 export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolean } = {}) {
-  const isMobileLocal = useSyncExternalStore(subscribeResize, getSnapshot, getServerSnapshot);
+  const isMobileLocal = useIsMobile();
   const isMobile = isMobileProp ?? isMobileLocal;
 
   return (
@@ -79,13 +64,11 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <p className="text-sm font-mono text-zinc-500 tracking-widest uppercase mb-3">
-            Portfólio
-          </p>
+          <p className="eyebrow mb-4">Portfólio</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
             Engenharia aplicada.
             <br />
-            <span className="text-zinc-500">Resultados em produção.</span>
+            <span className="text-subtle">Resultados em produção.</span>
           </h2>
         </motion.div>
 
@@ -129,33 +112,28 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
               }
               className="glass-card overflow-hidden group relative"
             >
-              {/* Top gradient accent strip (monocromático) */}
-              <div className="h-px w-full bg-gradient-to-r from-transparent via-zinc-600 to-transparent" />
-
               {/* Ambient glow behind card on hover (monocromático) */}
               <div
-                className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[20px]`}
+                className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[inherit]`}
               />
 
               <div className="relative p-8 sm:p-10">
                 {/* Type highlight + Status row */}
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-zinc-900/80 border border-zinc-800 text-xs font-mono font-medium text-foreground tracking-wide">
-                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
+                  <span className="chip text-secondary">
+                    <span className="w-1.5 h-1.5 rounded-full bg-muted" />
                     {project.type}
                   </span>
                   <span className="copper-badge">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#EA580C] animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                     {project.status}
                   </span>
                 </div>
 
                 {/* Project icon / visual */}
                 <div className="mb-6 flex items-center gap-4">
-                  <div
-                    className={`w-12 h-12 rounded-xl bg-gradient-to-br ${project.iconGradient} border border-zinc-800 flex items-center justify-center shadow-lg shadow-black/40`}
-                  >
-                    <span className="text-sm font-bold text-white">
+                  <div className="icon-tile w-12 h-12 rounded-xl">
+                    <span className="text-sm font-bold text-foreground">
                       {project.name.charAt(0)}
                     </span>
                   </div>
@@ -163,14 +141,14 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                     <h3 className="text-xl sm:text-2xl font-bold text-foreground">
                       {project.name}
                     </h3>
-                    <p className="text-xs font-mono text-zinc-500 mt-0.5">
+                    <p className="text-xs font-mono text-subtle mt-0.5">
                       {project.type}
                     </p>
                   </div>
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-zinc-400 leading-relaxed mb-8">
+                <p className="text-sm text-muted leading-relaxed mb-8">
                   {project.description}
                 </p>
 
@@ -179,7 +157,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs font-mono px-2.5 py-1 rounded-md bg-zinc-900/60 border border-zinc-800/80 text-zinc-400 hover:border-zinc-700 transition-colors"
+                      className="chip"
                     >
                       {tag}
                     </span>
@@ -188,10 +166,10 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
 
                 {/* Visual separator + "case study coming" hint */}
                 <div className="pt-6 border-t border-border/50 flex items-center justify-between">
-                  <span className="text-xs text-zinc-600 font-mono">
+                  <span className="text-xs text-subtle font-mono">
                     CASE STUDY
                   </span>
-                  <span className="text-xs text-zinc-600 flex items-center gap-1.5">
+                  <span className="text-xs text-subtle flex items-center gap-1.5">
                     Em breve
                     <svg
                       className="w-3 h-3"

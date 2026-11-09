@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import LiquidBackground from "@/components/LiquidBackground";
+import Footer from "@/components/Footer";
+import LogoIntro, { INTRO_BOOT_SCRIPT } from "@/components/LogoIntro";
+import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,6 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Midi8 — Engenharia de Software & Soluções Digitais de Alto Nível",
   description:
     "Transformamos operações complexas em sistemas digitais elegantes. Desenvolvimento Web, Automação, IA, Apps Móveis e Consultoria Técnica de suporte à decisão.",
@@ -57,11 +62,19 @@ export default function RootLayout({
     <html
       lang="pt"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-zinc-950">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: INTRO_BOOT_SCRIPT }} />
+      </head>
+      <body className="min-h-full flex flex-col">
+        <LogoIntro />
+        <LiquidBackground />
         {/* Navbar lives in the root layout so it persists across all routes */}
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

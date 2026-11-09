@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Wordmark from "@/components/Wordmark";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -46,7 +47,7 @@ export default function Navbar() {
         transition={{ duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled || mobileOpen
-            ? "bg-zinc-950/75 backdrop-blur-xl border-b border-white/[0.04] shadow-[0_1px_0_rgba(255,255,255,0.03)]"
+            ? "glass-bar"
             : "bg-transparent"
         }`}
       >
@@ -58,12 +59,7 @@ export default function Navbar() {
             className="flex items-center gap-2.5 group shrink-0"
             aria-label="Midi8 — Página inicial"
           >
-            <div className="w-7 h-7 rounded-md bg-zinc-900 border border-zinc-800 flex items-center justify-center group-hover:border-zinc-600 group-hover:shadow-[0_0_18px_rgba(234,88,12,0.25)] transition-all duration-300">
-              <span className="text-[11px] font-bold text-white">M8</span>
-            </div>
-            <span className="text-sm font-semibold text-white tracking-tight">
-              Midi8
-            </span>
+            <Wordmark className="h-[18px] w-auto text-foreground transition-opacity duration-300 group-hover:opacity-80" />
           </Link>
 
           {/* ── Desktop Navigation ── */}
@@ -72,11 +68,11 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="relative px-4 py-2 text-sm text-zinc-400 hover:text-white transition-colors duration-200 group"
+                className="relative px-4 py-2 text-sm text-muted hover:text-foreground transition-colors duration-200 group"
               >
                 {link.label}
                 {/* Underline accent on hover */}
-                <span className="absolute bottom-1 left-4 right-4 h-px bg-[#EA580C] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                <span className="absolute bottom-1 left-4 right-4 h-px bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
               </Link>
             ))}
           </div>
@@ -85,8 +81,8 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             {/* Desktop CTA */}
             <Link
-              href="/#contacto"
-              className="hidden md:inline-flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold text-white bg-[#EA580C] hover:bg-[#f06115] transition-all duration-200 cursor-pointer shadow-[0_0_20px_rgba(234,88,12,0)] hover:shadow-[0_0_20px_rgba(234,88,12,0.35)] border border-[#EA580C]/50"
+              href="/contacto"
+              className="cta-button cta-sm hidden md:inline-flex"
             >
               Agendar Reunião
               <svg
@@ -111,17 +107,17 @@ export default function Navbar() {
               aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
             >
               <span
-                className={`block w-5 h-[1.5px] bg-zinc-300 transition-all duration-300 ${
+                className={`block w-5 h-[1.5px] bg-secondary transition-all duration-300 ${
                   mobileOpen ? "rotate-45 translate-y-[6.5px]" : ""
                 }`}
               />
               <span
-                className={`block w-5 h-[1.5px] bg-zinc-300 transition-all duration-300 ${
+                className={`block w-5 h-[1.5px] bg-secondary transition-all duration-300 ${
                   mobileOpen ? "opacity-0 scale-x-0" : ""
                 }`}
               />
               <span
-                className={`block w-5 h-[1.5px] bg-zinc-300 transition-all duration-300 ${
+                className={`block w-5 h-[1.5px] bg-secondary transition-all duration-300 ${
                   mobileOpen ? "-rotate-45 -translate-y-[6.5px]" : ""
                 }`}
               />
@@ -138,7 +134,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-0 left-0 w-full h-[100dvh] z-40 bg-zinc-950/98 backdrop-blur-2xl md:hidden flex flex-col pt-[64px]"
+            className="fixed top-0 left-0 w-full h-[100dvh] z-40 glass-sheet md:hidden flex flex-col pt-[64px]"
           >
             {/* Nav links */}
             <nav className="flex-1 flex flex-col items-center justify-center gap-2 px-8">
@@ -153,7 +149,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block w-full py-4 text-2xl font-semibold text-zinc-200 hover:text-white border-b border-white/[0.04] transition-colors"
+                    className="block w-full py-4 text-2xl font-semibold text-secondary hover:text-foreground border-b border-border transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -167,9 +163,9 @@ export default function Navbar() {
                 className="w-full mt-8"
               >
                 <Link
-                  href="/#contacto"
+                  href="/contacto"
                   onClick={() => setMobileOpen(false)}
-                  className="w-full flex items-center justify-center gap-2 py-4 rounded-xl text-lg font-semibold text-white bg-[#EA580C] hover:bg-[#f06115] transition-colors cursor-pointer"
+                  className="cta-button w-full py-4 text-lg"
                 >
                   Agendar Reunião
                   <svg
@@ -190,8 +186,8 @@ export default function Navbar() {
             </nav>
 
             {/* Bottom footer strip */}
-            <div className="px-8 py-6 border-t border-white/[0.04]">
-              <p className="text-xs text-zinc-600 font-mono text-center tracking-widest uppercase">
+            <div className="px-8 py-6 border-t border-border">
+              <p className="text-xs text-subtle font-mono text-center tracking-widest uppercase">
                 © 2026 Midi8 · Engenharia de Software
               </p>
             </div>
