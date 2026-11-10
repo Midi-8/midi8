@@ -19,14 +19,14 @@ export default function ContactoPage() {
       <section className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
         <div className="lg:col-span-5 lg:pt-6">
           <p className="eyebrow mb-4">Agendar reunião</p>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-[1.08] mb-6">
+          <h1 className="text-4xl sm:text-5xl max-md:text-[2.75rem] font-bold tracking-tight leading-[1.08] mb-6">
             Vamos falar sobre o <span className="text-gradient">seu projeto.</span>
           </h1>
-          <p className="text-muted leading-relaxed mb-10 max-w-md">
+          <p className="max-md:hidden text-muted leading-relaxed mb-10 max-w-md">
             Conte-nos o essencial. Um dos nossos arquitetos responde para marcar uma sessão técnica.
           </p>
 
-          <ul className="space-y-5 mb-10">
+          <ul className="max-md:hidden space-y-5 mb-10">
             {points.map((p) => (
               <li key={p.title} className="flex gap-4">
                 <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
@@ -38,7 +38,7 @@ export default function ContactoPage() {
             ))}
           </ul>
 
-          <div className="well p-5 flex flex-col gap-3 text-sm max-w-md">
+          <div className="well p-5 max-md:py-2 flex flex-col gap-3 max-md:gap-0 text-sm max-w-md">
             <p className="text-subtle">Prefere falar diretamente?</p>
             {[
               { label: "Email", value: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
@@ -49,7 +49,7 @@ export default function ContactoPage() {
                 key={c.label}
                 href={c.href}
                 {...(c.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="flex items-center justify-between gap-4 text-secondary hover:text-foreground transition-colors"
+                className="flex items-center justify-between gap-4 text-secondary hover:text-foreground max-md:active:text-accent transition-colors max-md:min-h-11 max-md:border-b max-md:border-border max-md:last:border-b-0"
               >
                 <span className="text-subtle">{c.label}</span>
                 <span className="font-mono">{c.value}</span>

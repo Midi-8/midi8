@@ -76,11 +76,20 @@ function fbm(x: number, y: number, octaves = 5): number {
 }
 
 const emptySubscribe = () => () => {};
+const REDUCE_QUERY = "(prefers-reduced-motion: reduce)";
+const subscribeReduce = (cb: () => void) => {
+  const mq = window.matchMedia(REDUCE_QUERY);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+};
 
 // Fundo global: metal líquido escuro (fumo) com uma luz cobre que segue o cursor.
 // Fixo atrás de todo o site. Desktop: canvas a 60 fps (desce para 30 se pesar), células de 6 px suavizadas.
-// Mobile, SSR e movimento reduzido: versão CSS (.liquid-css), só transform.
+// Mobile/toque: o mesmo canvas, mais leve (células de 10 px, 24 fps, dpr 1); a luz segue o dedo.
+// SSR e mobile com movimento reduzido: versão CSS (.liquid-css).
 const STEP = 6;
+const MOBILE_STEP = 10;
+const MOBILE_FPS = 24;
 const LIGHT_SCALE = 0.24;   // raio da luz em fração do lado menor do ecrã
 const FOLLOW = 0.28;        // fração da distância ao cursor percorrida por frame a 60 fps
 const SLOW_DRAW_MS = 9;     // acima disto (média), desenha a 30 fps
@@ -93,9 +102,11 @@ export default function LiquidBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isMobile = useIsMobile();
   const isMounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const prefersReduced = useSyncExternalStore(subscribeReduce, () => window.matchMedia(REDUCE_QUERY).matches, () => false);
+  const useCss = !isMounted || (isMobile && prefersReduced);
 
   useEffect(() => {
-    if (!isMounted || isMobile) return;
+    if (useCss) return;
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     const buf = document.createElement("canvas");
@@ -107,8 +118,9 @@ export default function LiquidBackground() {
       .getPropertyValue("--accent-rgb").trim().split(/\s+/).map(Number);
     const [AR, AG, AB] = accent.length === 3 && accent.every(Number.isFinite) ? accent : [234, 88, 12];
 
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const reduceMotion = window.matchMedia(REDUCE_QUERY).matches;
+    const step = isMobile ? MOBILE_STEP : STEP;
+    const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
     let W = 0;
     let H = 0;
     const resize = () => {
@@ -131,13 +143,24 @@ export default function LiquidBackground() {
       tx = 0.5;
       ty = 0.5;
     };
+    // Toque: o scroll do browser cancela os pointer events, por isso o dedo também chega por touchmove.
+    const onTouch = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+      tx = touch.clientX / W;
+      ty = touch.clientY / H;
+    };
     const onDown = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
+      if (e.pointerType !== "mouse" && !isMobile) return;
       ripples.push({ x: e.clientX, y: e.clientY, born: performance.now(), life: 2600, strength: 0.9 });
     };
     window.addEventListener("resize", resize, { passive: true });
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("pointerdown", onDown, { passive: true });
+    if (isMobile) {
+      window.addEventListener("touchstart", onTouch, { passive: true });
+      window.addEventListener("touchmove", onTouch, { passive: true });
+    }
     document.documentElement.addEventListener("mouseleave", onLeave);
 
     // Ondulações ambientes ocasionais.
@@ -169,8 +192,8 @@ export default function LiquidBackground() {
       mx += (tx - mx) * k;
       my += (ty - my) * k;
 
-      const cols = Math.ceil(W / STEP) + 1;
-      const rows = Math.ceil(H / STEP) + 1;
+      const cols = Math.ceil(W / step) + 1;
+      const rows = Math.ceil(H / step) + 1;
       const cx = mx * W;
       const cy = my * H;
       const LIGHT_RADIUS = Math.min(W, H) * LIGHT_SCALE;
@@ -186,8 +209,8 @@ export default function LiquidBackground() {
 
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
-          const px = col * STEP;
-          const py = row * STEP;
+          const px = col * step;
+          const py = row * step;
           let noise = fbm((px / W) * 3.2 + t * 0.6, (py / H) * 3.2 + t * 0.45);
 
           for (const r of ripples) {
@@ -219,7 +242,7 @@ export default function LiquidBackground() {
       bctx.putImageData(img, 0, 0);
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = "high";
-      ctx.drawImage(buf, 0, 0, cols * STEP, rows * STEP);
+      ctx.drawImage(buf, 0, 0, cols * step, rows * step);
 
       const corona = ctx.createRadialGradient(cx, cy, 0, cx, cy, LIGHT_RADIUS * 0.95);
       corona.addColorStop(0, `rgba(${AR},${AG},${AB},0.12)`);
@@ -233,7 +256,7 @@ export default function LiquidBackground() {
 
     const loop = (now: number) => {
       raf = requestAnimationFrame(loop);
-      if (drawCost > SLOW_DRAW_MS && now - last < 1000 / 30 - 1) return;
+      if (isMobile ? now - last < 1000 / MOBILE_FPS - 1 : drawCost > SLOW_DRAW_MS && now - last < 1000 / 30 - 1) return;
       last = now;
       const t0 = performance.now();
       draw(now);
@@ -249,15 +272,17 @@ export default function LiquidBackground() {
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("touchstart", onTouch);
+      window.removeEventListener("touchmove", onTouch);
       document.documentElement.removeEventListener("mouseleave", onLeave);
     };
-  }, [isMounted, isMobile]);
+  }, [useCss, isMobile]);
 
-  // Mobile: o scroll faz o fundo oscilar (--sx, --sv, --sr).
+  // Versão CSS: o scroll faz o fundo oscilar (--sx, --sv, --sr).
   const cssRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = cssRef.current;
-    if (!el) return;
+    if (!el || !useCss) return;
     let raf = 0;
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(() => {
@@ -274,9 +299,9 @@ export default function LiquidBackground() {
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
     };
-  }, [isMounted, isMobile]);
+  }, [useCss]);
 
-  return !isMounted || isMobile ? (
+  return useCss ? (
     <div ref={cssRef} className="liquid-css" aria-hidden="true" />
   ) : (
     <canvas ref={canvasRef} className="liquid-bg" aria-hidden="true" />

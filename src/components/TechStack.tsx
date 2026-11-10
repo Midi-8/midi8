@@ -19,7 +19,7 @@ const technologies = [
 
 export default function TechStack() {
   return (
-    <section id="stack" className="section-padding relative">
+    <section id="stack" className="section-padding relative max-md:hidden">
       {/* Subtle separator */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 

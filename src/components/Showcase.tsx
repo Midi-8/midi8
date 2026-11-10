@@ -106,7 +106,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
   return (
     <section id="portfolio" className="section-padding relative scroll-mt-24">
       {/* Separador subtil superior */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      <div className="max-md:hidden absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
       <div className="max-w-7xl mx-auto">
         {/* Cabeçalho da secção */}
@@ -115,10 +115,10 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="mb-14"
+          className="mb-14 max-md:mb-6"
         >
           <p className="eyebrow mb-4">Portfólio</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
+          <h2 className="text-3xl sm:text-4xl max-md:text-[2.75rem] max-md:leading-[1.02] font-bold text-foreground tracking-tight">
             Engenharia aplicada.
             <br />
             <span className="text-subtle">Resultados em produção.</span>
@@ -131,7 +131,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-md:gap-0 items-stretch"
         >
           {projects.map((project, index) => {
             const hasCaseStudy = Boolean(project.caseStudy);
@@ -170,13 +170,13 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
               >
                 {/* Brilho subtil no hover */}
                 <div
-                  className="absolute inset-0 bg-gradient-to-br from-foreground/[0.04] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[inherit]"
+                  className="max-md:hidden absolute inset-0 bg-gradient-to-br from-foreground/[0.04] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[inherit]"
                 />
 
-                <div className="relative p-6 sm:p-8 flex flex-col flex-1 justify-between">
+                <div className="relative p-6 sm:p-8 max-md:px-0 max-md:py-6 flex flex-col flex-1 justify-between">
                   <div>
                     {/* Linha de Tipo + Estado */}
-                    <div className="mb-5">
+                    <div className="mb-5 max-md:hidden">
                       <span className="chip text-secondary">
                         <span className="w-1.5 h-1.5 rounded-full bg-muted" />
                         {project.type}
@@ -184,23 +184,23 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                     </div>
 
                     {/* Ícone e Título */}
-                    <div className="mb-5 flex items-center gap-3.5">
+                    <div className="mb-5 max-md:mb-3 flex items-center gap-3.5">
                       <div>
-                        <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                        <h3 className="text-lg sm:text-xl font-bold text-foreground max-md:text-2xl max-md:tracking-tight max-md:leading-[1.05]">
                           {project.name}
                         </h3>
                       </div>
                     </div>
 
                     {/* Descrição */}
-                    <p className="text-sm text-muted leading-relaxed mb-6">
+                    <p className="text-sm text-muted leading-relaxed mb-6 max-md:text-xs max-md:text-subtle max-md:mb-4">
                       {project.description}
                     </p>
                   </div>
 
                   <div>
                     {/* Tags da Stack */}
-                    <div className="flex flex-wrap gap-1.5 mb-6">
+                    <div className="max-md:hidden flex flex-wrap gap-1.5 mb-6">
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
@@ -212,8 +212,8 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                     </div>
 
                     {/* Ação interativa do Case Study */}
-                    <div className="pt-4 border-t border-border/50 flex items-center justify-between">
-                      <span className="text-[11px] text-subtle font-mono tracking-wider">
+                    <div className="pt-4 border-t border-border/50 flex items-center justify-between max-md:border-t-0 max-md:pt-0 max-md:justify-start">
+                      <span className="max-md:hidden text-[11px] text-subtle font-mono tracking-wider">
                         CASE STUDY
                       </span>
 
@@ -225,7 +225,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                           type="button"
                           onClick={() => setActiveProject(project)}
                           aria-label={`Ver case study detalhado de ${project.name}`}
-                          className="inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:text-accent-hover transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded py-1 px-1.5 cursor-pointer group/btn"
+                          className="inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:text-accent-hover transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded py-1 px-1.5 max-md:min-h-11 max-md:px-3 max-md:-mx-3 max-md:active:text-accent-hover cursor-pointer group/btn"
                         >
                           <span>Explorar</span>
                           <svg
@@ -251,7 +251,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                           type="button"
                           onClick={() => setActiveProject(project)}
                           aria-label={`Informação sobre o case study em preparação de ${project.name}`}
-                          className="inline-flex items-center gap-1.5 text-xs font-mono text-subtle hover:text-muted transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-border-strong focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded py-1 px-1.5 cursor-pointer"
+                          className="inline-flex items-center gap-1.5 text-xs font-mono text-subtle hover:text-muted transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-border-strong focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded py-1 px-1.5 max-md:min-h-11 max-md:px-3 max-md:-mx-3 max-md:active:text-muted cursor-pointer"
                         >
                           <span className="italic">Em preparação</span>
                           <svg
@@ -338,7 +338,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                   type="button"
                   onClick={handleCloseModal}
                   aria-label="Fechar case study"
-                  className="icon-tile w-9 h-9 rounded-lg text-muted hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-accent cursor-pointer shrink-0"
+                  className="icon-tile w-9 h-9 max-md:w-11 max-md:h-11 rounded-lg text-muted hover:text-foreground max-md:active:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-accent cursor-pointer shrink-0"
                 >
                   <svg
                     className="w-5 h-5"
