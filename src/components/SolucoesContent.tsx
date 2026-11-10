@@ -107,11 +107,6 @@ export default function SolucoesContent() {
           transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="relative z-10"
         >
-          {/* Badge */}
-          <div className="pill mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-            CAPACIDADE TÉCNICA // SOLUÇÕES CORPORATIVAS
-          </div>
 
           {/* H1 */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.1] mb-6 max-w-4xl mx-auto">
@@ -122,22 +117,10 @@ export default function SolucoesContent() {
           </h1>
 
           {/* Subtitle */}
-          <p className="max-w-2xl mx-auto text-base sm:text-lg text-muted leading-relaxed mb-10">
+          <p className="max-w-2xl mx-auto text-base sm:text-lg text-muted leading-relaxed">
             Desenhamos, construímos e otimizamos a infraestrutura tecnológica da sua empresa.
             Sem atalhos, com foco absoluto na performance e resiliência operacional.
           </p>
-
-          {/* Micro Summary Banner */}
-          <div className="well inline-flex flex-wrap items-center justify-center gap-3 py-2 px-5 text-xs font-mono text-muted">
-            <span className="text-foreground font-medium">DISCIPLINAS:</span>
-            <span>Web Distribuída</span>
-            <span className="text-faint">/</span>
-            <span>Automação ETL</span>
-            <span className="text-faint">/</span>
-            <span>IA & Vetores</span>
-            <span className="text-faint">/</span>
-            <span>Auditoria Executiva</span>
-          </div>
         </motion.div>
       </section>
 

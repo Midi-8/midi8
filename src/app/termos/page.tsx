@@ -21,10 +21,6 @@ export default function TermosPage() {
       <article className="max-w-4xl mx-auto px-6">
         {/* Cabeçalho da Página */}
         <header className="mb-12 border-b border-border pb-8">
-          <div className="pill mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-            Termos Contratuais & Enquadramento Legal
-          </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
             Termos e Condições
           </h1>

@@ -58,12 +58,12 @@ export default function Navbar() {
             : "bg-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 h-[64px] flex items-center justify-between">
+        <div className="mx-auto max-w-[1600px] px-6 lg:px-10 h-[64px] flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr]">
           {/* ── Logo ── */}
           <Link
             href="/"
             onClick={() => setMobileOpen(false)}
-            className="flex items-center gap-2.5 group shrink-0"
+            className="flex items-center gap-2.5 group shrink-0 justify-self-start"
             aria-label="Midi8 — Página inicial"
           >
             <Wordmark className="h-[18px] w-auto text-foreground transition-opacity duration-300 group-hover:opacity-80" />
@@ -95,7 +95,7 @@ export default function Navbar() {
           </div>
 
           {/* ── CTA + Mobile Hamburger ── */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 justify-self-end">
             {/* Desktop CTA */}
             <Link
               href="/contacto"

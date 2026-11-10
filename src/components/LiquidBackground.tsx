@@ -253,8 +253,31 @@ export default function LiquidBackground() {
     };
   }, [isMounted, isMobile]);
 
+  // Mobile: o scroll faz o fundo oscilar (--sx, --sv, --sr).
+  const cssRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = cssRef.current;
+    if (!el) return;
+    let raf = 0;
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(() => {
+        raf = 0;
+        // Limitado por seno: o fundo oscila com o scroll e nunca sai do ecrã.
+        const y = window.scrollY;
+        el.style.setProperty("--sx", (Math.sin(y / 380) * 9).toFixed(2));
+        el.style.setProperty("--sv", (Math.cos(y / 520) * 7).toFixed(2));
+        el.style.setProperty("--sr", (Math.sin(y / 700) * 6).toFixed(2));
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, [isMounted, isMobile]);
+
   return !isMounted || isMobile ? (
-    <div className="liquid-css" aria-hidden="true" />
+    <div ref={cssRef} className="liquid-css" aria-hidden="true" />
   ) : (
     <canvas ref={canvasRef} className="liquid-bg" aria-hidden="true" />
   );

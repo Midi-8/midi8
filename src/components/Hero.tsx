@@ -47,7 +47,7 @@ export default function Hero({ isMobile = false }: HeroProps) {
 
           {/* Subtítulo */}
           <p
-            className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight leading-tight mb-6"
+            className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-tight leading-tight mb-6"
             style={{ filter: "drop-shadow(0 2px 20px rgba(0,0,0,0.9))" }}
           >
             <span className="text-foreground">Tecnologia avançada.</span>{" "}
@@ -56,7 +56,7 @@ export default function Hero({ isMobile = false }: HeroProps) {
 
           {/* Subtitle */}
           <p
-            className="max-w-xl mx-auto text-base sm:text-lg text-secondary leading-relaxed mb-10"
+            className="font-display font-medium max-w-xl mx-auto text-base sm:text-lg text-secondary leading-relaxed mb-10"
             style={{ textShadow: "0 1px 12px rgba(0,0,0,0.9)" }}
           >
             Soluções corporativas de desenvolvimento web, automação e suporte à

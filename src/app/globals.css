@@ -30,10 +30,6 @@
   --border-strong: rgba(255, 255, 255, 0.22);
   --danger: #f87171;
 
-  /* ── Neumorphism (só no formulário de contacto) ── */
-  --neu-bg: #1b1b20;
-  --neu-dark: rgba(0, 0, 0, 0.55);
-  --neu-light: rgba(255, 255, 255, 0.045);
 
   /* ── Vidro ── */
   --glass-tint: linear-gradient(160deg, rgba(255, 255, 255, 0.065) 0%, rgba(255, 255, 255, 0.02) 55%, rgba(255, 255, 255, 0.035) 100%);
@@ -83,6 +79,26 @@ body {
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-display {
+  font-family: var(--font-display), var(--font-geist-sans), system-ui, sans-serif;
 }
 
 ::selection {
@@ -171,28 +187,26 @@ html[data-intro="skip"] .logo-intro {
 
 .liquid-css {
   position: fixed;
-  inset: -20%;
+  inset: -35%;
   z-index: -1;
   pointer-events: none;
   background-color: var(--background);
   background-image:
-    radial-gradient(ellipse 38% 30% at 36% 40%, rgb(var(--accent-rgb) / 0.2), transparent 60%),
-    radial-gradient(ellipse 40% 32% at 64% 60%, rgba(70, 70, 80, 0.55), transparent 60%),
+    radial-gradient(ellipse 38% 30% at 36% 40%, rgb(var(--accent-rgb) / 0.3), transparent 60%),
+    radial-gradient(ellipse 40% 32% at 64% 60%, rgba(70, 70, 80, 0.7), transparent 60%),
     radial-gradient(ellipse 30% 22% at 50% 26%, rgba(255, 255, 255, 0.05), transparent 65%),
     linear-gradient(160deg, var(--background) 0%, var(--surface-light) 50%, var(--background) 100%);
-  animation: liquid-drift 22s ease-in-out infinite alternate;
-  will-change: transform;
+  animation: liquid-drift 12s ease-in-out infinite alternate;
+  /* Scroll: offsets limitados (JS) em propriedades independentes de `transform`, em % do elemento. */
+  translate: calc(var(--sx, 0) * 1%) calc(var(--sv, 0) * 1%);
+  rotate: calc(var(--sr, 0) * 1deg);
+  will-change: transform, translate, rotate;
 }
+
 
 @keyframes liquid-drift {
-  from { transform: translate3d(-5%, -4%, 0) rotate(-4deg); }
-  to   { transform: translate3d(5%, 4%, 0) rotate(6deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .liquid-css {
-    animation: none;
-  }
+  from { transform: translate3d(-12%, -9%, 0) rotate(-10deg) scale(1); }
+  to   { transform: translate3d(12%, 9%, 0) rotate(12deg) scale(1.18); }
 }
 
 /* ─── Espaçamento de secção ─── */
@@ -273,28 +287,22 @@ html[data-intro="skip"] .logo-intro {
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
   }
 
-  /* Contentor de ícone */
+  /* Ícone sem fundo */
   .icon-tile {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
     color: var(--secondary);
-    background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 0 1px var(--border);
-    transition: color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    transition: color 0.3s var(--ease);
   }
 
   .group:hover .icon-tile {
     color: var(--foreground);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 0 0 1px var(--border-light);
   }
 
   .icon-tile--accent,
   .group:hover .icon-tile--accent {
     color: var(--accent);
-    background: linear-gradient(160deg, rgb(var(--accent-rgb) / 0.14), rgb(var(--accent-rgb) / 0.04));
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgb(var(--accent-rgb) / 0.28);
   }
 
   /* Etiquetas pequenas dentro de cartões */
@@ -445,14 +453,28 @@ html[data-intro="skip"] .logo-intro {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 0 1px var(--border-light);
   }
 
-  /* ── Neumorphism: painel sólido; campos rebaixados, opções e botão em relevo ── */
+  /* ── Formulário de contacto: só vidro ── */
   .neu-panel {
-    background: var(--neu-bg);
+    position: relative;
+    background: var(--glass-tint);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
     border-radius: 28px;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.05),
-      0 0 0 1px rgba(255, 255, 255, 0.03),
-      0 40px 80px -40px rgba(0, 0, 0, 0.8);
+    box-shadow: var(--glass-highlight), var(--glass-shadow);
+  }
+
+  .neu-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: var(--glass-rim);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.8;
+    pointer-events: none;
   }
 
   .neu-field {
@@ -460,11 +482,11 @@ html[data-intro="skip"] .logo-intro {
     padding: 14px 16px;
     border: none;
     border-radius: 14px;
-    background: var(--neu-bg);
+    background: rgba(255, 255, 255, 0.04);
     color: var(--foreground);
     font-size: 0.9375rem;
-    box-shadow: inset 4px 4px 10px var(--neu-dark), inset -4px -4px 10px var(--neu-light);
-    transition: box-shadow 0.25s var(--ease);
+    box-shadow: inset 0 0 0 1px var(--border), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition: box-shadow 0.25s var(--ease), background-color 0.25s var(--ease);
   }
 
   .neu-field::placeholder {
@@ -473,17 +495,12 @@ html[data-intro="skip"] .logo-intro {
 
   .neu-field:focus {
     outline: none;
-    box-shadow:
-      inset 4px 4px 10px var(--neu-dark),
-      inset -4px -4px 10px var(--neu-light),
-      0 0 0 2px rgb(var(--accent-rgb) / 0.45);
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: inset 0 0 0 1px rgb(var(--accent-rgb) / 0.6), 0 0 0 3px rgb(var(--accent-rgb) / 0.18);
   }
 
   .neu-field[aria-invalid="true"] {
-    box-shadow:
-      inset 4px 4px 10px var(--neu-dark),
-      inset -4px -4px 10px var(--neu-light),
-      0 0 0 1px color-mix(in srgb, var(--danger) 70%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--danger) 70%, transparent);
   }
 
   .neu-option {
@@ -493,22 +510,24 @@ html[data-intro="skip"] .logo-intro {
     gap: 8px;
     padding: 10px 16px;
     border-radius: 999px;
-    background: var(--neu-bg);
+    background: rgba(255, 255, 255, 0.04);
     color: var(--muted);
     font-size: 0.875rem;
     cursor: pointer;
     user-select: none;
-    box-shadow: 5px 5px 12px var(--neu-dark), -4px -4px 10px var(--neu-light);
-    transition: color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+    box-shadow: inset 0 0 0 1px var(--border), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition: color 0.25s var(--ease), box-shadow 0.25s var(--ease), background-color 0.25s var(--ease);
   }
 
   .neu-option:hover {
     color: var(--foreground);
+    background: rgba(255, 255, 255, 0.07);
   }
 
   .neu-option:has(input:checked) {
     color: var(--accent);
-    box-shadow: inset 4px 4px 9px var(--neu-dark), inset -3px -3px 8px var(--neu-light);
+    background: rgb(var(--accent-rgb) / 0.08);
+    box-shadow: inset 0 0 0 1px rgb(var(--accent-rgb) / 0.45);
   }
 
   .neu-option:has(input:focus-visible) {
@@ -529,10 +548,7 @@ html[data-intro="skip"] .logo-intro {
     font-size: 0.9375rem;
     font-weight: 600;
     cursor: pointer;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.25),
-      6px 6px 14px var(--neu-dark),
-      -4px -4px 12px var(--neu-light);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 24px -8px rgb(var(--accent-rgb) / 0.5);
     transition: background-color 0.25s var(--ease), box-shadow 0.2s var(--ease);
   }
 
@@ -541,7 +557,7 @@ html[data-intro="skip"] .logo-intro {
   }
 
   .neu-submit:active {
-    box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.35), inset -2px -2px 6px rgba(255, 255, 255, 0.12);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
   }
 
   .neu-submit:focus-visible {

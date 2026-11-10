@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import LiquidBackground from "@/components/LiquidBackground";
 import Footer from "@/components/Footer";
@@ -14,6 +14,13 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+// Fonte de título: geométrica e pesada, próxima do logótipo.
+const display = Outfit({
+  variable: "--font-display",
+  weight: ["500", "700", "800"],
   subsets: ["latin"],
 });
 
@@ -61,7 +68,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${display.variable} h-full antialiased`}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >

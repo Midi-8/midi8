@@ -82,11 +82,6 @@ export default function SobreContent() {
           transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="relative z-10"
         >
-          {/* Badge */}
-          <div className="pill mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-            MANIFESTO // A EMPRESA
-          </div>
 
           {/* H1 */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.1] mb-6 max-w-4xl mx-auto">
