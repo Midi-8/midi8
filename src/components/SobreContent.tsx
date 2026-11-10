@@ -75,7 +75,7 @@ export default function SobreContent() {
   return (
     <main className="flex-1 text-foreground overflow-x-clip pt-28">
       {/* ─── 1. HERO DO MANIFESTO ─── */}
-      <section className="relative max-w-5xl mx-auto px-6 pt-12 pb-24 text-center">
+      <section className="relative max-w-5xl mx-auto px-6 pt-12 pb-24 text-center max-md:text-left max-md:pb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -84,7 +84,7 @@ export default function SobreContent() {
         >
 
           {/* H1 */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.1] mb-6 max-w-4xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl max-md:text-[2.75rem] font-bold tracking-tight leading-[1.1] mb-6 max-w-4xl mx-auto">
             Não construímos apenas interfaces.{" "}
             <span className="text-gradient">
               Desenhamos infraestruturas.
@@ -92,14 +92,14 @@ export default function SobreContent() {
           </h1>
 
           {/* Subtitle */}
-          <p className="max-w-2xl mx-auto text-base sm:text-lg text-muted leading-relaxed mb-10">
+          <p className="max-md:hidden max-w-2xl mx-auto text-base sm:text-lg text-muted leading-relaxed mb-10">
             A Midi8 nasceu da convicção de que o software empresarial deve ser tratado
             com o mesmo rigor matemático e de segurança que sustenta as indústrias de missão crítica.
             Somos o núcleo de engenharia de ponta a ponta para líderes que não toleram código descartável.
           </p>
 
           {/* Metric Bar */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto pt-8 border-t border-border/80">
+          <div className="max-md:hidden grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto pt-8 border-t border-border/80">
             {[
               { label: "Filosofia", value: "Deep Tech" },
               { label: "Padrão de Código", value: "Zero-Shortcut" },
@@ -124,7 +124,7 @@ export default function SobreContent() {
               Pilares de Engenharia
             </h2>
           </div>
-          <p className="text-xs sm:text-sm text-muted font-mono max-w-sm">
+          <p className="max-md:hidden text-xs sm:text-sm text-muted font-mono max-w-sm">
             Arquitetura desenhada para perdurar, escalar horizontalmente e resistir a falhas.
           </p>
         </div>
@@ -137,13 +137,13 @@ export default function SobreContent() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.15 }}
-              className="bento-card p-8 flex flex-col justify-between group relative overflow-hidden"
+              className="bento-card p-8 max-md:px-0 max-md:py-6 flex flex-col justify-between group relative overflow-hidden"
             >
               {/* Subtle top copper accent */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent group-hover:via-accent/50 transition-all duration-500" />
+              <div className="max-md:hidden absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent group-hover:via-accent/50 transition-all duration-500" />
 
               <div>
-                <div className="flex items-center justify-between mb-5">
+                <div className="max-md:hidden flex items-center justify-between mb-5">
                   <div className="icon-tile w-10 h-10 rounded-xl">
                     {pillar.icon}
                   </div>
@@ -152,16 +152,16 @@ export default function SobreContent() {
                 <p className="text-[11px] font-mono text-subtle tracking-wider mb-2">
                   {pillar.tag}
                 </p>
-                <h3 className="text-xl font-bold text-foreground mb-3 tracking-tight">
+                <h3 className="text-xl max-md:text-2xl max-md:leading-[1.05] font-bold text-foreground mb-3 max-md:mb-0 tracking-tight">
                   {pillar.title}
                 </h3>
-                <p className="text-sm text-muted leading-relaxed mb-6">
+                <p className="text-sm text-muted leading-relaxed mb-6 max-md:text-xs max-md:text-subtle max-md:mt-2 max-md:mb-0">
                   {pillar.description}
                 </p>
               </div>
 
               {/* Technical Specifications */}
-              <div className="pt-4 border-t border-border/80 flex items-center justify-between text-xs font-mono">
+              <div className="max-md:hidden pt-4 border-t border-border/80 flex items-center justify-between text-xs font-mono">
                 {pillar.metrics.map((m) => (
                   <div key={m.label}>
                     <span className="text-subtle block text-[10px] uppercase">{m.label}</span>
@@ -175,7 +175,7 @@ export default function SobreContent() {
       </section>
 
       {/* ─── 3. GOVERNANÇA & AUDITORIA TÉCNICA ─── */}
-      <section className="relative max-w-6xl mx-auto px-6 py-20">
+      <section className="max-md:hidden relative max-w-6xl mx-auto px-6 py-20">
         <div className="bento-card p-8 sm:p-12 relative overflow-hidden">
           <div className="max-w-2xl mb-12">
             <p className="eyebrow mb-3">Liderança & Governança de Sistemas</p>
@@ -216,27 +216,27 @@ export default function SobreContent() {
       </section>
 
       {/* ─── 4. CTA FINAL ─── */}
-      <section className="relative max-w-4xl mx-auto px-6 py-20 text-center">
+      <section className="relative max-w-4xl mx-auto px-6 py-20 max-md:py-12 text-center max-md:text-left">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="glass-card p-10 sm:p-14 overflow-hidden"
+          className="glass-card p-10 sm:p-14 max-md:px-0 max-md:py-8 overflow-hidden"
         >
           {/* Subtle separator glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
+          <div className="max-md:hidden absolute top-0 left-1/2 -translate-x-1/2 w-48 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
 
           <p className="eyebrow mb-4">Inicie a Parceria</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl max-md:text-[2.5rem] max-md:leading-[1.05] font-bold text-foreground tracking-tight mb-4 max-md:mb-8">
             Pronto para elevar o padrão técnico da sua empresa?
           </h2>
-          <p className="text-sm text-muted max-w-lg mx-auto mb-8 leading-relaxed">
+          <p className="max-md:hidden text-sm text-muted max-w-lg mx-auto mb-8 leading-relaxed">
             Agende uma sessão técnica confidencial com os nossos arquitetos para discutir arquitetura,
             viabilidade e planeamento de engenharia.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center max-md:items-stretch max-md:gap-2 gap-4">
             <Link
               href="/contacto"
               className="cta-button cursor-pointer w-full sm:w-auto"

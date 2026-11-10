@@ -63,7 +63,7 @@ export default function Navbar() {
           <Link
             href="/"
             onClick={() => setMobileOpen(false)}
-            className="flex items-center gap-2.5 group shrink-0 justify-self-start"
+            className="flex items-center gap-2.5 group shrink-0 justify-self-start max-md:py-[13px] max-md:-my-[13px]"
             aria-label="Midi8 — Página inicial"
           >
             <Wordmark className="h-[18px] w-auto text-foreground transition-opacity duration-300 group-hover:opacity-80" />
@@ -120,7 +120,7 @@ export default function Navbar() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen((v) => !v)}
-              className="md:hidden flex flex-col justify-center gap-[5px] p-2 group"
+              className="md:hidden flex flex-col justify-center gap-[5px] p-2 max-md:p-0 max-md:items-center max-md:w-11 max-md:h-11 max-md:-mr-3 group active:opacity-70"
               aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
             >
               <span
@@ -154,26 +154,29 @@ export default function Navbar() {
             className="fixed top-0 left-0 w-full h-[100dvh] z-40 glass-sheet md:hidden flex flex-col pt-[64px]"
           >
             {/* Nav links */}
-            <nav className="flex-1 flex flex-col items-center justify-center gap-2 px-8">
+            <nav className="flex-1 flex flex-col justify-center px-6">
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.href}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.06 + 0.05 }}
-                  className="w-full text-center"
+                  className="w-full"
                 >
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
                     aria-current={isRouteActive(link.href, pathname) ? "page" : undefined}
-                    className={`block w-full py-4 text-2xl font-semibold border-b border-border transition-colors ${
-                      isRouteActive(link.href, pathname) ? "text-foreground" : "text-secondary hover:text-foreground"
+                    className={`relative flex items-baseline gap-4 w-full py-5 text-3xl font-semibold tracking-tight border-b border-border transition-colors active:text-accent ${
+                      isRouteActive(link.href, pathname) ? "text-foreground" : "text-secondary"
                     }`}
                   >
+                    <span className="font-mono text-xs font-normal tracking-widest text-accent">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                     {link.label}
                     {isRouteActive(link.href, pathname) && (
-                      <span className="block mx-auto mt-1 w-8 h-0.5 bg-accent rounded-full" />
+                      <span className="absolute -bottom-px left-0 w-16 h-px bg-accent" />
                     )}
                   </Link>
                 </motion.div>
@@ -209,8 +212,8 @@ export default function Navbar() {
             </nav>
 
             {/* Bottom footer strip */}
-            <div className="px-8 py-6 border-t border-border">
-              <p className="text-xs text-subtle font-mono text-center tracking-widest uppercase">
+            <div className="px-6 py-6 border-t border-border">
+              <p className="text-xs text-subtle font-mono tracking-widest uppercase">
                 © 2026 Midi8 · Engenharia de Software
               </p>
             </div>

@@ -27,7 +27,7 @@ export default function Hero({ isMobile = false }: HeroProps) {
     >
       {/* ─── Floating Content (above the metal surface) ─── */}
       <motion.div
-        className="relative z-10 max-w-5xl mx-auto px-6 py-28 text-center"
+        className="relative z-10 max-w-5xl mx-auto px-6 py-28 text-center max-md:text-left max-md:w-full"
         style={isMobile ? undefined : { opacity: contentOpacity, y: contentY }}
       >
         {/* Inner glass panel so text reads cleanly over the fluid */}
@@ -41,13 +41,13 @@ export default function Hero({ isMobile = false }: HeroProps) {
           <h1 className="mb-8">
             <Wordmark
               title="Midi8"
-              className="mx-auto w-[min(78vw,560px)] h-auto text-foreground drop-shadow-[0_4px_32px_rgba(0,0,0,0.85)]"
+              className="mx-auto max-md:mx-0 w-[min(78vw,560px)] max-md:w-full h-auto text-foreground drop-shadow-[0_4px_32px_rgba(0,0,0,0.85)]"
             />
           </h1>
 
           {/* Subtítulo */}
           <p
-            className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-tight leading-tight mb-6"
+            className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl max-md:text-4xl max-md:leading-[1.05] tracking-tight leading-tight mb-6 max-md:mb-10"
             style={{ filter: "drop-shadow(0 2px 20px rgba(0,0,0,0.9))" }}
           >
             <span className="text-foreground">Tecnologia avançada.</span>{" "}
@@ -56,7 +56,7 @@ export default function Hero({ isMobile = false }: HeroProps) {
 
           {/* Subtitle */}
           <p
-            className="font-display font-medium max-w-xl mx-auto text-base sm:text-lg text-secondary leading-relaxed mb-10"
+            className="max-md:hidden font-display font-medium max-w-xl mx-auto text-base sm:text-lg text-secondary leading-relaxed mb-10"
             style={{ textShadow: "0 1px 12px rgba(0,0,0,0.9)" }}
           >
             Soluções corporativas de desenvolvimento web, automação e suporte à
@@ -64,7 +64,7 @@ export default function Hero({ isMobile = false }: HeroProps) {
           </p>
 
           {/* CTA row */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center max-md:items-stretch max-md:gap-2 gap-4">
             <Link
               href="/contacto"
               className="cta-button cursor-pointer w-full sm:w-auto"
@@ -102,7 +102,7 @@ export default function Hero({ isMobile = false }: HeroProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.7 }}
-            className="mt-20 pt-8 border-t border-border grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto"
+            className="max-md:hidden mt-20 pt-8 border-t border-border grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto"
           >
             {[
               { value: `${TOTAL_PROJECTS}+`, label: "Projetos em Produção" },

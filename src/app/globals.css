@@ -221,6 +221,27 @@ html[data-intro="skip"] .logo-intro {
   }
 }
 
+/* Mobile geométrico: sem cantos arredondados em nada (fora de @layer, para ganhar a
+   utilitários como rounded-full e ao :root acima). */
+@media (max-width: 767px) {
+  :root {
+    --radius-card: 0px;
+    --radius-chip: 0px;
+  }
+
+  *,
+  *::before,
+  *::after {
+    border-radius: 0 !important;
+  }
+
+  /* Exceção pedida: o botão laranja mantém a pílula do desktop. */
+  .cta-button:not(.cta-secondary),
+  .neu-submit {
+    border-radius: 999px !important;
+  }
+}
+
 /* ═══ Componentes ═══ */
 
 @layer components {
@@ -568,6 +589,140 @@ html[data-intro="skip"] .logo-intro {
   .neu-submit:disabled {
     opacity: 0.7;
     cursor: progress;
+  }
+
+  /* ═══ Mobile (<768px): editorial, destilado ═══
+     Sem cartões, sem vidro, sem cantos arredondados, sem gradientes de botão. O conteúdo
+     fica solto sobre o fundo (metal líquido), organizado por linhas finas e tipografia grande.
+     Só existe abaixo de md: o desktop não muda. */
+  @media (max-width: 767px) {
+    .glass,
+    .bento-card,
+    .glass-card,
+    .neu-panel,
+    .well {
+      background: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      border: 0;
+      border-top: 1px solid var(--border-strong);
+      box-shadow: none;
+      transition: color 0.2s var(--ease);
+    }
+
+    .glass::before,
+    .bento-card::before,
+    .glass-card::before,
+    .neu-panel::before {
+      content: none;
+    }
+
+    .bento-card:hover,
+    .glass-card:hover {
+      box-shadow: none;
+    }
+
+    .bento-card:active h3,
+    .glass-card:active h3 {
+      color: var(--accent);
+    }
+
+    .group:active .icon-tile {
+      color: var(--accent);
+    }
+
+    .cta-button,
+    .neu-submit {
+      min-height: 52px;
+      background: var(--accent);
+      box-shadow: none;
+    }
+
+    .cta-button:hover,
+    .neu-submit:hover {
+      box-shadow: none;
+    }
+
+    .cta-button:active,
+    .neu-submit:active {
+      background: var(--accent-hover);
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+
+    /* Ação secundária: texto sublinhado, sem caixa */
+    .cta-secondary,
+    .cta-secondary:hover {
+      background: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+      justify-content: flex-start;
+      padding-left: 0;
+      padding-right: 0;
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+      text-underline-offset: 6px;
+    }
+
+    .cta-secondary:active {
+      color: var(--accent);
+      background: none;
+    }
+
+    .cta-sm {
+      min-height: 44px;
+    }
+
+    .pill {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .neu-option {
+      min-height: 44px;
+      background: none;
+      box-shadow: inset 0 0 0 1px var(--border-strong);
+    }
+
+    .neu-option:active {
+      color: var(--foreground);
+    }
+
+    /* Campos: só uma linha por baixo */
+    .neu-field {
+      background: none;
+      padding-left: 0;
+      padding-right: 0;
+      box-shadow: inset 0 -1px 0 var(--border-strong);
+    }
+
+    .neu-field:focus {
+      background: none;
+      box-shadow: inset 0 -2px 0 var(--accent);
+    }
+
+    .neu-field[aria-invalid="true"] {
+      box-shadow: inset 0 -2px 0 var(--danger);
+    }
+
+    .glass-bar {
+      background: color-mix(in srgb, var(--background) 94%, transparent);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .glass-sheet {
+      background: var(--background);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    /* Antes de o canvas montar: cor lisa, sem manchas de gradiente. */
+    .liquid-css {
+      background-image: none;
+      animation: none;
+    }
   }
 }
 

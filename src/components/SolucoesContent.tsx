@@ -100,7 +100,7 @@ export default function SolucoesContent() {
   return (
     <main className="flex-1 text-foreground overflow-x-clip pt-28">
       {/* ─── HERO DE SOLUÇÕES ─── */}
-      <section className="relative max-w-5xl mx-auto px-6 pt-12 pb-20 text-center">
+      <section className="relative max-w-5xl mx-auto px-6 pt-12 pb-20 text-center max-md:text-left max-md:pb-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -109,7 +109,7 @@ export default function SolucoesContent() {
         >
 
           {/* H1 */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.1] mb-6 max-w-4xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl max-md:text-[2.75rem] font-bold tracking-tight leading-[1.1] mb-6 max-w-4xl mx-auto">
             Engenharia Aplicada{" "}
             <span className="text-gradient">
               ao Negócio.
@@ -117,7 +117,7 @@ export default function SolucoesContent() {
           </h1>
 
           {/* Subtitle */}
-          <p className="max-w-2xl mx-auto text-base sm:text-lg text-muted leading-relaxed">
+          <p className="max-md:hidden max-w-2xl mx-auto text-base sm:text-lg text-muted leading-relaxed">
             Desenhamos, construímos e otimizamos a infraestrutura tecnológica da sua empresa.
             Sem atalhos, com foco absoluto na performance e resiliência operacional.
           </p>
@@ -126,7 +126,7 @@ export default function SolucoesContent() {
 
       {/* ─── GRELHA DE CAPACIDADE TÉCNICA (MATRIZ 2X2) ─── */}
       <section className="relative max-w-6xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-md:gap-0">
           {solutions.map((item, i) => (
             <motion.div
               key={item.title}
@@ -134,15 +134,15 @@ export default function SolucoesContent() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="bento-card p-8 sm:p-9 flex flex-col justify-between group relative overflow-hidden"
+              className="bento-card p-8 sm:p-9 max-md:px-0 max-md:py-6 flex flex-col justify-between group relative overflow-hidden"
             >
               {/* Top ambient highlight on hover */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-transparent to-transparent group-hover:via-accent/50 transition-all duration-500" />
+              <div className="max-md:hidden absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-transparent to-transparent group-hover:via-accent/50 transition-all duration-500" />
 
               <div>
                 {/* Header row: Icon + Number badge */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="icon-tile w-10 h-10 rounded-xl">
+                <div className="flex items-center justify-between mb-6 max-md:mb-2">
+                  <div className="max-md:hidden icon-tile w-10 h-10 rounded-xl">
                     {item.icon}
                   </div>
                   <span className="text-xs font-mono font-bold text-subtle group-hover:text-accent transition-colors">
@@ -154,15 +154,15 @@ export default function SolucoesContent() {
                 <p className="text-[11px] font-mono text-accent tracking-wider mb-2 uppercase">
                   {item.tag}
                 </p>
-                <h3 className="text-2xl font-bold text-foreground mb-3 tracking-tight">
+                <h3 className="text-2xl max-md:text-2xl max-md:leading-[1.05] font-bold text-foreground mb-3 max-md:mb-0 tracking-tight">
                   {item.title}
                 </h3>
-                <p className="text-sm text-muted leading-relaxed mb-6">
+                <p className="text-sm text-muted leading-relaxed mb-6 max-md:text-xs max-md:text-subtle max-md:mt-2 max-md:mb-0">
                   {item.description}
                 </p>
 
                 {/* Deliverables checklist */}
-                <div className="space-y-2 mb-8">
+                <div className="max-md:hidden space-y-2 mb-8">
                   {item.deliverables.map((d) => (
                     <div key={d} className="flex items-start gap-2.5 text-xs text-secondary font-mono">
                       <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />
@@ -173,7 +173,7 @@ export default function SolucoesContent() {
               </div>
 
               {/* Technologies strip */}
-              <div className="pt-5 border-t border-border/70 flex flex-wrap gap-1.5">
+              <div className="max-md:hidden pt-5 border-t border-border/70 flex flex-wrap gap-1.5">
                 {item.tech.map((t) => (
                   <span
                     key={t}
@@ -189,7 +189,7 @@ export default function SolucoesContent() {
       </section>
 
       {/* ─── STACK TECNOLÓGICA (NEUTRA & MONOCROMÁTICA) ─── */}
-      <section className="relative max-w-6xl mx-auto px-6 py-20">
+      <section className="max-md:hidden relative max-w-6xl mx-auto px-6 py-20">
         <div className="text-center mb-8">
           <p className="eyebrow mb-3">Ecossistema & Ferramentas</p>
           <h2 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
@@ -212,27 +212,27 @@ export default function SolucoesContent() {
       </section>
 
       {/* ─── CTA EXECUTIVO ─── */}
-      <section className="relative max-w-4xl mx-auto px-6 py-16 text-center">
+      <section className="relative max-w-4xl mx-auto px-6 py-16 max-md:py-12 text-center max-md:text-left">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="glass-card p-10 sm:p-14 overflow-hidden"
+          className="glass-card p-10 sm:p-14 max-md:px-0 max-md:py-8 overflow-hidden"
         >
           {/* Subtle separator glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
+          <div className="max-md:hidden absolute top-0 left-1/2 -translate-x-1/2 w-48 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
 
           <p className="eyebrow mb-4">Avaliação Técnica Direta</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl max-md:text-[2.5rem] max-md:leading-[1.05] font-bold text-foreground tracking-tight mb-4 max-md:mb-8">
             Vamos avaliar a arquitetura do seu próximo projeto.
           </h2>
-          <p className="text-sm text-muted max-w-lg mx-auto mb-8 leading-relaxed">
+          <p className="max-md:hidden text-sm text-muted max-w-lg mx-auto mb-8 leading-relaxed">
             Uma sessão com os nossos arquitetos para mapear requisitos, analisar dependências
             críticas e traçar o roadmap de engenharia ideal.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center max-md:items-stretch max-md:gap-2 gap-4">
             <Link
               href="/contacto"
               className="cta-button cursor-pointer w-full sm:w-auto"

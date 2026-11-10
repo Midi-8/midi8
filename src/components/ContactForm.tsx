@@ -154,7 +154,7 @@ export default function ContactForm() {
       {status === "failed" && sentData && (
         <p role="alert" className="text-sm text-secondary">
           Não foi possível enviar agora.{" "}
-          <a href={contactMailto(sentData)} className="text-accent underline underline-offset-4">
+          <a href={contactMailto(sentData)} className="text-accent underline underline-offset-4 max-md:inline-flex max-md:items-center max-md:min-h-11">
             Enviar por email
           </a>{" "}
           com os mesmos dados.
