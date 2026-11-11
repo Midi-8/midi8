@@ -1,44 +1,73 @@
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════════════════════
-   Midi8 Design System — monocromático + cobre, superfícies Liquid Glass.
+   Midi8 Design System — Dark Aurora (Mint #00E896 · Cobalt #145EFF · Violet #A818FF)
+   + superfícies Liquid Glass sobre base meia-noite (#07090F).
    Tokens em :root, expostos ao Tailwind em @theme inline (text-muted,
    bg-surface, border-border…). Componentes em @layer components para que
    utilitários (w-full, hidden, md:inline-flex…) os possam ajustar.
    ═══════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ── Cor: fundo e texto ── */
-  --background: #111114;
-  --foreground: #f5f5f7;   /* títulos, texto forte */
-  --secondary: #d4d4d8;    /* texto corrido destacado */
-  --muted: #a1a1aa;        /* texto corrido */
-  --subtle: #85858f;       /* legendas (AA sobre o fundo) */
-  --faint: #52525b;        /* só decorativo, nunca texto essencial */
+  /* ── Cor: fundo e texto (Meia-noite Obsidiana) ── */
+  --background: #07090f;
+  --foreground: #f4f7fb;   /* títulos, texto forte */
+  --secondary: #d5deec;    /* texto corrido destacado */
+  --muted: #98a4b8;        /* texto corrido */
+  --subtle: #78859b;       /* legendas (AA sobre o fundo) */
+  --faint: #3b4659;        /* só decorativo, nunca texto essencial */
 
-  /* ── Cor: marca (cobre) ── */
-  --accent: #ea580c;
-  --accent-hover: #f06115;
-  --accent-light: #f97316;
-  --accent-rgb: 234 88 12;
+  /* ── Cor: marca (Aurora Tri-Cromática: Mint + Cobalt Blue + Vivid Violet) ── */
+  --accent: #00e896;
+  --accent-hover: #22f2a6;
+  --accent-light: #64f9c2;
+  --accent-rgb: 0 232 150;
+
+  --brand-blue: #145eff;
+  --brand-blue-rgb: 20 94 255;
+
+  --brand-violet: #a818ff;
+  --brand-violet-rgb: 168 24 255;
+
+  --aurora-gradient: linear-gradient(135deg, #a818ff 0%, #145eff 48%, #00e896 100%);
+  --cta-gradient: linear-gradient(135deg, #145eff 0%, #06b893 52%, #00e896 100%);
+  --cta-gradient-hover: linear-gradient(135deg, #2b6fff 0%, #09c99e 48%, #22f2a6 100%);
 
   /* ── Superfícies e linhas ── */
-  --surface: #17171b;
-  --surface-light: #1f1f24;
+  --surface: #0d111a;
+  --surface-light: #151b28;
   --border: rgba(255, 255, 255, 0.08);
   --border-light: rgba(255, 255, 255, 0.14);
   --border-strong: rgba(255, 255, 255, 0.22);
   --danger: #f87171;
 
-
-  /* ── Vidro ── */
-  --glass-tint: linear-gradient(160deg, rgba(255, 255, 255, 0.065) 0%, rgba(255, 255, 255, 0.02) 55%, rgba(255, 255, 255, 0.035) 100%);
-  --glass-tint-strong: linear-gradient(160deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.04) 100%);
-  --glass-blur: blur(20px) saturate(150%);
-  --glass-rim: linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.07) 28%, rgba(255, 255, 255, 0.025) 62%, rgba(255, 255, 255, 0.1) 100%);
-  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  --glass-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 24px 48px -24px rgba(0, 0, 0, 0.6);
-  --glass-shadow-hover: 0 1px 1px rgba(0, 0, 0, 0.25), 0 32px 64px -28px rgba(0, 0, 0, 0.75);
+  /* ── Vidro (Liquid Glass com refração subtil da aurora) ── */
+  --glass-tint: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.068) 0%,
+    rgba(20, 94, 255, 0.024) 52%,
+    rgba(0, 232, 150, 0.032) 100%
+  );
+  --glass-tint-strong: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.105) 0%,
+    rgba(20, 94, 255, 0.045) 55%,
+    rgba(0, 232, 150, 0.05) 100%
+  );
+  --glass-blur: blur(22px) saturate(165%);
+  --glass-rim: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(0, 232, 150, 0.16) 32%,
+    rgba(20, 94, 255, 0.1) 66%,
+    rgba(168, 24, 255, 0.16) 100%
+  );
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  --glass-shadow: 0 1px 1px rgba(0, 0, 0, 0.3), 0 24px 48px -24px rgba(2, 5, 14, 0.72);
+  --glass-shadow-hover:
+    0 1px 1px rgba(0, 0, 0, 0.3),
+    0 32px 64px -28px rgba(2, 5, 14, 0.85),
+    0 0 40px -16px rgba(0, 232, 150, 0.14);
 
   /* ── Forma e movimento ── */
   --radius-card: 22px;
@@ -56,6 +85,8 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-light: var(--accent-light);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-violet: var(--brand-violet);
   --color-surface: var(--surface);
   --color-surface-light: var(--surface-light);
   --color-border: var(--border);
@@ -102,7 +133,7 @@ h6,
 }
 
 ::selection {
-  background: rgb(var(--accent-rgb) / 0.3);
+  background: rgb(var(--accent-rgb) / 0.28);
   color: var(--foreground);
 }
 
@@ -140,7 +171,7 @@ html[data-intro="skip"] .logo-intro {
 }
 
 .logo-intro__mark {
-  width: min(72vw, 620px);
+  width: min(74vw, 650px);
   height: auto;
   color: var(--foreground);
 }
@@ -158,10 +189,17 @@ html[data-intro="skip"] .logo-intro {
 }
 
 .logo-intro__line {
-  width: min(72vw, 620px);
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0.6;
+  width: min(74vw, 650px);
+  height: 1.5px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--brand-violet) 22%,
+    var(--brand-blue) 50%,
+    var(--accent) 78%,
+    transparent 100%
+  );
+  opacity: 0.75;
   transform: scaleX(0);
   animation: intro-grow 0.8s var(--ease) 0.75s forwards;
 }
@@ -172,7 +210,7 @@ html[data-intro="skip"] .logo-intro {
 @keyframes intro-stage-out { to { opacity: 0; transform: scale(0.96); } }
 @keyframes intro-out { to { opacity: 0; visibility: hidden; } }
 
-/* ─── Fundo global: metal líquido (LiquidBackground) ───
+/* ─── Fundo global: fluido Dark Aurora (LiquidBackground) ───
    Desktop: <canvas class="liquid-bg"> desenhado em JS.
    Mobile/SSR: .liquid-css, camada maior que o ecrã a derivar só com transform. */
 
@@ -192,9 +230,9 @@ html[data-intro="skip"] .logo-intro {
   pointer-events: none;
   background-color: var(--background);
   background-image:
-    radial-gradient(ellipse 38% 30% at 36% 40%, rgb(var(--accent-rgb) / 0.3), transparent 60%),
-    radial-gradient(ellipse 40% 32% at 64% 60%, rgba(70, 70, 80, 0.7), transparent 60%),
-    radial-gradient(ellipse 30% 22% at 50% 26%, rgba(255, 255, 255, 0.05), transparent 65%),
+    radial-gradient(ellipse 38% 30% at 64% 44%, rgb(var(--accent-rgb) / 0.24), transparent 62%),
+    radial-gradient(ellipse 42% 34% at 32% 66%, rgb(var(--brand-blue-rgb) / 0.28), transparent 62%),
+    radial-gradient(ellipse 34% 28% at 24% 24%, rgb(var(--brand-violet-rgb) / 0.22), transparent 60%),
     linear-gradient(160deg, var(--background) 0%, var(--surface-light) 50%, var(--background) 100%);
   animation: liquid-drift 12s ease-in-out infinite alternate;
   /* Scroll: offsets limitados (JS) em propriedades independentes de `transform`, em % do elemento. */
@@ -235,7 +273,7 @@ html[data-intro="skip"] .logo-intro {
     border-radius: 0 !important;
   }
 
-  /* Exceção pedida: o botão laranja mantém a pílula do desktop. */
+  /* Exceção pedida: o botão principal mantém a pílula do desktop. */
   .cta-button:not(.cta-secondary),
   .neu-submit {
     border-radius: 999px !important;
@@ -245,7 +283,7 @@ html[data-intro="skip"] .logo-intro {
 /* ═══ Componentes ═══ */
 
 @layer components {
-  /* ── Vidro: tinta incolor + rebordo de luz (::before em máscara) + sombra ──
+  /* ── Vidro: tinta translúcida + rebordo de luz (::before em máscara) + sombra ──
      Filhos de um painel de vidro não pintam superfície própria opaca. */
   .glass,
   .bento-card,
@@ -288,24 +326,24 @@ html[data-intro="skip"] .logo-intro {
 
   /* Barra de navegação e menu em ecrã inteiro */
   .glass-bar {
-    background: color-mix(in srgb, var(--background) 62%, transparent);
+    background: color-mix(in srgb, var(--background) 66%, transparent);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     backdrop-filter: blur(24px) saturate(180%);
     box-shadow: inset 0 -1px 0 var(--border);
   }
 
   .glass-sheet {
-    background: color-mix(in srgb, var(--background) 84%, transparent);
+    background: color-mix(in srgb, var(--background) 86%, transparent);
     -webkit-backdrop-filter: blur(32px) saturate(160%);
     backdrop-filter: blur(32px) saturate(160%);
   }
 
   /* Poço rebaixado dentro de um painel (telemetria, níveis, resumos) */
   .well {
-    background: rgba(0, 0, 0, 0.22);
+    background: rgba(4, 7, 15, 0.35);
     border: 1px solid var(--border);
     border-radius: 14px;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
   }
 
   /* Ícone sem fundo */
@@ -344,8 +382,8 @@ html[data-intro="skip"] .logo-intro {
 
   .chip--accent {
     color: var(--accent);
-    background: rgb(var(--accent-rgb) / 0.07);
-    box-shadow: inset 0 0 0 1px rgb(var(--accent-rgb) / 0.26);
+    background: rgb(var(--accent-rgb) / 0.08);
+    box-shadow: inset 0 0 0 1px rgb(var(--accent-rgb) / 0.28);
   }
 
   /* Pílula de estado no topo das páginas */
@@ -383,12 +421,19 @@ html[data-intro="skip"] .logo-intro {
     height: 6px;
     border-radius: 999px;
     background: var(--accent);
+    box-shadow: 0 0 10px rgb(var(--accent-rgb) / 0.75);
     flex-shrink: 0;
   }
 
-  /* Título com gradiente neutro */
+  /* Título com gradiente Aurora luminoso */
   .text-gradient {
-    background: linear-gradient(90deg, var(--foreground) 0%, var(--secondary) 45%, var(--muted) 100%);
+    background: linear-gradient(
+      95deg,
+      var(--foreground) 0%,
+      #8dfce0 38%,
+      #78b8ff 72%,
+      #c89bff 100%
+    );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -404,26 +449,30 @@ html[data-intro="skip"] .logo-intro {
     padding: 13px 26px;
     border: none;
     border-radius: 999px;
-    background: var(--accent);
+    background: var(--cta-gradient);
     color: #fff;
+    text-shadow: 0 1px 2px rgba(4, 9, 20, 0.36);
     font-size: 0.9375rem;
     font-weight: 600;
     letter-spacing: -0.01em;
     text-decoration: none;
     cursor: pointer;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.25),
-      0 1px 2px rgba(0, 0, 0, 0.3),
-      0 8px 24px -12px rgb(var(--accent-rgb) / 0.6);
-    transition: background-color 0.25s var(--ease), box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 1px 2px rgba(0, 0, 0, 0.35),
+      0 8px 26px -10px rgb(var(--accent-rgb) / 0.55),
+      0 4px 16px -6px rgb(var(--brand-blue-rgb) / 0.45);
+    transition: background 0.25s var(--ease), box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
   }
 
   .cta-button:hover {
-    background: var(--accent-hover);
+    background: var(--cta-gradient-hover);
+    transform: translateY(-1px);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.3),
-      0 1px 2px rgba(0, 0, 0, 0.3),
-      0 12px 32px -12px rgb(var(--accent-rgb) / 0.7);
+      inset 0 1px 0 rgba(255, 255, 255, 0.38),
+      0 1px 2px rgba(0, 0, 0, 0.35),
+      0 12px 34px -10px rgb(var(--accent-rgb) / 0.68),
+      0 6px 22px -6px rgb(var(--brand-blue-rgb) / 0.55);
   }
 
   .cta-button:active {
@@ -440,11 +489,13 @@ html[data-intro="skip"] .logo-intro {
     -webkit-backdrop-filter: var(--glass-blur);
     backdrop-filter: var(--glass-blur);
     color: var(--foreground);
+    text-shadow: none;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 0 0 1px var(--border-light);
   }
 
   .cta-secondary:hover {
     background: var(--glass-tint-strong);
+    transform: translateY(-1px);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 0 0 1px var(--border-strong);
   }
 
@@ -471,7 +522,10 @@ html[data-intro="skip"] .logo-intro {
 
   .tech-badge:hover {
     color: var(--foreground);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 0 1px var(--border-light);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      inset 0 0 0 1px rgb(var(--accent-rgb) / 0.35),
+      0 0 16px -6px rgb(var(--accent-rgb) / 0.25);
   }
 
   /* ── Formulário de contacto: só vidro ── */
@@ -517,7 +571,7 @@ html[data-intro="skip"] .logo-intro {
   .neu-field:focus {
     outline: none;
     background: rgba(255, 255, 255, 0.07);
-    box-shadow: inset 0 0 0 1px rgb(var(--accent-rgb) / 0.6), 0 0 0 3px rgb(var(--accent-rgb) / 0.18);
+    box-shadow: inset 0 0 0 1px rgb(var(--accent-rgb) / 0.6), 0 0 0 3px rgb(var(--accent-rgb) / 0.16);
   }
 
   .neu-field[aria-invalid="true"] {
@@ -547,7 +601,7 @@ html[data-intro="skip"] .logo-intro {
 
   .neu-option:has(input:checked) {
     color: var(--accent);
-    background: rgb(var(--accent-rgb) / 0.08);
+    background: rgb(var(--accent-rgb) / 0.09);
     box-shadow: inset 0 0 0 1px rgb(var(--accent-rgb) / 0.45);
   }
 
@@ -564,21 +618,27 @@ html[data-intro="skip"] .logo-intro {
     padding: 15px 28px;
     border: none;
     border-radius: 999px;
-    background: var(--accent);
+    background: var(--cta-gradient);
     color: #fff;
+    text-shadow: 0 1px 2px rgba(4, 9, 20, 0.36);
     font-size: 0.9375rem;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 24px -8px rgb(var(--accent-rgb) / 0.5);
-    transition: background-color 0.25s var(--ease), box-shadow 0.2s var(--ease);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 8px 26px -10px rgb(var(--accent-rgb) / 0.55),
+      0 4px 16px -6px rgb(var(--brand-blue-rgb) / 0.45);
+    transition: background 0.25s var(--ease), box-shadow 0.2s var(--ease), transform 0.2s var(--ease);
   }
 
   .neu-submit:hover {
-    background: var(--accent-hover);
+    background: var(--cta-gradient-hover);
+    transform: translateY(-1px);
   }
 
   .neu-submit:active {
     box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+    transform: translateY(0);
   }
 
   .neu-submit:focus-visible {
@@ -592,8 +652,8 @@ html[data-intro="skip"] .logo-intro {
   }
 
   /* ═══ Mobile (<768px): editorial, destilado ═══
-     Sem cartões, sem vidro, sem cantos arredondados, sem gradientes de botão. O conteúdo
-     fica solto sobre o fundo (metal líquido), organizado por linhas finas e tipografia grande.
+     Sem cartões, sem vidro, sem cantos arredondados. O conteúdo fica solto
+     sobre o fundo fluido, organizado por linhas finas e tipografia grande.
      Só existe abaixo de md: o desktop não muda. */
   @media (max-width: 767px) {
     .glass,
@@ -634,7 +694,7 @@ html[data-intro="skip"] .logo-intro {
     .cta-button,
     .neu-submit {
       min-height: 52px;
-      background: var(--accent);
+      background: var(--cta-gradient);
       box-shadow: none;
     }
 
@@ -645,7 +705,7 @@ html[data-intro="skip"] .logo-intro {
 
     .cta-button:active,
     .neu-submit:active {
-      background: var(--accent-hover);
+      background: var(--cta-gradient-hover);
       transform: translateY(2px);
       box-shadow: none;
     }
@@ -737,10 +797,10 @@ html[data-intro="skip"] .logo-intro {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgb(var(--accent-rgb) / 0.35);
 }

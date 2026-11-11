@@ -17,9 +17,9 @@ const P: number[] = (() => {
     59,227,47,16,58,17,182,189,28,42,223,183,170,213,119,248,152,2,44,154,163,
     70,221,153,101,155,167,43,172,9,129,22,39,253,19,98,108,110,79,113,224,232,
     178,185,112,104,218,246,97,228,251,34,242,193,238,210,144,12,191,179,162,
-    241,81,51,145,235,249,14,239,107,49,192,214,31,181,199,106,157,184,84,204,
-    176,115,121,50,45,127,4,150,254,138,236,205,93,222,114,67,29,24,72,243,141,
-    128,195,78,66,215,61,156,180,
+    241,81,51,50,145,235,249,14,239,107,49,192,214,31,181,199,106,157,184,84,
+    204,176,115,121,45,127,4,150,254,138,236,205,93,222,114,67,29,24,72,243,
+    141,128,195,78,66,215,61,156,180,
   ];
   const doubled: number[] = new Array(512);
   for (let i = 0; i < 512; i++) doubled[i] = perm[i & 255];
@@ -83,20 +83,26 @@ const subscribeReduce = (cb: () => void) => {
   return () => mq.removeEventListener("change", cb);
 };
 
-// Fundo global: metal líquido escuro (fumo) com uma luz cobre que segue o cursor.
+// Fundo global: fluido Dark Aurora (Mint #00E896 + Cobalt #145EFF + Violet #A818FF) com luz interativa.
 // Fixo atrás de todo o site. Desktop: canvas a 60 fps (desce para 30 se pesar), células de 6 px suavizadas.
 // Mobile/toque: o mesmo canvas, mais leve (células de 10 px, 24 fps, dpr 1); a luz segue o dedo.
 // SSR e mobile com movimento reduzido: versão CSS (.liquid-css).
 const STEP = 6;
 const MOBILE_STEP = 10;
 const MOBILE_FPS = 24;
-const LIGHT_SCALE = 0.24;   // raio da luz em fração do lado menor do ecrã
+const LIGHT_SCALE = 0.26;   // raio da luz em fração do lado menor do ecrã
 const FOLLOW = 0.28;        // fração da distância ao cursor percorrida por frame a 60 fps
 const SLOW_DRAW_MS = 9;     // acima disto (média), desenha a 30 fps
-const LIGHT_STRENGTH = 0.8; // intensidade da luz cobre (1 = original)
+const LIGHT_STRENGTH = 0.85;// intensidade da luz aurora no cursor
+const AMBIENT_STRENGTH = 0.22; // presença subtil da aurora nas cristas do fluido em repouso
 const TRAIL_DECAY = 0.95;   // fração da luz que sobra por frame a 60 fps (rasto de ~1 s)
 
 type Ripple = { x: number; y: number; born: number; life: number; strength: number };
+
+function parseRgbVar(styles: CSSStyleDeclaration, name: string, fallback: [number, number, number]): [number, number, number] {
+  const raw = styles.getPropertyValue(name).trim().split(/\s+/).map(Number);
+  return raw.length === 3 && raw.every(Number.isFinite) ? [raw[0], raw[1], raw[2]] : fallback;
+}
 
 export default function LiquidBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -113,10 +119,11 @@ export default function LiquidBackground() {
     const bctx = buf.getContext("2d");
     if (!canvas || !ctx || !bctx) return;
 
-    // Cor de marca vem do token CSS --accent-rgb ("234 88 12").
-    const accent = getComputedStyle(document.documentElement)
-      .getPropertyValue("--accent-rgb").trim().split(/\s+/).map(Number);
-    const [AR, AG, AB] = accent.length === 3 && accent.every(Number.isFinite) ? accent : [234, 88, 12];
+    // Cores da identidade vêm dos tokens CSS em :root.
+    const styles = getComputedStyle(document.documentElement);
+    const [MR, MG, MB] = parseRgbVar(styles, "--accent-rgb", [0, 232, 150]);       // Mint
+    const [BR, BG, BB] = parseRgbVar(styles, "--brand-blue-rgb", [20, 94, 255]);   // Cobalt Blue
+    const [VR, VG, VB] = parseRgbVar(styles, "--brand-violet-rgb", [168, 24, 255]);// Vivid Violet
 
     const reduceMotion = window.matchMedia(REDUCE_QUERY).matches;
     const step = isMobile ? MOBILE_STEP : STEP;
@@ -208,10 +215,12 @@ export default function LiquidBackground() {
       const data = img.data;
 
       for (let row = 0; row < rows; row++) {
+        const v = (row * step) / H;
         for (let col = 0; col < cols; col++) {
           const px = col * step;
           const py = row * step;
-          let noise = fbm((px / W) * 3.2 + t * 0.6, (py / H) * 3.2 + t * 0.45);
+          const u = px / W;
+          let noise = fbm(u * 3.2 + t * 0.6, v * 3.2 + t * 0.45);
 
           for (const r of ripples) {
             const age = (now - r.born) / r.life;
@@ -227,14 +236,35 @@ export default function LiquidBackground() {
           const cell = row * cols + col;
           const light = Math.max(lightBuf[cell] * decay, 1 - Math.sqrt(ldx * ldx + ldy * ldy) / LIGHT_RADIUS);
           lightBuf[cell] = light;
-          const copper = Math.pow(light, 1.8) * crest * LIGHT_STRENGTH;
 
-          // Base ligeiramente mais clara que o hero original (16–50 em vez de 10–39).
-          const base = 16 + crest * 34;
+          // Fase cromática espacial + ruído (Violeta no topo-esquerdo → Azul Cobalto → Mint à direita e no núcleo do cursor).
+          const spatialPhase = Math.max(0, Math.min(1, u * 0.62 + (1 - v) * 0.14 + noise * 0.28 + light * 0.25));
+          let ar: number, ag: number, ab: number;
+          if (spatialPhase < 0.45) {
+            const s = spatialPhase / 0.45;
+            ar = VR + (BR - VR) * s;
+            ag = VG + (BG - VG) * s;
+            ab = VB + (BB - VB) * s;
+          } else {
+            const s = (spatialPhase - 0.45) / 0.55;
+            ar = BR + (MR - BR) * s;
+            ag = BG + (MG - BG) * s;
+            ab = BB + (MB - BB) * s;
+          }
+
+          const cursorGlow = Math.pow(light, 1.75) * crest * LIGHT_STRENGTH;
+          const ambientGlow = crest * crest * AMBIENT_STRENGTH;
+          const mix = Math.min(1, cursorGlow + ambientGlow);
+
+          // Base meia-noite obsidiana com reflexos frios nas cristas.
+          const baseR = 7 + crest * 18;
+          const baseG = 10 + crest * 24;
+          const baseB = 18 + crest * 34;
+
           const i = cell * 4;
-          data[i]     = base + (AR - base) * copper;
-          data[i + 1] = base + (AG - base) * copper;
-          data[i + 2] = base + 2 + (AB - base - 2) * copper;
+          data[i]     = baseR + (ar - baseR) * mix;
+          data[i + 1] = baseG + (ag - baseG) * mix;
+          data[i + 2] = baseB + (ab - baseB) * mix;
           data[i + 3] = 255;
         }
       }
@@ -244,13 +274,14 @@ export default function LiquidBackground() {
       ctx.imageSmoothingQuality = "high";
       ctx.drawImage(buf, 0, 0, cols * step, rows * step);
 
-      const corona = ctx.createRadialGradient(cx, cy, 0, cx, cy, LIGHT_RADIUS * 0.95);
-      corona.addColorStop(0, `rgba(${AR},${AG},${AB},0.12)`);
-      corona.addColorStop(0.3, `rgba(${AR},${AG},${AB},0.045)`);
-      corona.addColorStop(1, `rgba(${AR},${AG},${AB},0)`);
+      const corona = ctx.createRadialGradient(cx, cy, 0, cx, cy, LIGHT_RADIUS * 1.05);
+      corona.addColorStop(0, `rgba(${MR},${MG},${MB},0.13)`);
+      corona.addColorStop(0.38, `rgba(${BR},${BG},${BB},0.065)`);
+      corona.addColorStop(0.75, `rgba(${VR},${VG},${VB},0.025)`);
+      corona.addColorStop(1, `rgba(${BR},${BG},${BB},0)`);
       ctx.globalCompositeOperation = "screen";
       ctx.fillStyle = corona;
-      ctx.fillRect(cx - LIGHT_RADIUS, cy - LIGHT_RADIUS, LIGHT_RADIUS * 2, LIGHT_RADIUS * 2);
+      ctx.fillRect(cx - LIGHT_RADIUS * 1.05, cy - LIGHT_RADIUS * 1.05, LIGHT_RADIUS * 2.1, LIGHT_RADIUS * 2.1);
       ctx.globalCompositeOperation = "source-over";
     };
 

@@ -52,8 +52,8 @@ function TiltCard({
   const glowTop = useTransform(rawY, [-0.5, 0.5], [15, 85]);
   const spotlightBg = useTransform([glowLeft, glowTop], ([l, t]) =>
     isCrownJewel
-      ? `radial-gradient(550px circle at ${l}% ${t}%, rgb(var(--accent-rgb) / 0.08) 0%, rgba(255, 255, 255, 0.03) 40%, transparent 70%)`
-      : `radial-gradient(350px circle at ${l}% ${t}%, rgb(var(--accent-rgb) / 0.05) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 70%)`
+      ? `radial-gradient(560px circle at ${l}% ${t}%, rgb(var(--accent-rgb) / 0.1) 0%, rgb(var(--brand-blue-rgb) / 0.06) 42%, transparent 72%)`
+      : `radial-gradient(360px circle at ${l}% ${t}%, rgb(var(--accent-rgb) / 0.07) 0%, rgb(var(--brand-blue-rgb) / 0.04) 42%, transparent 72%)`
   );
 
   const handleMove = useCallback(
