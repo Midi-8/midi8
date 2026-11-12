@@ -9,7 +9,7 @@ const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.15,
+      staggerChildren: 0.03,
     },
   },
 };
@@ -22,7 +22,7 @@ const cardVariants = {
     scale: 1,
     transition: {
       duration: 0.7,
-      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
     },
   },
 };
@@ -105,9 +105,6 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
 
   return (
     <section id="portfolio" className="section-padding relative scroll-mt-24">
-      {/* Separador subtil superior */}
-      <div className="max-md:hidden absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-
       <div className="max-w-7xl mx-auto">
         {/* Cabeçalho da secção */}
         <motion.div
@@ -133,52 +130,28 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
           viewport={{ once: true, margin: "-60px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-md:gap-0 items-stretch"
         >
-          {projects.map((project, index) => {
+          {projects.map((project) => {
             const hasCaseStudy = Boolean(project.caseStudy);
 
             return (
               <motion.div
                 key={project.id}
                 variants={cardVariants}
-                animate={
-                  isMobile || shouldReduceMotion
-                    ? undefined
-                    : {
-                        y: [0, index % 2 === 0 ? -6 : -8, 0],
-                      }
-                }
-                transition={
-                  isMobile || shouldReduceMotion
-                    ? undefined
-                    : {
-                        y: {
-                          duration: 5 + index * 1.1,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        },
-                      }
-                }
                 whileHover={
                   isMobile || shouldReduceMotion
                     ? undefined
                     : {
-                        y: -10,
-                        transition: { duration: 0.3, ease: "easeOut" },
+                        y: -6,
+                        transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
                       }
                 }
                 className="glass-card overflow-hidden group relative flex flex-col justify-between h-full"
               >
-                {/* Brilho subtil no hover */}
-                <div
-                  className="max-md:hidden absolute inset-0 bg-gradient-to-br from-foreground/[0.04] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[inherit]"
-                />
-
                 <div className="relative p-6 sm:p-8 max-md:px-0 max-md:py-6 flex flex-col flex-1 justify-between">
                   <div>
                     {/* Linha de Tipo + Estado */}
                     <div className="mb-5 max-md:hidden">
                       <span className="chip text-secondary">
-                        <span className="w-1.5 h-1.5 rounded-full bg-muted" />
                         {project.type}
                       </span>
                     </div>
@@ -191,6 +164,18 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                         </h3>
                       </div>
                     </div>
+
+                    {/* Resultado principal, dos dados reais do caso de estudo */}
+                    {project.caseStudy && (
+                      <div className="max-md:hidden mb-6">
+                        <p className="font-display text-4xl font-extrabold text-foreground">
+                          {project.caseStudy.results[0].metric}
+                        </p>
+                        <p className="mt-1 text-sm text-muted leading-snug">
+                          {project.caseStudy.results[0].description}
+                        </p>
+                      </div>
+                    )}
 
                     {/* Descrição */}
                     <p className="text-sm text-muted leading-relaxed mb-6 max-md:text-xs max-md:text-subtle max-md:mb-4">
@@ -212,10 +197,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                     </div>
 
                     {/* Ação interativa do Case Study */}
-                    <div className="pt-4 border-t border-border/50 flex items-center justify-between max-md:border-t-0 max-md:pt-0 max-md:justify-start">
-                      <span className="max-md:hidden text-[11px] text-subtle font-mono tracking-wider">
-                        CASE STUDY
-                      </span>
+                    <div className="flex items-center justify-start">
 
                       {hasCaseStudy ? (
                         <button
@@ -225,7 +207,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                           type="button"
                           onClick={() => setActiveProject(project)}
                           aria-label={`Ver case study detalhado de ${project.name}`}
-                          className="inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:text-accent-hover transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded py-1 px-1.5 max-md:min-h-11 max-md:px-3 max-md:-mx-3 max-md:active:text-accent-hover cursor-pointer group/btn"
+                          className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:text-accent-hover transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded py-1 px-1.5 max-md:min-h-11 max-md:px-3 max-md:-mx-3 max-md:active:text-accent-hover cursor-pointer group/btn"
                         >
                           <span>Explorar</span>
                           <svg
@@ -233,7 +215,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
-                            strokeWidth={2}
+                            strokeWidth={1.5}
                             aria-hidden="true"
                           >
                             <path
@@ -251,15 +233,15 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                           type="button"
                           onClick={() => setActiveProject(project)}
                           aria-label={`Informação sobre o case study em preparação de ${project.name}`}
-                          className="inline-flex items-center gap-1.5 text-xs font-mono text-subtle hover:text-muted transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-border-strong focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded py-1 px-1.5 max-md:min-h-11 max-md:px-3 max-md:-mx-3 max-md:active:text-muted cursor-pointer"
+                          className="inline-flex items-center gap-1.5 text-sm text-subtle hover:text-muted transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-border-strong focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded py-1 px-1.5 max-md:min-h-11 max-md:px-3 max-md:-mx-3 max-md:active:text-muted cursor-pointer"
                         >
-                          <span className="italic">Em preparação</span>
+                          <span>Em preparação</span>
                           <svg
                             className="w-3 h-3 text-faint"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
-                            strokeWidth={2}
+                            strokeWidth={1.5}
                             aria-hidden="true"
                           >
                             <circle cx="12" cy="12" r="9" />
@@ -303,23 +285,20 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
               aria-describedby="modal-case-study-description"
               initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 16 }}
               animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
-              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 12 }}
-              transition={{ duration: shouldReduceMotion ? 0.05 : 0.25, ease: [0.16, 1, 0.3, 1] }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 12, transition: { duration: 0.2, ease: [0.4, 0, 1, 1] } }}
+              transition={{ duration: shouldReduceMotion ? 0.05 : 0.25, ease: [0.22, 1, 0.36, 1] }}
               className="glass-sheet relative w-full max-w-3xl rounded-[var(--radius-card)] border border-border shadow-2xl z-10 overflow-hidden flex flex-col max-h-[90vh]"
             >
-              {/* Barra superior de realce em cobre */}
-              <div className="h-px w-full bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
-
               {/* Cabeçalho do modal */}
               <div className="p-6 sm:p-8 border-b border-border flex items-start justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <span className="text-xs font-mono text-accent tracking-wide uppercase">
-                        Case Study Técnico
+                      <span className="text-sm font-semibold text-accent">
+                        Case study
                       </span>
-                      <span className="text-faint">·</span>
-                      <span className="text-xs font-mono text-muted">
+                      <span className="text-subtle" aria-hidden="true">·</span>
+                      <span className="text-sm text-muted">
                         {activeProject.type}
                       </span>
                     </div>
@@ -345,7 +324,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    strokeWidth={2}
+                    strokeWidth={1.5}
                     aria-hidden="true"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -363,11 +342,10 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                   <>
                     {/* 1. Desafio Técnico */}
                     <section aria-labelledby="section-desafio">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="w-2 h-2 rounded-full bg-accent" />
+                      <div className="mb-3">
                         <h4
                           id="section-desafio"
-                          className="text-sm font-mono font-semibold tracking-wider uppercase text-foreground"
+                          className="text-base font-semibold text-foreground"
                         >
                           1. Desafio Técnico
                         </h4>
@@ -381,18 +359,17 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
 
                     {/* 2. Arquitetura Implementada */}
                     <section aria-labelledby="section-arquitetura">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="w-2 h-2 rounded-full bg-accent" />
+                      <div className="mb-3">
                         <h4
                           id="section-arquitetura"
-                          className="text-sm font-mono font-semibold tracking-wider uppercase text-foreground"
+                          className="text-base font-semibold text-foreground"
                         >
                           2. Arquitetura Implementada
                         </h4>
                       </div>
                       <div className="well p-5 space-y-4">
                         <div>
-                          <p className="text-xs font-mono text-muted uppercase tracking-wider mb-2">
+                          <p className="text-sm text-muted mb-2">
                             Decisões Técnicas
                           </p>
                           <p className="text-sm text-secondary leading-relaxed">
@@ -401,7 +378,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                         </div>
 
                         <div>
-                          <p className="text-xs font-mono text-muted uppercase tracking-wider mb-2">
+                          <p className="text-sm text-muted mb-2">
                             Stack Tecnológica
                           </p>
                           <div className="flex flex-wrap gap-2">
@@ -417,13 +394,12 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                         </div>
 
                         <div>
-                          <p className="text-xs font-mono text-muted uppercase tracking-wider mb-2">
+                          <p className="text-sm text-muted mb-2">
                             Integrações-Chave
                           </p>
-                          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono text-secondary">
+                          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-secondary">
                             {activeProject.caseStudy.architecture.integrations.map((integ) => (
                               <li key={integ} className="flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-subtle" />
                                 {integ}
                               </li>
                             ))}
@@ -434,11 +410,10 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
 
                     {/* 3. Resultados Mensuráveis */}
                     <section aria-labelledby="section-resultados">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="w-2 h-2 rounded-full bg-accent" />
+                      <div className="mb-3">
                         <h4
                           id="section-resultados"
-                          className="text-sm font-mono font-semibold tracking-wider uppercase text-foreground"
+                          className="text-base font-semibold text-foreground"
                         >
                           3. Resultados Mensuráveis
                         </h4>
@@ -449,7 +424,7 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
                             key={res.description}
                             className="well p-4 text-center flex flex-col justify-center"
                           >
-                            <div className="text-2xl font-bold font-mono text-foreground mb-1">
+                            <div className="font-display text-3xl font-extrabold text-foreground mb-1">
                               {res.metric}
                             </div>
                             <p className="text-xs text-muted leading-snug">
@@ -478,8 +453,8 @@ export default function Showcase({ isMobile: isMobileProp }: { isMobile?: boolea
               </div>
 
               {/* Rodapé do modal */}
-              <div className="p-4 sm:p-6 border-t border-border flex items-center justify-between text-xs font-mono text-subtle">
-                <span>Pressione ESC para fechar</span>
+              <div className="p-4 sm:p-6 border-t border-border flex items-center justify-between text-sm text-subtle">
+                <span className="max-md:hidden">Esc para fechar</span>
                 <button
                   type="button"
                   onClick={handleCloseModal}

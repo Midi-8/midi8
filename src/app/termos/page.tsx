@@ -24,7 +24,7 @@ export default function TermosPage() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
             Termos e Condições
           </h1>
-          <p className="text-sm font-mono text-subtle">
+          <p className="text-sm text-subtle">
             Última atualização:{" "}
             <time dateTime="2026-01-01">[A PREENCHER: Data de Entrada em Vigor]</time>
             {/* TODO(MIDI8): Inserir data real de entrada em vigor */}
@@ -50,7 +50,7 @@ export default function TermosPage() {
             <p>
               O presente website é propriedade e gerido pela entidade legal:
             </p>
-            <ul className="list-disc pl-5 space-y-1 font-mono text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-lg border border-border">
+            <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-lg border border-border">
               <li>
                 <strong>Denominação Social:</strong> [A PREENCHER: Denominação Social da Empresa]{" "}
                 {/* TODO(MIDI8): Inserir denominação social legal */}

@@ -104,7 +104,7 @@ export default function SolucoesContent() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="relative z-10"
         >
 
@@ -137,7 +137,6 @@ export default function SolucoesContent() {
               className="bento-card p-8 sm:p-9 max-md:px-0 max-md:py-6 flex flex-col justify-between group relative overflow-hidden"
             >
               {/* Top ambient highlight on hover */}
-              <div className="max-md:hidden absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-transparent to-transparent group-hover:via-accent/50 transition-all duration-500" />
 
               <div>
                 {/* Header row: Icon + Number badge */}
@@ -145,13 +144,13 @@ export default function SolucoesContent() {
                   <div className="max-md:hidden icon-tile w-10 h-10 rounded-xl">
                     {item.icon}
                   </div>
-                  <span className="text-xs font-mono font-bold text-subtle group-hover:text-accent transition-colors">
+                  <span className="text-xs font-bold text-subtle group-hover:text-accent transition-colors">
                     {item.num}
                   </span>
                 </div>
 
                 {/* Tag & Title */}
-                <p className="text-[11px] font-mono text-accent tracking-wider mb-2 uppercase">
+                <p className="text-xs text-accent tracking-wider mb-2 uppercase">
                   {item.tag}
                 </p>
                 <h3 className="text-2xl max-md:text-2xl max-md:leading-[1.05] font-bold text-foreground mb-3 max-md:mb-0 tracking-tight">
@@ -164,7 +163,7 @@ export default function SolucoesContent() {
                 {/* Deliverables checklist */}
                 <div className="max-md:hidden space-y-2 mb-8">
                   {item.deliverables.map((d) => (
-                    <div key={d} className="flex items-start gap-2.5 text-xs text-secondary font-mono">
+                    <div key={d} className="flex items-start gap-2.5 text-xs text-secondary">
                       <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />
                       <span>{d}</span>
                     </div>
@@ -203,9 +202,8 @@ export default function SolucoesContent() {
               key={t.name}
               className="tech-badge"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
               <span className="text-foreground">{t.name}</span>
-              <span className="text-subtle text-[11px]">· {t.role}</span>
+              <span className="text-subtle text-xs">· {t.role}</span>
             </div>
           ))}
         </div>

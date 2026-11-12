@@ -24,7 +24,7 @@ export default function PrivacidadePage() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
             Política de Privacidade
           </h1>
-          <p className="text-sm font-mono text-subtle">
+          <p className="text-sm text-subtle">
             Última atualização:{" "}
             <time dateTime="2026-01-01">[A PREENCHER: Data de Entrada em Vigor]</time>
             {/* TODO(MIDI8): Definir data real de publicação ou revisão legal */}
@@ -50,7 +50,7 @@ export default function PrivacidadePage() {
             <p>
               O responsável pelo tratamento dos seus dados pessoais no âmbito deste website e dos serviços prestados é:
             </p>
-            <ul className="list-disc pl-5 space-y-1 font-mono text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-lg border border-border">
+            <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-lg border border-border">
               <li>
                 <strong>Denominação Social:</strong> [A PREENCHER: Denominação Social da Empresa]{" "}
                 {/* TODO(MIDI8): Inserir denominação social legal registada */}
@@ -197,7 +197,7 @@ export default function PrivacidadePage() {
             <p>
               Caso considere que o tratamento dos seus dados viola o RGPD ou a legislação nacional em vigor, tem o direito de apresentar uma reclamação à autoridade de controlo em Portugal:
             </p>
-            <div className="text-xs sm:text-sm font-mono text-muted space-y-1">
+            <div className="text-xs sm:text-sm text-muted space-y-1">
               <p><strong>Comissão Nacional de Proteção de Dados (CNPD)</strong></p>
               <p>Av. D. Carlos I, 134 - 1.º, 1200-651 Lisboa, Portugal</p>
               <p>Website: <a href="https://www.cnpd.pt" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">www.cnpd.pt</a></p>

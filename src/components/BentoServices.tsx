@@ -103,7 +103,7 @@ const reveal = (i: number) => ({
   initial: { opacity: 0, y: 8 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true },
-  transition: { duration: 0.5, delay: 0.15 + i * 0.12 },
+  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number], delay: 0.3 + i * 0.03 },
 });
 
 function SiteBuildWidget() {
@@ -117,7 +117,7 @@ function SiteBuildWidget() {
           <span className="w-2.5 h-2.5 rounded-full bg-border-strong" />
         </div>
         <div className="flex-1 flex items-center justify-center gap-1.5 rounded-md bg-surface/60 px-3 py-1 text-[11px] font-mono text-subtle">
-          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
           </svg>
           www.a-sua-empresa.pt
@@ -147,17 +147,17 @@ function SiteBuildWidget() {
       </div>
 
       {/* O que cada site leva de série */}
-      <div className="grid grid-cols-3 gap-2 px-4 py-3 border-t border-border text-center font-mono">
+      <div className="grid grid-cols-3 gap-2 px-4 py-3 border-t border-border text-center">
         <div>
-          <span className="text-[10px] text-subtle block">PERFORMANCE</span>
+          <span className="text-xs text-subtle block">PERFORMANCE</span>
           <span className="text-xs text-foreground font-medium">Core Web Vitals</span>
         </div>
         <div>
-          <span className="text-[10px] text-subtle block">SEO</span>
+          <span className="text-xs text-subtle block">SEO</span>
           <span className="text-xs text-accent font-medium">Técnico</span>
         </div>
         <div>
-          <span className="text-[10px] text-subtle block">DESIGN</span>
+          <span className="text-xs text-subtle block">DESIGN</span>
           <span className="text-xs text-secondary font-medium">Mobile-first</span>
         </div>
       </div>
@@ -182,19 +182,19 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="mb-10 sm:mb-14 max-md:mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
         >
           <div>
-            <p className="eyebrow mb-3">Arquitetura de Serviços</p>
+            <p className="eyebrow mb-3">Serviços</p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl max-md:text-[2.75rem] max-md:leading-[1.02] font-bold text-foreground tracking-tight">
-              Capacidade técnica
+              Do site à automação,
               <span className="text-subtle block sm:inline sm:ml-2">
-                de ponta a ponta.
+                num só parceiro.
               </span>
             </h2>
           </div>
-          <p className="max-md:hidden text-xs sm:text-sm text-muted font-mono max-w-xs">
+          <p className="max-md:hidden text-sm text-muted max-w-xs">
             Sites e plataformas web de alta performance, com IA e automação onde fazem a diferença.
           </p>
         </motion.div>
@@ -208,7 +208,7 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.03 }}
               className="flex-1"
             >
               <TiltCard
@@ -231,19 +231,6 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
                     Agentes autónomos, automação com LLMs e pipelines de dados que transformam informação dispersa em decisões.
                   </p>
                 </div>
-
-                {/* Micro-interaction Tags with Copper Accents */}
-                <div className="max-md:hidden flex flex-wrap gap-1.5 pt-4 mt-2 relative z-10">
-                  <span className="chip chip--accent">
-                    RAG
-                  </span>
-                  <span className="chip">
-                    Agentes
-                  </span>
-                  <span className="chip">
-                    Pipelines ETL
-                  </span>
-                </div>
               </TiltCard>
             </motion.div>
 
@@ -252,7 +239,7 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.06 }}
               className="flex-1"
             >
               <TiltCard
@@ -275,19 +262,6 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
                     Direção técnica executiva para fundadores e líderes. Auditorias profundas de código, segurança e definição de roadmaps de produto.
                   </p>
                 </div>
-
-                {/* Micro-interaction Tags with Copper Accents */}
-                <div className="max-md:hidden flex flex-wrap gap-1.5 pt-4 mt-2 relative z-10">
-                  <span className="chip chip--accent">
-                    Auditoria
-                  </span>
-                  <span className="chip">
-                    Roadmaps
-                  </span>
-                  <span className="chip">
-                    Arquitetura
-                  </span>
-                </div>
               </TiltCard>
             </motion.div>
           </div>
@@ -298,13 +272,13 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="h-full"
             >
               <TiltCard
                 isMobile={isMobile}
                 isCrownJewel={true}
-                className="bento-card p-7 sm:p-9 max-md:px-0 max-md:py-7 relative overflow-hidden group h-full flex flex-col justify-between"
+                className="bento-card p-7 sm:p-12 max-md:px-0 max-md:py-7 relative overflow-hidden group h-full flex flex-col justify-between"
               >
                 <div>
                   {/* Crown Jewel Top Banner */}
@@ -316,10 +290,7 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
                         </svg>
                       </div>
                       <div>
-                        <span className="text-[10px] font-mono tracking-widest text-accent uppercase block font-semibold">
-                          NÚCLEO // DESENVOLVIMENTO WEB
-                        </span>
-                        <h3 className="text-xl sm:text-2xl font-bold text-foreground max-md:text-2xl max-md:tracking-tight max-md:leading-[1.05]">
+                        <h3 className="text-2xl sm:text-3xl font-bold text-foreground max-md:text-2xl max-md:tracking-tight max-md:leading-[1.05]">
                           Websites & Plataformas Web
                         </h3>
                       </div>
@@ -328,7 +299,7 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
                   </div>
 
                   {/* Core Description */}
-                  <p className="text-sm text-secondary leading-relaxed relative z-10 mb-2 max-md:text-xs max-md:text-subtle max-md:mt-2 max-md:mb-0">
+                  <p className="text-base text-secondary leading-relaxed relative z-10 mb-2 max-w-xl max-md:text-xs max-md:text-subtle max-md:mt-2 max-md:mb-0">
                     Sites institucionais, landing pages, lojas online e aplicações web à medida. Design próprio, carregamento instantâneo e SEO técnico desde a primeira linha, feitos para transformar visitas em clientes.
                   </p>
 
@@ -338,26 +309,6 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
                   </div>
                 </div>
 
-                {/* Rich Tag Spectrum with Surgical Copper Micro-Interactions */}
-                <div className="max-md:hidden relative z-10 pt-2 border-t border-border/60">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[11px] font-mono text-subtle uppercase tracking-wider">
-                      O QUE ENTREGAMOS:
-                    </span>
-                    <span className="text-[11px] font-mono text-accent">
-                      NEXT.JS · REACT
-                    </span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="chip chip--accent">Sites Institucionais</span>
-                    <span className="chip chip--accent">Landing Pages</span>
-                    <span className="chip chip--accent">E-commerce</span>
-                    <span className="chip">Web Apps</span>
-                    <span className="chip">SEO Técnico</span>
-                    <span className="chip">Gestão de Conteúdo</span>
-                    <span className="chip">Alojamento & Manutenção</span>
-                  </div>
-                </div>
               </TiltCard>
             </motion.div>
           </div>
@@ -369,7 +320,7 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.15 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.09 }}
               className="flex-1"
             >
               <TiltCard
@@ -393,19 +344,6 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
                     Workflows autónomos que erradicam ineficiências manuais. Integração de APIs, pipelines assíncronos e sincronização de ecossistemas corporativos.
                   </p>
                 </div>
-
-                {/* Micro-interaction Tags with Copper Accents */}
-                <div className="max-md:hidden flex flex-wrap gap-1.5 pt-4 mt-2 relative z-10">
-                  <span className="chip chip--accent">
-                    Tempo Real
-                  </span>
-                  <span className="chip">
-                    Workflows
-                  </span>
-                  <span className="chip">
-                    Node / Python
-                  </span>
-                </div>
               </TiltCard>
             </motion.div>
 
@@ -414,7 +352,7 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.25 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
               className="flex-1"
             >
               <TiltCard
@@ -436,19 +374,6 @@ export default function BentoServices({ isMobile: isMobileProp }: BentoServicesP
                   <p className="text-xs text-muted leading-relaxed relative z-10 max-md:text-subtle max-md:mt-2">
                     Infraestrutura cloud resiliente com observabilidade 24/7, tolerância a falhas e arquiteturas seguras orientadas ao negócio.
                   </p>
-                </div>
-
-                {/* Micro-interaction Tags with Copper Accents */}
-                <div className="max-md:hidden flex flex-wrap gap-1.5 pt-4 mt-2 relative z-10">
-                  <span className="chip chip--accent">
-                    Escalável
-                  </span>
-                  <span className="chip">
-                    Zero-Trust
-                  </span>
-                  <span className="chip">
-                    Cloud Native
-                  </span>
                 </div>
               </TiltCard>
             </motion.div>

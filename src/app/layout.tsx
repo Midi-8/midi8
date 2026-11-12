@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import LiquidBackground from "@/components/LiquidBackground";
 import Footer from "@/components/Footer";
+import MotionProvider from "@/components/MotionProvider";
 import LogoIntro, { INTRO_BOOT_SCRIPT } from "@/components/LogoIntro";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -79,9 +80,11 @@ export default function RootLayout({
         <LogoIntro />
         <LiquidBackground />
         {/* Navbar lives in the root layout so it persists across all routes */}
-        <Navbar />
-        {children}
-        <Footer />
+        <MotionProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </MotionProvider>
       </body>
     </html>
   );
