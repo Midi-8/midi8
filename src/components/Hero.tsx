@@ -4,11 +4,19 @@ import { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Wordmark from "@/components/Wordmark";
-import { TOTAL_PROJECTS } from "@/data/projects";
+import { projects, TOTAL_PROJECTS } from "@/data/projects";
 
 interface HeroProps {
   isMobile?: boolean;
 }
+
+const [mr, cafe] = projects;
+const stats = [
+  { value: String(TOTAL_PROJECTS), label: "Projetos em produção" },
+  { value: mr.caseStudy!.results[0].metric, label: "Lighthouse, MR Construções" },
+  { value: mr.caseStudy!.results[1].metric, label: "LCP em 4G, MR Construções" },
+  { value: cafe.caseStudy!.results[0].metric, label: "Sincronização, Café do Rio" },
+];
 
 // O fundo (metal líquido + luz cobre) vive em LiquidBackground, fixo atrás de todo o site.
 export default function Hero({ isMobile = false }: HeroProps) {
@@ -45,22 +53,20 @@ export default function Hero({ isMobile = false }: HeroProps) {
             />
           </h1>
 
-          {/* Subtítulo */}
+          {/* Proposta de valor */}
           <p
-            className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl max-md:text-4xl max-md:leading-[1.05] tracking-tight leading-tight mb-6 max-md:mb-10"
+            className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl max-md:text-4xl max-md:leading-[1.05] tracking-tight leading-tight mb-6 max-md:mb-10 max-w-3xl mx-auto max-md:mx-0"
             style={{ filter: "drop-shadow(0 2px 20px rgba(0,0,0,0.9))" }}
           >
-            <span className="text-foreground">Tecnologia avançada.</span>{" "}
-            <span className="text-gradient">Resultados medíveis.</span>
+            <span className="text-foreground">Sites e sistemas à medida,</span>{" "}
+            <span className="text-gradient">que trazem clientes e poupam horas.</span>
           </p>
 
-          {/* Subtitle */}
           <p
             className="max-md:hidden font-display font-medium max-w-xl mx-auto text-base sm:text-lg text-secondary leading-relaxed mb-10"
             style={{ textShadow: "0 1px 12px rgba(0,0,0,0.9)" }}
           >
-            Soluções corporativas de desenvolvimento web, automação e suporte à
-            decisão, desenhadas com precisão para otimizar o seu modelo de negócio.
+            Desenhamos e construímos websites, plataformas web, automação e IA para empresas.
           </p>
 
           {/* CTA row */}
@@ -75,7 +81,7 @@ export default function Hero({ isMobile = false }: HeroProps) {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={2}
+                strokeWidth={1.5}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
@@ -90,61 +96,32 @@ export default function Hero({ isMobile = false }: HeroProps) {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={2}
+                strokeWidth={1.5}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </a>
           </div>
 
-          {/* Performance stats strip */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.7 }}
-            className="max-md:hidden mt-20 pt-8 border-t border-border grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto"
+          {/* Números reais dos casos de estudo (src/data/projects.ts) */}
+          <motion.dl
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="max-md:hidden mt-16 grid grid-cols-4 gap-8 max-w-3xl mx-auto"
           >
-            {[
-              { value: `${TOTAL_PROJECTS}+`, label: "Projetos em Produção" },
-              { value: "100%", label: "Taxa de Entrega" },
-              { value: "24h",  label: "Tempo de Resposta" },
-              { value: "∞",    label: "Compromisso" },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div
-                  className="text-2xl sm:text-3xl font-bold text-foreground font-mono"
+            {stats.map((stat) => (
+              <div key={stat.label} className="text-center flex flex-col">
+                <dd
+                  className="order-1 font-display text-3xl font-bold text-foreground"
                   style={{ textShadow: "0 0 20px rgba(0,0,0,0.9)" }}
                 >
                   {stat.value}
-                </div>
-                <div className="text-[11px] text-subtle mt-1 tracking-widest uppercase font-mono">
-                  {stat.label}
-                </div>
+                </dd>
+                <dt className="order-2 text-xs text-muted mt-1 leading-snug">{stat.label}</dt>
               </div>
             ))}
-          </motion.div>
-
-          {/* Scroll hint (desktop only) */}
-          {!isMobile && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0.25, 0.75, 0.25] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-              className="mt-10 inline-flex items-center gap-2 text-[11px] font-mono tracking-widest text-subtle uppercase"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-              Scroll para explorar
-              <svg
-                className="w-3 h-3 animate-bounce"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </motion.div>
-          )}
+          </motion.dl>
         </motion.div>
       </motion.div>
     </section>

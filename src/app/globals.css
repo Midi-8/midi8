@@ -32,6 +32,15 @@
   --aurora-gradient: linear-gradient(135deg, #a818ff 0%, #145eff 48%, #00e896 100%);
   --cta-gradient: linear-gradient(135deg, #145eff 0%, #06b893 52%, #00e896 100%);
   --cta-gradient-hover: linear-gradient(135deg, #2b6fff 0%, #09c99e 48%, #22f2a6 100%);
+  /* CTA principal: branco com luzes subtis do gradiente da marca nos cantos */
+  --cta-white:
+    radial-gradient(90% 160% at 0% 0%, rgb(20 94 255 / 0.13), transparent 60%),
+    radial-gradient(90% 160% at 100% 100%, rgb(0 232 150 / 0.16), transparent 60%),
+    #ffffff;
+  --cta-white-hover:
+    radial-gradient(90% 160% at 0% 0%, rgb(20 94 255 / 0.2), transparent 62%),
+    radial-gradient(90% 160% at 100% 100%, rgb(0 232 150 / 0.24), transparent 62%),
+    #ffffff;
 
   /* ── Superfícies e linhas ── */
   --surface: #0d111a;
@@ -110,6 +119,8 @@ body {
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Números alinhados em colunas: métricas, preços, datas. */
+  font-variant-numeric: tabular-nums;
 }
 
 h1,
@@ -120,6 +131,7 @@ h5,
 h6 {
   font-weight: 800;
   letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
 h1,
@@ -147,11 +159,11 @@ h6,
   display: grid;
   place-items: center;
   background: var(--background);
-  animation: intro-out 0.6s var(--ease) 1.55s forwards;
+  animation: intro-out 0.38s var(--ease) 1.24s forwards;
 }
 
 .logo-intro[data-skip] {
-  animation: intro-out 0.35s var(--ease) forwards;
+  animation: intro-out 0.28s var(--ease) forwards;
 }
 
 html[data-intro="skip"] .logo-intro {
@@ -163,11 +175,11 @@ html[data-intro="skip"] .logo-intro {
   flex-direction: column;
   align-items: center;
   gap: 28px;
-  animation: intro-stage-out 0.55s var(--ease) 1.4s forwards;
+  animation: intro-stage-out 0.35s var(--ease) 1.12s forwards;
 }
 
 .logo-intro[data-skip] .logo-intro__stage {
-  animation: intro-stage-out 0.3s var(--ease) forwards;
+  animation: intro-stage-out 0.24s var(--ease) forwards;
 }
 
 .logo-intro__mark {
@@ -184,8 +196,9 @@ html[data-intro="skip"] .logo-intro {
 
 .logo-intro__slide {
   transform-box: fill-box;
-  transform: translateX(105%);
-  animation: intro-slide 0.75s var(--ease) forwards;
+  opacity: 0;
+  transform: translateX(14%);
+  animation: intro-slide 0.7s var(--ease) forwards;
 }
 
 .logo-intro__line {
@@ -201,14 +214,18 @@ html[data-intro="skip"] .logo-intro {
   );
   opacity: 0.75;
   transform: scaleX(0);
-  animation: intro-grow 0.8s var(--ease) 0.75s forwards;
+  animation: intro-grow 0.7s var(--ease) 0.6s forwards;
 }
 
 @keyframes intro-rise { to { transform: translateY(0); } }
-@keyframes intro-slide { to { transform: translateX(0); } }
+@keyframes intro-slide { to { opacity: 1; transform: translateX(0); } }
 @keyframes intro-grow { to { transform: scaleX(1); } }
 @keyframes intro-stage-out { to { opacity: 0; transform: scale(0.96); } }
 @keyframes intro-out { to { opacity: 0; visibility: hidden; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-intro { display: none; }
+}
 
 /* ─── Fundo global: fluido Dark Aurora (LiquidBackground) ───
    Desktop: <canvas class="liquid-bg"> desenhado em JS.
@@ -241,6 +258,22 @@ html[data-intro="skip"] .logo-intro {
   will-change: transform, translate, rotate;
 }
 
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes success-pulse {
+  0% { transform: scale(0.8); opacity: 0; }
+  45% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation-duration: 1.6s; }
+  .success-pulse { animation: none; }
+  .cta-button, .neu-submit, .bento-card { transition-duration: 0.01ms !important; }
+}
 
 @keyframes liquid-drift {
   from { transform: translate3d(-12%, -9%, 0) rotate(-10deg) scale(1); }
@@ -371,8 +404,7 @@ html[data-intro="skip"] .logo-intro {
     gap: 6px;
     padding: 2px 8px;
     border-radius: var(--radius-chip);
-    font-family: var(--font-geist-mono), monospace;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     line-height: 1.125rem;
     color: var(--muted);
     background: rgba(255, 255, 255, 0.04);
@@ -393,9 +425,7 @@ html[data-intro="skip"] .logo-intro {
     gap: 8px;
     padding: 6px 14px;
     border-radius: 999px;
-    font-family: var(--font-geist-mono), monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
+    font-size: 0.8125rem;
     color: var(--secondary);
     background: var(--glass-tint);
     -webkit-backdrop-filter: var(--glass-blur);
@@ -407,22 +437,11 @@ html[data-intro="skip"] .logo-intro {
   .eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    font-family: var(--font-geist-mono), monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.16em;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .eyebrow::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    border-radius: 999px;
-    background: var(--accent);
-    box-shadow: 0 0 10px rgb(var(--accent-rgb) / 0.75);
-    flex-shrink: 0;
+    color: var(--accent);
   }
 
   /* Título com gradiente Aurora luminoso */
@@ -449,34 +468,32 @@ html[data-intro="skip"] .logo-intro {
     padding: 13px 26px;
     border: none;
     border-radius: 999px;
-    background: var(--cta-gradient);
-    color: #fff;
-    text-shadow: 0 1px 2px rgba(4, 9, 20, 0.36);
+    background: var(--cta-white);
+    color: #07090f;
     font-size: 0.9375rem;
     font-weight: 600;
     letter-spacing: -0.01em;
     text-decoration: none;
     cursor: pointer;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.3),
       0 1px 2px rgba(0, 0, 0, 0.35),
-      0 8px 26px -10px rgb(var(--accent-rgb) / 0.55),
-      0 4px 16px -6px rgb(var(--brand-blue-rgb) / 0.45);
+      0 8px 26px -12px rgb(var(--accent-rgb) / 0.35),
+      0 4px 16px -8px rgb(var(--brand-blue-rgb) / 0.3);
     transition: background 0.25s var(--ease), box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
   }
 
   .cta-button:hover {
-    background: var(--cta-gradient-hover);
+    background: var(--cta-white-hover);
     transform: translateY(-1px);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.38),
       0 1px 2px rgba(0, 0, 0, 0.35),
-      0 12px 34px -10px rgb(var(--accent-rgb) / 0.68),
-      0 6px 22px -6px rgb(var(--brand-blue-rgb) / 0.55);
+      0 12px 32px -12px rgb(var(--accent-rgb) / 0.45),
+      0 6px 20px -8px rgb(var(--brand-blue-rgb) / 0.4);
   }
 
   .cta-button:active {
-    transform: scale(0.98);
+    transform: scale(0.97);
+    transition-duration: 0.1s;
   }
 
   .cta-button:focus-visible {
@@ -618,27 +635,26 @@ html[data-intro="skip"] .logo-intro {
     padding: 15px 28px;
     border: none;
     border-radius: 999px;
-    background: var(--cta-gradient);
-    color: #fff;
-    text-shadow: 0 1px 2px rgba(4, 9, 20, 0.36);
+    background: var(--cta-white);
+    color: #07090f;
     font-size: 0.9375rem;
     font-weight: 600;
     cursor: pointer;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.3),
-      0 8px 26px -10px rgb(var(--accent-rgb) / 0.55),
-      0 4px 16px -6px rgb(var(--brand-blue-rgb) / 0.45);
+      0 1px 2px rgba(0, 0, 0, 0.35),
+      0 8px 26px -12px rgb(var(--accent-rgb) / 0.35),
+      0 4px 16px -8px rgb(var(--brand-blue-rgb) / 0.3);
     transition: background 0.25s var(--ease), box-shadow 0.2s var(--ease), transform 0.2s var(--ease);
   }
 
   .neu-submit:hover {
-    background: var(--cta-gradient-hover);
+    background: var(--cta-white-hover);
     transform: translateY(-1px);
   }
 
-  .neu-submit:active {
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
-    transform: translateY(0);
+  .neu-submit:active:not(:disabled) {
+    transform: scale(0.97);
+    transition-duration: 0.1s;
   }
 
   .neu-submit:focus-visible {
@@ -647,9 +663,23 @@ html[data-intro="skip"] .logo-intro {
   }
 
   .neu-submit:disabled {
-    opacity: 0.7;
     cursor: progress;
   }
+
+  /* Estado de envio: roda só transform; sucesso: pulso único de anel. */
+  .spinner {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+    border: 2px solid rgb(7 9 15 / 0.2);
+    border-top-color: currentColor;
+    animation: spin 0.7s linear infinite;
+  }
+
+  .success-pulse {
+    animation: success-pulse 0.6s var(--ease) 1 both;
+  }
+
 
   /* ═══ Mobile (<768px): editorial, destilado ═══
      Sem cartões, sem vidro, sem cantos arredondados. O conteúdo fica solto
@@ -694,7 +724,7 @@ html[data-intro="skip"] .logo-intro {
     .cta-button,
     .neu-submit {
       min-height: 52px;
-      background: var(--cta-gradient);
+      background: var(--cta-white);
       box-shadow: none;
     }
 
@@ -704,9 +734,9 @@ html[data-intro="skip"] .logo-intro {
     }
 
     .cta-button:active,
-    .neu-submit:active {
-      background: var(--cta-gradient-hover);
-      transform: translateY(2px);
+    .neu-submit:active:not(:disabled) {
+      background: var(--cta-white-hover);
+      transform: scale(0.97);
       box-shadow: none;
     }
 

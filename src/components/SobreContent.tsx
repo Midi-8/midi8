@@ -79,7 +79,7 @@ export default function SobreContent() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="relative z-10"
         >
 
@@ -97,21 +97,6 @@ export default function SobreContent() {
             com o mesmo rigor matemático e de segurança que sustenta as indústrias de missão crítica.
             Somos o núcleo de engenharia de ponta a ponta para líderes que não toleram código descartável.
           </p>
-
-          {/* Metric Bar */}
-          <div className="max-md:hidden grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto pt-8 border-t border-border/80">
-            {[
-              { label: "Filosofia", value: "Deep Tech" },
-              { label: "Padrão de Código", value: "Zero-Shortcut" },
-              { label: "Foco Estratégico", value: "Alta Escala" },
-              { label: "Compromisso", value: "Soberania" },
-            ].map((m) => (
-              <div key={m.label} className="well p-3">
-                <p className="text-[10px] font-mono uppercase tracking-widest text-subtle">{m.label}</p>
-                <p className="text-sm font-semibold text-foreground font-mono mt-0.5">{m.value}</p>
-              </div>
-            ))}
-          </div>
         </motion.div>
       </section>
 
@@ -124,7 +109,7 @@ export default function SobreContent() {
               Pilares de Engenharia
             </h2>
           </div>
-          <p className="max-md:hidden text-xs sm:text-sm text-muted font-mono max-w-sm">
+          <p className="max-md:hidden text-xs sm:text-sm text-muted max-w-sm">
             Arquitetura desenhada para perdurar, escalar horizontalmente e resistir a falhas.
           </p>
         </div>
@@ -140,7 +125,6 @@ export default function SobreContent() {
               className="bento-card p-8 max-md:px-0 max-md:py-6 flex flex-col justify-between group relative overflow-hidden"
             >
               {/* Subtle top copper accent */}
-              <div className="max-md:hidden absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent group-hover:via-accent/50 transition-all duration-500" />
 
               <div>
                 <div className="max-md:hidden flex items-center justify-between mb-5">
@@ -149,7 +133,7 @@ export default function SobreContent() {
                   </div>
                 </div>
 
-                <p className="text-[11px] font-mono text-subtle tracking-wider mb-2">
+                <p className="text-xs text-subtle tracking-wider mb-2">
                   {pillar.tag}
                 </p>
                 <h3 className="text-xl max-md:text-2xl max-md:leading-[1.05] font-bold text-foreground mb-3 max-md:mb-0 tracking-tight">
@@ -161,10 +145,10 @@ export default function SobreContent() {
               </div>
 
               {/* Technical Specifications */}
-              <div className="max-md:hidden pt-4 border-t border-border/80 flex items-center justify-between text-xs font-mono">
+              <div className="max-md:hidden pt-4 border-t border-border/80 flex items-center justify-between text-xs">
                 {pillar.metrics.map((m) => (
                   <div key={m.label}>
-                    <span className="text-subtle block text-[10px] uppercase">{m.label}</span>
+                    <span className="text-subtle block text-xs uppercase">{m.label}</span>
                     <span className="text-secondary font-semibold">{m.value}</span>
                   </div>
                 ))}
@@ -199,7 +183,7 @@ export default function SobreContent() {
               >
                 <div className="flex items-center gap-2 mb-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                  <span className="text-[11px] font-mono text-accent font-semibold tracking-wider">
+                  <span className="text-xs text-accent font-semibold tracking-wider">
                     {tier.tier}
                   </span>
                 </div>

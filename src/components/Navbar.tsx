@@ -51,8 +51,8 @@ export default function Navbar() {
       <motion.nav
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ${
           scrolled || mobileOpen
             ? "glass-bar"
             : "bg-transparent"
@@ -83,12 +83,16 @@ export default function Navbar() {
                   }`}
                 >
                   {link.label}
-                  {/* Sublinhado: fixo na rota ativa, no hover nas restantes */}
-                  <span
-                    className={`absolute bottom-1 left-4 right-4 h-px bg-accent transition-transform duration-300 origin-left ${
-                      active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                    }`}
-                  />
+                  {/* Indicador ativo: um só elemento que desliza entre rotas (layoutId); hover nas restantes */}
+                  {active ? (
+                    <motion.span
+                      layoutId="nav-active"
+                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                      className="absolute bottom-1 left-4 right-4 h-px bg-accent"
+                    />
+                  ) : (
+                    <span className="absolute bottom-1 left-4 right-4 h-px bg-accent transition-transform duration-200 origin-left scale-x-0 group-hover:scale-x-100" />
+                  )}
                 </Link>
               );
             })}
@@ -107,7 +111,7 @@ export default function Navbar() {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={2.2}
+                strokeWidth={1.5}
               >
                 <path
                   strokeLinecap="round"
@@ -124,17 +128,17 @@ export default function Navbar() {
               aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
             >
               <span
-                className={`block w-5 h-[1.5px] bg-secondary transition-all duration-300 ${
+                className={`block w-5 h-[1.5px] bg-secondary transition-[transform,opacity] duration-300 ease-out ${
                   mobileOpen ? "rotate-45 translate-y-[6.5px]" : ""
                 }`}
               />
               <span
-                className={`block w-5 h-[1.5px] bg-secondary transition-all duration-300 ${
+                className={`block w-5 h-[1.5px] bg-secondary transition-[transform,opacity] duration-300 ease-out ${
                   mobileOpen ? "opacity-0 scale-x-0" : ""
                 }`}
               />
               <span
-                className={`block w-5 h-[1.5px] bg-secondary transition-all duration-300 ${
+                className={`block w-5 h-[1.5px] bg-secondary transition-[transform,opacity] duration-300 ease-out ${
                   mobileOpen ? "-rotate-45 -translate-y-[6.5px]" : ""
                 }`}
               />
@@ -149,8 +153,8 @@ export default function Navbar() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0, transition: { duration: 0.16, ease: "easeIn" } }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             className="fixed top-0 left-0 w-full h-[100dvh] z-40 glass-sheet md:hidden flex flex-col pt-[64px]"
           >
             {/* Nav links */}
@@ -160,20 +164,17 @@ export default function Navbar() {
                   key={link.href}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.06 + 0.05 }}
+                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1], delay: i * 0.03 + 0.05 }}
                   className="w-full"
                 >
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
                     aria-current={isRouteActive(link.href, pathname) ? "page" : undefined}
-                    className={`relative flex items-baseline gap-4 w-full py-5 text-3xl font-semibold tracking-tight border-b border-border transition-colors active:text-accent ${
+                    className={`relative flex items-baseline w-full py-5 text-3xl font-semibold tracking-tight border-b border-border transition-colors active:text-accent ${
                       isRouteActive(link.href, pathname) ? "text-foreground" : "text-secondary"
                     }`}
                   >
-                    <span className="font-mono text-xs font-normal tracking-widest text-accent">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
                     {link.label}
                     {isRouteActive(link.href, pathname) && (
                       <span className="absolute -bottom-px left-0 w-16 h-px bg-accent" />
@@ -185,7 +186,7 @@ export default function Navbar() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: navLinks.length * 0.06 + 0.1 }}
+                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1], delay: navLinks.length * 0.03 + 0.05 }}
                 className="w-full mt-8"
               >
                 <Link
@@ -199,7 +200,7 @@ export default function Navbar() {
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    strokeWidth={2.2}
+                    strokeWidth={1.5}
                   >
                     <path
                       strokeLinecap="round"
@@ -213,8 +214,8 @@ export default function Navbar() {
 
             {/* Bottom footer strip */}
             <div className="px-6 py-6 border-t border-border">
-              <p className="text-xs text-subtle font-mono tracking-widest uppercase">
-                © 2026 Midi8 · Engenharia de Software
+              <p className="text-xs text-subtle">
+                © 2026 Midi8
               </p>
             </div>
           </motion.div>

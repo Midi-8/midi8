@@ -86,7 +86,7 @@ export default function ContactForm() {
   if (status === "sent") {
     return (
       <div className="neu-panel p-8 sm:p-12 text-center" role="status">
-        <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full neu-option !p-0 text-accent">
+        <div className="success-pulse mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full neu-option !p-0 text-accent">
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
@@ -163,9 +163,11 @@ export default function ContactForm() {
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
         <p className="text-xs text-subtle">Usamos os seus dados apenas para responder a este pedido.</p>
-        <button type="submit" className="neu-submit" disabled={status === "sending"}>
+        <button type="submit" className="neu-submit" disabled={status === "sending"} aria-busy={status === "sending"}>
           {status === "sending" ? "A enviar…" : "Pedir reunião"}
-          {status !== "sending" && (
+          {status === "sending" ? (
+            <span className="spinner" aria-hidden="true" />
+          ) : (
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>

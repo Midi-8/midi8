@@ -52,7 +52,7 @@ export default function ContactoPage() {
                 className="flex items-center justify-between gap-4 text-secondary hover:text-foreground max-md:active:text-accent transition-colors max-md:min-h-11 max-md:border-b max-md:border-border max-md:last:border-b-0"
               >
                 <span className="text-subtle">{c.label}</span>
-                <span className="font-mono">{c.value}</span>
+                <span>{c.value}</span>
               </a>
             ))}
           </div>

@@ -32,14 +32,10 @@ export default function TechStack() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <p className="eyebrow mb-4">Tech Stack</p>
+          <p className="eyebrow mb-4">Tecnologias</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
             Ferramentas que dominamos.
           </h2>
-          <p className="text-muted mt-4 max-w-lg mx-auto text-sm">
-            Trabalhamos com as tecnologias mais robustas do ecossistema moderno.
-            Sempre a ferramenta certa para o problema certo.
-          </p>
         </motion.div>
 
         {/* Tech Grid */}
@@ -56,10 +52,9 @@ export default function TechStack() {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.04 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: i * 0.03 }}
               className="tech-badge"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
               {tech.name}
             </motion.span>
           ))}
