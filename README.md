@@ -1,52 +1,39 @@
-# Midi8 — Engenharia de Software e Infraestrutura
+# Midi8 — Tecnologia, Software, Automação & Comunicação Digital
 
-Plataforma corporativa e website institucional da Midi8, orientada a engenharia de software de alta performance, arquiteturas resilientes e sistemas distribuídos.
+Website institucional minimalista em página única (*single-page*) da **Midi8**, combinando estética editorial limpa sobre fundo branco com um fade superior difuso nas cores da marca (`#A818FF`, `#145EFF`, `#00E896`), carrossel interativo com todos os 13 serviços e formulário de contacto autónomo.
 
 ---
 
 ## Visão Geral
 
-O projeto foi construído para aliar estética técnica de alta precisão com eficiência computacional e arquitetura estrita. A aplicação implementa um motor híbrido de renderização gráfica (Canvas 2D procedimental com ruído Perlin para desktop e gradiente CSS acelerado por hardware para dispositivos móveis), orquestração espacial em profundidade tridimensional, rotas dedicadas para o Manifesto e Catálogo de Soluções, e um fluxo de conversão institucional autónomo.
-
----
-
-## Pilares de Engenharia e Arquitetura
-
-### 1. Motor Gráfico e Eficiência Energética
-- **Desktop:** Simulação de metal líquido escuro com ruído Fractal Brownian Motion (fBm) de 5 oitavas em Canvas 2D, iluminação dinâmica em tom Cobre (`#EA580C`) e interpolação contínua (LERP) do cursor com decaimento exponencial de ondas de choque (*ripples*).
-- **Mobile:** Suspensão total do loop `requestAnimationFrame` e dos cálculos matemáticos de ruído procedimental. Em ecrãs táteis e durante o Server-Side Rendering (SSR), o Canvas é substituído pela classe `.hero-liquid-css`, animada nativamente na GPU para preservar a bateria e eliminar o aquecimento do dispositivo.
-- **Estabilidade de Redimensionamento:** Reset explícito da matriz de transformação (`ctx.setTransform(1, 0, 0, 1, 0, 0)`) antes da escala do Device Pixel Ratio (`dpr`), prevenindo distorções cumulativas provocadas pelo aparecimento e recolhimento das barras nativas de navegação mobile.
-- **Prevenção de Fugas de Memória:** O ciclo de renderização é gerido através de `IntersectionObserver`, suspendendo o processamento quando a secção sai do viewport e desalocando listeners no desmontar do componente.
-
-### 2. Responsividade Mobile e UX Tátil
-- **Bloqueio de Scroll no Body:** Ativação de `document.body.style.overflow = "hidden"` sempre que o menu de navegação móvel está aberto, impedindo o deslizamento acidental da página de fundo.
-- **Viewport Dinâmico:** Contenção dimensional com `h-[100dvh]` para absorver flutuações de altura causadas pelas barras de pesquisa do Safari iOS e Chrome Android.
-- **Desativação de Tilt 3D:** Neutralização imediata de rotações espaciais e holofotes radiais nos cartões em dispositivos táteis, assegurando rolagem linear e contínua sem quebras de frame (*scroll jank*).
-
-### 3. Navegação SPA e Roteamento
-- **Arquitetura Multi-Rota (App Router):**
-  - `/`: Página principal com introdução cinemática, Bento Box de serviços, portfólio de produção e stack técnico.
-  - `/sobre`: Manifesto corporativo, pilares de engenharia (Resiliência, Zero-Trust, Performance Extrema) e níveis de auditoria técnica.
-  - `/solucoes`: Matriz de capacidade técnica detalhada (Sistemas Distribuídos, Automação ETL, IA Corporativa, Consultoria de Suporte à Decisão).
-- **Navegação Sem Recarregamento:** Utilização integral de `<Link>` do `next/link` com prefetching automático.
-- **Roteamento Absoluto de Contacto:** Pontos de conversão na navegação configurados com `href="/#contacto"`, garantindo que o acionamento a partir de qualquer subpágina encaminhe diretamente para o formulário e âncora do rodapé institucional.
-- **Conversão Autónoma:** Eliminação de dependências externas de agendamento de terceiros (Cal.com), reduzindo a pegada de scripts e riscos de rastreamento de dados.
-
-### 4. Design System e Identidade Visual
-- **Paleta Base:** Dark Mode estrito assente em `zinc-950` (`#09090b` / `#0a0a0a`), superfícies translúcidas em `zinc-900` e bordas finas em `zinc-800` (`rgba(63, 63, 70, 0.5)`).
-- **Acento Técnico:** Cobre / Laranja Queimado (`#EA580C`, `--copper`) reservado para pontos focais, métricas ativas e gatilhos de interação.
-- **Tipografia:** Tipos de letra Geist Sans e Geist Mono via `next/font/google`.
+- **Estética Minimalista (Light Mode + Top Aurora Fade):** Base branca pura (`#FFFFFF`) com tinta profunda (`#0B0F17`), fade superior difuso com grão orgânico nas cores da Midi8 (`.top-aurora-fade`), pílulas pastel interativas e tipografia editorial (`Cormorant Garamond`).
+- **Carrossel Interativo de Serviços (`ServicesCarousel.tsx`):** Carrossel horizontal com filtro por categoria e cartões com transição suave de superfície neutra (`#F4F5F7`) para gradiente da marca no estado ativo/hover, apresentando os 13 serviços da Midi8:
+  1. Web Design e Desenvolvimento Web
+  2. Desenvolvimento de Software
+  3. Desenvolvimento de Soluções Tecnológicas
+  4. Automação de Processos
+  5. Estratégia e Comunicação
+  6. Publicidade e Campanhas
+  7. Marketing Digital e Redes Sociais
+  8. Consultoria Informática
+  9. Consultoria em Media Digitais
+  10. Análise de Dados e Suporte à Tomada de Decisão
+  11. Inteligência Artificial e Modelos de Linguagem (LLMs)
+  12. Operações de Comércio Eletrónico (E-commerce Operations)
+  13. Desenvolvimento Mobile
+- **Single-Page + Redirecionamentos:** Toda a experiência principal vive em `/` seguindo a ordem **A Midi8** (`#sobre`), **Serviços** (`#servicos`), **Equipa** (`#equipa`) e **Contactos** (`#contacto`), mantendo redirecionamentos limpos para rotas antigas (`/solucoes`, `/sobre`, `/contacto`) e páginas legais (`/privacidade`, `/termos`).
+- **Conversão Autónoma:** Formulário de contacto (`ContactForm.tsx`) com validação partilhada cliente/servidor (`src/lib/contact.ts`), proteção *honeypot*, *rate limiting* por IP (`src/app/api/contacto/route.ts`), envio via Resend e fallback `mailto:`.
 
 ---
 
 ## Stack Tecnológico
 
-- **Framework:** Next.js 16.4.0 (Turbopack, App Router, Static Prerendering)
-- **Biblioteca Base:** React 19.3.0
-- **Linguagem:** TypeScript 5.0 (Strict mode)
-- **Estilização:** Tailwind CSS v4.0
-- **Animação e Física:** Framer Motion 14.1.0
-- **Qualidade e Linting:** ESLint 9
+- **Framework:** Next.js 16 (Turbopack, App Router, Cache Components, Partial Prefetching)
+- **Biblioteca Base:** React 19
+- **Linguagem:** TypeScript 5 (Strict mode)
+- **Estilização:** Tailwind CSS v4
+- **Animação:** Framer Motion 14
+- **Qualidade:** ESLint 9
 
 ---
 
@@ -54,66 +41,60 @@ O projeto foi construído para aliar estética técnica de alta precisão com ef
 
 ```
 midi8/
-├── public/                     # Ativos estáticos e favicon
+├── public/brand/
+│   └── midi8-wordmark.svg        # Logótipo oficial vetorizado
 ├── src/
 │   ├── app/
-│   │   ├── globals.css         # Tokens CSS, Tailwind v4 e utilitários
-│   │   ├── layout.tsx          # Root Layout com tipografia e metadados SEO
-│   │   ├── page.tsx            # Página inicial e orquestração espacial
-│   │   ├── sobre/
-│   │   │   └── page.tsx        # Rota corporativa: Manifesto e Pilares
-│   │   └── solucoes/
-│   │       └── page.tsx        # Rota técnica: Matriz de Serviços
-│   └── components/
-│       ├── BentoServices.tsx   # Bento Box responsiva com Crown Jewel neural
-│       ├── Footer.tsx          # Rodapé institucional de 12 colunas com âncora #contacto
-│       ├── Hero.tsx            # Motor gráfico Canvas 2D / CSS com deteção móvel
-│       ├── Navbar.tsx          # Navegação com viewport dinâmico e bloqueio de scroll
-│       ├── Showcase.tsx        # Portfólio de projetos em produção
-│       ├── SobreContent.tsx    # Componente visual da página Manifesto
-│       ├── SolucoesContent.tsx # Componente visual da matriz de capacidade técnica
-│       └── TechStack.tsx       # Matriz horizontal de tecnologias dominadas
-├── package.json                # Declaração estrita de dependências limpas
-├── tsconfig.json               # Configurações do compilador TypeScript
-└── README.md                   # Documentação técnica do projeto
+│   │   ├── api/contacto/route.ts # Endpoint POST com validação, honeypot, rate limit e Resend
+│   │   ├── contacto/page.tsx     # Redirecionamento para /#contacto
+│   │   ├── privacidade/page.tsx  # Política de Privacidade (RGPD)
+│   │   ├── termos/page.tsx       # Termos e Condições
+│   │   ├── sobre/page.tsx        # Redirecionamento para /#sobre
+│   │   ├── solucoes/page.tsx     # Redirecionamento para /#servicos
+│   │   ├── globals.css           # Design System Minimalista + Top Aurora Fade
+│   │   ├── icon.svg              # Favicon vetorial
+│   │   ├── layout.tsx            # Root Layout, fontes, JSON-LD, Navbar & Footer
+│   │   ├── not-found.tsx         # Página 404 personalizada
+│   │   ├── opengraph-image.tsx   # Geração dinâmica de imagem OpenGraph
+│   │   ├── twitter-image.tsx     # Geração dinâmica de imagem Twitter/X
+│   │   ├── page.tsx              # Página única principal (Hero, Carrossel, Sobre, Contacto)
+│   │   ├── robots.ts             # Diretivas de rastreamento
+│   │   └── sitemap.ts            # Mapa do site XML
+│   ├── components/
+│   │   ├── ContactForm.tsx       # Formulário de contacto validado
+│   │   ├── Footer.tsx            # Rodapé institucional
+│   │   ├── Hero.tsx              # Hero minimalista com fade superior e pílulas de categoria
+│   │   ├── MotionProvider.tsx    # Configuração global prefers-reduced-motion
+│   │   ├── Navbar.tsx            # Barra de navegação minimalista single-page
+│   │   ├── ServicesCarousel.tsx  # Carrossel interativo dos 13 serviços
+│   │   ├── TeamSection.tsx       # Secção de equipa com galeria escalonada e vidro fosco
+│   │   └── Wordmark.tsx          # Logótipo SVG vetorizado MIDI8
+│   └── lib/                      # Utilitários de contacto, OG image e URL base
+├── package.json
+├── tsconfig.json
+└── README.md
 ```
 
 ---
 
 ## Instruções de Execução
 
-### Pré-requisitos
-- Node.js 18.17 ou superior
-- npm 9 ou superior
-
-### Instalação
 ```bash
 git clone https://github.com/Midi-8/midi8.git
 cd midi8
 npm install
-```
-
-### Desenvolvimento
-```bash
 npm run dev
 ```
 Servidor acessível em `http://localhost:3000`.
 
 ### Verificação e Compilação
 ```bash
-# Verificação estática de código e tipagem
 npm run lint
-
-# Compilação de produção com otimização estática
+npx tsc --noEmit
 npm run build
-
-# Execução do bundle de produção localmente
 npm run start
 ```
 
 ---
 
-## Propriedade e Licença
-
-(c) 2026 Midi8. Todos os direitos reservados.  
-Código proprietário para infraestrutura e plataforma institucional da organização.
+© 2026 Midi8. Todos os direitos reservados.

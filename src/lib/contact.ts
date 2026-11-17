@@ -1,6 +1,11 @@
 // Validação do pedido de reunião, partilhada pelo formulário (cliente) e pela API (servidor).
 
-export const AREAS = ["Sistemas Distribuídos", "Automação", "Inteligência Artificial", "Consultoria"] as const;
+export const AREAS = [
+  "Web, Software & Mobile",
+  "Automação, IA & Dados",
+  "Estratégia, Marketing & Campanhas",
+  "Consultoria & E-commerce",
+] as const;
 export type Area = (typeof AREAS)[number];
 
 export type ContactRequest = {

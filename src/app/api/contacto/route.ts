@@ -1,8 +1,44 @@
 import { CONTACT_EMAIL, toContactRequest, validateContact } from "@/lib/contact";
 
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const RATE_MAX_REQUESTS = 5;
+const requestLog = new Map<string, number[]>();
+
+function getClientIp(request: Request): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    const first = forwarded.split(",")[0]?.trim();
+    if (first) return first;
+  }
+  return request.headers.get("x-real-ip")?.trim() || "unknown";
+}
+
+function isRateLimited(ip: string, now: number): boolean {
+  const windowStart = now - RATE_WINDOW_MS;
+  const recent = (requestLog.get(ip) ?? []).filter((ts) => ts > windowStart);
+
+  if (recent.length >= RATE_MAX_REQUESTS) {
+    requestLog.set(ip, recent);
+    return true;
+  }
+
+  recent.push(now);
+  requestLog.set(ip, recent);
+
+  // Evita crescimento ilimitado do mapa em memória
+  if (requestLog.size > 1000) {
+    for (const [key, timestamps] of requestLog.entries()) {
+      if (timestamps.every((ts) => ts <= windowStart)) {
+        requestLog.delete(key);
+      }
+    }
+  }
+
+  return false;
+}
+
 // Envia o pedido por email via API do Resend (sem dependência).
 // Sem RESEND_API_KEY responde 503 e o formulário oferece o fallback mailto.
-// shortcut: sem rate limiting; acrescentar (ex.: por IP) se aparecer spam.
 export async function POST(request: Request) {
   let raw: unknown;
   try {
@@ -14,6 +50,10 @@ export async function POST(request: Request) {
   // Honeypot: bots preenchem o campo escondido "website". Fingimos sucesso.
   if (raw && typeof raw === "object" && (raw as Record<string, unknown>).website) {
     return Response.json({ ok: true });
+  }
+
+  if (isRateLimited(getClientIp(request), Date.now())) {
+    return Response.json({ error: "rate_limited" }, { status: 429 });
   }
 
   const data = toContactRequest(raw);

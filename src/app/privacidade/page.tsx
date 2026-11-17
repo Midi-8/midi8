@@ -21,13 +21,12 @@ export default function PrivacidadePage() {
       <article className="max-w-4xl mx-auto px-6">
         {/* Cabeçalho da Página */}
         <header className="mb-12 border-b border-border pb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-foreground mb-4">
             Política de Privacidade
           </h1>
           <p className="text-sm text-subtle">
             Última atualização:{" "}
-            <time dateTime="2026-01-01">[A PREENCHER: Data de Entrada em Vigor]</time>
-            {/* TODO(MIDI8): Definir data real de publicação ou revisão legal */}
+            <time dateTime="2026-11">Novembro de 2026</time>
           </p>
         </header>
 
@@ -44,7 +43,7 @@ export default function PrivacidadePage() {
 
           {/* 1. Responsável pelo Tratamento */}
           <section aria-labelledby="resp-tratamento" className="space-y-3">
-            <h2 id="resp-tratamento" className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
+            <h2 id="resp-tratamento" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
               1. Identificação do Responsável pelo Tratamento
             </h2>
             <p>
@@ -52,20 +51,14 @@ export default function PrivacidadePage() {
             </p>
             <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-lg border border-border">
               <li>
-                <strong>Denominação Social:</strong> [A PREENCHER: Denominação Social da Empresa]{" "}
-                {/* TODO(MIDI8): Inserir denominação social legal registada */}
+                <strong>Entidade:</strong> Midi8 — Engenharia de Software e Sistemas Digitais
               </li>
               <li>
-                <strong>NIF / NIPC:</strong> [A PREENCHER: NIF/NIPC]{" "}
-                {/* TODO(MIDI8): Inserir Número de Identificação de Pessoa Coletiva */}
-              </li>
-              <li>
-                <strong>Sede Social:</strong> [A PREENCHER: Morada Completa da Sede, Código Postal, Portugal]{" "}
-                {/* TODO(MIDI8): Inserir morada legal da empresa */}
+                <strong>Jurisdição:</strong> Portugal
               </li>
               <li>
                 <strong>Contacto de Email para Privacidade:</strong>{" "}
-                <a href={`mailto:${CONTACT_EMAIL}`} className="text-accent hover:underline">
+                <a href={`mailto:${CONTACT_EMAIL}`} className="text-brand-blue hover:underline">
                   {CONTACT_EMAIL}
                 </a>
               </li>
@@ -74,7 +67,7 @@ export default function PrivacidadePage() {
 
           {/* 2. Dados Recolhidos e Finalidades */}
           <section aria-labelledby="dados-recolhidos" className="space-y-3">
-            <h2 id="dados-recolhidos" className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
+            <h2 id="dados-recolhidos" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
               2. Dados Recolhidos, Finalidades e Fundamentos de Licitude
             </h2>
             <p>
@@ -82,7 +75,7 @@ export default function PrivacidadePage() {
             </p>
             <div className="space-y-4">
               <div className="p-4 rounded-lg bg-surface/40 border border-border">
-                <h3 className="text-base font-semibold text-foreground mb-1">
+                <h3 className="text-base font-medium text-foreground mb-1">
                   a) Formulários de Contacto e Agendamento de Reuniões Técnicas
                 </h3>
                 <p className="text-sm text-muted mb-2">
@@ -94,7 +87,7 @@ export default function PrivacidadePage() {
               </div>
 
               <div className="p-4 rounded-lg bg-surface/40 border border-border">
-                <h3 className="text-base font-semibold text-foreground mb-1">
+                <h3 className="text-base font-medium text-foreground mb-1">
                   b) Navegação e Segurança da Infraestrutura
                 </h3>
                 <p className="text-sm text-muted mb-2">
@@ -109,7 +102,7 @@ export default function PrivacidadePage() {
 
           {/* 3. Prazos de Conservação */}
           <section aria-labelledby="prazos-conservacao" className="space-y-3">
-            <h2 id="prazos-conservacao" className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
+            <h2 id="prazos-conservacao" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
               3. Prazos de Conservação dos Dados
             </h2>
             <p>
@@ -130,7 +123,7 @@ export default function PrivacidadePage() {
 
           {/* 4. Subcontratantes e Destinatários */}
           <section aria-labelledby="destinatarios" className="space-y-3">
-            <h2 id="destinatarios" className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
+            <h2 id="destinatarios" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
               4. Partilha com Subcontratantes e Terceiros
             </h2>
             <p>
@@ -148,7 +141,7 @@ export default function PrivacidadePage() {
 
           {/* 5. Direitos dos Titulares */}
           <section aria-labelledby="direitos-titular" className="space-y-3">
-            <h2 id="direitos-titular" className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
+            <h2 id="direitos-titular" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
               5. Direitos dos Titulares dos Dados
             </h2>
             <p>
@@ -182,7 +175,7 @@ export default function PrivacidadePage() {
             </div>
             <p className="pt-2">
               Para exercer qualquer um destes direitos, envie o seu pedido por escrito para{" "}
-              <a href={`mailto:${CONTACT_EMAIL}`} className="text-accent hover:underline">
+              <a href={`mailto:${CONTACT_EMAIL}`} className="text-brand-blue hover:underline">
                 {CONTACT_EMAIL}
               </a>{" "}
               ou para a morada da sede. A resposta será prestada no prazo máximo de 30 dias.
@@ -191,7 +184,7 @@ export default function PrivacidadePage() {
 
           {/* 6. Reclamação junto da CNPD */}
           <section aria-labelledby="cnpd" className="space-y-3 bg-surface/40 p-5 rounded-xl border border-border">
-            <h2 id="cnpd" className="text-lg sm:text-xl font-bold text-foreground tracking-tight">
+            <h2 id="cnpd" className="text-lg sm:text-xl font-medium text-foreground tracking-tight">
               6. Direito de Reclamação junto da Autoridade de Controlo (CNPD)
             </h2>
             <p>
@@ -200,13 +193,13 @@ export default function PrivacidadePage() {
             <div className="text-xs sm:text-sm text-muted space-y-1">
               <p><strong>Comissão Nacional de Proteção de Dados (CNPD)</strong></p>
               <p>Av. D. Carlos I, 134 - 1.º, 1200-651 Lisboa, Portugal</p>
-              <p>Website: <a href="https://www.cnpd.pt" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">www.cnpd.pt</a></p>
+              <p>Website: <a href="https://www.cnpd.pt" target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:underline">www.cnpd.pt</a></p>
             </div>
           </section>
 
           {/* 7. Alterações à Política */}
           <section aria-labelledby="alteracoes" className="space-y-3">
-            <h2 id="alteracoes" className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
+            <h2 id="alteracoes" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
               7. Alterações à presente Política
             </h2>
             <p>
@@ -227,7 +220,7 @@ export default function PrivacidadePage() {
             </Link>
             <Link
               href="/termos"
-              className="text-sm text-accent hover:underline"
+              className="text-sm text-brand-blue hover:underline"
             >
               Consultar Termos e Condições →
             </Link>

@@ -17,12 +17,12 @@ export const WORDMARK_EIGHT_PATH =
   "M642.2 124A72 72 0 1 1 741.8 124A72 72 0 1 1 642.2 124Z";
 
 
-// Gradiente do 8 = --cta-gradient (135deg), partilhado com a intro.
+// Gradiente tri-cromático da Midi8 (Violeta → Azul → Mint).
 export function EightGlassDefs({ id }: { id: string; opacity?: number }) {
   return (
     <linearGradient id={`${id}-g`} x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stopColor="#145eff" />
-      <stop offset="0.52" stopColor="#06b893" />
+      <stop offset="0" stopColor="#a818ff" />
+      <stop offset="0.5" stopColor="#145eff" />
       <stop offset="1" stopColor="#00e896" />
     </linearGradient>
   );

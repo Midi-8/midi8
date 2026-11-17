@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import {
   AREAS,
   contactMailto,
   toContactRequest,
   validateContact,
+  type Area,
   type ContactErrors,
   type ContactRequest,
 } from "@/lib/contact";
@@ -41,7 +42,19 @@ function Field({
 export default function ContactForm() {
   const [errors, setErrors] = useState<ContactErrors>({});
   const [status, setStatus] = useState<Status>("idle");
+  const [selectedArea, setSelectedArea] = useState<Area | "">("");
   const [sentData, setSentData] = useState<ContactRequest | null>(null);
+
+  useEffect(() => {
+    const onPreselect = (e: Event) => {
+      const nextArea = (e as CustomEvent<Area>).detail;
+      if ((AREAS as readonly string[]).includes(nextArea)) {
+        setSelectedArea(nextArea);
+      }
+    };
+    window.addEventListener("midi8:preselect-area", onPreselect);
+    return () => window.removeEventListener("midi8:preselect-area", onPreselect);
+  }, []);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -66,6 +79,7 @@ export default function ContactForm() {
       });
       if (res.ok) {
         setStatus("sent");
+        setSelectedArea("");
         form.reset();
         return;
       }
@@ -86,12 +100,12 @@ export default function ContactForm() {
   if (status === "sent") {
     return (
       <div className="neu-panel p-8 sm:p-12 text-center" role="status">
-        <div className="success-pulse mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full neu-option !p-0 text-accent">
+        <div className="success-pulse mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-brand-blue/25 bg-brand-blue/10 text-brand-blue">
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-2xl font-semibold tracking-tight mb-3">Pedido enviado.</h2>
+        <h2 className="text-2xl font-medium tracking-tight mb-3">Pedido enviado.</h2>
         <p className="text-muted mb-8">Respondemos em até 24 horas para marcar a reunião.</p>
         <button type="button" className="neu-option" onClick={() => setStatus("idle")}>
           Enviar outro pedido
@@ -104,8 +118,8 @@ export default function ContactForm() {
     errors[k] ? { "aria-invalid": true as const, "aria-describedby": `${k}-error` } : {};
 
   return (
-    <form onSubmit={onSubmit} noValidate className="neu-panel p-6 sm:p-10 flex flex-col gap-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <form onSubmit={onSubmit} noValidate className="neu-panel p-4 sm:p-7 flex flex-col gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         <Field id="name" label="Nome" error={errors.name}>
           <input id="name" name="name" autoComplete="name" className="neu-field" placeholder="O seu nome" {...invalid("name")} />
         </Field>
@@ -118,12 +132,19 @@ export default function ContactForm() {
         <input id="email" name="email" type="email" autoComplete="email" className="neu-field" placeholder="nome@empresa.pt" {...invalid("email")} />
       </Field>
 
-      <fieldset className="flex flex-col gap-3" {...(errors.area ? { "aria-describedby": "area-error" } : {})}>
-        <legend className="text-sm text-secondary mb-3">Área de interesse</legend>
-        <div className="flex flex-wrap gap-3">
+      <fieldset className="flex flex-col gap-1.5" {...(errors.area ? { "aria-describedby": "area-error" } : {})}>
+        <legend className="text-sm text-secondary mb-1.5">Área de interesse</legend>
+        <div className="flex flex-nowrap sm:flex-wrap overflow-x-auto no-scrollbar gap-1.5 sm:gap-2 pb-0.5">
           {AREAS.map((area) => (
-            <label key={area} className="neu-option">
-              <input type="radio" name="area" value={area} className="sr-only" />
+            <label key={area} className="neu-option shrink-0">
+              <input
+                type="radio"
+                name="area"
+                value={area}
+                checked={selectedArea === area}
+                onChange={() => setSelectedArea(area)}
+                className="sr-only"
+              />
               {area}
             </label>
           ))}
@@ -139,8 +160,8 @@ export default function ContactForm() {
         <textarea
           id="message"
           name="message"
-          rows={5}
-          className="neu-field resize-y min-h-32"
+          rows={2}
+          className="neu-field resize-none min-h-16 sm:min-h-20"
           placeholder="Objetivo, contexto atual, prazos e o que precisa de nós."
           {...invalid("message")}
         />
@@ -154,7 +175,7 @@ export default function ContactForm() {
       {status === "failed" && sentData && (
         <p role="alert" className="text-sm text-secondary">
           Não foi possível enviar agora.{" "}
-          <a href={contactMailto(sentData)} className="text-accent underline underline-offset-4 max-md:inline-flex max-md:items-center max-md:min-h-11">
+          <a href={contactMailto(sentData)} className="text-brand-blue underline underline-offset-4 max-md:inline-flex max-md:items-center max-md:min-h-11">
             Enviar por email
           </a>{" "}
           com os mesmos dados.
@@ -164,7 +185,7 @@ export default function ContactForm() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
         <p className="text-xs text-subtle">Usamos os seus dados apenas para responder a este pedido.</p>
         <button type="submit" className="neu-submit" disabled={status === "sending"} aria-busy={status === "sending"}>
-          {status === "sending" ? "A enviar…" : "Pedir reunião"}
+          {status === "sending" ? "A enviar…" : "Enviar Mensagem"}
           {status === "sending" ? (
             <span className="spinner" aria-hidden="true" />
           ) : (

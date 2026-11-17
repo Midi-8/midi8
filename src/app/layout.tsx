@@ -1,59 +1,75 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Outfit } from "next/font/google";
+import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
-import LiquidBackground from "@/components/LiquidBackground";
 import Footer from "@/components/Footer";
 import MotionProvider from "@/components/MotionProvider";
-import LogoIntro, { INTRO_BOOT_SCRIPT } from "@/components/LogoIntro";
+import { CONTACT_EMAIL, CONTACT_PHONE, SOCIAL } from "@/lib/contact";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Midi8",
+  url: siteUrl,
+  email: CONTACT_EMAIL,
+  telephone: CONTACT_PHONE,
+  description:
+    "Estúdio de tecnologia, software, automação, inteligência artificial e marketing digital para empresas.",
+  areaServed: "PT",
+  sameAs: [SOCIAL.linkedin, SOCIAL.github, SOCIAL.instagram],
+};
+
+const ornateSerif = Cormorant_Garamond({
+  variable: "--font-ornate",
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
-
-// Fonte de título: geométrica e pesada, próxima do logótipo.
-const display = Outfit({
-  variable: "--font-display",
-  weight: ["500", "700", "800"],
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Midi8 — Engenharia de Software & Soluções Digitais de Alto Nível",
+  title: "Midi8 — Tecnologia, Software, Automação & Comunicação Digital",
   description:
-    "Transformamos operações complexas em sistemas digitais elegantes. Desenvolvimento Web, Automação, IA, Apps Móveis e Consultoria Técnica de suporte à decisão.",
+    "Web Design, Desenvolvimento de Software e Mobile, Automação de Processos, IA & LLMs, Análise de Dados, E-commerce e Estratégia Digital.",
   keywords: [
-    "engenharia de software",
+    "web design",
     "desenvolvimento web",
-    "automação",
+    "desenvolvimento de software",
+    "automação de processos",
     "inteligência artificial",
-    "consultoria técnica",
-    "Next.js",
-    "React",
-    "aplicações móveis",
+    "marketing digital",
+    "consultoria informática",
+    "e-commerce",
+    "desenvolvimento mobile",
     "Midi8",
   ],
   authors: [{ name: "Midi8" }],
   openGraph: {
-    title: "Midi8 — Engenharia de Software & Soluções Digitais",
+    title: "Midi8 — Tecnologia, Software & Comunicação Digital",
     description:
-      "Transformamos operações complexas em sistemas digitais elegantes.",
+      "Web Design, Software, Automação, IA, Marketing Digital e Consultoria num único parceiro.",
     type: "website",
     locale: "pt_PT",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Midi8 — Engenharia de Software & Soluções Digitais",
+    title: "Midi8 — Tecnologia, Software & Comunicação Digital",
     description:
-      "Transformamos operações complexas em sistemas digitais elegantes.",
+      "Web Design, Software, Automação, IA, Marketing Digital e Consultoria num único parceiro.",
   },
   robots: {
     index: true,
@@ -69,17 +85,19 @@ export default function RootLayout({
   return (
     <html
       lang="pt"
-      className={`${geistSans.variable} ${geistMono.variable} ${display.variable} h-full antialiased`}
+      className={`${ornateSerif.variable} ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: INTRO_BOOT_SCRIPT }} />
-      </head>
-      <body className="min-h-full flex flex-col">
-        <LogoIntro />
-        <LiquidBackground />
-        {/* Navbar lives in the root layout so it persists across all routes */}
+      <body
+        className={`${geistSans.className} min-h-full flex flex-col bg-background text-foreground font-normal`}
+      >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
         <MotionProvider>
           <Navbar />
           {children}
