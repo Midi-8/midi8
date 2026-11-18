@@ -136,22 +136,20 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          isIsland ? "top-3 sm:top-4 px-4 sm:px-6" : "top-0 px-0"
-        }`}
+        className={`fixed left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${isIsland ? "top-3 sm:top-4 px-4 sm:px-6" : "top-0 px-0"
+          }`}
       >
         <div
-          className={`mx-auto flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-            isIsland
+          className={`mx-auto flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${isIsland
               ? "max-w-5xl h-14 px-5 sm:px-6 rounded-2xl backdrop-blur-2xl backdrop-saturate-150 border border-white/65 ring-1 ring-black/[0.06] shadow-[0_16px_40px_-12px_rgba(20,94,255,0.22),0_6px_20px_-8px_rgba(168,24,255,0.16)]"
               : "max-w-7xl h-16 px-5 sm:px-6 rounded-none bg-transparent border border-transparent"
-          }`}
+            }`}
           style={
             isIsland
               ? {
-                  background:
-                    "linear-gradient(110deg, rgba(168, 24, 255, 0.16) 0%, rgba(20, 94, 255, 0.15) 50%, rgba(0, 232, 150, 0.16) 100%), rgba(255, 255, 255, 0.76)",
-                }
+                background:
+                  "linear-gradient(110deg, rgba(168, 24, 255, 0.16) 0%, rgba(20, 94, 255, 0.15) 50%, rgba(0, 232, 150, 0.16) 100%), rgba(255, 255, 255, 0.76)",
+              }
               : undefined
           }
         >
@@ -176,11 +174,10 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`relative px-3.5 py-2 text-sm transition-colors duration-200 whitespace-nowrap ${
-                    isActive
+                  className={`relative px-3.5 py-2 text-sm transition-colors duration-200 whitespace-nowrap ${isActive
                       ? "font-medium text-foreground"
                       : "font-normal text-foreground/75 hover:text-foreground"
-                  }`}
+                    }`}
                   aria-current={isActive ? "true" : undefined}
                 >
                   <span>{link.label}</span>
@@ -207,11 +204,10 @@ export default function Navbar() {
                 type="button"
                 onClick={() => setLocale("pt")}
                 aria-pressed={locale === "pt"}
-                className={`px-1 transition-colors cursor-pointer ${
-                  locale === "pt"
+                className={`px-1 transition-colors cursor-pointer ${locale === "pt"
                     ? "font-semibold text-foreground"
                     : "text-muted hover:text-foreground"
-                }`}
+                  }`}
               >
                 PT
               </button>
@@ -222,11 +218,10 @@ export default function Navbar() {
                 type="button"
                 onClick={() => setLocale("en")}
                 aria-pressed={locale === "en"}
-                className={`px-1 transition-colors cursor-pointer ${
-                  locale === "en"
+                className={`px-1 transition-colors cursor-pointer ${locale === "en"
                     ? "font-semibold text-foreground"
                     : "text-muted hover:text-foreground"
-                }`}
+                  }`}
               >
                 EN
               </button>
@@ -292,11 +287,10 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
-                      className={`flex items-center justify-between py-4 text-3xl tracking-tight border-b border-border transition-colors ${
-                        isActive
+                      className={`flex items-center justify-between py-4 text-3xl tracking-tight border-b border-border transition-colors ${isActive
                           ? "font-medium text-foreground"
                           : "font-normal text-foreground/75 hover:text-foreground"
-                      }`}
+                        }`}
                       aria-current={isActive ? "true" : undefined}
                     >
                       <span>{link.label}</span>
@@ -326,11 +320,10 @@ export default function Navbar() {
                     type="button"
                     onClick={() => setLocale("pt")}
                     aria-pressed={locale === "pt"}
-                    className={`px-3 py-1 transition-colors cursor-pointer ${
-                      locale === "pt"
+                    className={`px-3 py-1 transition-colors cursor-pointer ${locale === "pt"
                         ? "font-semibold text-foreground"
                         : "text-muted hover:text-foreground"
-                    }`}
+                      }`}
                   >
                     Português (PT)
                   </button>
@@ -341,11 +334,10 @@ export default function Navbar() {
                     type="button"
                     onClick={() => setLocale("en")}
                     aria-pressed={locale === "en"}
-                    className={`px-3 py-1 transition-colors cursor-pointer ${
-                      locale === "en"
+                    className={`px-3 py-1 transition-colors cursor-pointer ${locale === "en"
                         ? "font-semibold text-foreground"
                         : "text-muted hover:text-foreground"
-                    }`}
+                      }`}
                   >
                     English (EN)
                   </button>
