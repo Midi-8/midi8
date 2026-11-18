@@ -242,7 +242,7 @@ export default function ContactForm() {
       {status === "failed" && sentData && (
         <p role="alert" className="text-sm text-secondary">
           {copy.failedPrefix}{" "}
-          <a href={contactMailto(sentData)} className="text-brand-blue underline underline-offset-4 max-md:inline-flex max-md:items-center max-md:min-h-11">
+          <a href={contactMailto(sentData, locale)} className="text-brand-blue underline underline-offset-4 max-md:inline-flex max-md:items-center max-md:min-h-11">
             {copy.failedLink}
           </a>{" "}
           {copy.failedSuffix}

@@ -23,6 +23,13 @@ export const AREA_LABELS: Record<"pt" | "en", Record<Area, string>> = {
   },
 };
 
+export const CATEGORY_TO_AREA: Record<string, Area> = {
+  "web-software": "Web, Software & Mobile",
+  "ia-automacao": "Automação, IA & Dados",
+  marketing: "Estratégia, Marketing & Campanhas",
+  "consultoria-ecom": "Consultoria & E-commerce",
+};
+
 export type ContactRequest = {
   name: string;
   email: string;
@@ -89,15 +96,33 @@ export function validateContact(d: ContactRequest, locale: "pt" | "en" = "pt"): 
 }
 
 /** Link mailto com o pedido já preenchido (fallback quando o envio falha). */
-export function contactMailto(d: ContactRequest): string {
-  const subject = `Agendar reunião — ${d.company || d.name || "Midi8"}`;
-  const body = [
-    `Nome: ${d.name}`,
-    `Email: ${d.email}`,
-    `Empresa: ${d.company}`,
-    `Áreas: ${d.areas.join(", ")}`,
-    "",
-    d.message,
-  ].join("\n");
+export function contactMailto(d: ContactRequest, locale: "pt" | "en" = "pt"): string {
+  const isEn = locale === "en";
+  const subject = isEn
+    ? `Schedule meeting — ${d.company || d.name || "Midi8"}`
+    : `Agendar reunião — ${d.company || d.name || "Midi8"}`;
+
+  const translatedAreas = d.areas
+    .map((area) => (isEn ? AREA_LABELS.en[area] || area : area))
+    .join(", ");
+
+  const body = isEn
+    ? [
+        `Name: ${d.name}`,
+        `Email: ${d.email}`,
+        `Company: ${d.company}`,
+        `Areas: ${translatedAreas}`,
+        "",
+        d.message,
+      ].join("\n")
+    : [
+        `Nome: ${d.name}`,
+        `Email: ${d.email}`,
+        `Empresa: ${d.company}`,
+        `Áreas: ${d.areas.join(", ")}`,
+        "",
+        d.message,
+      ].join("\n");
+
   return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }

@@ -91,7 +91,7 @@ export default function Hero() {
             Midi<em className="italic font-normal">8</em>
           </h1>
           <p className="font-display text-[clamp(2.4rem,6.8vw,5rem)] font-medium tracking-tight leading-[1.02] text-foreground/85 mt-3 sm:mt-4">
-            move <em className="italic font-normal">forward</em>, fast
+            move forward, fast
           </p>
         </motion.div>
       </motion.div>

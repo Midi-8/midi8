@@ -221,22 +221,36 @@ export default function Navbar() {
             className="fixed inset-0 z-40 glass-sheet md:hidden flex flex-col pt-20 px-6 pb-8"
           >
             <nav className="flex-1 flex flex-col justify-center gap-2">
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="block py-4 text-3xl font-medium tracking-tight text-foreground border-b border-border"
+              {navLinks.map((link, i) => {
+                const isActive = activeSection === link.sectionId;
+                return (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05 }}
                   >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={`flex items-center justify-between py-4 text-3xl tracking-tight border-b border-border transition-colors ${
+                        isActive
+                          ? "font-medium text-foreground"
+                          : "font-normal text-foreground/75 hover:text-foreground"
+                      }`}
+                      aria-current={isActive ? "true" : undefined}
+                    >
+                      <span>{link.label}</span>
+                      {isActive && (
+                        <span
+                          className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#A818FF] to-[#00E896] shrink-0"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </Link>
+                  </motion.div>
+                );
+              })}
 
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
