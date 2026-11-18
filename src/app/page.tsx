@@ -126,15 +126,15 @@ export default function Home() {
       {/* ─── 01. A Midi8 ─── */}
       <section id="sobre" className="w-full py-20 sm:py-28 px-5 sm:px-6 scroll-mt-16">
         <div className="max-w-7xl w-full mx-auto">
-          <div className="max-w-2xl mb-10 sm:mb-14">
-            <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-4">
+          <div className="max-w-3xl mb-10 sm:mb-14">
+            <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-4 text-balance">
               {locale === "pt" ? (
                 <>
-                  Design simples. <em className="italic font-normal">Código</em> rigoroso. Resultados reais.
+                  Design simples. <span className="whitespace-nowrap">Código rigoroso.</span> Resultados reais.
                 </>
               ) : (
                 <>
-                  Simple design. <em className="italic font-normal">Rigorous</em> code. Real results.
+                  Simple design. <span className="whitespace-nowrap">Rigorous code.</span> Real results.
                 </>
               )}
             </h2>
@@ -196,16 +196,10 @@ export default function Home() {
       <section id="contacto" className="w-full py-20 sm:py-28 px-5 sm:px-6 scroll-mt-16">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           <div className="lg:col-span-5 lg:pt-2">
-            <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-4">
-              {locale === "pt" ? (
-                <>
-                  Vamos dar vida ao seu próximo <em className="italic font-normal">projeto</em>.
-                </>
-              ) : (
-                <>
-                  Let&apos;s bring your next <em className="italic font-normal">project</em> to life.
-                </>
-              )}
+            <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-4 text-balance">
+              {locale === "pt"
+                ? "Vamos dar vida ao seu próximo projeto."
+                : "Let's bring your next project to life."}
             </h2>
             <p className="text-sm sm:text-base text-muted leading-relaxed mb-7 max-w-md">
               {locale === "pt"

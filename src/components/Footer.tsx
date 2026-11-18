@@ -65,7 +65,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="font-display text-lg sm:text-xl text-muted tracking-tight leading-tight">
-              move <em className="italic font-normal">forward</em>, fast
+              move forward, fast
             </p>
           </div>
 

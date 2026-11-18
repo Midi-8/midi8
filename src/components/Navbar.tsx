@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -23,6 +24,8 @@ const NAV_LINKS = {
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isIsland, setIsIsland] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const pathname = usePathname();
   const { locale, setLocale } = useLanguage();
 
   const navLinks = NAV_LINKS[locale];
@@ -33,19 +36,93 @@ export default function Navbar() {
       const heroEl = document.getElementById("hero");
       const pastHero = heroEl
         ? heroEl.getBoundingClientRect().bottom <= 72
-        : window.scrollY > window.innerHeight - 72;
+        : window.scrollY > 16;
       setIsIsland(pastHero);
     };
 
-    const raf = window.requestAnimationFrame(updateIsland);
+    updateIsland();
     window.addEventListener("scroll", updateIsland, { passive: true });
     window.addEventListener("resize", updateIsland, { passive: true });
     return () => {
-      window.cancelAnimationFrame(raf);
       window.removeEventListener("scroll", updateIsland);
       window.removeEventListener("resize", updateIsland);
     };
-  }, []);
+  }, [pathname]);
+
+  useEffect(() => {
+    const sectionIds = ["sobre", "servicos", "equipa", "contacto"];
+    const elements = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (elements.length === 0) {
+      setActiveSection(null);
+      return;
+    }
+
+    const checkActiveSection = () => {
+      // 1. Fim da página: força 'contacto' ativo
+      const isAtBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60;
+      if (isAtBottom) {
+        setActiveSection("contacto");
+        return;
+      }
+
+      // 2. No topo (Hero visível em relevo): nenhum link de secção ativo
+      const hero = document.getElementById("hero");
+      if (hero && hero.getBoundingClientRect().bottom > 220) {
+        setActiveSection(null);
+        return;
+      }
+
+      // 3. Linha focal (~160px do topo)
+      const focalLine = 160;
+      let matched: string | null = null;
+
+      for (const el of elements) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= focalLine && rect.bottom > focalLine) {
+          matched = el.id;
+          break;
+        }
+      }
+
+      if (!matched) {
+        for (let i = elements.length - 1; i >= 0; i--) {
+          const rect = elements[i].getBoundingClientRect();
+          if (rect.top <= focalLine) {
+            matched = elements[i].id;
+            break;
+          }
+        }
+      }
+
+      setActiveSection(matched);
+    };
+
+    const observer = new IntersectionObserver(
+      () => {
+        checkActiveSection();
+      },
+      {
+        rootMargin: "-10% 0px -40% 0px",
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    window.addEventListener("scroll", checkActiveSection, { passive: true });
+    window.addEventListener("resize", checkActiveSection, { passive: true });
+
+    checkActiveSection();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", checkActiveSection);
+      window.removeEventListener("resize", checkActiveSection);
+    };
+  }, [pathname]);
 
   useEffect(() => {
     if (mobileOpen) {
@@ -92,16 +169,31 @@ export default function Navbar() {
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-1.5">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="px-3.5 py-2 text-sm font-normal text-foreground/80 hover:text-foreground transition-colors whitespace-nowrap"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`relative px-3.5 py-2 text-sm transition-colors duration-200 whitespace-nowrap ${
+                    isActive
+                      ? "font-medium text-foreground"
+                      : "font-normal text-foreground/75 hover:text-foreground"
+                  }`}
+                  aria-current={isActive ? "true" : undefined}
+                >
+                  <span>{link.label}</span>
+                  {isActive && (
+                    <motion.span
+                      layoutId="activeNavIndicator"
+                      className="absolute bottom-1 left-3.5 right-3.5 h-[2px] rounded-full bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896]"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Seletor PT/EN + CTA Reta + Mobile Button */}
@@ -188,22 +280,36 @@ export default function Navbar() {
             className="fixed inset-0 z-40 glass-sheet md:hidden flex flex-col pt-20 px-6 pb-8"
           >
             <nav className="flex-1 flex flex-col justify-center gap-2">
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="block py-4 text-3xl font-medium tracking-tight text-foreground border-b border-border"
+              {navLinks.map((link, i) => {
+                const isActive = activeSection === link.id;
+                return (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05 }}
                   >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={`flex items-center justify-between py-4 text-3xl tracking-tight border-b border-border transition-colors ${
+                        isActive
+                          ? "font-medium text-foreground"
+                          : "font-normal text-foreground/75 hover:text-foreground"
+                      }`}
+                      aria-current={isActive ? "true" : undefined}
+                    >
+                      <span>{link.label}</span>
+                      {isActive && (
+                        <span
+                          className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#A818FF] to-[#00E896] shrink-0"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </Link>
+                  </motion.div>
+                );
+              })}
 
               <motion.div
                 initial={{ opacity: 0, y: 12 }}

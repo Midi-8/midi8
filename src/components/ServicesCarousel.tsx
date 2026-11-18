@@ -1,25 +1,56 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useLanguage, type Locale } from "@/context/LanguageContext";
+import { CATEGORY_TO_AREA, type Area } from "@/lib/contact";
 
 export function ServiceCategoryTag({
   category,
   label,
+  area,
 }: {
   category: string;
   label: string;
+  area?: Area;
 }) {
+  const { locale } = useLanguage();
+  const targetArea: Area = area ?? CATEGORY_TO_AREA[category] ?? "Web, Software & Mobile";
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.dispatchEvent(
+      new CustomEvent<Area>("midi8:preselect-area", { detail: targetArea })
+    );
+    const contactEl = document.getElementById("contacto");
+    if (contactEl) {
+      contactEl.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const titleText =
+    locale === "pt"
+      ? `Pedir proposta em ${label}`
+      : `Request proposal in ${label}`;
+
   return (
     <button
       type="button"
-      onClick={() => {
-        window.dispatchEvent(new CustomEvent("midi8:select-category", { detail: category }));
-        document.getElementById("servicos")?.scrollIntoView({ behavior: "smooth" });
-      }}
-      className="rounded-full bg-white/90 border border-border px-2.5 py-0.5 text-[11px] text-muted hover:text-foreground hover:border-border-strong transition-colors cursor-pointer"
+      onClick={handleClick}
+      title={titleText}
+      aria-label={titleText}
+      className="group/tag inline-flex items-center gap-1 rounded-full bg-white/90 border border-border px-2.5 py-0.5 text-[11px] text-muted hover:text-foreground hover:border-foreground/30 hover:bg-white transition-all cursor-pointer shadow-2xs hover:shadow-xs active:scale-95"
     >
-      {label}
+      <span>{label}</span>
+      <svg
+        className="w-2.5 h-2.5 opacity-40 group-hover/tag:opacity-100 group-hover/tag:translate-x-0.5 transition-all text-foreground"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2.5}
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+      </svg>
     </button>
   );
 }
@@ -322,6 +353,7 @@ export default function ServicesCarousel() {
   const [category, setCategory] = useState<CategoryId>("all");
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
   const { locale } = useLanguage();
 
   const categories = CATEGORIES[locale];
@@ -400,15 +432,7 @@ export default function ServicesCarousel() {
         {/* Cabeçalho da secção */}
         <div className="mb-6 sm:mb-7">
           <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.05]">
-            {locale === "pt" ? (
-              <>
-                Os Nossos <em className="italic font-normal">Serviços</em>
-              </>
-            ) : (
-              <>
-                Our <em className="italic font-normal">Services</em>
-              </>
-            )}
+            {locale === "pt" ? "Os Nossos Serviços" : "Our Services"}
           </h2>
           <p className="text-sm sm:text-base text-muted mt-1.5">
             {locale === "pt"
@@ -453,84 +477,106 @@ export default function ServicesCarousel() {
           }}
           className="flex gap-4 sm:gap-5 overflow-x-auto no-scrollbar snap-x snap-mandatory px-5 sm:px-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))] pb-6 pt-3 cursor-grab active:cursor-grabbing"
         >
-          {visibleServices.map((service) => {
-            const isHovered = hoveredId === service.id;
-            return (
-              <article
-                key={service.id}
-                onMouseEnter={() => {
-                  if (!dragRef.current.active) setHoveredId(service.id);
-                }}
-                onMouseLeave={() => {
-                  setHoveredId((prev) => (prev === service.id ? null : prev));
-                }}
-                onClick={() => {
-                  if (!dragRef.current.moved) {
-                    setHoveredId((prev) => (prev === service.id ? null : service.id));
+          <AnimatePresence mode="popLayout">
+            {visibleServices.map((service) => {
+              const isHovered = hoveredId === service.id;
+              return (
+                <motion.article
+                  key={service.id}
+                  layout={prefersReducedMotion ? false : "position"}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 12, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={
+                    prefersReducedMotion
+                      ? false
+                      : { opacity: 0, scale: 0.96, transition: { duration: 0.15 } }
                   }
-                }}
-                className={`service-card snap-start shrink-0 w-[80vw] sm:w-[330px] h-[305px] sm:h-[340px] p-6 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer select-none ${
-                  isHovered ? "service-card--active -translate-y-2" : ""
-                }`}
-              >
-                {/* Camada de gradiente suave para crossfade sem saltos bruscos */}
-                <div
-                  className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${
-                    isHovered ? "opacity-100" : "opacity-0"
+                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  onMouseEnter={() => {
+                    if (!dragRef.current.active) setHoveredId(service.id);
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredId((prev) => (prev === service.id ? null : prev));
+                  }}
+                  onClick={() => {
+                    if (!dragRef.current.moved) {
+                      setHoveredId((prev) => (prev === service.id ? null : service.id));
+                    }
+                  }}
+                  className={`service-card snap-start shrink-0 w-[80vw] sm:w-[330px] h-[305px] sm:h-[340px] p-6 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer select-none ${
+                    isHovered ? "service-card--active -translate-y-2" : ""
                   }`}
-                  style={{ background: service.gradient }}
-                  aria-hidden="true"
-                />
-
-                {/* Véu escuro subtil na metade inferior ao passar o rato */}
-                <div
-                  className={`pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/28 via-black/10 to-transparent transition-opacity duration-500 ${
-                    isHovered ? "opacity-100" : "opacity-0"
-                  }`}
-                  aria-hidden="true"
-                />
-
-                {/* Ícone minimalista em caixa branca e categoria discreta no topo */}
-                <div className="relative z-10 flex items-center justify-between gap-3">
-                  <span
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 ${
-                      isHovered
-                        ? "bg-white/90 border-white text-foreground shadow-xs"
-                        : "bg-white border-black/[0.06] text-foreground shadow-2xs"
+                >
+                  {/* Camada de gradiente suave para crossfade sem saltos bruscos */}
+                  <div
+                    className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${
+                      isHovered ? "opacity-100" : "opacity-0"
                     }`}
-                  >
-                    {service.icon}
-                  </span>
+                    style={{ background: service.gradient }}
+                    aria-hidden="true"
+                  />
 
-                  <span
-                    className={`text-[11px] font-sans tracking-wide uppercase transition-colors duration-300 ${
-                      isHovered ? "text-foreground/75" : "text-subtle"
+                  {/* Véu escuro subtil na metade inferior ao passar o rato */}
+                  <div
+                    className={`pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/28 via-black/10 to-transparent transition-opacity duration-500 ${
+                      isHovered ? "opacity-100" : "opacity-0"
                     }`}
-                  >
-                    {categoryLabels[service.category]}
-                  </span>
-                </div>
+                    aria-hidden="true"
+                  />
 
-                {/* Conteúdo ancorado em baixo em sans-serif limpa e legível */}
-                <div className="relative z-10">
-                  <h3
-                    className={`font-sans text-base sm:text-[17px] font-semibold tracking-tight leading-snug mb-2 transition-colors duration-300 ${
-                      isHovered ? "text-white" : "text-foreground"
-                    }`}
-                  >
-                    {service.title[locale]}
-                  </h3>
-                  <p
-                    className={`text-xs sm:text-[13px] leading-relaxed line-clamp-4 transition-colors duration-300 ${
-                      isHovered ? "text-white/90" : "text-muted"
-                    }`}
-                  >
-                    {service.description[locale]}
-                  </p>
-                </div>
-              </article>
-            );
-          })}
+                  {/* Ícone minimalista em caixa branca e categoria discreta no topo */}
+                  <div className="relative z-10 flex items-center justify-between gap-3">
+                    <span
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 ${
+                        isHovered
+                          ? "bg-white/90 border-white text-foreground shadow-xs"
+                          : "bg-white border-black/[0.06] text-foreground shadow-2xs"
+                      }`}
+                    >
+                      {service.icon}
+                    </span>
+
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const targetArea =
+                          CATEGORY_TO_AREA[service.category] ?? "Web, Software & Mobile";
+                        window.dispatchEvent(
+                          new CustomEvent<Area>("midi8:preselect-area", { detail: targetArea })
+                        );
+                        document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                      title={locale === "pt" ? "Pedir proposta nesta área" : "Request proposal in this area"}
+                      className={`text-[11px] font-sans tracking-wide uppercase transition-colors duration-300 hover:opacity-100 cursor-pointer ${
+                        isHovered ? "text-white/80" : "text-subtle"
+                      }`}
+                    >
+                      {categoryLabels[service.category]}
+                    </button>
+                  </div>
+
+                  {/* Conteúdo ancorado em baixo em sans-serif limpa e legível */}
+                  <div className="relative z-10">
+                    <h3
+                      className={`font-sans text-base sm:text-[17px] font-semibold tracking-tight leading-snug mb-2 transition-colors duration-300 ${
+                        isHovered ? "text-white" : "text-foreground"
+                      }`}
+                    >
+                      {service.title[locale]}
+                    </h3>
+                    <p
+                      className={`text-xs sm:text-[13px] leading-relaxed line-clamp-4 transition-colors duration-300 ${
+                        isHovered ? "text-white/90" : "text-muted"
+                      }`}
+                    >
+                      {service.description[locale]}
+                    </p>
+                  </div>
+                </motion.article>
+              );
+            })}
+          </AnimatePresence>
         </div>
 
         {/* Barra de progresso horizontal do carrossel */}

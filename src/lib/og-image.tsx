@@ -1,5 +1,4 @@
 import { ImageResponse } from "next/og";
-import { WORDMARK_EIGHT_PATH, WORDMARK_GLYPHS, WORDMARK_VIEWBOX } from "@/components/Wordmark";
 
 export const OG_ALT = "Midi8 — Tecnologia, Software, Automação & Comunicação Digital";
 export const OG_SIZE = { width: 1200, height: 630 } as const;
@@ -15,10 +14,11 @@ export function renderBrandOgImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "72px 84px",
-          backgroundColor: "#ffffff",
+          backgroundColor: "#fafaf9",
           backgroundImage:
-            "radial-gradient(circle at 18% 0%, rgba(168, 24, 255, 0.28) 0%, transparent 48%), radial-gradient(circle at 50% 0%, rgba(20, 94, 255, 0.28) 0%, transparent 52%), radial-gradient(circle at 82% 0%, rgba(0, 232, 150, 0.28) 0%, transparent 48%)",
+            "radial-gradient(circle at 18% -8%, rgba(168, 24, 255, 0.32) 0%, transparent 46%), radial-gradient(circle at 50% -12%, rgba(20, 94, 255, 0.28) 0%, transparent 50%), radial-gradient(circle at 82% -8%, rgba(0, 232, 150, 0.30) 0%, transparent 46%)",
           color: "#0b0f17",
+          fontFamily: "system-ui, -apple-system, sans-serif",
         }}
       >
         {/* Top bar */}
@@ -32,8 +32,8 @@ export function renderBrandOgImage() {
         >
           <div
             style={{
-              fontSize: "18px",
-              letterSpacing: "0.1em",
+              fontSize: "16px",
+              letterSpacing: "0.14em",
               textTransform: "uppercase",
               color: "#525866",
               fontWeight: 600,
@@ -45,49 +45,70 @@ export function renderBrandOgImage() {
             style={{
               fontSize: "18px",
               color: "#525866",
+              fontWeight: 500,
             }}
           >
             midi8.com
           </div>
         </div>
 
-        {/* Center Wordmark + Tagline */}
+        {/* Center: Brand name + Tagline + Brief description */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "28px",
+            gap: "12px",
           }}
         >
-          <svg
-            viewBox={WORDMARK_VIEWBOX}
-            width="440"
-            height="144"
-            fill="#0b0f17"
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              fontSize: "116px",
+              fontWeight: 500,
+              letterSpacing: "-0.04em",
+              color: "#0b0f17",
+              lineHeight: 0.92,
+            }}
           >
-            <defs>
-              <linearGradient id="og-eight-grad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#145eff" />
-                <stop offset="0.52" stopColor="#06b893" />
-                <stop offset="1" stopColor="#00e896" />
-              </linearGradient>
-            </defs>
-            {WORDMARK_GLYPHS.map((g) => (
-              <path key={g.id} d={g.d} fill="#0b0f17" />
-            ))}
-            <path d={WORDMARK_EIGHT_PATH} fill="url(#og-eight-grad)" />
-          </svg>
+            <span>Midi</span>
+            <span
+              style={{
+                fontStyle: "italic",
+                fontWeight: 400,
+                marginLeft: "2px",
+                backgroundImage: "linear-gradient(135deg, #a818ff 0%, #145eff 50%, #00e896 100%)",
+                backgroundClip: "text",
+                color: "transparent",
+              }}
+            >
+              8
+            </span>
+          </div>
 
           <div
             style={{
-              fontSize: "34px",
-              lineHeight: 1.25,
-              fontWeight: 700,
+              fontSize: "46px",
+              fontWeight: 500,
+              letterSpacing: "-0.02em",
               color: "#1e293b",
-              maxWidth: "880px",
+              lineHeight: 1.05,
+              marginTop: "8px",
             }}
           >
-            Web, Software, Automação, IA, Marketing Digital e Consultoria num único parceiro.
+            move forward, fast
+          </div>
+
+          <div
+            style={{
+              fontSize: "24px",
+              lineHeight: 1.4,
+              color: "#525866",
+              maxWidth: "880px",
+              marginTop: "16px",
+            }}
+          >
+            Web Design, Software à Medida, Automação de Processos, IA e Estratégia Digital num único parceiro.
           </div>
         </div>
 
@@ -105,22 +126,23 @@ export function renderBrandOgImage() {
               width: "100%",
               height: "2px",
               backgroundImage: "linear-gradient(90deg, #a818ff 0%, #145eff 50%, #00e896 100%)",
-              opacity: 0.7,
+              opacity: 0.75,
             }}
           />
           <div
             style={{
               display: "flex",
-              gap: "24px",
-              fontSize: "18px",
+              gap: "28px",
+              fontSize: "17px",
               color: "#525866",
+              fontWeight: 500,
             }}
           >
-            <span>Web &amp; Mobile</span>
+            <span>Web &amp; Plataformas</span>
             <span>·</span>
-            <span>Software &amp; IA</span>
+            <span>Software &amp; Mobile</span>
             <span>·</span>
-            <span>Automação &amp; Dados</span>
+            <span>Automação &amp; IA</span>
             <span>·</span>
             <span>Estratégia &amp; Marketing</span>
             <span>·</span>
