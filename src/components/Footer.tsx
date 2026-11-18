@@ -50,10 +50,6 @@ export default function Footer() {
 
   return (
     <footer className="relative text-foreground bg-white border-t border-border">
-      <div
-        className="pointer-events-none absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#145EFF]/30 to-transparent"
-        aria-hidden="true"
-      />
       <div className="max-w-7xl mx-auto px-6 pt-10 pb-6 sm:pt-12 sm:pb-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
           {/* Marca & Slogan */}

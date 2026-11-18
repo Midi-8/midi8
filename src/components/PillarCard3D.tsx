@@ -19,7 +19,6 @@ export interface PillarTag {
 }
 
 export interface PillarCard3DProps {
-  num: string;
   title: string;
   description: string;
   tags: readonly PillarTag[];
@@ -43,7 +42,7 @@ function PillarSculpture3D({
 }) {
   if (variant === "layers") {
     return (
-      <div className="relative w-14 h-14 flex items-center justify-center [transform-style:preserve-3d]">
+      <div className="relative w-12 h-12 flex items-center justify-center [transform-style:preserve-3d]">
         <div
           style={{
             transform: "translateZ(12px) translateY(7px) rotateX(55deg) rotateZ(45deg)",
@@ -74,20 +73,20 @@ function PillarSculpture3D({
 
   if (variant === "orbit") {
     return (
-      <div className="relative w-14 h-14 flex items-center justify-center [transform-style:preserve-3d]">
+      <div className="relative w-12 h-12 flex items-center justify-center [transform-style:preserve-3d]">
         <div
           style={{
             transform: "translateZ(16px) rotateX(62deg) rotateY(-22deg)",
             borderColor: `rgba(${accentRgb}, 0.28)`,
           }}
-          className="absolute w-12 h-12 rounded-full border-[1.5px]"
+          className="absolute w-11 h-11 rounded-full border-[1.5px]"
         />
         <div
           style={{
             transform: "translateZ(28px) rotateX(-52deg) rotateY(28deg)",
             borderColor: `rgba(${accentRgb}, 0.52)`,
           }}
-          className="absolute w-10 h-10 rounded-full border-[1.5px]"
+          className="absolute w-9 h-9 rounded-full border-[1.5px]"
         />
         <div
           style={{
@@ -102,7 +101,7 @@ function PillarSculpture3D({
   }
 
   return (
-    <div className="relative w-14 h-14 flex items-end justify-center gap-1.5 pb-1.5 [transform-style:preserve-3d]">
+    <div className="relative w-12 h-12 flex items-end justify-start gap-1.5 pb-1 [transform-style:preserve-3d]">
       <div
         style={{
           transform: "translateZ(16px)",
@@ -133,7 +132,6 @@ function PillarSculpture3D({
 }
 
 export default function PillarCard3D({
-  num,
   title,
   description,
   tags,
@@ -245,39 +243,26 @@ export default function PillarCard3D({
           />
         </div>
 
-        {/* Micro-escultura 3D flutuante */}
-        <motion.div
-          aria-hidden="true"
-          style={
-            prefersReducedMotion
-              ? { transformStyle: "preserve-3d" }
-              : { x: sculptureX, y: sculptureY, transformStyle: "preserve-3d" }
-          }
-          className="pointer-events-none absolute top-6 right-6 z-10"
-        >
-          <PillarSculpture3D
-            variant={variant}
-            accentHex={accentHex}
-            accentRgb={accentRgb}
-          />
-        </motion.div>
-
         {/* Camadas de conteúdo em profundidade */}
         <div className="relative z-10 [transform-style:preserve-3d]">
-          <div
-            style={{
-              transform: "translateZ(34px)",
-              textShadow: "0 8px 18px rgba(15, 23, 42, 0.08)",
-            }}
-            className="mb-5 w-fit"
+          <motion.div
+            aria-hidden="true"
+            style={
+              prefersReducedMotion
+                ? { transformStyle: "preserve-3d" }
+                : { x: sculptureX, y: sculptureY, transformStyle: "preserve-3d" }
+            }
+            className="pointer-events-none mb-5 w-fit"
           >
-            <span className="font-display italic text-4xl sm:text-5xl leading-none text-foreground/85">
-              {num}
-            </span>
-          </div>
+            <PillarSculpture3D
+              variant={variant}
+              accentHex={accentHex}
+              accentRgb={accentRgb}
+            />
+          </motion.div>
 
           <div style={{ transform: "translateZ(22px)" }}>
-            <h3 className="text-xl sm:text-2xl font-medium text-foreground mb-2 pr-14">
+            <h3 className="text-xl sm:text-2xl font-medium text-foreground mb-2">
               {title}
             </h3>
             <p className="text-sm text-muted leading-relaxed">{description}</p>

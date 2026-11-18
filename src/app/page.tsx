@@ -15,7 +15,6 @@ const REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
 const PILLARS = {
   pt: [
     {
-      num: "01",
       accentHex: "#A818FF",
       accentRgb: "168, 24, 255",
       variant: "layers",
@@ -28,7 +27,6 @@ const PILLARS = {
       ],
     },
     {
-      num: "02",
       accentHex: "#145EFF",
       accentRgb: "20, 94, 255",
       variant: "orbit",
@@ -41,7 +39,6 @@ const PILLARS = {
       ],
     },
     {
-      num: "03",
       accentHex: "#00C885",
       accentRgb: "0, 200, 133",
       variant: "prism",
@@ -56,7 +53,6 @@ const PILLARS = {
   ],
   en: [
     {
-      num: "01",
       accentHex: "#A818FF",
       accentRgb: "168, 24, 255",
       variant: "layers",
@@ -69,7 +65,6 @@ const PILLARS = {
       ],
     },
     {
-      num: "02",
       accentHex: "#145EFF",
       accentRgb: "20, 94, 255",
       variant: "orbit",
@@ -82,7 +77,6 @@ const PILLARS = {
       ],
     },
     {
-      num: "03",
       accentHex: "#00C885",
       accentRgb: "0, 200, 133",
       variant: "prism",
@@ -175,7 +169,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7">
             {pillars.map((pillar, index) => (
-              <PillarCard3D key={pillar.num} index={index} {...pillar} />
+              <PillarCard3D key={pillar.variant} index={index} {...pillar} />
             ))}
           </div>
         </div>
@@ -188,17 +182,8 @@ export default function Home() {
       <TeamSection />
 
       {/* ─── 04. Contactos ─── */}
-      <section id="contacto" className="relative w-full py-20 sm:py-28 px-5 sm:px-6 scroll-mt-16 overflow-hidden">
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-80 z-0 opacity-75"
-          style={{
-            background:
-              "radial-gradient(ellipse 36% 70% at 20% 100%, rgba(168, 24, 255, 0.09), transparent 72%), radial-gradient(ellipse 36% 75% at 50% 100%, rgba(20, 94, 255, 0.09), transparent 72%), radial-gradient(ellipse 36% 70% at 80% 100%, rgba(0, 232, 150, 0.09), transparent 72%)",
-          }}
-          aria-hidden="true"
-        />
-
-        <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+      <section id="contacto" className="w-full py-20 sm:py-28 px-5 sm:px-6 scroll-mt-16">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
