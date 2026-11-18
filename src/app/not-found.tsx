@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <main className="flex-1 flex items-center justify-center px-6 pt-28 pb-20 text-foreground">
-      <section className="border border-border bg-white w-full max-w-2xl p-10 sm:p-14 max-md:px-6 max-md:py-8 text-center max-md:text-left">
+      <section className="rounded-2xl border border-border bg-white shadow-[0_18px_44px_-30px_rgba(15,23,42,0.12)] w-full max-w-2xl p-10 sm:p-14 max-md:px-6 max-md:py-8 text-center max-md:text-left">
         <h1 className="text-4xl sm:text-5xl max-md:text-[2.5rem] max-md:leading-[1.05] font-medium tracking-tight mb-4">
           Página não <em className="italic font-normal">encontrada.</em>
         </h1>

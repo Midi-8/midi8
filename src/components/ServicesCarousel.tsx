@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { motion } from "framer-motion";
 import { useLanguage, type Locale } from "@/context/LanguageContext";
 
 export function ServiceCategoryTag({
@@ -88,8 +89,8 @@ const SERVICES: ServiceItem[] = [
       en: "Web Design & Web Development",
     },
     description: {
-      pt: "Criação e desenvolvimento de websites e plataformas digitais, combinando design, funcionalidade e experiência de utilização para construir soluções adaptadas às necessidades de cada negócio.",
-      en: "Design and development of websites and digital platforms, combining visual craft, functionality, and user experience tailored to each business.",
+      pt: "Criação de websites e plataformas digitais que combinam design cuidado, desempenho e experiência de utilização.",
+      en: "Design and development of websites and digital platforms combining visual craft, speed, and user experience.",
     },
     gradient: GRADIENT_BLUE_MINT,
     icon: (
@@ -106,8 +107,8 @@ const SERVICES: ServiceItem[] = [
       en: "Custom Software Development",
     },
     description: {
-      pt: "Conceção e implementação de programas e aplicações à medida, desenvolvidos para responder a necessidades específicas, otimizar operações e simplificar tarefas.",
-      en: "Architecture and delivery of custom software and web applications engineered for specific operational needs, streamlining workflows at scale.",
+      pt: "Conceção de software e aplicações à medida para responder a necessidades específicas e simplificar operações.",
+      en: "Custom software and web applications engineered for specific operational needs and streamlined workflows.",
     },
     gradient: GRADIENT_VIOLET_BLUE,
     icon: (
@@ -124,7 +125,7 @@ const SERVICES: ServiceItem[] = [
       en: "Technology Solutions Engineering",
     },
     description: {
-      pt: "Identificação de problemas e criação de soluções digitais inovadoras, recorrendo à tecnologia para transformar ideias em ferramentas práticas e funcionais.",
+      pt: "Identificação de gargalos e criação de ferramentas digitais práticas para transformar ideias em sistemas funcionais.",
       en: "Identifying operational bottlenecks and building practical, reliable digital tools that turn ideas into working systems.",
     },
     gradient: GRADIENT_MINT_BLUE,
@@ -142,8 +143,8 @@ const SERVICES: ServiceItem[] = [
       en: "Process Automation",
     },
     description: {
-      pt: "Implementação de sistemas e ferramentas que automatizam tarefas e procedimentos, reduzindo processos manuais, aumentando a eficiência e melhorando a produtividade.",
-      en: "Automated pipelines and system integrations that eliminate repetitive manual work, raise efficiency, and keep operations consistent.",
+      pt: "Sistemas e integrações que automatizam tarefas repetitivas, reduzem erros manuais e aumentam a produtividade.",
+      en: "Automated pipelines and system integrations that eliminate manual work, raise efficiency, and scale operations.",
     },
     gradient: GRADIENT_BLUE_MINT,
     icon: (
@@ -160,7 +161,7 @@ const SERVICES: ServiceItem[] = [
       en: "Strategy & Brand Communication",
     },
     description: {
-      pt: "Definição de estratégias de comunicação alinhadas com os objetivos de cada marca, garantindo uma mensagem coerente, eficaz e direcionada ao público certo.",
+      pt: "Estratégias de comunicação alinhadas com os objetivos da marca, com uma mensagem coerente para o público certo.",
       en: "Communication strategies aligned with business goals, ensuring a clear, coherent voice tailored to the right audience.",
     },
     gradient: GRADIENT_VIOLET_BLUE,
@@ -178,7 +179,7 @@ const SERVICES: ServiceItem[] = [
       en: "Advertising & Campaigns",
     },
     description: {
-      pt: "Planeamento e criação de campanhas publicitárias, desenvolvidas para promover marcas, produtos ou serviços, aumentar a notoriedade e gerar resultados.",
+      pt: "Planeamento e execução criativa de campanhas publicitárias para aumentar notoriedade e gerar resultados mensuráveis.",
       en: "End-to-end campaign planning and creative execution to grow awareness, acquire customers, and drive measurable returns.",
     },
     gradient: GRADIENT_MINT_BLUE,
@@ -196,7 +197,7 @@ const SERVICES: ServiceItem[] = [
       en: "Digital Marketing & Social Media",
     },
     description: {
-      pt: "Gestão e dinamização da presença digital das marcas, através da criação de conteúdos, planeamento estratégico e desenvolvimento de ações de comunicação nas diferentes plataformas.",
+      pt: "Gestão da presença digital com criação de conteúdos, planeamento estratégico e dinamização nas redes sociais.",
       en: "Ongoing management of digital channels with editorial content, strategic calendars, and audience growth across platforms.",
     },
     gradient: GRADIENT_BLUE_MINT,
@@ -214,8 +215,8 @@ const SERVICES: ServiceItem[] = [
       en: "IT Consulting & Systems Audit",
     },
     description: {
-      pt: "Prestação de serviços de aconselhamento e acompanhamento tecnológico, através da análise de sistemas e infraestruturas informáticas, identificando necessidades e recomendando soluções que otimizem os recursos e processos de cada negócio.",
-      en: "Technical advisory and architecture assessment to spot infrastructure gaps and recommend practical upgrades that improve reliability.",
+      pt: "Análise de sistemas e infraestruturas informáticas para identificar melhorias e recomendar soluções tecnológicas eficazes.",
+      en: "Technical advisory and architecture assessment to spot infrastructure gaps and recommend practical upgrades.",
     },
     gradient: GRADIENT_VIOLET_BLUE,
     icon: (
@@ -232,7 +233,7 @@ const SERVICES: ServiceItem[] = [
       en: "Digital Media Advisory",
     },
     description: {
-      pt: "Análise e definição de estratégias para fortalecer a presença digital das marcas, identificando oportunidades de crescimento e recomendando soluções que melhorem a comunicação, a visibilidade e o desempenho nas diferentes plataformas.",
+      pt: "Auditorias digitais e planos estratégicos para reforçar a visibilidade, a comunicação e o desempenho das marcas.",
       en: "Digital presence audits and strategic roadmaps to uncover growth opportunities and strengthen visibility across channels.",
     },
     gradient: GRADIENT_MINT_BLUE,
@@ -250,8 +251,8 @@ const SERVICES: ServiceItem[] = [
       en: "Data Analytics & Decision Support",
     },
     description: {
-      pt: "Recolha, tratamento e interpretação de dados, transformando informação em conhecimento estratégico que permite identificar tendências, avaliar resultados e apoiar decisões mais informadas e eficazes.",
-      en: "Collecting, structuring, and interpreting business data to surface clear insights, track outcomes, and guide confident decisions.",
+      pt: "Recolha, tratamento e leitura de dados para revelar tendências, avaliar resultados e apoiar decisões mais seguras.",
+      en: "Collecting, structuring, and interpreting business data to surface clear insights and guide confident decisions.",
     },
     gradient: GRADIENT_BLUE_MINT,
     icon: (
@@ -268,8 +269,8 @@ const SERVICES: ServiceItem[] = [
       en: "Artificial Intelligence & LLMs",
     },
     description: {
-      pt: "Desenvolvimento e integração de soluções baseadas em inteligência artificial e modelos de linguagem, permitindo automatizar tarefas, otimizar processos e criar ferramentas inteligentes adaptadas às necessidades específicas de cada negócio.",
-      en: "Building and integrating AI workflows, custom agents, and large language models tailored to your company's internal operations.",
+      pt: "Integração de inteligência artificial e LLMs para automatizar fluxos de trabalho e criar agentes à medida do negócio.",
+      en: "Building and integrating AI workflows, custom agents, and large language models tailored to your company's operations.",
     },
     gradient: GRADIENT_VIOLET_BLUE,
     icon: (
@@ -286,7 +287,7 @@ const SERVICES: ServiceItem[] = [
       en: "E-commerce Operations",
     },
     description: {
-      pt: "Gestão e otimização de operações de comércio eletrónico, incluindo a implementação e manutenção de lojas online, gestão de produtos, encomendas e processos de venda, com o objetivo de melhorar a experiência de compra e potenciar os resultados comerciais.",
+      pt: "Implementação e otimização de lojas online, catálogos, encomendas e fluxos de venda para potenciar a conversão.",
       en: "Setup and optimization of online stores, catalog workflows, checkout flows, and fulfillment operations to grow conversion.",
     },
     gradient: GRADIENT_MINT_BLUE,
@@ -304,8 +305,8 @@ const SERVICES: ServiceItem[] = [
       en: "Mobile App Development",
     },
     description: {
-      pt: "Conceção e desenvolvimento de aplicações móveis para diferentes plataformas, criando soluções digitais intuitivas, funcionais e adaptadas às necessidades dos utilizadores e objetivos de cada negócio.",
-      en: "Design and engineering of cross-platform mobile applications focused on speed, usability, and dependable daily performance.",
+      pt: "Desenvolvimento de aplicações móveis rápidas, intuitivas e fiáveis para diferentes plataformas e dispositivos.",
+      en: "Design and engineering of cross-platform mobile applications focused on speed, usability, and daily reliability.",
     },
     gradient: GRADIENT_BLUE_MINT,
     icon: (
@@ -629,7 +630,13 @@ export default function ServicesCarousel() {
     <section id="servicos" className="relative w-full py-20 sm:py-28 scroll-mt-16 overflow-x-clip">
       <div className="max-w-7xl w-full mx-auto px-5 sm:px-6">
         {/* Cabeçalho da secção */}
-        <div className="mb-6 sm:mb-7">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-6 sm:mb-7"
+        >
           <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.05]">
             {locale === "pt" ? (
               <>
@@ -646,7 +653,7 @@ export default function ServicesCarousel() {
               ? "Soluções digitais desenhadas à medida do seu negócio."
               : "Digital solutions tailored to your business."}
           </p>
-        </div>
+        </motion.div>
 
         {/* Filtros por categoria */}
         <div className="flex flex-nowrap sm:flex-wrap items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar mb-4 sm:mb-6 pb-1">
@@ -696,7 +703,12 @@ export default function ServicesCarousel() {
               setHoveredId(null);
             }
           }}
-          style={{ perspective: "1400px" }}
+          style={{
+            perspective: "1400px",
+            maskImage: "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
+          }}
           className="relative w-full h-[390px] sm:h-[430px] flex items-center justify-center select-none overflow-hidden touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing focus-visible:outline-none [--wing-unit:165px] sm:[--wing-unit:235px] lg:[--wing-unit:270px]"
         >
           {visibleServices.map((service, index) => {
@@ -753,9 +765,9 @@ export default function ServicesCarousel() {
                   aria-hidden="true"
                 />
 
-                {/* Véu escuro subtil na metade inferior */}
+                {/* Véu escuro para legibilidade estável nos gradientes ativos */}
                 <div
-                  className={`pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/28 via-black/10 to-transparent transition-opacity duration-500 ${
+                  className={`pointer-events-none absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/44 via-black/18 to-transparent transition-opacity duration-500 ${
                     isSpotlit ? "opacity-100" : "opacity-0"
                   }`}
                   aria-hidden="true"

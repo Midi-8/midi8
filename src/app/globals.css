@@ -16,23 +16,9 @@
   /* texto corrido */
   --subtle: #71717a;
   /* legendas */
-  --faint: #d4d4d8;
-  /* decorativo */
 
-  /* ── Cor: marca (Aurora Tri-Cromática: Mint + Cobalt Blue + Vivid Violet) ── */
-  --accent: #00d68f;
-  --accent-hover: #00bd7e;
-  --accent-light: #64f9c2;
-  --accent-rgb: 0 214 143;
-
+  /* ── Cor: marca ── */
   --brand-blue: #145eff;
-  --brand-blue-rgb: 20 94 255;
-
-  --brand-violet: #a818ff;
-  --brand-violet-rgb: 168 24 255;
-
-  --aurora-gradient: linear-gradient(135deg, #a818ff 0%, #145eff 48%, #00e896 100%);
-  --cta-gradient: linear-gradient(135deg, #145eff 0%, #06b893 52%, #00e896 100%);
 
   /* ── Superfícies e linhas ── */
   --surface: #f4f5f7;
@@ -42,9 +28,7 @@
   --border-strong: rgba(15, 23, 42, 0.22);
   --danger: #dc2626;
 
-  /* ── Forma e movimento ── */
-  --radius-card: 24px;
-  --radius-chip: 999px;
+  /* ── Movimento ── */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -54,12 +38,7 @@
   --color-secondary: var(--secondary);
   --color-muted: var(--muted);
   --color-subtle: var(--subtle);
-  --color-faint: var(--faint);
-  --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
-  --color-accent-light: var(--accent-light);
   --color-brand-blue: var(--brand-blue);
-  --color-brand-violet: var(--brand-violet);
   --color-surface: var(--surface);
   --color-surface-light: var(--surface-light);
   --color-border: var(--border);
@@ -67,7 +46,6 @@
   --color-border-strong: var(--border-strong);
   --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
   --font-display: var(--font-ornate), "Cormorant Garamond", Georgia, serif;
 }
 
@@ -214,7 +192,6 @@
   }
 
   .cta-button,
-  .neu-submit,
   .service-card {
     transition-duration: 0.01ms !important;
   }
@@ -237,10 +214,6 @@
     background: var(--surface);
     border: 1px solid rgba(15, 23, 42, 0.06);
     border-radius: 24px;
-    transition:
-      transform 0.45s var(--ease),
-      box-shadow 0.45s var(--ease),
-      border-color 0.35s var(--ease);
   }
 
   .service-card--active {
@@ -250,7 +223,7 @@
       0 14px 32px -16px rgba(0, 214, 143, 0.2);
   }
 
-  /* ── Botões: corte reto editorial alinhado ao header ── */
+  /* ── Botões: corte arredondado editorial ── */
   .cta-button {
     position: relative;
     display: inline-flex;
@@ -259,7 +232,7 @@
     gap: 8px;
     padding: 12px 24px;
     border: 1px solid var(--foreground);
-    border-radius: 0;
+    border-radius: 9999px;
     background: var(--foreground);
     color: #ffffff;
     font-size: 0.875rem;
@@ -300,32 +273,21 @@
     box-shadow: 0 6px 16px -8px rgba(15, 23, 42, 0.12);
   }
 
-  .cta-sm {
-    padding: 9px 18px;
-    font-size: 0.8125rem;
-  }
-
   /* ── Formulário de contacto editorial limpo ── */
   .neu-panel {
     position: relative;
     overflow: hidden;
     background: #ffffff;
     border: 1px solid var(--border);
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .neu-panel::before,
-  .neu-panel::after {
-    content: none;
-    display: none;
+    border-radius: 20px;
+    box-shadow: 0 18px 44px -30px rgba(15, 23, 42, 0.14);
   }
 
   .neu-field {
     width: 100%;
     padding: 12px 14px;
     border: 1px solid var(--border);
-    border-radius: 0;
+    border-radius: 12px;
     background: #fafaf9;
     color: var(--foreground);
     font-size: 0.875rem;
@@ -354,7 +316,7 @@
     align-items: center;
     gap: 8px;
     padding: 10px 14px;
-    border-radius: 0;
+    border-radius: 12px;
     border: 1px solid var(--border);
     background: #ffffff;
     color: var(--muted);
@@ -380,50 +342,11 @@
     outline-offset: 3px;
   }
 
-  .neu-submit {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    flex-shrink: 0;
-    padding: 8px 20px;
-    border: 1px solid var(--foreground);
-    border-radius: 0;
-    background: transparent;
-    color: var(--foreground);
-    font-size: 0.875rem;
-    font-weight: 400;
-    letter-spacing: 0.025em;
-    white-space: nowrap;
-    cursor: pointer;
-    box-shadow: none;
-    transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
-  }
-
-  .neu-submit:hover {
-    background: var(--foreground);
-    color: #ffffff;
-  }
-
-  .neu-submit:active:not(:disabled) {
-    transform: scale(0.97);
-  }
-
-  .neu-submit:focus-visible {
-    outline: 2px solid var(--brand-blue);
-    outline-offset: 3px;
-  }
-
-  .neu-submit:disabled {
-    opacity: 0.65;
-    cursor: progress;
-  }
-
   .spinner {
     width: 1rem;
     height: 1rem;
     border-radius: 999px;
-    border: 2px solid rgba(255, 255, 255, 0.25);
+    border: 2px solid color-mix(in srgb, currentColor 25%, transparent);
     border-top-color: currentColor;
     animation: spin 0.7s linear infinite;
   }

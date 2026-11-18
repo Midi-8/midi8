@@ -1,5 +1,14 @@
 import { ImageResponse } from "next/og";
-import { WORDMARK_EIGHT_PATH, WORDMARK_GLYPHS, WORDMARK_VIEWBOX } from "@/components/Wordmark";
+
+const WORDMARK_VIEWBOX = "0 -1 765 250";
+const WORDMARK_GLYPHS = [
+  { id: "m", d: "M0 0H105.2L128.6 70L151.8 0H257V248H181V91L165.8 135H94.2L80 92.5V248H0Z" },
+  { id: "i", d: "M277 0H351V248H277Z" },
+  { id: "d", d: "M376 0H433A124 124 0 0 1 433 248H376Z" },
+  { id: "i2", d: "M582 0H692V248H582Z" },
+] as const;
+const WORDMARK_EIGHT_PATH =
+  "M642.2 124A72 72 0 1 1 741.8 124A72 72 0 1 1 642.2 124Z";
 
 export const OG_ALT = "Midi8 — Tecnologia, Software, Automação & Comunicação Digital";
 export const OG_SIZE = { width: 1200, height: 630 } as const;

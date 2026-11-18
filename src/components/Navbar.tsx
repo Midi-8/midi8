@@ -5,45 +5,63 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 
+const SECTION_IDS = ["sobre", "servicos", "equipa", "contacto"] as const;
+
 const NAV_LINKS = {
   pt: [
-    { id: "sobre", label: "A Midi8", href: "/#sobre" },
-    { id: "servicos", label: "Serviços", href: "/#servicos" },
-    { id: "equipa", label: "Equipa", href: "/#equipa" },
-    { id: "contacto", label: "Contactos", href: "/#contacto" },
+    { sectionId: "sobre", label: "A Midi8", href: "/#sobre" },
+    { sectionId: "servicos", label: "Serviços", href: "/#servicos" },
+    { sectionId: "equipa", label: "Equipa", href: "/#equipa" },
+    { sectionId: "contacto", label: "Contactos", href: "/#contacto" },
   ],
   en: [
-    { id: "sobre", label: "About", href: "/#sobre" },
-    { id: "servicos", label: "Services", href: "/#servicos" },
-    { id: "equipa", label: "Team", href: "/#equipa" },
-    { id: "contacto", label: "Contact", href: "/#contacto" },
+    { sectionId: "sobre", label: "About", href: "/#sobre" },
+    { sectionId: "servicos", label: "Services", href: "/#servicos" },
+    { sectionId: "equipa", label: "Team", href: "/#equipa" },
+    { sectionId: "contacto", label: "Contact", href: "/#contacto" },
   ],
 } as const;
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isIsland, setIsIsland] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const { locale, setLocale } = useLanguage();
 
   const navLinks = NAV_LINKS[locale];
   const ctaLabel = locale === "pt" ? "Contacta-nos" : "Contact us";
 
   useEffect(() => {
-    const updateIsland = () => {
+    const updateScrollState = () => {
       const heroEl = document.getElementById("hero");
       const pastHero = heroEl
         ? heroEl.getBoundingClientRect().bottom <= 72
-        : window.scrollY > window.innerHeight - 72;
+        : window.scrollY > 24;
       setIsIsland(pastHero);
+
+      if (heroEl && heroEl.getBoundingClientRect().bottom > 140) {
+        setActiveSection(null);
+        return;
+      }
+
+      const triggerY = window.innerHeight * 0.38;
+      let current: string | null = null;
+      for (const id of SECTION_IDS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= triggerY) {
+          current = id;
+        }
+      }
+      setActiveSection(current);
     };
 
-    const raf = window.requestAnimationFrame(updateIsland);
-    window.addEventListener("scroll", updateIsland, { passive: true });
-    window.addEventListener("resize", updateIsland, { passive: true });
+    const raf = window.requestAnimationFrame(updateScrollState);
+    window.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState, { passive: true });
     return () => {
       window.cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", updateIsland);
-      window.removeEventListener("resize", updateIsland);
+      window.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
     };
   }, []);
 
@@ -92,19 +110,32 @@ export default function Navbar() {
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-1.5">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="px-3.5 py-2 text-sm font-normal text-foreground/80 hover:text-foreground transition-colors whitespace-nowrap"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.sectionId;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`relative px-3.5 py-2 text-sm transition-colors whitespace-nowrap ${
+                    isActive
+                      ? "font-medium text-foreground"
+                      : "font-normal text-foreground/70 hover:text-foreground"
+                  }`}
+                >
+                  {link.label}
+                  <span
+                    aria-hidden="true"
+                    className={`pointer-events-none absolute left-3.5 right-3.5 bottom-0.5 h-[1.5px] rounded-full bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896] transition-all duration-300 ${
+                      isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+                    }`}
+                  />
+                </Link>
+              );
+            })}
           </div>
 
-          {/* Seletor PT/EN + CTA Reta + Mobile Button */}
+          {/* Seletor PT/EN + CTA + Mobile Button */}
           <div className="flex items-center gap-2.5 sm:gap-3 justify-self-end">
             <div
               className="hidden md:inline-flex items-center gap-0.5 px-1 py-1 text-xs"
@@ -144,7 +175,7 @@ export default function Navbar() {
               href="/#contacto"
               onClick={() => setMobileOpen(false)}
               aria-label={ctaLabel}
-              className="hidden md:inline-flex items-center justify-center rounded-none border border-foreground text-foreground hover:bg-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide whitespace-nowrap transition-colors"
+              className="hidden md:inline-flex items-center justify-center rounded-full border border-foreground text-foreground hover:bg-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide whitespace-nowrap transition-colors"
             >
               <span>{ctaLabel}</span>
             </Link>
@@ -152,7 +183,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setMobileOpen((v) => !v)}
-              className="md:hidden w-10 h-10 rounded-none border border-foreground text-foreground flex items-center justify-center transition-transform active:scale-95"
+              className="md:hidden w-10 h-10 rounded-xl border border-foreground text-foreground flex items-center justify-center transition-transform active:scale-95"
               aria-label={
                 mobileOpen
                   ? locale === "pt"
@@ -248,7 +279,7 @@ export default function Navbar() {
                 <Link
                   href="/#contacto"
                   onClick={() => setMobileOpen(false)}
-                  className="inline-flex items-center justify-center w-full py-4 rounded-none border border-foreground bg-foreground text-white text-sm tracking-wide hover:bg-[#1a2234] transition-colors"
+                  className="inline-flex items-center justify-center w-full py-4 rounded-full border border-foreground bg-foreground text-white text-sm tracking-wide hover:bg-[#1a2234] transition-colors"
                 >
                   <span>{ctaLabel}</span>
                 </Link>

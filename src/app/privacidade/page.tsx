@@ -32,7 +32,7 @@ export default function PrivacidadePage() {
 
         {/* Resumo e Enquadramento */}
         <div className="space-y-8 text-secondary text-sm sm:text-base leading-relaxed">
-          <section className="bg-surface/40 border border-border rounded-none p-6">
+          <section className="bg-surface/40 border border-border rounded-2xl p-6">
             <p className="text-secondary">
               A <strong>Midi8</strong> valoriza a privacidade e a segurança dos dados pessoais dos
               seus utilizadores, clientes e parceiros. Esta Política de Privacidade descreve, de
@@ -49,7 +49,7 @@ export default function PrivacidadePage() {
             <p>
               O responsável pelo tratamento dos seus dados pessoais no âmbito deste website e dos serviços prestados é:
             </p>
-            <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-none border border-border">
+            <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-xl border border-border">
               <li>
                 <strong>Entidade:</strong> Midi8 — Engenharia de Software e Sistemas Digitais
               </li>
@@ -74,7 +74,7 @@ export default function PrivacidadePage() {
               Tratamos apenas os dados estritamente necessários para as seguintes finalidades legítimas:
             </p>
             <div className="space-y-4">
-              <div className="p-4 rounded-none bg-surface/40 border border-border">
+              <div className="p-4 rounded-xl bg-surface/40 border border-border">
                 <h3 className="text-base font-medium text-foreground mb-1">
                   a) Formulários de Contacto e Agendamento de Reuniões Técnicas
                 </h3>
@@ -86,7 +86,7 @@ export default function PrivacidadePage() {
                 </p>
               </div>
 
-              <div className="p-4 rounded-none bg-surface/40 border border-border">
+              <div className="p-4 rounded-xl bg-surface/40 border border-border">
                 <h3 className="text-base font-medium text-foreground mb-1">
                   b) Navegação e Segurança da Infraestrutura
                 </h3>
@@ -162,27 +162,27 @@ export default function PrivacidadePage() {
               Nos termos dos artigos 15.º a 22.º do RGPD, o utilizador tem o direito de exercer gratuitamente perante a Midi8:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-              <div className="p-3 bg-surface/40 rounded-none border border-border">
+              <div className="p-3 bg-surface/40 rounded-xl border border-border">
                 <strong className="text-foreground block">Direito de Acesso</strong>
                 Obter confirmação sobre se os seus dados são tratados e aceder aos mesmos.
               </div>
-              <div className="p-3 bg-surface/40 rounded-none border border-border">
+              <div className="p-3 bg-surface/40 rounded-xl border border-border">
                 <strong className="text-foreground block">Direito de Retificação</strong>
                 Solicitar a correção de dados inexatos ou incompletos.
               </div>
-              <div className="p-3 bg-surface/40 rounded-none border border-border">
+              <div className="p-3 bg-surface/40 rounded-xl border border-border">
                 <strong className="text-foreground block">Direito ao Apagamento</strong>
                 Pedir a eliminação dos dados («direito a ser esquecido») dentro dos limites legais.
               </div>
-              <div className="p-3 bg-surface/40 rounded-none border border-border">
+              <div className="p-3 bg-surface/40 rounded-xl border border-border">
                 <strong className="text-foreground block">Direito à Limitação</strong>
                 Solicitar a suspensão temporária do tratamento em circunstâncias específicas.
               </div>
-              <div className="p-3 bg-surface/40 rounded-none border border-border">
+              <div className="p-3 bg-surface/40 rounded-xl border border-border">
                 <strong className="text-foreground block">Direito de Portabilidade</strong>
                 Receber os dados fornecidos em formato estruturado e legível por máquina.
               </div>
-              <div className="p-3 bg-surface/40 rounded-none border border-border">
+              <div className="p-3 bg-surface/40 rounded-xl border border-border">
                 <strong className="text-foreground block">Direito de Oposição</strong>
                 Opor-se ao tratamento de dados fundamentado em interesses legítimos.
               </div>
@@ -197,7 +197,7 @@ export default function PrivacidadePage() {
           </section>
 
           {/* 7. Reclamação junto da CNPD */}
-          <section aria-labelledby="cnpd" className="space-y-3 bg-surface/40 p-5 rounded-none border border-border">
+          <section aria-labelledby="cnpd" className="space-y-3 bg-surface/40 p-5 rounded-2xl border border-border">
             <h2 id="cnpd" className="text-lg sm:text-xl font-medium text-foreground tracking-tight">
               7. Direito de Reclamação junto da Autoridade de Controlo (CNPD)
             </h2>

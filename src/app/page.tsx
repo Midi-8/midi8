@@ -1,17 +1,23 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Hero from "@/components/Hero";
-import ServicesCarousel, { ServiceCategoryTag } from "@/components/ServicesCarousel";
+import PillarCard3D from "@/components/PillarCard3D";
+import ServicesCarousel from "@/components/ServicesCarousel";
 import TeamSection from "@/components/TeamSection";
 import ContactForm from "@/components/ContactForm";
 import { useLanguage } from "@/context/LanguageContext";
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF, SOCIAL } from "@/lib/contact";
 
+const REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
+
 const PILLARS = {
   pt: [
     {
       num: "01",
-      glowBg: "radial-gradient(circle at 85% 15%, rgba(168, 24, 255, 0.14), transparent 62%)",
+      accentHex: "#A818FF",
+      accentRgb: "168, 24, 255",
+      variant: "layers",
       title: "Engenharia & Produto",
       description: "Websites, plataformas web, software à medida e aplicações móveis.",
       tags: [
@@ -22,7 +28,9 @@ const PILLARS = {
     },
     {
       num: "02",
-      glowBg: "radial-gradient(circle at 85% 15%, rgba(20, 94, 255, 0.14), transparent 62%)",
+      accentHex: "#145EFF",
+      accentRgb: "20, 94, 255",
+      variant: "orbit",
       title: "Automação, IA & Dados",
       description: "Integração de sistemas, automação de processos, IA e dados.",
       tags: [
@@ -33,7 +41,9 @@ const PILLARS = {
     },
     {
       num: "03",
-      glowBg: "radial-gradient(circle at 85% 15%, rgba(0, 232, 150, 0.16), transparent 62%)",
+      accentHex: "#00C885",
+      accentRgb: "0, 200, 133",
+      variant: "prism",
       title: "Comunicação & Crescimento",
       description: "Estratégia digital, campanhas, redes sociais e e-commerce.",
       tags: [
@@ -46,7 +56,9 @@ const PILLARS = {
   en: [
     {
       num: "01",
-      glowBg: "radial-gradient(circle at 85% 15%, rgba(168, 24, 255, 0.14), transparent 62%)",
+      accentHex: "#A818FF",
+      accentRgb: "168, 24, 255",
+      variant: "layers",
       title: "Engineering & Product",
       description: "Websites, web platforms, custom software, and mobile applications.",
       tags: [
@@ -57,7 +69,9 @@ const PILLARS = {
     },
     {
       num: "02",
-      glowBg: "radial-gradient(circle at 85% 15%, rgba(20, 94, 255, 0.14), transparent 62%)",
+      accentHex: "#145EFF",
+      accentRgb: "20, 94, 255",
+      variant: "orbit",
       title: "Automation, AI & Data",
       description: "System integration, process automation, AI, and data.",
       tags: [
@@ -68,7 +82,9 @@ const PILLARS = {
     },
     {
       num: "03",
-      glowBg: "radial-gradient(circle at 85% 15%, rgba(0, 232, 150, 0.16), transparent 62%)",
+      accentHex: "#00C885",
+      accentRgb: "0, 200, 133",
+      variant: "prism",
       title: "Communication & Growth",
       description: "Digital strategy, campaigns, social media, and e-commerce.",
       tags: [
@@ -126,7 +142,13 @@ export default function Home() {
       {/* ─── 01. A Midi8 ─── */}
       <section id="sobre" className="relative w-full py-20 sm:py-28 px-5 sm:px-6 scroll-mt-16">
         <div className="max-w-7xl w-full mx-auto">
-          <div className="max-w-2xl mb-10 sm:mb-14">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.5, ease: REVEAL_EASE }}
+            className="max-w-2xl mb-10 sm:mb-14"
+          >
             <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-4">
               {locale === "pt" ? (
                 <>
@@ -143,44 +165,11 @@ export default function Home() {
                 ? "Engenharia, inteligência artificial e comunicação para resolver problemas reais."
                 : "Engineering, artificial intelligence, and communication to solve real problems."}
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-            {pillars.map((pillar) => (
-              <div
-                key={pillar.num}
-                className="relative group rounded-none bg-surface/90 p-7 sm:p-10 min-h-[340px] sm:min-h-[390px] border border-border overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:border-border-light hover:shadow-[0_18px_40px_-24px_rgba(15,23,42,0.12)]"
-              >
-                <div
-                  className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{ background: pillar.glowBg }}
-                  aria-hidden="true"
-                />
-
-                <div className="relative z-10">
-                  <div className="mb-6">
-                    <span className="font-display italic text-4xl sm:text-5xl leading-none text-foreground/85">
-                      {pillar.num}
-                    </span>
-                  </div>
-                  <h3 className="text-xl sm:text-2xl font-medium text-foreground mb-2">
-                    {pillar.title}
-                  </h3>
-                  <p className="text-sm text-muted leading-relaxed">
-                    {pillar.description}
-                  </p>
-                </div>
-
-                <div className="relative z-10 flex flex-wrap gap-1.5 pt-5 mt-6 border-t border-border/80">
-                  {pillar.tags.map((tag) => (
-                    <ServiceCategoryTag
-                      key={tag.label}
-                      category={tag.category}
-                      label={tag.label}
-                    />
-                  ))}
-                </div>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7">
+            {pillars.map((pillar, index) => (
+              <PillarCard3D key={pillar.num} index={index} {...pillar} />
             ))}
           </div>
         </div>
@@ -193,9 +182,24 @@ export default function Home() {
       <TeamSection />
 
       {/* ─── 04. Contactos ─── */}
-      <section id="contacto" className="w-full py-20 sm:py-28 px-5 sm:px-6 scroll-mt-16">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-          <div className="lg:col-span-5 lg:pt-2">
+      <section id="contacto" className="relative w-full py-20 sm:py-28 px-5 sm:px-6 scroll-mt-16 overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-80 z-0 opacity-75"
+          style={{
+            background:
+              "radial-gradient(ellipse 36% 70% at 20% 100%, rgba(168, 24, 255, 0.09), transparent 72%), radial-gradient(ellipse 36% 75% at 50% 100%, rgba(20, 94, 255, 0.09), transparent 72%), radial-gradient(ellipse 36% 70% at 80% 100%, rgba(0, 232, 150, 0.09), transparent 72%)",
+          }}
+          aria-hidden="true"
+        />
+
+        <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, ease: REVEAL_EASE }}
+            className="lg:col-span-5 lg:pt-2"
+          >
             <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-4">
               {locale === "pt" ? (
                 <>
@@ -219,10 +223,10 @@ export default function Home() {
                   key={c.label}
                   href={c.href}
                   {...(c.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className="group flex items-center justify-between gap-4 rounded-none border border-border bg-white p-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-light hover:shadow-[0_14px_32px_-20px_rgba(15,23,42,0.12)]"
+                  className="group flex items-center justify-between gap-4 rounded-2xl border border-border bg-white p-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-light hover:shadow-[0_14px_32px_-20px_rgba(15,23,42,0.12)]"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <span className="w-9 h-9 rounded-none bg-surface border border-border flex items-center justify-center text-foreground shrink-0 transition-colors group-hover:bg-foreground group-hover:text-white group-hover:border-foreground">
+                    <span className="w-9 h-9 rounded-xl bg-surface border border-border flex items-center justify-center text-foreground shrink-0 transition-colors group-hover:bg-foreground group-hover:text-white group-hover:border-foreground">
                       {c.icon}
                     </span>
                     <div className="min-w-0">
@@ -237,11 +241,17 @@ export default function Home() {
                 </a>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          <div className="lg:col-span-7">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.55, delay: 0.08, ease: REVEAL_EASE }}
+            className="lg:col-span-7"
+          >
             <ContactForm />
-          </div>
+          </motion.div>
         </div>
       </section>
     </main>

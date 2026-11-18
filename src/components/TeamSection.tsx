@@ -2,19 +2,19 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { useLanguage, type Locale } from "@/context/LanguageContext";
 
-export type Department =
+type Department =
   | "Produto & Tecnologia"
   | "Marketing & Comunicação"
   | "Diagnóstico & Negócio";
 
-export interface TeamMember {
+interface TeamMember {
   id: string;
   name: string;
   department: Department;
   image: string;
-  auroraGradient: string;
 }
 
 const DEPARTMENT_LABELS: Record<Locale, Record<Department, string>> = {
@@ -43,48 +43,36 @@ const teamMembers: TeamMember[] = [
     name: "José Pedroso",
     department: "Marketing & Comunicação",
     image: "/team/member-3.jpg",
-    auroraGradient:
-      "radial-gradient(ellipse 75% 80% at 12% 35%, rgba(255, 224, 185, 0.55), transparent 62%), radial-gradient(ellipse 80% 80% at 88% 25%, rgba(168, 24, 255, 0.24), transparent 65%), radial-gradient(ellipse 80% 70% at 65% 88%, rgba(0, 232, 150, 0.2), transparent 65%), #faf7f5",
   },
   {
     id: "joao-miguel-santos-gouveia",
     name: "João Gouveia",
     department: "Produto & Tecnologia",
     image: "/team/member-2.jpg",
-    auroraGradient:
-      "radial-gradient(ellipse 85% 75% at 18% 20%, rgba(20, 94, 255, 0.22), transparent 65%), radial-gradient(ellipse 85% 75% at 85% 80%, rgba(0, 232, 150, 0.22), transparent 65%), #f2f6fc",
   },
   {
     id: "miguel-marques-silva",
     name: "Miguel Silva",
     department: "Produto & Tecnologia",
     image: "/team/member-1.jpg",
-    auroraGradient:
-      "radial-gradient(ellipse 85% 75% at 15% 15%, rgba(168, 24, 255, 0.24), transparent 65%), radial-gradient(ellipse 85% 75% at 88% 82%, rgba(20, 94, 255, 0.2), transparent 65%), #f7f4fc",
   },
   {
     id: "hugo-mateus-sa",
     name: "Hugo Sá",
     department: "Diagnóstico & Negócio",
     image: "/team/member-4.jpg",
-    auroraGradient:
-      "radial-gradient(ellipse 85% 75% at 85% 18%, rgba(168, 24, 255, 0.24), transparent 65%), radial-gradient(ellipse 85% 75% at 15% 82%, rgba(0, 232, 150, 0.22), transparent 65%), #f6f4fb",
   },
   {
     id: "vitor-hugo-carneiro",
     name: "Vitor Carneiro",
     department: "Produto & Tecnologia",
     image: "/team/member-5.jpg",
-    auroraGradient:
-      "radial-gradient(ellipse 85% 75% at 18% 25%, rgba(0, 232, 150, 0.24), transparent 65%), radial-gradient(ellipse 85% 75% at 85% 80%, rgba(20, 94, 255, 0.2), transparent 65%), #f2faf7",
   },
   {
     id: "goncalo-jose-silva",
     name: "Gonçalo Silva",
     department: "Marketing & Comunicação",
     image: "/team/member-6.jpg",
-    auroraGradient:
-      "radial-gradient(ellipse 85% 75% at 22% 18%, rgba(20, 94, 255, 0.22), transparent 65%), radial-gradient(ellipse 85% 75% at 82% 85%, rgba(168, 24, 255, 0.22), transparent 65%), #f4f5fc",
   },
 ];
 
@@ -94,11 +82,6 @@ export default function TeamSection() {
   const { locale } = useLanguage();
   const deptLabels = DEPARTMENT_LABELS[locale];
 
-  const visibleMembers =
-    selectedDepartment === "all"
-      ? teamMembers
-      : teamMembers.filter((member) => member.department === selectedDepartment);
-
   return (
     <section
       id="equipa"
@@ -106,7 +89,13 @@ export default function TeamSection() {
     >
       <div className="max-w-7xl w-full mx-auto">
         {/* ─── Cabeçalho da secção ─── */}
-        <div className="mb-6 sm:mb-7">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-6 sm:mb-7"
+        >
           <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.05]">
             {locale === "pt" ? (
               <>
@@ -123,7 +112,7 @@ export default function TeamSection() {
               ? "Especialistas em tecnologia, comunicação e estratégia."
               : "Specialists in technology, communication, and strategy."}
           </p>
-        </div>
+        </motion.div>
 
         {/* ─── Filtros por departamento ─── */}
         <div className="flex flex-nowrap sm:flex-wrap items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar mb-8 sm:mb-10 pb-1">
@@ -162,28 +151,40 @@ export default function TeamSection() {
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-5 items-end pt-6 pb-2"
           onMouseLeave={() => setActiveIndex(null)}
         >
-          {visibleMembers.map((member, index) => {
-            const isActive = activeIndex === index;
+          {teamMembers.map((member, index) => {
+            const isMatch =
+              selectedDepartment === "all" || member.department === selectedDepartment;
+            const isActive = isMatch && activeIndex === index;
             const translatedDepartment = deptLabels[member.department];
 
             return (
               <button
                 key={member.id}
                 type="button"
-                onMouseEnter={() => setActiveIndex(index)}
+                tabIndex={isMatch ? 0 : -1}
+                aria-hidden={!isMatch}
+                onMouseEnter={() => {
+                  if (isMatch) setActiveIndex(index);
+                }}
                 onMouseLeave={() =>
                   setActiveIndex((prev) => (prev === index ? null : prev))
                 }
-                onFocus={() => setActiveIndex(index)}
+                onFocus={() => {
+                  if (isMatch) setActiveIndex(index);
+                }}
                 onBlur={() =>
                   setActiveIndex((prev) => (prev === index ? null : prev))
                 }
-                onClick={() =>
-                  setActiveIndex((prev) => (prev === index ? null : index))
-                }
+                onClick={() => {
+                  if (isMatch) setActiveIndex((prev) => (prev === index ? null : index));
+                }}
                 aria-pressed={isActive}
-                className={`group relative flex flex-col items-center text-center cursor-pointer focus-visible:outline-none ${
-                  isActive ? "z-20" : "z-0"
+                className={`group relative flex flex-col items-center text-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-none ${
+                  !isMatch
+                    ? "opacity-25 scale-[0.94] pointer-events-none z-0"
+                    : isActive
+                      ? "cursor-pointer z-20"
+                      : "cursor-pointer z-0"
                 }`}
               >
                 {/* Retrato em destaque */}
@@ -226,13 +227,11 @@ export default function TeamSection() {
                     {member.name}
                   </p>
                   <p
-                    className={`text-[11px] sm:text-xs text-muted leading-snug mt-0.5 transition-all duration-300 ${
-                      isActive
-                        ? "opacity-100 translate-y-0"
-                        : "opacity-0 -translate-y-1"
+                    className={`text-[11px] sm:text-xs leading-snug mt-0.5 transition-colors duration-300 ${
+                      isActive ? "text-foreground/85" : "text-subtle"
                     }`}
                   >
-                    ({translatedDepartment})
+                    {translatedDepartment}
                   </p>
                 </div>
               </button>
