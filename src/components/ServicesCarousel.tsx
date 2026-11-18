@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import KineticHeading from "@/components/KineticHeading";
+import ServiceIcon from "@/components/ServiceIcon";
 import { useLanguage, type Locale } from "@/context/LanguageContext";
 
 export function ServiceCategoryTag({
@@ -804,7 +805,7 @@ export default function ServicesCarousel() {
                         : "bg-white border-black/[0.06] text-foreground shadow-2xs"
                     }`}
                   >
-                    {service.icon}
+                    <ServiceIcon icon={service.icon} />
                   </span>
 
                   <span

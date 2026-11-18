@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type PointerEvent } from "react";
+import { useCallback, useState, type PointerEvent } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -10,6 +10,7 @@ import {
   useTransform,
 } from "framer-motion";
 import KineticHeading from "@/components/KineticHeading";
+import TeamMemberModal from "@/components/TeamMemberModal";
 import { useLanguage, type Locale } from "@/context/LanguageContext";
 
 type Department =
@@ -94,7 +95,7 @@ function TeamMemberCard({
   translatedDepartment,
   onActivate,
   onDeactivate,
-  onToggle,
+  onOpen,
 }: {
   member: TeamMember;
   index: number;
@@ -103,7 +104,7 @@ function TeamMemberCard({
   translatedDepartment: string;
   onActivate: () => void;
   onDeactivate: () => void;
-  onToggle: () => void;
+  onOpen: () => void;
 }) {
   const prefersReducedMotion = useReducedMotion();
   const pointerX = useMotionValue(0);
@@ -149,7 +150,6 @@ function TeamMemberCard({
       type="button"
       tabIndex={isMatch ? 0 : -1}
       aria-hidden={!isMatch}
-      aria-pressed={isActive}
       onMouseEnter={onActivate}
       onMouseLeave={() => {
         resetPointer();
@@ -161,7 +161,8 @@ function TeamMemberCard({
         resetPointer();
         onDeactivate();
       }}
-      onClick={onToggle}
+      onClick={onOpen}
+      aria-haspopup="dialog"
       animate={{ opacity: cardOpacity }}
       transition={{ duration: 0.3 }}
       style={
@@ -261,8 +262,26 @@ function TeamMemberCard({
 export default function TeamSection() {
   const [selectedDepartment, setSelectedDepartment] = useState<"all" | Department>("all");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [openId, setOpenId] = useState<string | null>(null);
   const { locale } = useLanguage();
   const deptLabels = DEPARTMENT_LABELS[locale];
+
+  // Navegação dentro do pop-up apenas pelos membros visíveis no filtro atual
+  const visibleMembers = teamMembers.filter(
+    (m) => selectedDepartment === "all" || m.department === selectedDepartment
+  );
+  const openPos = visibleMembers.findIndex((m) => m.id === openId);
+  const openMember = openPos >= 0 ? visibleMembers[openPos] : null;
+
+  const closeModal = useCallback(() => setOpenId(null), []);
+  const goPrev = useCallback(() => {
+    if (openPos > 0) setOpenId(visibleMembers[openPos - 1].id);
+  }, [openPos, visibleMembers]);
+  const goNext = useCallback(() => {
+    if (openPos >= 0 && openPos < visibleMembers.length - 1) {
+      setOpenId(visibleMembers[openPos + 1].id);
+    }
+  }, [openPos, visibleMembers]);
 
   return (
     <section
@@ -357,8 +376,8 @@ export default function TeamSection() {
                 onDeactivate={() =>
                   setActiveIndex((prev) => (prev === index ? null : prev))
                 }
-                onToggle={() => {
-                  if (isMatch) setActiveIndex((prev) => (prev === index ? null : index));
+                onOpen={() => {
+                  if (isMatch) setOpenId(member.id);
                 }}
               />
             );
@@ -377,6 +396,23 @@ export default function TeamSection() {
           />
         </div>
       </div>
+
+      <TeamMemberModal
+        member={
+          openMember
+            ? {
+                id: openMember.id,
+                name: openMember.name,
+                image: openMember.image,
+                department: deptLabels[openMember.department],
+              }
+            : null
+        }
+        locale={locale}
+        onClose={closeModal}
+        onPrev={openPos > 0 ? goPrev : undefined}
+        onNext={openPos >= 0 && openPos < visibleMembers.length - 1 ? goNext : undefined}
+      />
     </section>
   );
 }
