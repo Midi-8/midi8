@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
+import KineticHeading from "@/components/KineticHeading";
 import { useLanguage, type Locale } from "@/context/LanguageContext";
 
 export function ServiceCategoryTag({
@@ -367,11 +368,18 @@ function getCard3DStyle(diff: number, total: number) {
     }
   }
 
+  const blurPx = abs <= 0.35 ? 0 : Math.min(3.2, (abs - 0.35) * 1.45);
+  const sheenPercent = Math.max(-20, Math.min(120, 50 + diff * 36));
+  const sheenOpacity = Math.max(0, 0.42 - abs * 0.16);
+
   return {
     transform: `translate3d(calc(var(--wing-unit, 270px) * ${(sign * xFactor).toFixed(4)}), 0px, ${zPx.toFixed(1)}px) rotateY(${rotY.toFixed(2)}deg) scale(${scale.toFixed(4)})`,
     opacity: Number(opacity.toFixed(3)),
     zIndex: Math.max(0, Math.round(100 - abs * 30)),
     isVisible: opacity > 0.01,
+    blurPx: Number(blurPx.toFixed(2)),
+    sheenPercent: Number(sheenPercent.toFixed(1)),
+    sheenOpacity: Number(sheenOpacity.toFixed(3)),
   };
 }
 
@@ -474,6 +482,22 @@ export default function ServicesCarousel() {
     };
   }, []);
 
+  const rotateToIndex = useCallback(
+    (targetIndex: number) => {
+      if (total <= 1) return;
+      const phys = physRef.current;
+      if (phys.snapTimer !== null) {
+        window.clearTimeout(phys.snapTimer);
+        phys.snapTimer = null;
+      }
+      const base = Math.round(phys.target);
+      const delta = getCircularOffset(targetIndex, base, total);
+      phys.target = base + delta;
+      startLoop();
+    },
+    [total, startLoop]
+  );
+
   useEffect(() => {
     const onSelectCategory = (e: Event) => {
       const next = (e as CustomEvent<CategoryId>).detail;
@@ -537,19 +561,6 @@ export default function ServicesCarousel() {
       phys.snapTimer = null;
     }
     phys.target = Math.round(phys.target) + delta;
-    startLoop();
-  };
-
-  const rotateToIndex = (targetIndex: number) => {
-    if (total <= 1) return;
-    const phys = physRef.current;
-    if (phys.snapTimer !== null) {
-      window.clearTimeout(phys.snapTimer);
-      phys.snapTimer = null;
-    }
-    const base = Math.round(phys.target);
-    const delta = getCircularOffset(targetIndex, base, total);
-    phys.target = base + delta;
     startLoop();
   };
 
@@ -637,17 +648,14 @@ export default function ServicesCarousel() {
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="mb-6 sm:mb-7"
         >
-          <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.05]">
-            {locale === "pt" ? (
-              <>
-                Os Nossos <em className="italic font-normal">Serviços</em>
-              </>
-            ) : (
-              <>
-                Our <em className="italic font-normal">Services</em>
-              </>
-            )}
-          </h2>
+          <KineticHeading
+            className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.05]"
+            segments={
+              locale === "pt"
+                ? [{ text: "Os Nossos " }, { text: "Serviços", italic: true }]
+                : [{ text: "Our " }, { text: "Services", italic: true }]
+            }
+          />
           <p className="text-sm sm:text-base text-muted mt-1.5">
             {locale === "pt"
               ? "Soluções digitais desenhadas à medida do seu negócio."
@@ -747,10 +755,14 @@ export default function ServicesCarousel() {
                   transform: stagePos.transform,
                   opacity: stagePos.opacity,
                   zIndex: stagePos.zIndex,
+                  filter:
+                    isHovered || stagePos.blurPx === 0
+                      ? "blur(0px)"
+                      : `blur(${stagePos.blurPx}px)`,
                   pointerEvents: stagePos.isVisible ? "auto" : "none",
                   transition:
-                    "box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
-                  willChange: "transform, opacity",
+                    "box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease",
+                  willChange: "transform, opacity, filter",
                 }}
                 className={`service-card absolute w-[78vw] max-w-[330px] sm:w-[340px] h-[320px] sm:h-[360px] p-6 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer select-none [transform-style:preserve-3d] [backface-visibility:hidden] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue ${
                   isSpotlit ? "service-card--active" : ""
@@ -762,6 +774,16 @@ export default function ServicesCarousel() {
                     isSpotlit ? "opacity-100" : "opacity-0"
                   }`}
                   style={{ background: service.gradient }}
+                  aria-hidden="true"
+                />
+
+                {/* Reflexo especular de estúdio ligado ao ângulo de rotação */}
+                <div
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    opacity: stagePos.sheenOpacity,
+                    background: `linear-gradient(115deg, transparent ${stagePos.sheenPercent - 24}%, rgba(255, 255, 255, 0.45) ${stagePos.sheenPercent}%, transparent ${stagePos.sheenPercent + 24}%)`,
+                  }}
                   aria-hidden="true"
                 />
 

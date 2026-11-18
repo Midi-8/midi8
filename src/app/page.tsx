@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Hero from "@/components/Hero";
+import KineticHeading from "@/components/KineticHeading";
 import PillarCard3D from "@/components/PillarCard3D";
 import ServicesCarousel from "@/components/ServicesCarousel";
 import TeamSection from "@/components/TeamSection";
@@ -149,17 +150,22 @@ export default function Home() {
             transition={{ duration: 0.5, ease: REVEAL_EASE }}
             className="max-w-2xl mb-10 sm:mb-14"
           >
-            <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-4">
-              {locale === "pt" ? (
-                <>
-                  Design simples. <em className="italic font-normal">Código</em> rigoroso. Resultados reais.
-                </>
-              ) : (
-                <>
-                  Simple design. <em className="italic font-normal">Rigorous</em> code. Real results.
-                </>
-              )}
-            </h2>
+            <KineticHeading
+              className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-4"
+              segments={
+                locale === "pt"
+                  ? [
+                      { text: "Design simples. " },
+                      { text: "Código", italic: true },
+                      { text: " rigoroso. Resultados reais." },
+                    ]
+                  : [
+                      { text: "Simple design. " },
+                      { text: "Rigorous", italic: true },
+                      { text: " code. Real results." },
+                    ]
+              }
+            />
             <p className="text-sm sm:text-base text-muted leading-relaxed">
               {locale === "pt"
                 ? "Engenharia, inteligência artificial e comunicação para resolver problemas reais."
@@ -200,17 +206,22 @@ export default function Home() {
             transition={{ duration: 0.5, ease: REVEAL_EASE }}
             className="lg:col-span-5 lg:pt-2"
           >
-            <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-4">
-              {locale === "pt" ? (
-                <>
-                  Vamos dar vida ao seu próximo <em className="italic font-normal">projeto</em>.
-                </>
-              ) : (
-                <>
-                  Let&apos;s bring your next <em className="italic font-normal">project</em> to life.
-                </>
-              )}
-            </h2>
+            <KineticHeading
+              className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-4"
+              segments={
+                locale === "pt"
+                  ? [
+                      { text: "Vamos dar vida ao seu próximo " },
+                      { text: "projeto", italic: true },
+                      { text: "." },
+                    ]
+                  : [
+                      { text: "Let's bring your next " },
+                      { text: "project", italic: true },
+                      { text: " to life." },
+                    ]
+              }
+            />
             <p className="text-sm sm:text-base text-muted leading-relaxed mb-7 max-w-md">
               {locale === "pt"
                 ? "Conte-nos o que pretende construir, otimizar ou escalar."

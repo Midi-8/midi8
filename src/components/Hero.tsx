@@ -8,6 +8,7 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+import AuroraCanvas from "@/components/AuroraCanvas";
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -48,7 +49,7 @@ export default function Hero() {
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden will-change-transform"
         aria-hidden="true"
       >
-        <div className="top-aurora-fade" />
+        <AuroraCanvas />
         <div className="top-aurora-grain" />
       </motion.div>
 

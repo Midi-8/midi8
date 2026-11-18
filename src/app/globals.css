@@ -87,26 +87,61 @@
   font-feature-settings: "liga" 1, "dlig" 1, "swsh" 1, "calt" 1;
 }
 
+@keyframes kinetic-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.kinetic-italic-shimmer {
+  background-image: linear-gradient(
+    110deg,
+    #0b0f17 0%,
+    #0b0f17 36%,
+    #145eff 47%,
+    #a818ff 53%,
+    #00c885 58%,
+    #0b0f17 68%,
+    #0b0f17 100%
+  );
+  background-size: 240% 100%;
+  background-position: 100% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: kinetic-shimmer 2.1s var(--ease) 0.35s 1 both;
+  transition: background-position 0.9s var(--ease);
+}
+
+.kinetic-heading:hover .kinetic-italic-shimmer {
+  background-position: 15% 50%;
+}
+
 ::selection {
   background: rgba(20, 94, 255, 0.16);
   color: var(--foreground);
 }
 
-/* ─── Fade Aurora Superior (estilo orgânico difuso com grão subtil) ─── */
+/* ─── Fade Aurora Superior (largura total e altura contida com grão subtil) ─── */
 
 .top-aurora-fade {
   position: absolute;
-  top: -80px;
-  left: -8%;
-  right: -8%;
-  height: 55vh;
-  min-height: 460px;
+  top: -60px;
+  left: -4%;
+  right: -4%;
+  height: 36vh;
+  min-height: 280px;
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse 38% 72% at 24% 12%, rgba(168, 24, 255, 0.78) 0%, rgba(168, 24, 255, 0.36) 44%, rgba(168, 24, 255, 0) 76%),
-    radial-gradient(ellipse 36% 78% at 50% 10%, rgba(20, 94, 255, 0.72) 0%, rgba(20, 94, 255, 0.32) 44%, rgba(20, 94, 255, 0) 76%),
-    radial-gradient(ellipse 38% 70% at 78% 12%, rgba(0, 232, 150, 0.7) 0%, rgba(0, 232, 150, 0.3) 44%, rgba(0, 232, 150, 0) 76%);
+    radial-gradient(ellipse 48% 76% at 14% 12%, rgba(168, 24, 255, 0.78) 0%, rgba(168, 24, 255, 0.36) 44%, rgba(168, 24, 255, 0) 76%),
+    radial-gradient(ellipse 48% 78% at 50% 10%, rgba(20, 94, 255, 0.72) 0%, rgba(20, 94, 255, 0.32) 44%, rgba(20, 94, 255, 0) 76%),
+    radial-gradient(ellipse 48% 76% at 86% 12%, rgba(0, 232, 150, 0.7) 0%, rgba(0, 232, 150, 0.3) 44%, rgba(0, 232, 150, 0) 76%);
   filter: blur(56px);
   -webkit-mask-image: linear-gradient(to bottom, #000 8%, rgba(0, 0, 0, 0.72) 48%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 8%, rgba(0, 0, 0, 0.72) 48%, transparent 100%);
@@ -119,8 +154,8 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 55vh;
-  min-height: 460px;
+  height: 36vh;
+  min-height: 280px;
   pointer-events: none;
   z-index: 0;
   opacity: 0.085;
@@ -189,6 +224,13 @@
 
   .success-pulse {
     animation: none;
+  }
+
+  .kinetic-italic-shimmer {
+    animation: none;
+    background-image: none;
+    color: var(--foreground);
+    -webkit-text-fill-color: currentColor;
   }
 
   .cta-button,
@@ -373,4 +415,51 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(15, 23, 42, 0.28);
+}
+
+/* ─── Cursor Personalizado Midi8 (apenas desktop) ─── */
+
+@media (pointer: fine) {
+  html,
+  body {
+    cursor: url("/cursors/default.png") 3 2, auto;
+    cursor: -webkit-image-set(url("/cursors/default.png") 1x, url("/cursors/default@2x.png") 2x) 3 2, auto;
+    cursor: image-set(url("/cursors/default.png") 1x, url("/cursors/default@2x.png") 2x) 3 2, auto;
+  }
+
+  a,
+  button,
+  [role="button"],
+  [role="tab"],
+  label,
+  .cursor-pointer {
+    cursor: url("/cursors/pointer.png") 3 2, pointer;
+    cursor: -webkit-image-set(url("/cursors/pointer.png") 1x, url("/cursors/pointer@2x.png") 2x) 3 2, pointer;
+    cursor: image-set(url("/cursors/pointer.png") 1x, url("/cursors/pointer@2x.png") 2x) 3 2, pointer;
+  }
+
+  .cursor-grab,
+  .cursor-grab .service-card {
+    cursor: url("/cursors/grab.png") 14 14, grab;
+    cursor: -webkit-image-set(url("/cursors/grab.png") 1x, url("/cursors/grab@2x.png") 2x) 14 14, grab;
+    cursor: image-set(url("/cursors/grab.png") 1x, url("/cursors/grab@2x.png") 2x) 14 14, grab;
+  }
+
+  .active\:cursor-grabbing:active,
+  .active\:cursor-grabbing:active .service-card,
+  .cursor-grabbing {
+    cursor: url("/cursors/grabbing.png") 14 14, grabbing;
+    cursor: -webkit-image-set(url("/cursors/grabbing.png") 1x, url("/cursors/grabbing@2x.png") 2x) 14 14, grabbing;
+    cursor: image-set(url("/cursors/grabbing.png") 1x, url("/cursors/grabbing@2x.png") 2x) 14 14, grabbing;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    cursor: text;
+  }
+
+  button:disabled {
+    cursor: progress;
+  }
 }

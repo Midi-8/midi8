@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
+import MagneticButton from "@/components/MagneticButton";
 import { useLanguage } from "@/context/LanguageContext";
 import {
   AREAS,
@@ -256,15 +257,16 @@ export default function ContactForm() {
           </Link>
           .
         </p>
-        <button
+        <MagneticButton
           type="submit"
-          className="inline-flex items-center justify-center gap-2 rounded-full border border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide whitespace-nowrap shrink-0 self-end sm:self-auto cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-progress"
           disabled={status === "sending"}
           aria-busy={status === "sending"}
+          wrapperClassName="inline-flex self-end sm:self-auto"
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-foreground bg-transparent text-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide whitespace-nowrap shrink-0 cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-progress"
         >
           <span>{status === "sending" ? copy.submitSending : copy.submitIdle}</span>
           {status === "sending" && <span className="spinner" aria-hidden="true" />}
-        </button>
+        </MagneticButton>
       </div>
     </form>
   );

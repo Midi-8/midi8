@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import MagneticButton from "@/components/MagneticButton";
 import { useLanguage } from "@/context/LanguageContext";
 
 const SECTION_IDS = ["sobre", "servicos", "equipa", "contacto"] as const;
@@ -82,7 +83,7 @@ export default function Navbar() {
         }`}
       >
         <div
-          className={`mx-auto flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          className={`relative mx-auto flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             isIsland
               ? "max-w-5xl h-14 px-5 sm:px-6 rounded-2xl backdrop-blur-2xl backdrop-saturate-150 border border-white/65 ring-1 ring-black/[0.06] shadow-[0_16px_40px_-12px_rgba(20,94,255,0.22),0_6px_20px_-8px_rgba(168,24,255,0.16)]"
               : "max-w-7xl h-16 px-5 sm:px-6 rounded-none bg-transparent border border-transparent"
@@ -171,14 +172,15 @@ export default function Navbar() {
               </button>
             </div>
 
-            <Link
+            <MagneticButton
               href="/#contacto"
               onClick={() => setMobileOpen(false)}
               aria-label={ctaLabel}
-              className="hidden md:inline-flex items-center justify-center rounded-full border border-foreground text-foreground hover:bg-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide whitespace-nowrap transition-colors"
+              wrapperClassName="hidden md:inline-flex"
+              className="inline-flex items-center justify-center rounded-full border border-foreground bg-transparent text-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide whitespace-nowrap transition-colors"
             >
               <span>{ctaLabel}</span>
-            </Link>
+            </MagneticButton>
 
             <button
               type="button"
