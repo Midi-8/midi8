@@ -24,7 +24,7 @@ export default function TermosContent() {
 
           {/* Content */}
           <div className="space-y-8 text-secondary text-sm sm:text-base leading-relaxed">
-            <section className="bg-surface/40 border border-border rounded-none p-6">
+            <section className="bg-surface/40 border border-border rounded-2xl p-6">
               <p className="text-secondary">
                 Welcome to the <strong>Midi8</strong> website. Access to and use of this website,
                 as well as the engagement of any digital services rendered by Midi8, are governed by
@@ -42,7 +42,7 @@ export default function TermosContent() {
               <p>
                 This website is owned and operated by the legal entity:
               </p>
-              <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-none border border-border">
+              <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-xl border border-border">
                 <li>
                   <strong>Entity:</strong> Midi8 — Software Engineering and Digital Systems
                 </li>
@@ -147,7 +147,7 @@ export default function TermosContent() {
             </section>
 
             {/* 8. Law & Jurisdiction */}
-            <section aria-labelledby="lei-foro" className="space-y-3 bg-surface/40 p-5 rounded-none border border-border">
+            <section aria-labelledby="lei-foro" className="space-y-3 bg-surface/40 p-5 rounded-2xl border border-border">
               <h2 id="lei-foro" className="text-lg sm:text-xl font-medium text-foreground tracking-tight">
                 8. Governing Law and Jurisdiction
               </h2>
@@ -200,7 +200,7 @@ export default function TermosContent() {
 
         {/* Conteúdo */}
         <div className="space-y-8 text-secondary text-sm sm:text-base leading-relaxed">
-          <section className="bg-surface/40 border border-border rounded-none p-6">
+          <section className="bg-surface/40 border border-border rounded-2xl p-6">
             <p className="text-secondary">
               Bem-vindo ao website da <strong>Midi8</strong>. O acesso e a utilização deste website,
               bem como a contratação de quaisquer serviços digitais prestados pela Midi8, regem-se pelos
@@ -217,7 +217,7 @@ export default function TermosContent() {
             <p>
               O presente website é propriedade e gerido pela entidade legal:
             </p>
-            <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-none border border-border">
+            <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-xl border border-border">
               <li>
                 <strong>Entidade:</strong> Midi8 — Engenharia de Software e Sistemas Digitais
               </li>
@@ -322,7 +322,7 @@ export default function TermosContent() {
           </section>
 
           {/* 8. Lei Aplicável e Foro */}
-          <section aria-labelledby="lei-foro" className="space-y-3 bg-surface/40 p-5 rounded-none border border-border">
+          <section aria-labelledby="lei-foro" className="space-y-3 bg-surface/40 p-5 rounded-2xl border border-border">
             <h2 id="lei-foro" className="text-lg sm:text-xl font-medium text-foreground tracking-tight">
               8. Lei Aplicável e Foro Competente
             </h2>

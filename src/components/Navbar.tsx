@@ -2,22 +2,24 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import MagneticButton from "@/components/MagneticButton";
 import { useLanguage } from "@/context/LanguageContext";
+
+const SECTION_IDS = ["sobre", "servicos", "equipa", "contacto"] as const;
 
 const NAV_LINKS = {
   pt: [
-    { id: "sobre", label: "A Midi8", href: "/#sobre" },
-    { id: "servicos", label: "Serviços", href: "/#servicos" },
-    { id: "equipa", label: "Equipa", href: "/#equipa" },
-    { id: "contacto", label: "Contactos", href: "/#contacto" },
+    { sectionId: "sobre", label: "A Midi8", href: "/#sobre" },
+    { sectionId: "servicos", label: "Serviços", href: "/#servicos" },
+    { sectionId: "equipa", label: "Equipa", href: "/#equipa" },
+    { sectionId: "contacto", label: "Contactos", href: "/#contacto" },
   ],
   en: [
-    { id: "sobre", label: "About", href: "/#sobre" },
-    { id: "servicos", label: "Services", href: "/#servicos" },
-    { id: "equipa", label: "Team", href: "/#equipa" },
-    { id: "contacto", label: "Contact", href: "/#contacto" },
+    { sectionId: "sobre", label: "About", href: "/#sobre" },
+    { sectionId: "servicos", label: "Services", href: "/#servicos" },
+    { sectionId: "equipa", label: "Team", href: "/#equipa" },
+    { sectionId: "contacto", label: "Contact", href: "/#contacto" },
   ],
 } as const;
 
@@ -25,104 +27,44 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isIsland, setIsIsland] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
-  const pathname = usePathname();
   const { locale, setLocale } = useLanguage();
 
   const navLinks = NAV_LINKS[locale];
   const ctaLabel = locale === "pt" ? "Contacta-nos" : "Contact us";
 
   useEffect(() => {
-    const updateIsland = () => {
+    const updateScrollState = () => {
       const heroEl = document.getElementById("hero");
       const pastHero = heroEl
         ? heroEl.getBoundingClientRect().bottom <= 72
-        : window.scrollY > 16;
+        : window.scrollY > 24;
       setIsIsland(pastHero);
-    };
 
-    updateIsland();
-    window.addEventListener("scroll", updateIsland, { passive: true });
-    window.addEventListener("resize", updateIsland, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", updateIsland);
-      window.removeEventListener("resize", updateIsland);
-    };
-  }, [pathname]);
-
-  useEffect(() => {
-    const sectionIds = ["sobre", "servicos", "equipa", "contacto"];
-    const elements = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
-
-    if (elements.length === 0) {
-      setActiveSection(null);
-      return;
-    }
-
-    const checkActiveSection = () => {
-      // 1. Fim da página: força 'contacto' ativo
-      const isAtBottom =
-        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60;
-      if (isAtBottom) {
-        setActiveSection("contacto");
-        return;
-      }
-
-      // 2. No topo (Hero visível em relevo): nenhum link de secção ativo
-      const hero = document.getElementById("hero");
-      if (hero && hero.getBoundingClientRect().bottom > 220) {
+      if (heroEl && heroEl.getBoundingClientRect().bottom > 140) {
         setActiveSection(null);
         return;
       }
 
-      // 3. Linha focal (~160px do topo)
-      const focalLine = 160;
-      let matched: string | null = null;
-
-      for (const el of elements) {
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= focalLine && rect.bottom > focalLine) {
-          matched = el.id;
-          break;
+      const triggerY = window.innerHeight * 0.38;
+      let current: string | null = null;
+      for (const id of SECTION_IDS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= triggerY) {
+          current = id;
         }
       }
-
-      if (!matched) {
-        for (let i = elements.length - 1; i >= 0; i--) {
-          const rect = elements[i].getBoundingClientRect();
-          if (rect.top <= focalLine) {
-            matched = elements[i].id;
-            break;
-          }
-        }
-      }
-
-      setActiveSection(matched);
+      setActiveSection(current);
     };
 
-    const observer = new IntersectionObserver(
-      () => {
-        checkActiveSection();
-      },
-      {
-        rootMargin: "-10% 0px -40% 0px",
-        threshold: [0, 0.25, 0.5, 0.75, 1],
-      }
-    );
-
-    elements.forEach((el) => observer.observe(el));
-    window.addEventListener("scroll", checkActiveSection, { passive: true });
-    window.addEventListener("resize", checkActiveSection, { passive: true });
-
-    checkActiveSection();
-
+    const raf = window.requestAnimationFrame(updateScrollState);
+    window.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState, { passive: true });
     return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", checkActiveSection);
-      window.removeEventListener("resize", checkActiveSection);
+      window.cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
     };
-  }, [pathname]);
+  }, []);
 
   useEffect(() => {
     if (mobileOpen) {
@@ -136,20 +78,22 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${isIsland ? "top-3 sm:top-4 px-4 sm:px-6" : "top-0 px-0"
-          }`}
+        className={`fixed left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          isIsland ? "top-3 sm:top-4 px-4 sm:px-6" : "top-0 px-0"
+        }`}
       >
         <div
-          className={`mx-auto flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${isIsland
+          className={`relative mx-auto flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            isIsland
               ? "max-w-5xl h-14 px-5 sm:px-6 rounded-2xl backdrop-blur-2xl backdrop-saturate-150 border border-white/65 ring-1 ring-black/[0.06] shadow-[0_16px_40px_-12px_rgba(20,94,255,0.22),0_6px_20px_-8px_rgba(168,24,255,0.16)]"
               : "max-w-7xl h-16 px-5 sm:px-6 rounded-none bg-transparent border border-transparent"
-            }`}
+          }`}
           style={
             isIsland
               ? {
-                background:
-                  "linear-gradient(110deg, rgba(168, 24, 255, 0.16) 0%, rgba(20, 94, 255, 0.15) 50%, rgba(0, 232, 150, 0.16) 100%), rgba(255, 255, 255, 0.76)",
-              }
+                  background:
+                    "linear-gradient(110deg, rgba(168, 24, 255, 0.16) 0%, rgba(20, 94, 255, 0.15) 50%, rgba(0, 232, 150, 0.16) 100%), rgba(255, 255, 255, 0.76)",
+                }
               : undefined
           }
         >
@@ -168,32 +112,31 @@ export default function Navbar() {
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-1.5">
             {navLinks.map((link) => {
-              const isActive = activeSection === link.id;
+              const isActive = activeSection === link.sectionId;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`relative px-3.5 py-2 text-sm transition-colors duration-200 whitespace-nowrap ${isActive
+                  className={`relative px-3.5 py-2 text-sm transition-colors whitespace-nowrap ${
+                    isActive
                       ? "font-medium text-foreground"
-                      : "font-normal text-foreground/75 hover:text-foreground"
-                    }`}
-                  aria-current={isActive ? "true" : undefined}
+                      : "font-normal text-foreground/70 hover:text-foreground"
+                  }`}
                 >
-                  <span>{link.label}</span>
-                  {isActive && (
-                    <motion.span
-                      layoutId="activeNavIndicator"
-                      className="absolute bottom-1 left-3.5 right-3.5 h-[2px] rounded-full bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896]"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
+                  {link.label}
+                  <span
+                    aria-hidden="true"
+                    className={`pointer-events-none absolute left-3.5 right-3.5 bottom-0.5 h-[1.5px] rounded-full bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896] transition-all duration-300 ${
+                      isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+                    }`}
+                  />
                 </Link>
               );
             })}
           </div>
 
-          {/* Seletor PT/EN + CTA Reta + Mobile Button */}
+          {/* Seletor PT/EN + CTA + Mobile Button */}
           <div className="flex items-center gap-2.5 sm:gap-3 justify-self-end">
             <div
               className="hidden md:inline-flex items-center gap-0.5 px-1 py-1 text-xs"
@@ -204,10 +147,11 @@ export default function Navbar() {
                 type="button"
                 onClick={() => setLocale("pt")}
                 aria-pressed={locale === "pt"}
-                className={`px-1 transition-colors cursor-pointer ${locale === "pt"
+                className={`px-1 transition-colors cursor-pointer ${
+                  locale === "pt"
                     ? "font-semibold text-foreground"
                     : "text-muted hover:text-foreground"
-                  }`}
+                }`}
               >
                 PT
               </button>
@@ -218,28 +162,30 @@ export default function Navbar() {
                 type="button"
                 onClick={() => setLocale("en")}
                 aria-pressed={locale === "en"}
-                className={`px-1 transition-colors cursor-pointer ${locale === "en"
+                className={`px-1 transition-colors cursor-pointer ${
+                  locale === "en"
                     ? "font-semibold text-foreground"
                     : "text-muted hover:text-foreground"
-                  }`}
+                }`}
               >
                 EN
               </button>
             </div>
 
-            <Link
+            <MagneticButton
               href="/#contacto"
               onClick={() => setMobileOpen(false)}
               aria-label={ctaLabel}
-              className="hidden md:inline-flex items-center justify-center rounded-none border border-foreground text-foreground hover:bg-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide whitespace-nowrap transition-colors"
+              wrapperClassName="hidden md:inline-flex"
+              className="inline-flex items-center justify-center rounded-full border border-foreground bg-transparent text-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide whitespace-nowrap transition-colors"
             >
               <span>{ctaLabel}</span>
-            </Link>
+            </MagneticButton>
 
             <button
               type="button"
               onClick={() => setMobileOpen((v) => !v)}
-              className="md:hidden w-10 h-10 rounded-none border border-foreground text-foreground flex items-center justify-center transition-transform active:scale-95"
+              className="md:hidden w-10 h-10 rounded-xl border border-foreground text-foreground flex items-center justify-center transition-transform active:scale-95"
               aria-label={
                 mobileOpen
                   ? locale === "pt"
@@ -276,7 +222,7 @@ export default function Navbar() {
           >
             <nav className="flex-1 flex flex-col justify-center gap-2">
               {navLinks.map((link, i) => {
-                const isActive = activeSection === link.id;
+                const isActive = activeSection === link.sectionId;
                 return (
                   <motion.div
                     key={link.href}
@@ -287,10 +233,11 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
-                      className={`flex items-center justify-between py-4 text-3xl tracking-tight border-b border-border transition-colors ${isActive
+                      className={`flex items-center justify-between py-4 text-3xl tracking-tight border-b border-border transition-colors ${
+                        isActive
                           ? "font-medium text-foreground"
                           : "font-normal text-foreground/75 hover:text-foreground"
-                        }`}
+                      }`}
                       aria-current={isActive ? "true" : undefined}
                     >
                       <span>{link.label}</span>
@@ -320,10 +267,11 @@ export default function Navbar() {
                     type="button"
                     onClick={() => setLocale("pt")}
                     aria-pressed={locale === "pt"}
-                    className={`px-3 py-1 transition-colors cursor-pointer ${locale === "pt"
+                    className={`px-3 py-1 transition-colors cursor-pointer ${
+                      locale === "pt"
                         ? "font-semibold text-foreground"
                         : "text-muted hover:text-foreground"
-                      }`}
+                    }`}
                   >
                     Português (PT)
                   </button>
@@ -334,10 +282,11 @@ export default function Navbar() {
                     type="button"
                     onClick={() => setLocale("en")}
                     aria-pressed={locale === "en"}
-                    className={`px-3 py-1 transition-colors cursor-pointer ${locale === "en"
+                    className={`px-3 py-1 transition-colors cursor-pointer ${
+                      locale === "en"
                         ? "font-semibold text-foreground"
                         : "text-muted hover:text-foreground"
-                      }`}
+                    }`}
                   >
                     English (EN)
                   </button>
@@ -346,7 +295,7 @@ export default function Navbar() {
                 <Link
                   href="/#contacto"
                   onClick={() => setMobileOpen(false)}
-                  className="inline-flex items-center justify-center w-full py-4 rounded-none border border-foreground bg-foreground text-white text-sm tracking-wide hover:bg-[#1a2234] transition-colors"
+                  className="inline-flex items-center justify-center w-full py-4 rounded-full border border-foreground bg-foreground text-white text-sm tracking-wide hover:bg-[#1a2234] transition-colors"
                 >
                   <span>{ctaLabel}</span>
                 </Link>

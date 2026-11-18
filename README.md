@@ -41,8 +41,9 @@ Website institucional minimalista em página única (*single-page*) da **Midi8**
 
 ```
 midi8/
-├── public/brand/
-│   └── midi8-wordmark.svg        # Logótipo oficial vetorizado
+├── public/
+│   ├── m8-icon*.{png,svg}        # Favicons M8 e Apple Touch Icon
+│   └── team/                     # Retratos da equipa
 ├── src/
 │   ├── app/
 │   │   ├── api/contacto/route.ts # Endpoint POST com validação, honeypot, rate limit e Resend
@@ -51,8 +52,8 @@ midi8/
 │   │   ├── termos/page.tsx       # Termos e Condições
 │   │   ├── sobre/page.tsx        # Redirecionamento para /#sobre
 │   │   ├── solucoes/page.tsx     # Redirecionamento para /#servicos
+│   │   ├── favicon.ico           # Favicon fallback multi-tamanho
 │   │   ├── globals.css           # Design System Minimalista + Top Aurora Fade
-│   │   ├── icon.svg              # Favicon vetorial
 │   │   ├── layout.tsx            # Root Layout, fontes, JSON-LD, Navbar & Footer
 │   │   ├── not-found.tsx         # Página 404 personalizada
 │   │   ├── opengraph-image.tsx   # Geração dinâmica de imagem OpenGraph
@@ -67,8 +68,7 @@ midi8/
 │   │   ├── MotionProvider.tsx    # Configuração global prefers-reduced-motion
 │   │   ├── Navbar.tsx            # Barra de navegação minimalista single-page
 │   │   ├── ServicesCarousel.tsx  # Carrossel interativo dos 13 serviços
-│   │   ├── TeamSection.tsx       # Secção de equipa com galeria escalonada e vidro fosco
-│   │   └── Wordmark.tsx          # Logótipo SVG vetorizado MIDI8
+│   │   └── TeamSection.tsx       # Secção de equipa com filtros e retratos
 │   └── lib/                      # Utilitários de contacto, OG image e URL base
 ├── package.json
 ├── tsconfig.json

@@ -49,8 +49,8 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative text-foreground bg-white">
-      <div className="max-w-7xl mx-auto px-6 pt-10 pb-4 sm:pt-12 sm:pb-5">
+    <footer className="relative text-foreground bg-white border-t border-border">
+      <div className="max-w-7xl mx-auto px-6 pt-10 pb-6 sm:pt-12 sm:pb-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
           {/* Marca & Slogan */}
           <div className="md:col-span-5 flex flex-col gap-1">
@@ -141,7 +141,7 @@ export default function Footer() {
       </div>
 
       {/* Barra Legal Minimalista */}
-      <div className="max-w-7xl mx-auto px-6 pt-2 pb-6 sm:pt-3 sm:pb-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-subtle">
+      <div className="max-w-7xl mx-auto px-6 border-t border-border/80 pt-5 pb-6 sm:pt-5 sm:pb-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-subtle">
         <p>© {currentYear} Midi8. {copy.rights}</p>
         <div className="flex flex-wrap items-center gap-6">
           <Link href="/privacidade" className="hover:text-foreground transition-colors">

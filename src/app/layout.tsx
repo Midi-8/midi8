@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
+import { Cormorant_Garamond, Geist } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MotionProvider from "@/components/MotionProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { CONTACT_EMAIL, CONTACT_PHONE, SOCIAL } from "@/lib/contact";
 import { siteUrl } from "@/lib/site";
+import AmbientAudio from "@/components/AmbientAudio";
+import TransitionCanvas from "@/components/TransitionCanvas";
 import "./globals.css";
 
 const organizationJsonLd = {
@@ -35,15 +37,20 @@ const geistSans = Geist({
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Midi8 — Tecnologia, Software, Automação & Comunicação Digital",
+  title: "Midi8",
+  icons: {
+    icon: [
+      { url: "/m8-icon-32.png?v=m8", type: "image/png", sizes: "32x32" },
+      { url: "/m8-icon.png?v=m8", type: "image/png", sizes: "64x64" },
+      { url: "/m8-icon.svg?v=m8", type: "image/svg+xml", sizes: "any" },
+    ],
+    shortcut: [{ url: "/m8-icon.png?v=m8", type: "image/png" }],
+    apple: [
+      { url: "/m8-apple-icon.png?v=m8", sizes: "180x180", type: "image/png" },
+    ],
+  },
   description:
     "Web Design, Desenvolvimento de Software e Mobile, Automação de Processos, IA & LLMs, Análise de Dados, E-commerce e Estratégia Digital.",
   keywords: [
@@ -60,7 +67,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Midi8" }],
   openGraph: {
-    title: "Midi8 — Tecnologia, Software & Comunicação Digital",
+    title: "Midi8",
     description:
       "Web Design, Software, Automação, IA, Marketing Digital e Consultoria num único parceiro.",
     type: "website",
@@ -68,7 +75,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Midi8 — Tecnologia, Software & Comunicação Digital",
+    title: "Midi8",
     description:
       "Web Design, Software, Automação, IA, Marketing Digital e Consultoria num único parceiro.",
   },
@@ -86,7 +93,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt"
-      className={`${ornateSerif.variable} ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${ornateSerif.variable} ${geistSans.variable} h-full antialiased`}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
@@ -104,6 +111,8 @@ export default function RootLayout({
             <Navbar />
             {children}
             <Footer />
+            <AmbientAudio />
+            <TransitionCanvas />
           </MotionProvider>
         </LanguageProvider>
       </body>

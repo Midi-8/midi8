@@ -17,13 +17,11 @@ const LOCALE_EVENT = "midi8:locale-change";
 interface LanguageContextValue {
   locale: Locale;
   setLocale: (next: Locale) => void;
-  toggleLocale: () => void;
 }
 
 const LanguageContext = createContext<LanguageContextValue>({
   locale: "pt",
   setLocale: () => {},
-  toggleLocale: () => {},
 });
 
 function subscribe(callback: () => void) {
@@ -63,12 +61,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     window.dispatchEvent(new Event(LOCALE_EVENT));
   }, []);
 
-  const toggleLocale = useCallback(() => {
-    setLocale(locale === "pt" ? "en" : "pt");
-  }, [locale, setLocale]);
-
   return (
-    <LanguageContext.Provider value={{ locale, setLocale, toggleLocale }}>
+    <LanguageContext.Provider value={{ locale, setLocale }}>
       {children}
     </LanguageContext.Provider>
   );

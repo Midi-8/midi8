@@ -1,56 +1,28 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import KineticHeading from "@/components/KineticHeading";
+import ServiceIcon from "@/components/ServiceIcon";
 import { useLanguage, type Locale } from "@/context/LanguageContext";
-import { CATEGORY_TO_AREA, type Area } from "@/lib/contact";
 
 export function ServiceCategoryTag({
   category,
   label,
-  area,
 }: {
   category: string;
   label: string;
-  area?: Area;
 }) {
-  const { locale } = useLanguage();
-  const targetArea: Area = area ?? CATEGORY_TO_AREA[category] ?? "Web, Software & Mobile";
-
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    window.dispatchEvent(
-      new CustomEvent<Area>("midi8:preselect-area", { detail: targetArea })
-    );
-    const contactEl = document.getElementById("contacto");
-    if (contactEl) {
-      contactEl.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const titleText =
-    locale === "pt"
-      ? `Pedir proposta em ${label}`
-      : `Request proposal in ${label}`;
-
   return (
     <button
       type="button"
-      onClick={handleClick}
-      title={titleText}
-      aria-label={titleText}
-      className="group/tag inline-flex items-center gap-1 rounded-full bg-white/90 border border-border px-2.5 py-0.5 text-[11px] text-muted hover:text-foreground hover:border-foreground/30 hover:bg-white transition-all cursor-pointer shadow-2xs hover:shadow-xs active:scale-95"
+      onClick={() => {
+        window.dispatchEvent(new CustomEvent("midi8:select-category", { detail: category }));
+        document.getElementById("servicos")?.scrollIntoView({ behavior: "smooth" });
+      }}
+      className="rounded-full bg-white/90 border border-border px-2.5 py-0.5 text-[11px] text-muted hover:text-foreground hover:border-border-strong transition-colors cursor-pointer"
     >
-      <span>{label}</span>
-      <svg
-        className="w-2.5 h-2.5 opacity-40 group-hover/tag:opacity-100 group-hover/tag:translate-x-0.5 transition-all text-foreground"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2.5}
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-      </svg>
+      {label}
     </button>
   );
 }
@@ -119,8 +91,8 @@ const SERVICES: ServiceItem[] = [
       en: "Web Design & Web Development",
     },
     description: {
-      pt: "Criação e desenvolvimento de websites e plataformas digitais, combinando design, funcionalidade e experiência de utilização para construir soluções adaptadas às necessidades de cada negócio.",
-      en: "Design and development of websites and digital platforms, combining visual craft, functionality, and user experience tailored to each business.",
+      pt: "Criação de websites e plataformas digitais que combinam design cuidado, desempenho e experiência de utilização.",
+      en: "Design and development of websites and digital platforms combining visual craft, speed, and user experience.",
     },
     gradient: GRADIENT_BLUE_MINT,
     icon: (
@@ -137,8 +109,8 @@ const SERVICES: ServiceItem[] = [
       en: "Custom Software Development",
     },
     description: {
-      pt: "Conceção e implementação de programas e aplicações à medida, desenvolvidos para responder a necessidades específicas, otimizar operações e simplificar tarefas.",
-      en: "Architecture and delivery of custom software and web applications engineered for specific operational needs, streamlining workflows at scale.",
+      pt: "Conceção de software e aplicações à medida para responder a necessidades específicas e simplificar operações.",
+      en: "Custom software and web applications engineered for specific operational needs and streamlined workflows.",
     },
     gradient: GRADIENT_VIOLET_BLUE,
     icon: (
@@ -155,7 +127,7 @@ const SERVICES: ServiceItem[] = [
       en: "Technology Solutions Engineering",
     },
     description: {
-      pt: "Identificação de problemas e criação de soluções digitais inovadoras, recorrendo à tecnologia para transformar ideias em ferramentas práticas e funcionais.",
+      pt: "Identificação de gargalos e criação de ferramentas digitais práticas para transformar ideias em sistemas funcionais.",
       en: "Identifying operational bottlenecks and building practical, reliable digital tools that turn ideas into working systems.",
     },
     gradient: GRADIENT_MINT_BLUE,
@@ -173,8 +145,8 @@ const SERVICES: ServiceItem[] = [
       en: "Process Automation",
     },
     description: {
-      pt: "Implementação de sistemas e ferramentas que automatizam tarefas e procedimentos, reduzindo processos manuais, aumentando a eficiência e melhorando a produtividade.",
-      en: "Automated pipelines and system integrations that eliminate repetitive manual work, raise efficiency, and keep operations consistent.",
+      pt: "Sistemas e integrações que automatizam tarefas repetitivas, reduzem erros manuais e aumentam a produtividade.",
+      en: "Automated pipelines and system integrations that eliminate manual work, raise efficiency, and scale operations.",
     },
     gradient: GRADIENT_BLUE_MINT,
     icon: (
@@ -191,7 +163,7 @@ const SERVICES: ServiceItem[] = [
       en: "Strategy & Brand Communication",
     },
     description: {
-      pt: "Definição de estratégias de comunicação alinhadas com os objetivos de cada marca, garantindo uma mensagem coerente, eficaz e direcionada ao público certo.",
+      pt: "Estratégias de comunicação alinhadas com os objetivos da marca, com uma mensagem coerente para o público certo.",
       en: "Communication strategies aligned with business goals, ensuring a clear, coherent voice tailored to the right audience.",
     },
     gradient: GRADIENT_VIOLET_BLUE,
@@ -209,7 +181,7 @@ const SERVICES: ServiceItem[] = [
       en: "Advertising & Campaigns",
     },
     description: {
-      pt: "Planeamento e criação de campanhas publicitárias, desenvolvidas para promover marcas, produtos ou serviços, aumentar a notoriedade e gerar resultados.",
+      pt: "Planeamento e execução criativa de campanhas publicitárias para aumentar notoriedade e gerar resultados mensuráveis.",
       en: "End-to-end campaign planning and creative execution to grow awareness, acquire customers, and drive measurable returns.",
     },
     gradient: GRADIENT_MINT_BLUE,
@@ -227,7 +199,7 @@ const SERVICES: ServiceItem[] = [
       en: "Digital Marketing & Social Media",
     },
     description: {
-      pt: "Gestão e dinamização da presença digital das marcas, através da criação de conteúdos, planeamento estratégico e desenvolvimento de ações de comunicação nas diferentes plataformas.",
+      pt: "Gestão da presença digital com criação de conteúdos, planeamento estratégico e dinamização nas redes sociais.",
       en: "Ongoing management of digital channels with editorial content, strategic calendars, and audience growth across platforms.",
     },
     gradient: GRADIENT_BLUE_MINT,
@@ -245,8 +217,8 @@ const SERVICES: ServiceItem[] = [
       en: "IT Consulting & Systems Audit",
     },
     description: {
-      pt: "Prestação de serviços de aconselhamento e acompanhamento tecnológico, através da análise de sistemas e infraestruturas informáticas, identificando necessidades e recomendando soluções que otimizem os recursos e processos de cada negócio.",
-      en: "Technical advisory and architecture assessment to spot infrastructure gaps and recommend practical upgrades that improve reliability.",
+      pt: "Análise de sistemas e infraestruturas informáticas para identificar melhorias e recomendar soluções tecnológicas eficazes.",
+      en: "Technical advisory and architecture assessment to spot infrastructure gaps and recommend practical upgrades.",
     },
     gradient: GRADIENT_VIOLET_BLUE,
     icon: (
@@ -263,7 +235,7 @@ const SERVICES: ServiceItem[] = [
       en: "Digital Media Advisory",
     },
     description: {
-      pt: "Análise e definição de estratégias para fortalecer a presença digital das marcas, identificando oportunidades de crescimento e recomendando soluções que melhorem a comunicação, a visibilidade e o desempenho nas diferentes plataformas.",
+      pt: "Auditorias digitais e planos estratégicos para reforçar a visibilidade, a comunicação e o desempenho das marcas.",
       en: "Digital presence audits and strategic roadmaps to uncover growth opportunities and strengthen visibility across channels.",
     },
     gradient: GRADIENT_MINT_BLUE,
@@ -281,8 +253,8 @@ const SERVICES: ServiceItem[] = [
       en: "Data Analytics & Decision Support",
     },
     description: {
-      pt: "Recolha, tratamento e interpretação de dados, transformando informação em conhecimento estratégico que permite identificar tendências, avaliar resultados e apoiar decisões mais informadas e eficazes.",
-      en: "Collecting, structuring, and interpreting business data to surface clear insights, track outcomes, and guide confident decisions.",
+      pt: "Recolha, tratamento e leitura de dados para revelar tendências, avaliar resultados e apoiar decisões mais seguras.",
+      en: "Collecting, structuring, and interpreting business data to surface clear insights and guide confident decisions.",
     },
     gradient: GRADIENT_BLUE_MINT,
     icon: (
@@ -299,8 +271,8 @@ const SERVICES: ServiceItem[] = [
       en: "Artificial Intelligence & LLMs",
     },
     description: {
-      pt: "Desenvolvimento e integração de soluções baseadas em inteligência artificial e modelos de linguagem, permitindo automatizar tarefas, otimizar processos e criar ferramentas inteligentes adaptadas às necessidades específicas de cada negócio.",
-      en: "Building and integrating AI workflows, custom agents, and large language models tailored to your company's internal operations.",
+      pt: "Integração de inteligência artificial e LLMs para automatizar fluxos de trabalho e criar agentes à medida do negócio.",
+      en: "Building and integrating AI workflows, custom agents, and large language models tailored to your company's operations.",
     },
     gradient: GRADIENT_VIOLET_BLUE,
     icon: (
@@ -317,7 +289,7 @@ const SERVICES: ServiceItem[] = [
       en: "E-commerce Operations",
     },
     description: {
-      pt: "Gestão e otimização de operações de comércio eletrónico, incluindo a implementação e manutenção de lojas online, gestão de produtos, encomendas e processos de venda, com o objetivo de melhorar a experiência de compra e potenciar os resultados comerciais.",
+      pt: "Implementação e otimização de lojas online, catálogos, encomendas e fluxos de venda para potenciar a conversão.",
       en: "Setup and optimization of online stores, catalog workflows, checkout flows, and fulfillment operations to grow conversion.",
     },
     gradient: GRADIENT_MINT_BLUE,
@@ -335,8 +307,8 @@ const SERVICES: ServiceItem[] = [
       en: "Mobile App Development",
     },
     description: {
-      pt: "Conceção e desenvolvimento de aplicações móveis para diferentes plataformas, criando soluções digitais intuitivas, funcionais e adaptadas às necessidades dos utilizadores e objetivos de cada negócio.",
-      en: "Design and engineering of cross-platform mobile applications focused on speed, usability, and dependable daily performance.",
+      pt: "Desenvolvimento de aplicações móveis rápidas, intuitivas e fiáveis para diferentes plataformas e dispositivos.",
+      en: "Design and engineering of cross-platform mobile applications focused on speed, usability, and daily reliability.",
     },
     gradient: GRADIENT_BLUE_MINT,
     icon: (
@@ -347,102 +319,353 @@ const SERVICES: ServiceItem[] = [
   },
 ];
 
+function wrapIndex(value: number, total: number): number {
+  if (total <= 0) return 0;
+  return ((value % total) + total) % total;
+}
+
+function getCircularOffset(index: number, pos: number, total: number): number {
+  if (total <= 1) return 0;
+  const wrapped = wrapIndex(pos, total);
+  let diff = index - wrapped;
+  if (diff > total / 2) diff -= total;
+  if (diff < -total / 2) diff += total;
+  return diff;
+}
+
+function getCard3DStyle(diff: number, total: number) {
+  const abs = Math.abs(diff);
+  const sign = diff >= 0 ? 1 : -1;
+  const hasOuterWings = total >= 5;
+  const maxVis = hasOuterWings ? 2.6 : 1.55;
+
+  const xFactor =
+    abs <= 1
+      ? abs
+      : abs <= 2
+        ? 1 + (abs - 1) * 0.74
+        : 1.74 + Math.min(abs - 2, 1) * 0.32;
+
+  const zPx = -Math.min(abs, 3) * 110;
+  const absRot =
+    abs <= 1
+      ? abs * 28
+      : abs <= 2
+        ? 28 + (abs - 1) * 10
+        : 38 + Math.min(abs - 2, 1) * 8;
+  const rotY = diff === 0 ? 0 : sign * -absRot;
+  const scale = Math.max(0.66, 1 - abs * 0.12);
+
+  let opacity = 0;
+  if (abs < maxVis) {
+    if (abs <= 1) {
+      opacity = 1 - abs * 0.16;
+    } else if (hasOuterWings && abs <= 2) {
+      opacity = 0.84 - (abs - 1) * 0.38;
+    } else if (hasOuterWings) {
+      opacity = Math.max(0, 0.46 * (1 - (abs - 2) / 0.6));
+    } else {
+      opacity = Math.max(0, 0.84 * (1 - (abs - 1) / 0.55));
+    }
+  }
+
+  const blurPx = abs <= 0.35 ? 0 : Math.min(3.2, (abs - 0.35) * 1.45);
+  const sheenPercent = Math.max(-20, Math.min(120, 50 + diff * 36));
+  const sheenOpacity = Math.max(0, 0.42 - abs * 0.16);
+
+  return {
+    transform: `translate3d(calc(var(--wing-unit, 270px) * ${(sign * xFactor).toFixed(4)}), 0px, ${zPx.toFixed(1)}px) rotateY(${rotY.toFixed(2)}deg) scale(${scale.toFixed(4)})`,
+    opacity: Number(opacity.toFixed(3)),
+    zIndex: Math.max(0, Math.round(100 - abs * 30)),
+    isVisible: opacity > 0.01,
+    blurPx: Number(blurPx.toFixed(2)),
+    sheenPercent: Number(sheenPercent.toFixed(1)),
+    sheenOpacity: Number(sheenOpacity.toFixed(3)),
+  };
+}
+
 export default function ServicesCarousel() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const dragRef = useRef({ active: false, moved: false, startX: 0, scrollLeft: 0 });
+  const stageRef = useRef<HTMLDivElement>(null);
+  const physRef = useRef<{
+    current: number;
+    target: number;
+    dragging: boolean;
+    rafId: number | null;
+    snapTimer: number | null;
+    lastFrameTime: number;
+  }>({
+    current: 0,
+    target: 0,
+    dragging: false,
+    rafId: null,
+    snapTimer: null,
+    lastFrameTime: 0,
+  });
+  const pointerRef = useRef<{
+    pointerId: number | null;
+    captured: boolean;
+    startX: number;
+    startTarget: number;
+    lastX: number;
+    lastTime: number;
+    velocity: number;
+  }>({
+    pointerId: null,
+    captured: false,
+    startX: 0,
+    startTarget: 0,
+    lastX: 0,
+    lastTime: 0,
+    velocity: 0,
+  });
+  const didDragRef = useRef(false);
   const [category, setCategory] = useState<CategoryId>("all");
+  const [renderPos, setRenderPos] = useState(0);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const prefersReducedMotion = useReducedMotion();
   const { locale } = useLanguage();
 
   const categories = CATEGORIES[locale];
   const categoryLabels = CATEGORY_LABELS[locale];
   const visibleServices =
     category === "all" ? SERVICES : SERVICES.filter((s) => s.category === category);
+  const total = visibleServices.length;
+  const safeIndex = wrapIndex(Math.round(renderPos), total);
 
-  const updateScrollProgress = useCallback(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    const max = el.scrollWidth - el.clientWidth;
-    if (max <= 4) {
-      setScrollProgress(1);
-      return;
+  const startLoop = useCallback(() => {
+    if (physRef.current.rafId !== null) return;
+    physRef.current.lastFrameTime = performance.now();
+
+    const tick = (now: number) => {
+      const phys = physRef.current;
+      const dt = Math.max(1, Math.min(48, now - phys.lastFrameTime));
+      phys.lastFrameTime = now;
+
+      const baseAlpha = phys.dragging ? 0.28 : 0.14;
+      const alpha = 1 - Math.pow(1 - baseAlpha, dt / 16.6667);
+      const diff = phys.target - phys.current;
+
+      if (!phys.dragging && Math.abs(diff) < 0.001) {
+        phys.current = phys.target;
+        phys.rafId = null;
+        setRenderPos(phys.current);
+        return;
+      }
+
+      phys.current += diff * alpha;
+      setRenderPos(phys.current);
+      phys.rafId = window.requestAnimationFrame(tick);
+    };
+
+    physRef.current.rafId = window.requestAnimationFrame(tick);
+  }, []);
+
+  const resetToFirst = useCallback(() => {
+    const phys = physRef.current;
+    if (phys.snapTimer !== null) {
+      window.clearTimeout(phys.snapTimer);
+      phys.snapTimer = null;
     }
-    setScrollProgress(Math.max(0, Math.min(1, el.scrollLeft / max)));
+    if (phys.rafId !== null) {
+      window.cancelAnimationFrame(phys.rafId);
+      phys.rafId = null;
+    }
+    phys.current = 0;
+    phys.target = 0;
+    phys.dragging = false;
+    setRenderPos(0);
   }, []);
 
   useEffect(() => {
-    const raf = window.requestAnimationFrame(updateScrollProgress);
-    window.addEventListener("resize", updateScrollProgress, { passive: true });
+    const phys = physRef.current;
     return () => {
-      window.cancelAnimationFrame(raf);
-      window.removeEventListener("resize", updateScrollProgress);
+      if (phys.rafId !== null) window.cancelAnimationFrame(phys.rafId);
+      if (phys.snapTimer !== null) window.clearTimeout(phys.snapTimer);
     };
-  }, [category, updateScrollProgress]);
+  }, []);
+
+  const rotateToIndex = useCallback(
+    (targetIndex: number) => {
+      if (total <= 1) return;
+      const phys = physRef.current;
+      if (phys.snapTimer !== null) {
+        window.clearTimeout(phys.snapTimer);
+        phys.snapTimer = null;
+      }
+      const base = Math.round(phys.target);
+      const delta = getCircularOffset(targetIndex, base, total);
+      phys.target = base + delta;
+      startLoop();
+    },
+    [total, startLoop]
+  );
 
   useEffect(() => {
     const onSelectCategory = (e: Event) => {
       const next = (e as CustomEvent<CategoryId>).detail;
       if (!next) return;
       setCategory(next);
+      resetToFirst();
       setHoveredId(null);
-      trackRef.current?.scrollTo({ left: 0, behavior: "smooth" });
     };
     window.addEventListener("midi8:select-category", onSelectCategory);
     return () => window.removeEventListener("midi8:select-category", onSelectCategory);
-  }, []);
+  }, [resetToFirst]);
+
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el || total <= 1) return;
+
+    const onWheel = (e: WheelEvent) => {
+      const unitScale = e.deltaMode === 1 ? 32 : e.deltaMode === 2 ? 320 : 1;
+      const dx = e.deltaX * unitScale;
+      const dy = e.deltaY * unitScale;
+      const delta =
+        Math.abs(dx) > Math.abs(dy)
+          ? dx
+          : e.shiftKey && Math.abs(dy) > 0
+            ? dy
+            : 0;
+
+      if (delta === 0) return;
+      e.preventDefault();
+
+      const phys = physRef.current;
+      if (phys.snapTimer !== null) {
+        window.clearTimeout(phys.snapTimer);
+      }
+
+      phys.target += delta / 210;
+      startLoop();
+
+      phys.snapTimer = window.setTimeout(() => {
+        phys.snapTimer = null;
+        phys.target = Math.round(phys.target);
+        startLoop();
+      }, 140);
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [total, startLoop]);
 
   const handleCategoryChange = (next: CategoryId) => {
     setCategory(next);
+    resetToFirst();
     setHoveredId(null);
-    trackRef.current?.scrollTo({ left: 0, behavior: "smooth" });
   };
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = trackRef.current;
-    if (!el) return;
-    dragRef.current = {
-      active: true,
-      moved: false,
-      startX: e.pageX - el.offsetLeft,
-      scrollLeft: el.scrollLeft,
+  const rotateByDelta = (delta: number) => {
+    if (total <= 1) return;
+    const phys = physRef.current;
+    if (phys.snapTimer !== null) {
+      window.clearTimeout(phys.snapTimer);
+      phys.snapTimer = null;
+    }
+    phys.target = Math.round(phys.target) + delta;
+    startLoop();
+  };
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0 || total <= 1) return;
+    const phys = physRef.current;
+    if (phys.snapTimer !== null) {
+      window.clearTimeout(phys.snapTimer);
+      phys.snapTimer = null;
+    }
+    const now = performance.now();
+    didDragRef.current = false;
+    pointerRef.current = {
+      pointerId: e.pointerId,
+      captured: false,
+      startX: e.clientX,
+      startTarget: phys.target,
+      lastX: e.clientX,
+      lastTime: now,
+      velocity: 0,
     };
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = trackRef.current;
-    if (!el || !dragRef.current.active) return;
-    const x = e.pageX - el.offsetLeft;
-    const walk = x - dragRef.current.startX;
-    if (Math.abs(walk) > 6) dragRef.current.moved = true;
-    if (dragRef.current.moved) {
-      e.preventDefault();
-      el.scrollLeft = dragRef.current.scrollLeft - walk;
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const ptr = pointerRef.current;
+    if (ptr.pointerId !== e.pointerId) return;
+
+    const dx = e.clientX - ptr.startX;
+    if (!ptr.captured && Math.abs(dx) > 6) {
+      ptr.captured = true;
+      didDragRef.current = true;
+      physRef.current.dragging = true;
+      setHoveredId(null);
+      try {
+        e.currentTarget.setPointerCapture(e.pointerId);
+      } catch {
+        // Ignora caso pointer capture não esteja disponível
+      }
     }
+
+    if (!ptr.captured) return;
+
+    const now = performance.now();
+    const dt = Math.max(1, now - ptr.lastTime);
+    const instantVelocity = (e.clientX - ptr.lastX) / dt;
+    ptr.velocity = ptr.velocity * 0.55 + instantVelocity * 0.45;
+    ptr.lastX = e.clientX;
+    ptr.lastTime = now;
+
+    physRef.current.target = ptr.startTarget - dx / 220;
+    startLoop();
   };
 
-  const endMouseDrag = () => {
-    dragRef.current.active = false;
+  const finishPointerDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    const ptr = pointerRef.current;
+    if (ptr.pointerId !== e.pointerId) return;
+
+    if (ptr.captured) {
+      if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+        try {
+          e.currentTarget.releasePointerCapture(e.pointerId);
+        } catch {
+          // Ignora caso pointer capture já tenha sido libertado
+        }
+      }
+      const phys = physRef.current;
+      phys.dragging = false;
+      const momentum = Math.max(-2, Math.min(2, (-ptr.velocity * 110) / 220));
+      phys.target = Math.round(phys.target + momentum);
+      startLoop();
+    }
+
+    ptr.pointerId = null;
+    ptr.captured = false;
   };
 
   return (
-    <section id="servicos" className="relative w-full py-20 sm:py-28 scroll-mt-16">
+    <section id="servicos" className="relative w-full py-20 sm:py-28 scroll-mt-16 overflow-x-clip">
       <div className="max-w-7xl w-full mx-auto px-5 sm:px-6">
         {/* Cabeçalho da secção */}
-        <div className="mb-6 sm:mb-7">
-          <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.05]">
-            {locale === "pt" ? "Os Nossos Serviços" : "Our Services"}
-          </h2>
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-6 sm:mb-7"
+        >
+          <KineticHeading
+            className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.05]"
+            segments={
+              locale === "pt"
+                ? [{ text: "Os Nossos " }, { text: "Serviços", italic: true }]
+                : [{ text: "Our " }, { text: "Services", italic: true }]
+            }
+          />
           <p className="text-sm sm:text-base text-muted mt-1.5">
             {locale === "pt"
               ? "Soluções digitais desenhadas à medida do seu negócio."
               : "Digital solutions tailored to your business."}
           </p>
-        </div>
+        </motion.div>
 
         {/* Filtros por categoria */}
-        <div className="flex flex-nowrap sm:flex-wrap items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar mb-7 pb-1">
+        <div className="flex flex-nowrap sm:flex-wrap items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar mb-4 sm:mb-6 pb-1">
           {categories.map((cat) => {
             const selected = category === cat.id;
             return (
@@ -463,129 +686,184 @@ export default function ServicesCarousel() {
         </div>
       </div>
 
-      {/* Carrossel horizontal full-bleed com Click & Drag + Barra de progresso */}
-      <div className="max-w-[1440px] w-full mx-auto">
+      {/* Palco 3D contínuo em perspetiva (Coverflow) */}
+      <div className="max-w-[1440px] w-full mx-auto px-2 sm:px-6">
         <div
-          ref={trackRef}
-          onScroll={updateScrollProgress}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={endMouseDrag}
-          onMouseLeave={() => {
-            endMouseDrag();
-            setHoveredId(null);
+          ref={stageRef}
+          role="region"
+          aria-roledescription="carousel"
+          aria-label={locale === "pt" ? "Carrossel 3D de serviços" : "Services 3D carousel"}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowLeft") {
+              e.preventDefault();
+              rotateByDelta(-1);
+            } else if (e.key === "ArrowRight") {
+              e.preventDefault();
+              rotateByDelta(1);
+            }
           }}
-          className="flex gap-4 sm:gap-5 overflow-x-auto no-scrollbar snap-x snap-mandatory px-5 sm:px-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))] pb-6 pt-3 cursor-grab active:cursor-grabbing"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={finishPointerDrag}
+          onPointerCancel={finishPointerDrag}
+          onPointerLeave={() => {
+            if (!pointerRef.current.captured) {
+              setHoveredId(null);
+            }
+          }}
+          style={{
+            perspective: "1400px",
+            maskImage: "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
+          }}
+          className="relative w-full h-[390px] sm:h-[430px] flex items-center justify-center select-none overflow-hidden touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing focus-visible:outline-none [--wing-unit:165px] sm:[--wing-unit:235px] lg:[--wing-unit:270px]"
         >
-          <AnimatePresence mode="popLayout">
-            {visibleServices.map((service) => {
-              const isHovered = hoveredId === service.id;
-              return (
-                <motion.article
-                  key={service.id}
-                  layout={prefersReducedMotion ? false : "position"}
-                  initial={prefersReducedMotion ? false : { opacity: 0, y: 12, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={
-                    prefersReducedMotion
-                      ? false
-                      : { opacity: 0, scale: 0.96, transition: { duration: 0.15 } }
+          {visibleServices.map((service, index) => {
+            const diff = getCircularOffset(index, renderPos, total);
+            const isCenter = Math.abs(diff) < 0.35;
+            const isHovered = hoveredId === service.id;
+            const isSpotlit = isCenter || isHovered;
+            const stagePos = getCard3DStyle(diff, total);
+
+            return (
+              <article
+                key={service.id}
+                aria-hidden={!stagePos.isVisible}
+                tabIndex={stagePos.isVisible ? 0 : -1}
+                onMouseEnter={() => {
+                  if (stagePos.isVisible && !pointerRef.current.captured) {
+                    setHoveredId(service.id);
                   }
-                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                  onMouseEnter={() => {
-                    if (!dragRef.current.active) setHoveredId(service.id);
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredId((prev) => (prev === service.id ? null : prev));
-                  }}
-                  onClick={() => {
-                    if (!dragRef.current.moved) {
-                      setHoveredId((prev) => (prev === service.id ? null : service.id));
-                    }
-                  }}
-                  className={`service-card snap-start shrink-0 w-[80vw] sm:w-[330px] h-[305px] sm:h-[340px] p-6 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer select-none ${
-                    isHovered ? "service-card--active -translate-y-2" : ""
+                }}
+                onMouseLeave={() => {
+                  setHoveredId((prev) => (prev === service.id ? null : prev));
+                }}
+                onClick={() => {
+                  if (didDragRef.current || !stagePos.isVisible) return;
+                  if (Math.abs(diff) >= 0.1) {
+                    rotateToIndex(index);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if ((e.key === "Enter" || e.key === " ") && stagePos.isVisible) {
+                    e.preventDefault();
+                    rotateToIndex(index);
+                  }
+                }}
+                style={{
+                  transform: stagePos.transform,
+                  opacity: stagePos.opacity,
+                  zIndex: stagePos.zIndex,
+                  filter:
+                    isHovered || stagePos.blurPx === 0
+                      ? "blur(0px)"
+                      : `blur(${stagePos.blurPx}px)`,
+                  pointerEvents: stagePos.isVisible ? "auto" : "none",
+                  transition:
+                    "box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease",
+                  willChange: "transform, opacity, filter",
+                }}
+                className={`service-card absolute w-[78vw] max-w-[330px] sm:w-[340px] h-[320px] sm:h-[360px] p-6 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer select-none [transform-style:preserve-3d] [backface-visibility:hidden] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue ${
+                  isSpotlit ? "service-card--active" : ""
+                }`}
+              >
+                {/* Camada de gradiente suave para crossfade sem saltos bruscos */}
+                <div
+                  className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${
+                    isSpotlit ? "opacity-100" : "opacity-0"
                   }`}
-                >
-                  {/* Camada de gradiente suave para crossfade sem saltos bruscos */}
-                  <div
-                    className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${
-                      isHovered ? "opacity-100" : "opacity-0"
+                  style={{ background: service.gradient }}
+                  aria-hidden="true"
+                />
+
+                {/* Reflexo especular de estúdio ligado ao ângulo de rotação */}
+                <div
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    opacity: stagePos.sheenOpacity,
+                    background: `linear-gradient(115deg, transparent ${stagePos.sheenPercent - 24}%, rgba(255, 255, 255, 0.45) ${stagePos.sheenPercent}%, transparent ${stagePos.sheenPercent + 24}%)`,
+                  }}
+                  aria-hidden="true"
+                />
+
+                {/* Véu escuro para legibilidade estável nos gradientes ativos */}
+                <div
+                  className={`pointer-events-none absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/44 via-black/18 to-transparent transition-opacity duration-500 ${
+                    isSpotlit ? "opacity-100" : "opacity-0"
+                  }`}
+                  aria-hidden="true"
+                />
+
+                {/* Ícone minimalista em caixa branca e categoria discreta no topo */}
+                <div className="relative z-10 flex items-center justify-between gap-3">
+                  <span
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 ${
+                      isSpotlit
+                        ? "bg-white/90 border-white text-foreground shadow-xs"
+                        : "bg-white border-black/[0.06] text-foreground shadow-2xs"
                     }`}
-                    style={{ background: service.gradient }}
-                    aria-hidden="true"
-                  />
+                  >
+                    <ServiceIcon icon={service.icon} />
+                  </span>
 
-                  {/* Véu escuro subtil na metade inferior ao passar o rato */}
-                  <div
-                    className={`pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/28 via-black/10 to-transparent transition-opacity duration-500 ${
-                      isHovered ? "opacity-100" : "opacity-0"
+                  <span
+                    className={`text-[11px] font-sans tracking-wide uppercase transition-colors duration-300 ${
+                      isSpotlit ? "text-foreground/75" : "text-subtle"
                     }`}
-                    aria-hidden="true"
-                  />
+                  >
+                    {categoryLabels[service.category]}
+                  </span>
+                </div>
 
-                  {/* Ícone minimalista em caixa branca e categoria discreta no topo */}
-                  <div className="relative z-10 flex items-center justify-between gap-3">
-                    <span
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 ${
-                        isHovered
-                          ? "bg-white/90 border-white text-foreground shadow-xs"
-                          : "bg-white border-black/[0.06] text-foreground shadow-2xs"
-                      }`}
-                    >
-                      {service.icon}
-                    </span>
-
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        const targetArea =
-                          CATEGORY_TO_AREA[service.category] ?? "Web, Software & Mobile";
-                        window.dispatchEvent(
-                          new CustomEvent<Area>("midi8:preselect-area", { detail: targetArea })
-                        );
-                        document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" });
-                      }}
-                      title={locale === "pt" ? "Pedir proposta nesta área" : "Request proposal in this area"}
-                      className={`text-[11px] font-sans tracking-wide uppercase transition-colors duration-300 hover:opacity-100 cursor-pointer ${
-                        isHovered ? "text-white/80" : "text-subtle"
-                      }`}
-                    >
-                      {categoryLabels[service.category]}
-                    </button>
-                  </div>
-
-                  {/* Conteúdo ancorado em baixo em sans-serif limpa e legível */}
-                  <div className="relative z-10">
-                    <h3
-                      className={`font-sans text-base sm:text-[17px] font-semibold tracking-tight leading-snug mb-2 transition-colors duration-300 ${
-                        isHovered ? "text-white" : "text-foreground"
-                      }`}
-                    >
-                      {service.title[locale]}
-                    </h3>
-                    <p
-                      className={`text-xs sm:text-[13px] leading-relaxed line-clamp-4 transition-colors duration-300 ${
-                        isHovered ? "text-white/90" : "text-muted"
-                      }`}
-                    >
-                      {service.description[locale]}
-                    </p>
-                  </div>
-                </motion.article>
-              );
-            })}
-          </AnimatePresence>
+                {/* Conteúdo ancorado em baixo em sans-serif limpa e legível */}
+                <div className="relative z-10">
+                  <h3
+                    className={`font-sans text-base sm:text-[17px] font-semibold tracking-tight leading-snug mb-2 transition-colors duration-300 ${
+                      isSpotlit ? "text-white" : "text-foreground"
+                    }`}
+                  >
+                    {service.title[locale]}
+                  </h3>
+                  <p
+                    className={`text-xs sm:text-[13px] leading-relaxed line-clamp-4 transition-colors duration-300 ${
+                      isSpotlit ? "text-white/90" : "text-muted"
+                    }`}
+                  >
+                    {service.description[locale]}
+                  </p>
+                </div>
+              </article>
+            );
+          })}
         </div>
 
-        {/* Barra de progresso horizontal do carrossel */}
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 pt-1">
-          <div className="h-[1.5px] w-full bg-border overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896] transition-[width] duration-150 ease-out"
-              style={{ width: `${Math.max(12, Math.round(scrollProgress * 100))}%` }}
-            />
+        {/* Indicadores minimalistas centrados abaixo do palco 3D */}
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 mt-4 sm:mt-5 flex justify-center">
+          <div
+            className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1"
+            role="tablist"
+            aria-label={locale === "pt" ? "Selecionar serviço" : "Select service"}
+          >
+            {visibleServices.map((service, index) => {
+              const selected = index === safeIndex;
+              return (
+                <button
+                  key={service.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={selected}
+                  aria-label={`${service.title[locale]} (${index + 1}/${total})`}
+                  onClick={() => rotateToIndex(index)}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    selected
+                      ? "w-7 bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896]"
+                      : "w-1.5 bg-border-strong/55 hover:bg-foreground/45"
+                  }`}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

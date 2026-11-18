@@ -8,6 +8,8 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+import AuroraCanvas from "@/components/AuroraCanvas";
+import AuroraVideoBackground from "@/components/AuroraVideoBackground";
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -32,27 +34,46 @@ export default function Hero() {
   const auroraScale = useTransform(smoothProgress, [0, 0.75], [1, 1.08]);
   const auroraY = useTransform(smoothProgress, [0, 0.75], [0, -40]);
 
+  // Parallax layers – move slower than the main content
+  const layer1Y = useTransform(smoothProgress, [0, 1], [0, -30]);
+  const layer2Y = useTransform(smoothProgress, [0, 1], [0, -60]);
+
   return (
     <section
       ref={sectionRef}
       id="hero"
       className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center px-6 py-24 overflow-hidden"
     >
-      {/* Fade aurora no topo apenas na área do Hero */}
+      {/* Background video (aurora) */}
+      <AuroraVideoBackground />
+
+      {/* Fade aurora only at the top of the Hero */}
       <motion.div
         style={
           prefersReducedMotion
             ? undefined
             : { opacity: auroraOpacity, scale: auroraScale, y: auroraY }
         }
-        className="pointer-events-none absolute inset-0 z-0 will-change-transform"
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden will-change-transform"
         aria-hidden="true"
       >
-        <div className="top-aurora-fade" />
+        <AuroraCanvas />
         <div className="top-aurora-grain" />
       </motion.div>
 
-      {/* Título centrado com reação suave ao scroll */}
+      {/* Parallax decorative layers */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{ y: layer1Y, background: "rgba(20,94,255,0.04)" }}
+        aria-hidden="true"
+      />
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{ y: layer2Y, background: "rgba(0,232,150,0.03)" }}
+        aria-hidden="true"
+      />
+
+      {/* Title with smooth scroll reaction */}
       <motion.div
         style={
           prefersReducedMotion

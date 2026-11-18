@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import { useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
+import MagneticButton from "@/components/MagneticButton";
 import { useLanguage } from "@/context/LanguageContext";
 import {
   AREAS,
@@ -99,23 +100,6 @@ export default function ContactForm() {
   const copy = FORM_COPY[locale];
   const areaLabels = AREA_LABELS[locale];
 
-  useEffect(() => {
-    const onPreselect = (e: Event) => {
-      const nextArea = (e as CustomEvent<Area>).detail;
-      if ((AREAS as readonly string[]).includes(nextArea)) {
-        setSelectedAreas((prev) => (prev.includes(nextArea) ? prev : [...prev, nextArea]));
-        setErrors((errs) => {
-          if (!errs.areas) return errs;
-          const rest = { ...errs };
-          delete rest.areas;
-          return rest;
-        });
-      }
-    };
-    window.addEventListener("midi8:preselect-area", onPreselect);
-    return () => window.removeEventListener("midi8:preselect-area", onPreselect);
-  }, []);
-
   function toggleArea(area: Area) {
     setSelectedAreas((prev) =>
       prev.includes(area) ? prev.filter((item) => item !== area) : [...prev, area]
@@ -203,19 +187,34 @@ export default function ContactForm() {
           {copy.areasLegend} <span className="text-subtle text-xs">{copy.areasHint}</span>
         </legend>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {AREAS.map((area) => (
-            <label key={area} className="neu-option justify-start">
-              <input
-                type="checkbox"
-                name="areas"
-                value={area}
-                checked={selectedAreas.includes(area)}
-                onChange={() => toggleArea(area)}
-                className="sr-only"
-              />
-              {areaLabels[area]}
-            </label>
-          ))}
+          {AREAS.map((area) => {
+            const isSelected = selectedAreas.includes(area);
+            return (
+              <label key={area} className="neu-option justify-start">
+                <input
+                  type="checkbox"
+                  name="areas"
+                  value={area}
+                  checked={isSelected}
+                  onChange={() => toggleArea(area)}
+                  className="sr-only"
+                />
+                <span
+                  aria-hidden="true"
+                  className={`w-4 h-4 rounded-[5px] border flex items-center justify-center shrink-0 transition-colors ${
+                    isSelected
+                      ? "border-white/40 bg-white/15 text-white"
+                      : "border-border-strong bg-surface text-transparent"
+                  }`}
+                >
+                  <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 12 12" stroke="currentColor" strokeWidth={2.2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.25l2.5 2.5 5-5.25" />
+                  </svg>
+                </span>
+                <span>{areaLabels[area]}</span>
+              </label>
+            );
+          })}
         </div>
         {errors.areas && (
           <p id="areas-error" className="text-xs text-danger">
@@ -258,15 +257,16 @@ export default function ContactForm() {
           </Link>
           .
         </p>
-        <button
+        <MagneticButton
           type="submit"
-          className="inline-flex items-center justify-center gap-2 rounded-none border border-foreground bg-transparent text-foreground hover:bg-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide whitespace-nowrap shrink-0 self-end sm:self-auto cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-progress"
           disabled={status === "sending"}
           aria-busy={status === "sending"}
+          wrapperClassName="inline-flex self-end sm:self-auto"
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-foreground bg-transparent text-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide whitespace-nowrap shrink-0 cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-progress"
         >
           <span>{status === "sending" ? copy.submitSending : copy.submitIdle}</span>
           {status === "sending" && <span className="spinner" aria-hidden="true" />}
-        </button>
+        </MagneticButton>
       </div>
     </form>
   );
