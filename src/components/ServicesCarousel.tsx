@@ -316,86 +316,317 @@ const SERVICES: ServiceItem[] = [
   },
 ];
 
+function wrapIndex(value: number, total: number): number {
+  if (total <= 0) return 0;
+  return ((value % total) + total) % total;
+}
+
+function getCircularOffset(index: number, pos: number, total: number): number {
+  if (total <= 1) return 0;
+  const wrapped = wrapIndex(pos, total);
+  let diff = index - wrapped;
+  if (diff > total / 2) diff -= total;
+  if (diff < -total / 2) diff += total;
+  return diff;
+}
+
+function getCard3DStyle(diff: number, total: number) {
+  const abs = Math.abs(diff);
+  const sign = diff >= 0 ? 1 : -1;
+  const hasOuterWings = total >= 5;
+  const maxVis = hasOuterWings ? 2.6 : 1.55;
+
+  const xFactor =
+    abs <= 1
+      ? abs
+      : abs <= 2
+        ? 1 + (abs - 1) * 0.74
+        : 1.74 + Math.min(abs - 2, 1) * 0.32;
+
+  const zPx = -Math.min(abs, 3) * 110;
+  const absRot =
+    abs <= 1
+      ? abs * 28
+      : abs <= 2
+        ? 28 + (abs - 1) * 10
+        : 38 + Math.min(abs - 2, 1) * 8;
+  const rotY = diff === 0 ? 0 : sign * -absRot;
+  const scale = Math.max(0.66, 1 - abs * 0.12);
+
+  let opacity = 0;
+  if (abs < maxVis) {
+    if (abs <= 1) {
+      opacity = 1 - abs * 0.16;
+    } else if (hasOuterWings && abs <= 2) {
+      opacity = 0.84 - (abs - 1) * 0.38;
+    } else if (hasOuterWings) {
+      opacity = Math.max(0, 0.46 * (1 - (abs - 2) / 0.6));
+    } else {
+      opacity = Math.max(0, 0.84 * (1 - (abs - 1) / 0.55));
+    }
+  }
+
+  return {
+    transform: `translate3d(calc(var(--wing-unit, 270px) * ${(sign * xFactor).toFixed(4)}), 0px, ${zPx.toFixed(1)}px) rotateY(${rotY.toFixed(2)}deg) scale(${scale.toFixed(4)})`,
+    opacity: Number(opacity.toFixed(3)),
+    zIndex: Math.max(0, Math.round(100 - abs * 30)),
+    isVisible: opacity > 0.01,
+  };
+}
+
 export default function ServicesCarousel() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const dragRef = useRef({ active: false, moved: false, startX: 0, scrollLeft: 0 });
+  const stageRef = useRef<HTMLDivElement>(null);
+  const physRef = useRef<{
+    current: number;
+    target: number;
+    dragging: boolean;
+    rafId: number | null;
+    snapTimer: number | null;
+    lastFrameTime: number;
+  }>({
+    current: 0,
+    target: 0,
+    dragging: false,
+    rafId: null,
+    snapTimer: null,
+    lastFrameTime: 0,
+  });
+  const pointerRef = useRef<{
+    pointerId: number | null;
+    captured: boolean;
+    startX: number;
+    startTarget: number;
+    lastX: number;
+    lastTime: number;
+    velocity: number;
+  }>({
+    pointerId: null,
+    captured: false,
+    startX: 0,
+    startTarget: 0,
+    lastX: 0,
+    lastTime: 0,
+    velocity: 0,
+  });
+  const didDragRef = useRef(false);
   const [category, setCategory] = useState<CategoryId>("all");
+  const [renderPos, setRenderPos] = useState(0);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const { locale } = useLanguage();
 
   const categories = CATEGORIES[locale];
   const categoryLabels = CATEGORY_LABELS[locale];
   const visibleServices =
     category === "all" ? SERVICES : SERVICES.filter((s) => s.category === category);
+  const total = visibleServices.length;
+  const safeIndex = wrapIndex(Math.round(renderPos), total);
 
-  const updateScrollProgress = useCallback(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    const max = el.scrollWidth - el.clientWidth;
-    if (max <= 4) {
-      setScrollProgress(1);
-      return;
+  const startLoop = useCallback(() => {
+    if (physRef.current.rafId !== null) return;
+    physRef.current.lastFrameTime = performance.now();
+
+    const tick = (now: number) => {
+      const phys = physRef.current;
+      const dt = Math.max(1, Math.min(48, now - phys.lastFrameTime));
+      phys.lastFrameTime = now;
+
+      const baseAlpha = phys.dragging ? 0.28 : 0.14;
+      const alpha = 1 - Math.pow(1 - baseAlpha, dt / 16.6667);
+      const diff = phys.target - phys.current;
+
+      if (!phys.dragging && Math.abs(diff) < 0.001) {
+        phys.current = phys.target;
+        phys.rafId = null;
+        setRenderPos(phys.current);
+        return;
+      }
+
+      phys.current += diff * alpha;
+      setRenderPos(phys.current);
+      phys.rafId = window.requestAnimationFrame(tick);
+    };
+
+    physRef.current.rafId = window.requestAnimationFrame(tick);
+  }, []);
+
+  const resetToFirst = useCallback(() => {
+    const phys = physRef.current;
+    if (phys.snapTimer !== null) {
+      window.clearTimeout(phys.snapTimer);
+      phys.snapTimer = null;
     }
-    setScrollProgress(Math.max(0, Math.min(1, el.scrollLeft / max)));
+    if (phys.rafId !== null) {
+      window.cancelAnimationFrame(phys.rafId);
+      phys.rafId = null;
+    }
+    phys.current = 0;
+    phys.target = 0;
+    phys.dragging = false;
+    setRenderPos(0);
   }, []);
 
   useEffect(() => {
-    const raf = window.requestAnimationFrame(updateScrollProgress);
-    window.addEventListener("resize", updateScrollProgress, { passive: true });
+    const phys = physRef.current;
     return () => {
-      window.cancelAnimationFrame(raf);
-      window.removeEventListener("resize", updateScrollProgress);
+      if (phys.rafId !== null) window.cancelAnimationFrame(phys.rafId);
+      if (phys.snapTimer !== null) window.clearTimeout(phys.snapTimer);
     };
-  }, [category, updateScrollProgress]);
+  }, []);
 
   useEffect(() => {
     const onSelectCategory = (e: Event) => {
       const next = (e as CustomEvent<CategoryId>).detail;
       if (!next) return;
       setCategory(next);
+      resetToFirst();
       setHoveredId(null);
-      trackRef.current?.scrollTo({ left: 0, behavior: "smooth" });
     };
     window.addEventListener("midi8:select-category", onSelectCategory);
     return () => window.removeEventListener("midi8:select-category", onSelectCategory);
-  }, []);
+  }, [resetToFirst]);
+
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el || total <= 1) return;
+
+    const onWheel = (e: WheelEvent) => {
+      const unitScale = e.deltaMode === 1 ? 32 : e.deltaMode === 2 ? 320 : 1;
+      const dx = e.deltaX * unitScale;
+      const dy = e.deltaY * unitScale;
+      const delta =
+        Math.abs(dx) > Math.abs(dy)
+          ? dx
+          : e.shiftKey && Math.abs(dy) > 0
+            ? dy
+            : 0;
+
+      if (delta === 0) return;
+      e.preventDefault();
+
+      const phys = physRef.current;
+      if (phys.snapTimer !== null) {
+        window.clearTimeout(phys.snapTimer);
+      }
+
+      phys.target += delta / 210;
+      startLoop();
+
+      phys.snapTimer = window.setTimeout(() => {
+        phys.snapTimer = null;
+        phys.target = Math.round(phys.target);
+        startLoop();
+      }, 140);
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [total, startLoop]);
 
   const handleCategoryChange = (next: CategoryId) => {
     setCategory(next);
+    resetToFirst();
     setHoveredId(null);
-    trackRef.current?.scrollTo({ left: 0, behavior: "smooth" });
   };
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = trackRef.current;
-    if (!el) return;
-    dragRef.current = {
-      active: true,
-      moved: false,
-      startX: e.pageX - el.offsetLeft,
-      scrollLeft: el.scrollLeft,
+  const rotateByDelta = (delta: number) => {
+    if (total <= 1) return;
+    const phys = physRef.current;
+    if (phys.snapTimer !== null) {
+      window.clearTimeout(phys.snapTimer);
+      phys.snapTimer = null;
+    }
+    phys.target = Math.round(phys.target) + delta;
+    startLoop();
+  };
+
+  const rotateToIndex = (targetIndex: number) => {
+    if (total <= 1) return;
+    const phys = physRef.current;
+    if (phys.snapTimer !== null) {
+      window.clearTimeout(phys.snapTimer);
+      phys.snapTimer = null;
+    }
+    const base = Math.round(phys.target);
+    const delta = getCircularOffset(targetIndex, base, total);
+    phys.target = base + delta;
+    startLoop();
+  };
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0 || total <= 1) return;
+    const phys = physRef.current;
+    if (phys.snapTimer !== null) {
+      window.clearTimeout(phys.snapTimer);
+      phys.snapTimer = null;
+    }
+    const now = performance.now();
+    didDragRef.current = false;
+    pointerRef.current = {
+      pointerId: e.pointerId,
+      captured: false,
+      startX: e.clientX,
+      startTarget: phys.target,
+      lastX: e.clientX,
+      lastTime: now,
+      velocity: 0,
     };
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = trackRef.current;
-    if (!el || !dragRef.current.active) return;
-    const x = e.pageX - el.offsetLeft;
-    const walk = x - dragRef.current.startX;
-    if (Math.abs(walk) > 6) dragRef.current.moved = true;
-    if (dragRef.current.moved) {
-      e.preventDefault();
-      el.scrollLeft = dragRef.current.scrollLeft - walk;
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const ptr = pointerRef.current;
+    if (ptr.pointerId !== e.pointerId) return;
+
+    const dx = e.clientX - ptr.startX;
+    if (!ptr.captured && Math.abs(dx) > 6) {
+      ptr.captured = true;
+      didDragRef.current = true;
+      physRef.current.dragging = true;
+      setHoveredId(null);
+      try {
+        e.currentTarget.setPointerCapture(e.pointerId);
+      } catch {
+        // Ignora caso pointer capture não esteja disponível
+      }
     }
+
+    if (!ptr.captured) return;
+
+    const now = performance.now();
+    const dt = Math.max(1, now - ptr.lastTime);
+    const instantVelocity = (e.clientX - ptr.lastX) / dt;
+    ptr.velocity = ptr.velocity * 0.55 + instantVelocity * 0.45;
+    ptr.lastX = e.clientX;
+    ptr.lastTime = now;
+
+    physRef.current.target = ptr.startTarget - dx / 220;
+    startLoop();
   };
 
-  const endMouseDrag = () => {
-    dragRef.current.active = false;
+  const finishPointerDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    const ptr = pointerRef.current;
+    if (ptr.pointerId !== e.pointerId) return;
+
+    if (ptr.captured) {
+      if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+        try {
+          e.currentTarget.releasePointerCapture(e.pointerId);
+        } catch {
+          // Ignora caso pointer capture já tenha sido libertado
+        }
+      }
+      const phys = physRef.current;
+      phys.dragging = false;
+      const momentum = Math.max(-2, Math.min(2, (-ptr.velocity * 110) / 220));
+      phys.target = Math.round(phys.target + momentum);
+      startLoop();
+    }
+
+    ptr.pointerId = null;
+    ptr.captured = false;
   };
 
   return (
-    <section id="servicos" className="relative w-full py-20 sm:py-28 scroll-mt-16">
+    <section id="servicos" className="relative w-full py-20 sm:py-28 scroll-mt-16 overflow-x-clip">
       <div className="max-w-7xl w-full mx-auto px-5 sm:px-6">
         {/* Cabeçalho da secção */}
         <div className="mb-6 sm:mb-7">
@@ -418,7 +649,7 @@ export default function ServicesCarousel() {
         </div>
 
         {/* Filtros por categoria */}
-        <div className="flex flex-nowrap sm:flex-wrap items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar mb-7 pb-1">
+        <div className="flex flex-nowrap sm:flex-wrap items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar mb-4 sm:mb-6 pb-1">
           {categories.map((cat) => {
             const selected = category === cat.id;
             return (
@@ -439,53 +670,93 @@ export default function ServicesCarousel() {
         </div>
       </div>
 
-      {/* Carrossel horizontal full-bleed com Click & Drag + Barra de progresso */}
-      <div className="max-w-[1440px] w-full mx-auto">
+      {/* Palco 3D contínuo em perspetiva (Coverflow) */}
+      <div className="max-w-[1440px] w-full mx-auto px-2 sm:px-6">
         <div
-          ref={trackRef}
-          onScroll={updateScrollProgress}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={endMouseDrag}
-          onMouseLeave={() => {
-            endMouseDrag();
-            setHoveredId(null);
+          ref={stageRef}
+          role="region"
+          aria-roledescription="carousel"
+          aria-label={locale === "pt" ? "Carrossel 3D de serviços" : "Services 3D carousel"}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowLeft") {
+              e.preventDefault();
+              rotateByDelta(-1);
+            } else if (e.key === "ArrowRight") {
+              e.preventDefault();
+              rotateByDelta(1);
+            }
           }}
-          className="flex gap-4 sm:gap-5 overflow-x-auto no-scrollbar snap-x snap-mandatory px-5 sm:px-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))] pb-6 pt-3 cursor-grab active:cursor-grabbing"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={finishPointerDrag}
+          onPointerCancel={finishPointerDrag}
+          onPointerLeave={() => {
+            if (!pointerRef.current.captured) {
+              setHoveredId(null);
+            }
+          }}
+          style={{ perspective: "1400px" }}
+          className="relative w-full h-[390px] sm:h-[430px] flex items-center justify-center select-none overflow-hidden touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing focus-visible:outline-none [--wing-unit:165px] sm:[--wing-unit:235px] lg:[--wing-unit:270px]"
         >
-          {visibleServices.map((service) => {
+          {visibleServices.map((service, index) => {
+            const diff = getCircularOffset(index, renderPos, total);
+            const isCenter = Math.abs(diff) < 0.35;
             const isHovered = hoveredId === service.id;
+            const isSpotlit = isCenter || isHovered;
+            const stagePos = getCard3DStyle(diff, total);
+
             return (
               <article
                 key={service.id}
+                aria-hidden={!stagePos.isVisible}
+                tabIndex={stagePos.isVisible ? 0 : -1}
                 onMouseEnter={() => {
-                  if (!dragRef.current.active) setHoveredId(service.id);
+                  if (stagePos.isVisible && !pointerRef.current.captured) {
+                    setHoveredId(service.id);
+                  }
                 }}
                 onMouseLeave={() => {
                   setHoveredId((prev) => (prev === service.id ? null : prev));
                 }}
                 onClick={() => {
-                  if (!dragRef.current.moved) {
-                    setHoveredId((prev) => (prev === service.id ? null : service.id));
+                  if (didDragRef.current || !stagePos.isVisible) return;
+                  if (Math.abs(diff) >= 0.1) {
+                    rotateToIndex(index);
                   }
                 }}
-                className={`service-card snap-start shrink-0 w-[80vw] sm:w-[330px] h-[305px] sm:h-[340px] p-6 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer select-none ${
-                  isHovered ? "service-card--active -translate-y-2" : ""
+                onKeyDown={(e) => {
+                  if ((e.key === "Enter" || e.key === " ") && stagePos.isVisible) {
+                    e.preventDefault();
+                    rotateToIndex(index);
+                  }
+                }}
+                style={{
+                  transform: stagePos.transform,
+                  opacity: stagePos.opacity,
+                  zIndex: stagePos.zIndex,
+                  pointerEvents: stagePos.isVisible ? "auto" : "none",
+                  transition:
+                    "box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+                  willChange: "transform, opacity",
+                }}
+                className={`service-card absolute w-[78vw] max-w-[330px] sm:w-[340px] h-[320px] sm:h-[360px] p-6 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer select-none [transform-style:preserve-3d] [backface-visibility:hidden] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue ${
+                  isSpotlit ? "service-card--active" : ""
                 }`}
               >
                 {/* Camada de gradiente suave para crossfade sem saltos bruscos */}
                 <div
                   className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${
-                    isHovered ? "opacity-100" : "opacity-0"
+                    isSpotlit ? "opacity-100" : "opacity-0"
                   }`}
                   style={{ background: service.gradient }}
                   aria-hidden="true"
                 />
 
-                {/* Véu escuro subtil na metade inferior ao passar o rato */}
+                {/* Véu escuro subtil na metade inferior */}
                 <div
                   className={`pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/28 via-black/10 to-transparent transition-opacity duration-500 ${
-                    isHovered ? "opacity-100" : "opacity-0"
+                    isSpotlit ? "opacity-100" : "opacity-0"
                   }`}
                   aria-hidden="true"
                 />
@@ -494,7 +765,7 @@ export default function ServicesCarousel() {
                 <div className="relative z-10 flex items-center justify-between gap-3">
                   <span
                     className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 ${
-                      isHovered
+                      isSpotlit
                         ? "bg-white/90 border-white text-foreground shadow-xs"
                         : "bg-white border-black/[0.06] text-foreground shadow-2xs"
                     }`}
@@ -504,7 +775,7 @@ export default function ServicesCarousel() {
 
                   <span
                     className={`text-[11px] font-sans tracking-wide uppercase transition-colors duration-300 ${
-                      isHovered ? "text-foreground/75" : "text-subtle"
+                      isSpotlit ? "text-foreground/75" : "text-subtle"
                     }`}
                   >
                     {categoryLabels[service.category]}
@@ -515,14 +786,14 @@ export default function ServicesCarousel() {
                 <div className="relative z-10">
                   <h3
                     className={`font-sans text-base sm:text-[17px] font-semibold tracking-tight leading-snug mb-2 transition-colors duration-300 ${
-                      isHovered ? "text-white" : "text-foreground"
+                      isSpotlit ? "text-white" : "text-foreground"
                     }`}
                   >
                     {service.title[locale]}
                   </h3>
                   <p
                     className={`text-xs sm:text-[13px] leading-relaxed line-clamp-4 transition-colors duration-300 ${
-                      isHovered ? "text-white/90" : "text-muted"
+                      isSpotlit ? "text-white/90" : "text-muted"
                     }`}
                   >
                     {service.description[locale]}
@@ -533,13 +804,31 @@ export default function ServicesCarousel() {
           })}
         </div>
 
-        {/* Barra de progresso horizontal do carrossel */}
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 pt-1">
-          <div className="h-[1.5px] w-full bg-border overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896] transition-[width] duration-150 ease-out"
-              style={{ width: `${Math.max(12, Math.round(scrollProgress * 100))}%` }}
-            />
+        {/* Indicadores minimalistas centrados abaixo do palco 3D */}
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 mt-4 sm:mt-5 flex justify-center">
+          <div
+            className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1"
+            role="tablist"
+            aria-label={locale === "pt" ? "Selecionar serviço" : "Select service"}
+          >
+            {visibleServices.map((service, index) => {
+              const selected = index === safeIndex;
+              return (
+                <button
+                  key={service.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={selected}
+                  aria-label={`${service.title[locale]} (${index + 1}/${total})`}
+                  onClick={() => rotateToIndex(index)}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    selected
+                      ? "w-7 bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896]"
+                      : "w-1.5 bg-border-strong/55 hover:bg-foreground/45"
+                  }`}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

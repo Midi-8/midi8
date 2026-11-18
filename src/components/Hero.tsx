@@ -36,7 +36,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center px-6 py-24 overflow-hidden"
+      className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center px-6 py-24"
     >
       {/* Fade aurora no topo apenas na área do Hero */}
       <motion.div
@@ -45,7 +45,7 @@ export default function Hero() {
             ? undefined
             : { opacity: auroraOpacity, scale: auroraScale, y: auroraY }
         }
-        className="pointer-events-none absolute inset-0 z-0 will-change-transform"
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden will-change-transform"
         aria-hidden="true"
       >
         <div className="top-aurora-fade" />

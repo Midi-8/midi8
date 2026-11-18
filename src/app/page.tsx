@@ -124,7 +124,7 @@ export default function Home() {
       <Hero />
 
       {/* ─── 01. A Midi8 ─── */}
-      <section id="sobre" className="w-full py-20 sm:py-28 px-5 sm:px-6 scroll-mt-16">
+      <section id="sobre" className="relative w-full py-20 sm:py-28 px-5 sm:px-6 scroll-mt-16">
         <div className="max-w-7xl w-full mx-auto">
           <div className="max-w-2xl mb-10 sm:mb-14">
             <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-4">
