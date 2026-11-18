@@ -42,7 +42,7 @@ export const SOCIAL = {
   instagramHandle: "@midi8.dev",
 } as const;
 
-const LIMITS = { name: 100, email: 254, company: 120, message: 5000 } as const;
+const LIMITS = { name: 100, email: 254, company: 120 } as const;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /** Normaliza valores desconhecidos (ex.: JSON do pedido) para campos válidos. */
@@ -76,8 +76,6 @@ export function validateContact(d: ContactRequest, locale: "pt" | "en" = "pt"): 
     if (d.company.length < 2) e.company = "Please enter your company name.";
     else if (d.company.length > LIMITS.company) e.company = "Company name is too long.";
     if (d.areas.length === 0) e.areas = "Choose at least one area of interest.";
-    if (d.message.length < 20) e.message = "Please describe your project in at least 20 characters.";
-    else if (d.message.length > LIMITS.message) e.message = "Description is too long (max 5000).";
     return e;
   }
 
@@ -87,8 +85,6 @@ export function validateContact(d: ContactRequest, locale: "pt" | "en" = "pt"): 
   if (d.company.length < 2) e.company = "Indique a empresa.";
   else if (d.company.length > LIMITS.company) e.company = "Nome da empresa demasiado longo.";
   if (d.areas.length === 0) e.areas = "Escolha pelo menos uma área de interesse.";
-  if (d.message.length < 20) e.message = "Descreva o projeto em pelo menos 20 caracteres.";
-  else if (d.message.length > LIMITS.message) e.message = "Descrição demasiado longa (máx. 5000).";
   return e;
 }
 
