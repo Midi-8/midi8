@@ -32,7 +32,7 @@ export default function PrivacidadePage() {
 
         {/* Resumo e Enquadramento */}
         <div className="space-y-8 text-secondary text-sm sm:text-base leading-relaxed">
-          <section className="bg-surface/40 border border-border rounded-xl p-6">
+          <section className="bg-surface/40 border border-border rounded-none p-6">
             <p className="text-secondary">
               A <strong>Midi8</strong> valoriza a privacidade e a segurança dos dados pessoais dos
               seus utilizadores, clientes e parceiros. Esta Política de Privacidade descreve, de
@@ -49,7 +49,7 @@ export default function PrivacidadePage() {
             <p>
               O responsável pelo tratamento dos seus dados pessoais no âmbito deste website e dos serviços prestados é:
             </p>
-            <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-lg border border-border">
+            <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-none border border-border">
               <li>
                 <strong>Entidade:</strong> Midi8 — Engenharia de Software e Sistemas Digitais
               </li>
@@ -74,19 +74,19 @@ export default function PrivacidadePage() {
               Tratamos apenas os dados estritamente necessários para as seguintes finalidades legítimas:
             </p>
             <div className="space-y-4">
-              <div className="p-4 rounded-lg bg-surface/40 border border-border">
+              <div className="p-4 rounded-none bg-surface/40 border border-border">
                 <h3 className="text-base font-medium text-foreground mb-1">
                   a) Formulários de Contacto e Agendamento de Reuniões Técnicas
                 </h3>
                 <p className="text-sm text-muted mb-2">
-                  <strong>Dados:</strong> Nome, endereço de email, empresa, área de interesse e descrição do projeto.
+                  <strong>Dados:</strong> Nome, endereço de email, empresa, áreas de interesse e descrição do projeto.
                 </p>
                 <p className="text-sm text-muted">
                   <strong>Fundamento:</strong> Diligências pré-contratuais a pedido do titular dos dados (artigo 6.º, n.º 1, alínea b) do RGPD).
                 </p>
               </div>
 
-              <div className="p-4 rounded-lg bg-surface/40 border border-border">
+              <div className="p-4 rounded-none bg-surface/40 border border-border">
                 <h3 className="text-base font-medium text-foreground mb-1">
                   b) Navegação e Segurança da Infraestrutura
                 </h3>
@@ -139,36 +139,50 @@ export default function PrivacidadePage() {
             </p>
           </section>
 
-          {/* 5. Direitos dos Titulares */}
+          {/* 5. Cookies e Tecnologias de Rastreamento */}
+          <section aria-labelledby="cookies" className="space-y-3">
+            <h2 id="cookies" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              5. Cookies e Tecnologias de Rastreamento
+            </h2>
+            <p>
+              Este website foi concebido sob o princípio da minimização de dados e{" "}
+              <strong>não utiliza cookies publicitários, de marketing, de terceiros nem de rastreamento analítico</strong>.
+            </p>
+            <p className="text-sm text-muted">
+              A navegação decorre apenas com recursos técnicos estritamente necessários à segurança, entrega de conteúdos e correto funcionamento da aplicação, dispensando consentimento para cookies não essenciais nos termos da Diretiva ePrivacy e da Lei n.º 41/2004.
+            </p>
+          </section>
+
+          {/* 6. Direitos dos Titulares */}
           <section aria-labelledby="direitos-titular" className="space-y-3">
             <h2 id="direitos-titular" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
-              5. Direitos dos Titulares dos Dados
+              6. Direitos dos Titulares dos Dados
             </h2>
             <p>
               Nos termos dos artigos 15.º a 22.º do RGPD, o utilizador tem o direito de exercer gratuitamente perante a Midi8:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-              <div className="p-3 bg-surface/40 rounded border border-border">
+              <div className="p-3 bg-surface/40 rounded-none border border-border">
                 <strong className="text-foreground block">Direito de Acesso</strong>
                 Obter confirmação sobre se os seus dados são tratados e aceder aos mesmos.
               </div>
-              <div className="p-3 bg-surface/40 rounded border border-border">
+              <div className="p-3 bg-surface/40 rounded-none border border-border">
                 <strong className="text-foreground block">Direito de Retificação</strong>
                 Solicitar a correção de dados inexatos ou incompletos.
               </div>
-              <div className="p-3 bg-surface/40 rounded border border-border">
+              <div className="p-3 bg-surface/40 rounded-none border border-border">
                 <strong className="text-foreground block">Direito ao Apagamento</strong>
                 Pedir a eliminação dos dados («direito a ser esquecido») dentro dos limites legais.
               </div>
-              <div className="p-3 bg-surface/40 rounded border border-border">
+              <div className="p-3 bg-surface/40 rounded-none border border-border">
                 <strong className="text-foreground block">Direito à Limitação</strong>
                 Solicitar a suspensão temporária do tratamento em circunstâncias específicas.
               </div>
-              <div className="p-3 bg-surface/40 rounded border border-border">
+              <div className="p-3 bg-surface/40 rounded-none border border-border">
                 <strong className="text-foreground block">Direito de Portabilidade</strong>
                 Receber os dados fornecidos em formato estruturado e legível por máquina.
               </div>
-              <div className="p-3 bg-surface/40 rounded border border-border">
+              <div className="p-3 bg-surface/40 rounded-none border border-border">
                 <strong className="text-foreground block">Direito de Oposição</strong>
                 Opor-se ao tratamento de dados fundamentado em interesses legítimos.
               </div>
@@ -177,15 +191,15 @@ export default function PrivacidadePage() {
               Para exercer qualquer um destes direitos, envie o seu pedido por escrito para{" "}
               <a href={`mailto:${CONTACT_EMAIL}`} className="text-brand-blue hover:underline">
                 {CONTACT_EMAIL}
-              </a>{" "}
-              ou para a morada da sede. A resposta será prestada no prazo máximo de 30 dias.
+              </a>
+              . A resposta será prestada no prazo máximo de 30 dias.
             </p>
           </section>
 
-          {/* 6. Reclamação junto da CNPD */}
-          <section aria-labelledby="cnpd" className="space-y-3 bg-surface/40 p-5 rounded-xl border border-border">
+          {/* 7. Reclamação junto da CNPD */}
+          <section aria-labelledby="cnpd" className="space-y-3 bg-surface/40 p-5 rounded-none border border-border">
             <h2 id="cnpd" className="text-lg sm:text-xl font-medium text-foreground tracking-tight">
-              6. Direito de Reclamação junto da Autoridade de Controlo (CNPD)
+              7. Direito de Reclamação junto da Autoridade de Controlo (CNPD)
             </h2>
             <p>
               Caso considere que o tratamento dos seus dados viola o RGPD ou a legislação nacional em vigor, tem o direito de apresentar uma reclamação à autoridade de controlo em Portugal:
@@ -197,10 +211,10 @@ export default function PrivacidadePage() {
             </div>
           </section>
 
-          {/* 7. Alterações à Política */}
+          {/* 8. Alterações à Política */}
           <section aria-labelledby="alteracoes" className="space-y-3">
             <h2 id="alteracoes" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
-              7. Alterações à presente Política
+              8. Alterações à presente Política
             </h2>
             <p>
               A Midi8 reserva-se o direito de atualizar esta Política de Privacidade a qualquer momento para refletir eventuais alterações técnicas, operacionais ou legislativas. A versão atualizada entrará imediatamente em vigor após publicação nesta página.

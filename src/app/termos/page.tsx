@@ -32,7 +32,7 @@ export default function TermosPage() {
 
         {/* Conteúdo */}
         <div className="space-y-8 text-secondary text-sm sm:text-base leading-relaxed">
-          <section className="bg-surface/40 border border-border rounded-xl p-6">
+          <section className="bg-surface/40 border border-border rounded-none p-6">
             <p className="text-secondary">
               Bem-vindo ao website da <strong>Midi8</strong>. O acesso e a utilização deste website,
               bem como a contratação de quaisquer serviços digitais prestados pela Midi8, regem-se pelos
@@ -49,7 +49,7 @@ export default function TermosPage() {
             <p>
               O presente website é propriedade e gerido pela entidade legal:
             </p>
-            <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-lg border border-border">
+            <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-none border border-border">
               <li>
                 <strong>Entidade:</strong> Midi8 — Engenharia de Software e Sistemas Digitais
               </li>
@@ -71,20 +71,20 @@ export default function TermosPage() {
               2. Objeto e Âmbito dos Serviços
             </h2>
             <p>
-              A Midi8 é especializada em serviços avançados de engenharia de software e transformação digital corporativa, nomeadamente:
+              A Midi8 é especializada em serviços digitais, engenharia de software, inteligência artificial e comunicação estratégica para empresas, nomeadamente:
             </p>
             <ul className="list-disc pl-5 space-y-1 text-secondary">
               <li>
-                Desenvolvimento de websites institucionais e plataformas web de alto desempenho.
+                <strong>Web, Software &amp; Mobile:</strong> websites institucionais, aplicações web, software à medida e aplicações móveis.
               </li>
               <li>
-                Conceção e implementação de sistemas de menus digitais interativos e Kitchen Display Systems (KDS) em tempo real para a restauração.
+                <strong>Automação, IA &amp; Dados:</strong> integração de sistemas, automação de processos, agentes de Inteligência Artificial, LLMs e análise de dados.
               </li>
               <li>
-                Automação de processos operacionais e integração de modelos de Inteligência Artificial.
+                <strong>Estratégia, Marketing &amp; Campanhas:</strong> estratégia digital, gestão de redes sociais, produção de conteúdo e campanhas de tráfego pago.
               </li>
               <li>
-                Consultoria técnica, auditorias de arquitetura de software, observabilidade e cibersegurança.
+                <strong>Consultoria &amp; E-commerce:</strong> diagnóstico tecnológico, consultoria estratégica e plataformas de comércio eletrónico.
               </li>
             </ul>
             <p className="text-sm text-muted">
@@ -98,7 +98,7 @@ export default function TermosPage() {
               3. Propriedade Intelectual e Industrial
             </h2>
             <p>
-              Todos os conteúdos presentes neste website — incluindo, designadamente, marcas, logótipos, textos, imagens, ilustrações, gráficos interativos, animações em canvas, código-fonte e estrutura de design visual — constituem propriedade exclusiva da Midi8 ou de terceiros que autorizaram legitimamente o seu uso, encontrando-se protegidos pelo <strong>Código do Direito de Autor e dos Direitos Conexos</strong> e pelo <strong>Código da Propriedade Industrial</strong>.
+              Todos os conteúdos presentes neste website — incluindo, designadamente, marcas, logótipos, textos, imagens, ilustrações, gráficos interativos, código-fonte e estrutura de design visual — constituem propriedade exclusiva da Midi8 ou de terceiros que autorizaram legitimamente o seu uso, encontrando-se protegidos pelo <strong>Código do Direito de Autor e dos Direitos Conexos</strong> e pelo <strong>Código da Propriedade Industrial</strong>.
             </p>
             <p>
               É estritamente proibida qualquer reprodução, cópia, distribuição, descompilação, engenharia inversa ou exploração comercial, total ou parcial, sem autorização prévia e escrita da Midi8.
@@ -139,7 +139,7 @@ export default function TermosPage() {
               6. Ligações Externas (Links para Terceiros)
             </h2>
             <p>
-              Este website pode conter hiperligações para websites, serviços ou repositórios externos (como GitHub, LinkedIn ou plataformas de agendamento). A Midi8 não exerce controlo sobre esses sítios de terceiros e não assume qualquer responsabilidade pelas respetivas políticas de privacidade ou conteúdos.
+              Este website pode conter hiperligações para websites ou plataformas externas (como LinkedIn ou Instagram). A Midi8 não exerce controlo sobre esses sítios de terceiros e não assume qualquer responsabilidade pelas respetivas políticas de privacidade ou conteúdos.
             </p>
           </section>
 
@@ -154,7 +154,7 @@ export default function TermosPage() {
           </section>
 
           {/* 8. Lei Aplicável e Foro */}
-          <section aria-labelledby="lei-foro" className="space-y-3 bg-surface/40 p-5 rounded-xl border border-border">
+          <section aria-labelledby="lei-foro" className="space-y-3 bg-surface/40 p-5 rounded-none border border-border">
             <h2 id="lei-foro" className="text-lg sm:text-xl font-medium text-foreground tracking-tight">
               8. Lei Aplicável e Foro Competente
             </h2>

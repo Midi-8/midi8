@@ -1,29 +1,50 @@
 "use client";
 
-import { useState, useEffect, type MouseEvent } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
-const navLinks = [
-  { id: "sobre", label: "A Midi8", href: "/#sobre" },
-  { id: "servicos", label: "Serviços", href: "/#servicos" },
-  { id: "equipa", label: "Equipa", href: "/#equipa" },
-  { id: "contacto", label: "Contactos", href: "/#contacto" },
-] as const;
+const NAV_LINKS = {
+  pt: [
+    { id: "sobre", label: "A Midi8", href: "/#sobre" },
+    { id: "servicos", label: "Serviços", href: "/#servicos" },
+    { id: "equipa", label: "Equipa", href: "/#equipa" },
+    { id: "contacto", label: "Contactos", href: "/#contacto" },
+  ],
+  en: [
+    { id: "sobre", label: "About", href: "/#sobre" },
+    { id: "servicos", label: "Services", href: "/#servicos" },
+    { id: "equipa", label: "Team", href: "/#equipa" },
+    { id: "contacto", label: "Contact", href: "/#contacto" },
+  ],
+} as const;
 
 export default function Navbar() {
-  const pathname = usePathname();
-  const [activeId, setActiveId] = useState<string>("hero");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isIsland, setIsIsland] = useState(false);
+  const { locale, setLocale } = useLanguage();
+
+  const navLinks = NAV_LINKS[locale];
+  const ctaLabel = locale === "pt" ? "Contacta-nos" : "Contact us";
 
   useEffect(() => {
-    const onActiveScene = (e: Event) => {
-      const id = (e as CustomEvent<string>).detail;
-      if (id) setActiveId(id);
+    const updateIsland = () => {
+      const heroEl = document.getElementById("hero");
+      const pastHero = heroEl
+        ? heroEl.getBoundingClientRect().bottom <= 72
+        : window.scrollY > window.innerHeight - 72;
+      setIsIsland(pastHero);
     };
-    window.addEventListener("midi8:active-scene", onActiveScene);
-    return () => window.removeEventListener("midi8:active-scene", onActiveScene);
+
+    const raf = window.requestAnimationFrame(updateIsland);
+    window.addEventListener("scroll", updateIsland, { passive: true });
+    window.addEventListener("resize", updateIsland, { passive: true });
+    return () => {
+      window.cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", updateIsland);
+      window.removeEventListener("resize", updateIsland);
+    };
   }, []);
 
   useEffect(() => {
@@ -35,68 +56,112 @@ export default function Navbar() {
     }
   }, [mobileOpen]);
 
-  const handleSceneClick = (e: MouseEvent<HTMLAnchorElement>, sceneId: string) => {
-    setMobileOpen(false);
-    if (pathname === "/") {
-      e.preventDefault();
-      window.dispatchEvent(new CustomEvent("midi8:goto-scene", { detail: sceneId }));
-      window.history.replaceState(null, "", sceneId === "hero" ? "/" : `/#${sceneId}`);
-    }
-  };
-
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-transparent">
-        <div className="mx-auto max-w-7xl px-5 sm:px-6 h-16 flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr]">
-          {/* Logo tipográfico rebuscado à esquerda */}
+      <nav
+        className={`fixed left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          isIsland ? "top-3 sm:top-4 px-4 sm:px-6" : "top-0 px-0"
+        }`}
+      >
+        <div
+          className={`mx-auto flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            isIsland
+              ? "max-w-5xl h-14 px-5 sm:px-6 rounded-2xl backdrop-blur-2xl backdrop-saturate-150 border border-white/65 ring-1 ring-black/[0.06] shadow-[0_16px_40px_-12px_rgba(20,94,255,0.22),0_6px_20px_-8px_rgba(168,24,255,0.16)]"
+              : "max-w-7xl h-16 px-5 sm:px-6 rounded-none bg-transparent border border-transparent"
+          }`}
+          style={
+            isIsland
+              ? {
+                  background:
+                    "linear-gradient(110deg, rgba(168, 24, 255, 0.16) 0%, rgba(20, 94, 255, 0.15) 50%, rgba(0, 232, 150, 0.16) 100%), rgba(255, 255, 255, 0.76)",
+                }
+              : undefined
+          }
+        >
+          {/* Logo tipográfico à esquerda */}
           <Link
             href="/#hero"
-            onClick={(e) => handleSceneClick(e, "hero")}
+            onClick={() => setMobileOpen(false)}
             className="inline-flex items-baseline group shrink-0 justify-self-start text-foreground"
-            aria-label="Midi8 — Página inicial"
+            aria-label={locale === "pt" ? "Midi8 — Página inicial" : "Midi8 — Home"}
           >
             <span className="font-display text-2xl sm:text-[1.75rem] font-medium tracking-tight text-foreground leading-none transition-opacity duration-200 group-hover:opacity-75">
               Midi<em className="italic font-normal">8</em>
             </span>
           </Link>
 
-          {/* Desktop Links (sempre a preto) */}
-          <div className="hidden md:flex items-center gap-2">
-            {navLinks.map((link) => {
-              const isCurrent = pathname === "/" && activeId === link.id;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => handleSceneClick(e, link.id)}
-                  className={`px-4 py-2 text-sm font-normal transition-colors ${
-                    isCurrent
-                      ? "text-foreground underline underline-offset-8 decoration-foreground/50"
-                      : "text-foreground/75 hover:text-foreground"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+          {/* Desktop Links */}
+          <div className="hidden md:flex items-center gap-1.5">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="px-3.5 py-2 text-sm font-normal text-foreground/80 hover:text-foreground transition-colors whitespace-nowrap"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
-          {/* CTA Reta (Contacta-nos) + Mobile Button */}
-          <div className="flex items-center gap-3 justify-self-end">
+          {/* Seletor PT/EN + CTA Reta + Mobile Button */}
+          <div className="flex items-center gap-2.5 sm:gap-3 justify-self-end">
+            <div
+              className="hidden md:inline-flex items-center gap-0.5 px-1 py-1 text-xs"
+              role="group"
+              aria-label={locale === "pt" ? "Idioma" : "Language"}
+            >
+              <button
+                type="button"
+                onClick={() => setLocale("pt")}
+                aria-pressed={locale === "pt"}
+                className={`px-1 transition-colors cursor-pointer ${
+                  locale === "pt"
+                    ? "font-semibold text-foreground"
+                    : "text-muted hover:text-foreground"
+                }`}
+              >
+                PT
+              </button>
+              <span className="text-border-strong" aria-hidden="true">
+                |
+              </span>
+              <button
+                type="button"
+                onClick={() => setLocale("en")}
+                aria-pressed={locale === "en"}
+                className={`px-1 transition-colors cursor-pointer ${
+                  locale === "en"
+                    ? "font-semibold text-foreground"
+                    : "text-muted hover:text-foreground"
+                }`}
+              >
+                EN
+              </button>
+            </div>
+
             <Link
               href="/#contacto"
-              onClick={(e) => handleSceneClick(e, "contacto")}
-              aria-label="Contacta-nos"
-              className="hidden md:inline-flex items-center justify-center rounded-none border border-foreground text-foreground hover:bg-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide transition-colors"
+              onClick={() => setMobileOpen(false)}
+              aria-label={ctaLabel}
+              className="hidden md:inline-flex items-center justify-center rounded-none border border-foreground text-foreground hover:bg-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide whitespace-nowrap transition-colors"
             >
-              <span>Contacta-nos</span>
+              <span>{ctaLabel}</span>
             </Link>
 
             <button
               type="button"
               onClick={() => setMobileOpen((v) => !v)}
               className="md:hidden w-10 h-10 rounded-none border border-foreground text-foreground flex items-center justify-center transition-transform active:scale-95"
-              aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
+              aria-label={
+                mobileOpen
+                  ? locale === "pt"
+                    ? "Fechar menu"
+                    : "Close menu"
+                  : locale === "pt"
+                    ? "Abrir menu"
+                    : "Open menu"
+              }
             >
               <svg
                 className={`w-4 h-4 transition-transform duration-300 ${mobileOpen ? "rotate-45" : ""}`}
@@ -132,7 +197,7 @@ export default function Navbar() {
                 >
                   <Link
                     href={link.href}
-                    onClick={(e) => handleSceneClick(e, link.id)}
+                    onClick={() => setMobileOpen(false)}
                     className="block py-4 text-3xl font-medium tracking-tight text-foreground border-b border-border"
                   >
                     {link.label}
@@ -144,14 +209,48 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.18 }}
-                className="mt-8"
+                className="mt-8 flex flex-col gap-3"
               >
+                <div
+                  className="inline-flex items-center justify-center gap-2 py-2 text-sm"
+                  role="group"
+                  aria-label={locale === "pt" ? "Idioma" : "Language"}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setLocale("pt")}
+                    aria-pressed={locale === "pt"}
+                    className={`px-3 py-1 transition-colors cursor-pointer ${
+                      locale === "pt"
+                        ? "font-semibold text-foreground"
+                        : "text-muted hover:text-foreground"
+                    }`}
+                  >
+                    Português (PT)
+                  </button>
+                  <span className="text-border-strong" aria-hidden="true">
+                    |
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setLocale("en")}
+                    aria-pressed={locale === "en"}
+                    className={`px-3 py-1 transition-colors cursor-pointer ${
+                      locale === "en"
+                        ? "font-semibold text-foreground"
+                        : "text-muted hover:text-foreground"
+                    }`}
+                  >
+                    English (EN)
+                  </button>
+                </div>
+
                 <Link
                   href="/#contacto"
-                  onClick={(e) => handleSceneClick(e, "contacto")}
+                  onClick={() => setMobileOpen(false)}
                   className="inline-flex items-center justify-center w-full py-4 rounded-none border border-foreground bg-foreground text-white text-sm tracking-wide hover:bg-[#1a2234] transition-colors"
                 >
-                  <span>Contacta-nos</span>
+                  <span>{ctaLabel}</span>
                 </Link>
               </motion.div>
             </nav>

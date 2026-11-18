@@ -8,11 +8,26 @@ export const AREAS = [
 ] as const;
 export type Area = (typeof AREAS)[number];
 
+export const AREA_LABELS: Record<"pt" | "en", Record<Area, string>> = {
+  pt: {
+    "Web, Software & Mobile": "Web, Software & Mobile",
+    "Automação, IA & Dados": "Automação, IA & Dados",
+    "Estratégia, Marketing & Campanhas": "Estratégia, Marketing & Campanhas",
+    "Consultoria & E-commerce": "Consultoria & E-commerce",
+  },
+  en: {
+    "Web, Software & Mobile": "Web, Software & Mobile",
+    "Automação, IA & Dados": "Automation, AI & Data",
+    "Estratégia, Marketing & Campanhas": "Strategy, Marketing & Campaigns",
+    "Consultoria & E-commerce": "Consulting & E-commerce",
+  },
+};
+
 export type ContactRequest = {
   name: string;
   email: string;
   company: string;
-  area: Area | "";
+  areas: Area[];
   message: string;
 };
 
@@ -31,28 +46,48 @@ export const SOCIAL = {
 const LIMITS = { name: 100, email: 254, company: 120, message: 5000 } as const;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-/** Normaliza valores desconhecidos (ex.: JSON do pedido) para strings aparadas. */
+/** Normaliza valores desconhecidos (ex.: JSON do pedido) para campos válidos. */
 export function toContactRequest(input: unknown): ContactRequest {
   const o = (input && typeof input === "object" ? input : {}) as Record<string, unknown>;
   const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
-  const area = str(o.area);
+  const validAreas = new Set<string>(AREAS);
+  const rawAreas = Array.isArray(o.areas)
+    ? o.areas
+    : typeof o.area === "string"
+      ? [o.area]
+      : [];
+  const areas = Array.from(
+    new Set(rawAreas.map(str).filter((a): a is Area => validAreas.has(a)))
+  );
   return {
     name: str(o.name),
     email: str(o.email),
     company: str(o.company),
-    area: (AREAS as readonly string[]).includes(area) ? (area as Area) : "",
+    areas,
     message: str(o.message),
   };
 }
 
-export function validateContact(d: ContactRequest): ContactErrors {
+export function validateContact(d: ContactRequest, locale: "pt" | "en" = "pt"): ContactErrors {
   const e: ContactErrors = {};
+  if (locale === "en") {
+    if (d.name.length < 2) e.name = "Please enter your name.";
+    else if (d.name.length > LIMITS.name) e.name = "Name is too long.";
+    if (!EMAIL_RE.test(d.email) || d.email.length > LIMITS.email) e.email = "Please enter a valid email address.";
+    if (d.company.length < 2) e.company = "Please enter your company name.";
+    else if (d.company.length > LIMITS.company) e.company = "Company name is too long.";
+    if (d.areas.length === 0) e.areas = "Choose at least one area of interest.";
+    if (d.message.length < 20) e.message = "Please describe your project in at least 20 characters.";
+    else if (d.message.length > LIMITS.message) e.message = "Description is too long (max 5000).";
+    return e;
+  }
+
   if (d.name.length < 2) e.name = "Indique o seu nome.";
   else if (d.name.length > LIMITS.name) e.name = "Nome demasiado longo.";
   if (!EMAIL_RE.test(d.email) || d.email.length > LIMITS.email) e.email = "Indique um email válido.";
   if (d.company.length < 2) e.company = "Indique a empresa.";
   else if (d.company.length > LIMITS.company) e.company = "Nome da empresa demasiado longo.";
-  if (!d.area) e.area = "Escolha uma área de interesse.";
+  if (d.areas.length === 0) e.areas = "Escolha pelo menos uma área de interesse.";
   if (d.message.length < 20) e.message = "Descreva o projeto em pelo menos 20 caracteres.";
   else if (d.message.length > LIMITS.message) e.message = "Descrição demasiado longa (máx. 5000).";
   return e;
@@ -65,7 +100,7 @@ export function contactMailto(d: ContactRequest): string {
     `Nome: ${d.name}`,
     `Email: ${d.email}`,
     `Empresa: ${d.company}`,
-    `Área: ${d.area}`,
+    `Áreas: ${d.areas.join(", ")}`,
     "",
     d.message,
   ].join("\n");

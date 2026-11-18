@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MotionProvider from "@/components/MotionProvider";
+import { LanguageProvider } from "@/context/LanguageContext";
 import { CONTACT_EMAIL, CONTACT_PHONE, SOCIAL } from "@/lib/contact";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -17,12 +18,12 @@ const organizationJsonLd = {
   description:
     "Estúdio de tecnologia, software, automação, inteligência artificial e marketing digital para empresas.",
   areaServed: "PT",
-  sameAs: [SOCIAL.linkedin, SOCIAL.github, SOCIAL.instagram],
+  sameAs: [SOCIAL.linkedin, SOCIAL.instagram],
 };
 
 const ornateSerif = Cormorant_Garamond({
   variable: "--font-ornate",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500"],
   style: ["normal", "italic"],
   subsets: ["latin"],
   display: "swap",
@@ -98,11 +99,13 @@ export default function RootLayout({
             __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c"),
           }}
         />
-        <MotionProvider>
-          <Navbar />
-          {children}
-          <Footer />
-        </MotionProvider>
+        <LanguageProvider>
+          <MotionProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </MotionProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -1,51 +1,81 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import Wordmark from "@/components/Wordmark";
+import { useLanguage } from "@/context/LanguageContext";
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF, SOCIAL } from "@/lib/contact";
 
-const sectionLinks = [
-  { label: "A Midi8", href: "/#sobre" },
-  { label: "Serviços", href: "/#servicos" },
-  { label: "Equipa", href: "/#equipa" },
-  { label: "Contactos", href: "/#contacto" },
-] as const;
+const FOOTER_TEXT = {
+  pt: {
+    sectionsTitle: "Secções",
+    contactTitle: "Contacto",
+    socialTitle: "Redes",
+    rights: "Todos os direitos reservados.",
+    privacy: "Política de Privacidade",
+    terms: "Termos e Condições",
+    top: "Topo",
+    toTopLabel: "Midi8 — Voltar ao topo",
+    sectionLinks: [
+      { label: "A Midi8", href: "/#sobre" },
+      { label: "Serviços", href: "/#servicos" },
+      { label: "Equipa", href: "/#equipa" },
+      { label: "Contactos", href: "/#contacto" },
+    ],
+  },
+  en: {
+    sectionsTitle: "Sections",
+    contactTitle: "Contact",
+    socialTitle: "Social",
+    rights: "All rights reserved.",
+    privacy: "Privacy Policy",
+    terms: "Terms & Conditions",
+    top: "Top",
+    toTopLabel: "Midi8 — Back to top",
+    sectionLinks: [
+      { label: "About", href: "/#sobre" },
+      { label: "Services", href: "/#servicos" },
+      { label: "Team", href: "/#equipa" },
+      { label: "Contact", href: "/#contacto" },
+    ],
+  },
+} as const;
 
 export default function Footer() {
-  const pathname = usePathname();
   const currentYear = 2026;
+  const { locale } = useLanguage();
+  const copy = FOOTER_TEXT[locale];
 
-  // Na página principal (palco 3D fixo), o rodapé vive num painel discreto integrado no palco
-  if (pathname === "/") {
-    return null;
-  }
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <footer className="relative text-foreground border-t border-border bg-white">
-      <div className="max-w-7xl mx-auto px-6 py-12 sm:py-16">
+    <footer className="relative text-foreground bg-white">
+      <div className="max-w-7xl mx-auto px-6 pt-10 pb-4 sm:pt-12 sm:pb-5">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
-          {/* Marca & Descrição */}
-          <div className="md:col-span-5 flex flex-col gap-3.5">
+          {/* Marca & Slogan */}
+          <div className="md:col-span-5 flex flex-col gap-1">
             <Link
               href="/#hero"
-              className="inline-flex items-center group w-fit"
-              aria-label="Midi8 — Voltar ao topo"
+              onClick={scrollToTop}
+              className="inline-flex items-baseline group w-fit text-foreground"
+              aria-label={copy.toTopLabel}
             >
-              <Wordmark className="h-[18px] w-auto text-foreground transition-opacity duration-200 group-hover:opacity-75" />
+              <span className="font-display text-2xl sm:text-[1.75rem] font-medium tracking-tight text-foreground leading-none transition-opacity duration-200 group-hover:opacity-75">
+                Midi<em className="italic font-normal">8</em>
+              </span>
             </Link>
-            <p className="text-sm text-muted max-w-xs leading-relaxed">
-              Tecnologia, software, automação e comunicação digital para fazer o seu negócio avançar.
+            <p className="font-display text-lg sm:text-xl text-muted tracking-tight leading-tight">
+              move <em className="italic font-normal">forward</em>, fast
             </p>
           </div>
 
           {/* Secções */}
           <div className="md:col-span-2 flex flex-col gap-3">
             <p className="text-xs uppercase tracking-wider text-subtle">
-              Secções
+              {copy.sectionsTitle}
             </p>
             <ul className="flex flex-col gap-2 text-sm">
-              {sectionLinks.map((item) => (
+              {copy.sectionLinks.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -61,7 +91,7 @@ export default function Footer() {
           {/* Contacto */}
           <div className="md:col-span-3 flex flex-col gap-3">
             <p className="text-xs uppercase tracking-wider text-subtle">
-              Contacto
+              {copy.contactTitle}
             </p>
             <div className="flex flex-col gap-2 text-sm">
               <a
@@ -82,7 +112,7 @@ export default function Footer() {
           {/* Redes Sociais */}
           <div className="md:col-span-2 flex flex-col gap-3">
             <p className="text-xs uppercase tracking-wider text-subtle">
-              Redes
+              {copy.socialTitle}
             </p>
             <ul className="flex flex-col gap-2 text-sm">
               <li>
@@ -90,10 +120,9 @@ export default function Footer() {
                   href={SOCIAL.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted hover:text-foreground transition-colors inline-flex items-center gap-1"
+                  className="text-muted hover:text-foreground transition-colors"
                 >
-                  <span>LinkedIn</span>
-                  <span aria-hidden="true">↗</span>
+                  LinkedIn
                 </a>
               </li>
               <li>
@@ -101,21 +130,9 @@ export default function Footer() {
                   href={SOCIAL.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted hover:text-foreground transition-colors inline-flex items-center gap-1"
+                  className="text-muted hover:text-foreground transition-colors"
                 >
-                  <span>Instagram</span>
-                  <span aria-hidden="true">↗</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href={SOCIAL.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-foreground transition-colors inline-flex items-center gap-1"
-                >
-                  <span>GitHub</span>
-                  <span aria-hidden="true">↗</span>
+                  Instagram
                 </a>
               </li>
             </ul>
@@ -124,24 +141,22 @@ export default function Footer() {
       </div>
 
       {/* Barra Legal Minimalista */}
-      <div className="border-t border-border">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-subtle">
-          <p>© {currentYear} Midi8. Todos os direitos reservados.</p>
-          <div className="flex flex-wrap items-center gap-6">
-            <Link href="/privacidade" className="hover:text-foreground transition-colors">
-              Política de Privacidade
-            </Link>
-            <Link href="/termos" className="hover:text-foreground transition-colors">
-              Termos e Condições
-            </Link>
-            <Link
-              href="/#hero"
-              className="inline-flex items-center gap-1 text-muted hover:text-foreground transition-colors"
-            >
-              <span>Topo</span>
-              <span aria-hidden="true">↑</span>
-            </Link>
-          </div>
+      <div className="max-w-7xl mx-auto px-6 pt-2 pb-6 sm:pt-3 sm:pb-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-subtle">
+        <p>© {currentYear} Midi8. {copy.rights}</p>
+        <div className="flex flex-wrap items-center gap-6">
+          <Link href="/privacidade" className="hover:text-foreground transition-colors">
+            {copy.privacy}
+          </Link>
+          <Link href="/termos" className="hover:text-foreground transition-colors">
+            {copy.terms}
+          </Link>
+          <button
+            type="button"
+            onClick={scrollToTop}
+            className="text-muted hover:text-foreground transition-colors cursor-pointer"
+          >
+            {copy.top}
+          </button>
         </div>
       </div>
     </footer>

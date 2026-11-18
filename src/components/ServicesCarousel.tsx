@@ -1,9 +1,28 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import Link from "next/link";
-import { ParallaxPlane } from "@/components/StageParallax";
-import type { Area } from "@/lib/contact";
+import { useLanguage, type Locale } from "@/context/LanguageContext";
+
+export function ServiceCategoryTag({
+  category,
+  label,
+}: {
+  category: string;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        window.dispatchEvent(new CustomEvent("midi8:select-category", { detail: category }));
+        document.getElementById("servicos")?.scrollIntoView({ behavior: "smooth" });
+      }}
+      className="rounded-full bg-white/90 border border-border px-2.5 py-0.5 text-[11px] text-muted hover:text-foreground hover:border-border-strong transition-colors cursor-pointer"
+    >
+      {label}
+    </button>
+  );
+}
 
 type CategoryId =
   | "all"
@@ -15,34 +34,63 @@ type CategoryId =
 interface ServiceItem {
   id: string;
   category: Exclude<CategoryId, "all">;
-  title: string;
-  description: string;
+  title: Record<Locale, string>;
+  description: Record<Locale, string>;
   gradient: string;
   icon: ReactNode;
 }
 
-const CATEGORIES: { id: CategoryId; label: string }[] = [
-  { id: "all", label: "Todos (13)" },
-  { id: "web-software", label: "Web & Software" },
-  { id: "ia-automacao", label: "Automação, IA & Dados" },
-  { id: "marketing", label: "Estratégia & Marketing" },
-  { id: "consultoria-ecom", label: "Consultoria & E-commerce" },
-];
+const CATEGORIES: Record<Locale, { id: CategoryId; label: string }[]> = {
+  pt: [
+    { id: "all", label: "Todos (13)" },
+    { id: "web-software", label: "Web & Software" },
+    { id: "ia-automacao", label: "Automação, IA & Dados" },
+    { id: "marketing", label: "Estratégia & Marketing" },
+    { id: "consultoria-ecom", label: "Consultoria & E-commerce" },
+  ],
+  en: [
+    { id: "all", label: "All (13)" },
+    { id: "web-software", label: "Web & Software" },
+    { id: "ia-automacao", label: "Automation, AI & Data" },
+    { id: "marketing", label: "Strategy & Marketing" },
+    { id: "consultoria-ecom", label: "Consulting & E-commerce" },
+  ],
+};
+
+const CATEGORY_LABELS: Record<Locale, Record<Exclude<CategoryId, "all">, string>> = {
+  pt: {
+    "web-software": "Web & Software",
+    "ia-automacao": "Automação & IA",
+    marketing: "Marketing",
+    "consultoria-ecom": "Consultoria",
+  },
+  en: {
+    "web-software": "Web & Software",
+    "ia-automacao": "Automation & AI",
+    marketing: "Marketing",
+    "consultoria-ecom": "Consulting",
+  },
+};
 
 const GRADIENT_BLUE_MINT =
-  "linear-gradient(155deg, rgba(255,255,255,0.94) 0%, rgba(224,237,255,0.9) 24%, #145EFF 58%, #00D68F 100%)";
+  "linear-gradient(170deg, rgba(255,255,255,0.96) 0%, rgba(226,238,255,0.92) 26%, #145EFF 64%, #00C885 100%)";
 const GRADIENT_VIOLET_BLUE =
-  "linear-gradient(155deg, rgba(255,255,255,0.94) 0%, rgba(242,226,255,0.9) 24%, #A818FF 56%, #145EFF 100%)";
+  "linear-gradient(170deg, rgba(255,255,255,0.96) 0%, rgba(243,230,255,0.92) 26%, #8F18FF 64%, #145EFF 100%)";
 const GRADIENT_MINT_BLUE =
-  "linear-gradient(155deg, rgba(255,255,255,0.94) 0%, rgba(220,252,235,0.9) 24%, #00C482 56%, #145EFF 100%)";
+  "linear-gradient(170deg, rgba(255,255,255,0.96) 0%, rgba(224,251,238,0.92) 26%, #00B074 64%, #145EFF 100%)";
 
 const SERVICES: ServiceItem[] = [
   {
     id: "web-design",
     category: "web-software",
-    title: "Web Design e Desenvolvimento Web",
-    description:
-      "Criação e desenvolvimento de websites e plataformas digitais, combinando design, funcionalidade e experiência de utilização para construir soluções adaptadas às necessidades de cada negócio.",
+    title: {
+      pt: "Web Design e Desenvolvimento Web",
+      en: "Web Design & Web Development",
+    },
+    description: {
+      pt: "Criação e desenvolvimento de websites e plataformas digitais, combinando design, funcionalidade e experiência de utilização para construir soluções adaptadas às necessidades de cada negócio.",
+      en: "Design and development of websites and digital platforms, combining visual craft, functionality, and user experience tailored to each business.",
+    },
     gradient: GRADIENT_BLUE_MINT,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -53,9 +101,14 @@ const SERVICES: ServiceItem[] = [
   {
     id: "desenvolvimento-software",
     category: "web-software",
-    title: "Desenvolvimento de Software",
-    description:
-      "Conceção e implementação de programas e aplicações à medida, desenvolvidos para responder a necessidades específicas, otimizar operações e simplificar tarefas.",
+    title: {
+      pt: "Desenvolvimento de Software",
+      en: "Custom Software Development",
+    },
+    description: {
+      pt: "Conceção e implementação de programas e aplicações à medida, desenvolvidos para responder a necessidades específicas, otimizar operações e simplificar tarefas.",
+      en: "Architecture and delivery of custom software and web applications engineered for specific operational needs, streamlining workflows at scale.",
+    },
     gradient: GRADIENT_VIOLET_BLUE,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -66,9 +119,14 @@ const SERVICES: ServiceItem[] = [
   {
     id: "solucoes-tecnologicas",
     category: "ia-automacao",
-    title: "Desenvolvimento de Soluções Tecnológicas",
-    description:
-      "Identificação de problemas e criação de soluções digitais inovadoras, recorrendo à tecnologia para transformar ideias em ferramentas práticas e funcionais.",
+    title: {
+      pt: "Desenvolvimento de Soluções Tecnológicas",
+      en: "Technology Solutions Engineering",
+    },
+    description: {
+      pt: "Identificação de problemas e criação de soluções digitais inovadoras, recorrendo à tecnologia para transformar ideias em ferramentas práticas e funcionais.",
+      en: "Identifying operational bottlenecks and building practical, reliable digital tools that turn ideas into working systems.",
+    },
     gradient: GRADIENT_MINT_BLUE,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -79,9 +137,14 @@ const SERVICES: ServiceItem[] = [
   {
     id: "automacao-processos",
     category: "ia-automacao",
-    title: "Automação de Processos",
-    description:
-      "Implementação de sistemas e ferramentas que automatizam tarefas e procedimentos, reduzindo processos manuais, aumentando a eficiência e melhorando a produtividade.",
+    title: {
+      pt: "Automação de Processos",
+      en: "Process Automation",
+    },
+    description: {
+      pt: "Implementação de sistemas e ferramentas que automatizam tarefas e procedimentos, reduzindo processos manuais, aumentando a eficiência e melhorando a produtividade.",
+      en: "Automated pipelines and system integrations that eliminate repetitive manual work, raise efficiency, and keep operations consistent.",
+    },
     gradient: GRADIENT_BLUE_MINT,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -92,9 +155,14 @@ const SERVICES: ServiceItem[] = [
   {
     id: "estrategia-comunicacao",
     category: "marketing",
-    title: "Estratégia e Comunicação",
-    description:
-      "Definição de estratégias de comunicação alinhadas com os objetivos de cada marca, garantindo uma mensagem coerente, eficaz e direcionada ao público certo.",
+    title: {
+      pt: "Estratégia e Comunicação",
+      en: "Strategy & Brand Communication",
+    },
+    description: {
+      pt: "Definição de estratégias de comunicação alinhadas com os objetivos de cada marca, garantindo uma mensagem coerente, eficaz e direcionada ao público certo.",
+      en: "Communication strategies aligned with business goals, ensuring a clear, coherent voice tailored to the right audience.",
+    },
     gradient: GRADIENT_VIOLET_BLUE,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -105,9 +173,14 @@ const SERVICES: ServiceItem[] = [
   {
     id: "publicidade-campanhas",
     category: "marketing",
-    title: "Publicidade e Campanhas",
-    description:
-      "Planeamento e criação de campanhas publicitárias, desenvolvidas para promover marcas, produtos ou serviços, aumentar a notoriedade e gerar resultados.",
+    title: {
+      pt: "Publicidade e Campanhas",
+      en: "Advertising & Campaigns",
+    },
+    description: {
+      pt: "Planeamento e criação de campanhas publicitárias, desenvolvidas para promover marcas, produtos ou serviços, aumentar a notoriedade e gerar resultados.",
+      en: "End-to-end campaign planning and creative execution to grow awareness, acquire customers, and drive measurable returns.",
+    },
     gradient: GRADIENT_MINT_BLUE,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -118,9 +191,14 @@ const SERVICES: ServiceItem[] = [
   {
     id: "marketing-digital",
     category: "marketing",
-    title: "Marketing Digital e Redes Sociais",
-    description:
-      "Gestão e dinamização da presença digital das marcas, através da criação de conteúdos, planeamento estratégico e desenvolvimento de ações de comunicação nas diferentes plataformas.",
+    title: {
+      pt: "Marketing Digital e Redes Sociais",
+      en: "Digital Marketing & Social Media",
+    },
+    description: {
+      pt: "Gestão e dinamização da presença digital das marcas, através da criação de conteúdos, planeamento estratégico e desenvolvimento de ações de comunicação nas diferentes plataformas.",
+      en: "Ongoing management of digital channels with editorial content, strategic calendars, and audience growth across platforms.",
+    },
     gradient: GRADIENT_BLUE_MINT,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -131,9 +209,14 @@ const SERVICES: ServiceItem[] = [
   {
     id: "consultoria-informatica",
     category: "consultoria-ecom",
-    title: "Consultoria Informática",
-    description:
-      "Prestação de serviços de aconselhamento e acompanhamento tecnológico, através da análise de sistemas e infraestruturas informáticas, identificando necessidades e recomendando soluções que otimizem os recursos e processos de cada negócio.",
+    title: {
+      pt: "Consultoria Informática",
+      en: "IT Consulting & Systems Audit",
+    },
+    description: {
+      pt: "Prestação de serviços de aconselhamento e acompanhamento tecnológico, através da análise de sistemas e infraestruturas informáticas, identificando necessidades e recomendando soluções que otimizem os recursos e processos de cada negócio.",
+      en: "Technical advisory and architecture assessment to spot infrastructure gaps and recommend practical upgrades that improve reliability.",
+    },
     gradient: GRADIENT_VIOLET_BLUE,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -144,9 +227,14 @@ const SERVICES: ServiceItem[] = [
   {
     id: "consultoria-media",
     category: "consultoria-ecom",
-    title: "Consultoria em Media Digitais",
-    description:
-      "Análise e definição de estratégias para fortalecer a presença digital das marcas, identificando oportunidades de crescimento e recomendando soluções que melhorem a comunicação, a visibilidade e o desempenho nas diferentes plataformas.",
+    title: {
+      pt: "Consultoria em Media Digitais",
+      en: "Digital Media Advisory",
+    },
+    description: {
+      pt: "Análise e definição de estratégias para fortalecer a presença digital das marcas, identificando oportunidades de crescimento e recomendando soluções que melhorem a comunicação, a visibilidade e o desempenho nas diferentes plataformas.",
+      en: "Digital presence audits and strategic roadmaps to uncover growth opportunities and strengthen visibility across channels.",
+    },
     gradient: GRADIENT_MINT_BLUE,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -157,9 +245,14 @@ const SERVICES: ServiceItem[] = [
   {
     id: "analise-dados",
     category: "ia-automacao",
-    title: "Análise de Dados e Suporte à Tomada de Decisão",
-    description:
-      "Recolha, tratamento e interpretação de dados, transformando informação em conhecimento estratégico que permite identificar tendências, avaliar resultados e apoiar decisões mais informadas e eficazes.",
+    title: {
+      pt: "Análise de Dados e Suporte à Tomada de Decisão",
+      en: "Data Analytics & Decision Support",
+    },
+    description: {
+      pt: "Recolha, tratamento e interpretação de dados, transformando informação em conhecimento estratégico que permite identificar tendências, avaliar resultados e apoiar decisões mais informadas e eficazes.",
+      en: "Collecting, structuring, and interpreting business data to surface clear insights, track outcomes, and guide confident decisions.",
+    },
     gradient: GRADIENT_BLUE_MINT,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -170,9 +263,14 @@ const SERVICES: ServiceItem[] = [
   {
     id: "ia-llms",
     category: "ia-automacao",
-    title: "Inteligência Artificial e Modelos de Linguagem (LLMs)",
-    description:
-      "Desenvolvimento e integração de soluções baseadas em inteligência artificial e modelos de linguagem, permitindo automatizar tarefas, otimizar processos e criar ferramentas inteligentes adaptadas às necessidades específicas de cada negócio.",
+    title: {
+      pt: "Inteligência Artificial e Modelos de Linguagem (LLMs)",
+      en: "Artificial Intelligence & LLMs",
+    },
+    description: {
+      pt: "Desenvolvimento e integração de soluções baseadas em inteligência artificial e modelos de linguagem, permitindo automatizar tarefas, otimizar processos e criar ferramentas inteligentes adaptadas às necessidades específicas de cada negócio.",
+      en: "Building and integrating AI workflows, custom agents, and large language models tailored to your company's internal operations.",
+    },
     gradient: GRADIENT_VIOLET_BLUE,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -183,9 +281,14 @@ const SERVICES: ServiceItem[] = [
   {
     id: "ecommerce-operations",
     category: "consultoria-ecom",
-    title: "Operações de Comércio Eletrónico (E-commerce Operations)",
-    description:
-      "Gestão e otimização de operações de comércio eletrónico, incluindo a implementação e manutenção de lojas online, gestão de produtos, encomendas e processos de venda, com o objetivo de melhorar a experiência de compra e potenciar os resultados comerciais.",
+    title: {
+      pt: "Operações de Comércio Eletrónico (E-commerce Operations)",
+      en: "E-commerce Operations",
+    },
+    description: {
+      pt: "Gestão e otimização de operações de comércio eletrónico, incluindo a implementação e manutenção de lojas online, gestão de produtos, encomendas e processos de venda, com o objetivo de melhorar a experiência de compra e potenciar os resultados comerciais.",
+      en: "Setup and optimization of online stores, catalog workflows, checkout flows, and fulfillment operations to grow conversion.",
+    },
     gradient: GRADIENT_MINT_BLUE,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -196,9 +299,14 @@ const SERVICES: ServiceItem[] = [
   {
     id: "desenvolvimento-mobile",
     category: "web-software",
-    title: "Desenvolvimento Mobile",
-    description:
-      "Conceção e desenvolvimento de aplicações móveis para diferentes plataformas, criando soluções digitais intuitivas, funcionais e adaptadas às necessidades dos utilizadores e objetivos de cada negócio.",
+    title: {
+      pt: "Desenvolvimento Mobile",
+      en: "Mobile App Development",
+    },
+    description: {
+      pt: "Conceção e desenvolvimento de aplicações móveis para diferentes plataformas, criando soluções digitais intuitivas, funcionais e adaptadas às necessidades dos utilizadores e objetivos de cada negócio.",
+      en: "Design and engineering of cross-platform mobile applications focused on speed, usability, and dependable daily performance.",
+    },
     gradient: GRADIENT_BLUE_MINT,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -208,20 +316,16 @@ const SERVICES: ServiceItem[] = [
   },
 ];
 
-const CATEGORY_TO_AREA: Record<Exclude<CategoryId, "all">, Area> = {
-  "web-software": "Web, Software & Mobile",
-  "ia-automacao": "Automação, IA & Dados",
-  marketing: "Estratégia, Marketing & Campanhas",
-  "consultoria-ecom": "Consultoria & E-commerce",
-};
-
 export default function ServicesCarousel() {
   const trackRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef({ active: false, moved: false, startX: 0, scrollLeft: 0 });
   const [category, setCategory] = useState<CategoryId>("all");
-  const [activeId, setActiveId] = useState<string>(SERVICES[1].id);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const { locale } = useLanguage();
 
+  const categories = CATEGORIES[locale];
+  const categoryLabels = CATEGORY_LABELS[locale];
   const visibleServices =
     category === "all" ? SERVICES : SERVICES.filter((s) => s.category === category);
 
@@ -250,10 +354,7 @@ export default function ServicesCarousel() {
       const next = (e as CustomEvent<CategoryId>).detail;
       if (!next) return;
       setCategory(next);
-      const filtered = next === "all" ? SERVICES : SERVICES.filter((s) => s.category === next);
-      if (filtered.length > 0) {
-        setActiveId(filtered[Math.min(1, filtered.length - 1)].id);
-      }
+      setHoveredId(null);
       trackRef.current?.scrollTo({ left: 0, behavior: "smooth" });
     };
     window.addEventListener("midi8:select-category", onSelectCategory);
@@ -262,17 +363,8 @@ export default function ServicesCarousel() {
 
   const handleCategoryChange = (next: CategoryId) => {
     setCategory(next);
-    const filtered = next === "all" ? SERVICES : SERVICES.filter((s) => s.category === next);
-    if (filtered.length > 0) {
-      setActiveId(filtered[Math.min(1, filtered.length - 1)].id);
-    }
+    setHoveredId(null);
     trackRef.current?.scrollTo({ left: 0, behavior: "smooth" });
-  };
-
-  const scrollByCard = (direction: -1 | 1) => {
-    if (!trackRef.current) return;
-    const step = 340 * direction;
-    trackRef.current.scrollBy({ left: step, behavior: "smooth" });
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -302,70 +394,32 @@ export default function ServicesCarousel() {
     dragRef.current.active = false;
   };
 
-  const handleRequestProposal = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const activeService = SERVICES.find((s) => s.id === activeId);
-    if (activeService) {
-      window.dispatchEvent(
-        new CustomEvent("midi8:preselect-area", {
-          detail: CATEGORY_TO_AREA[activeService.category],
-        })
-      );
-    }
-    window.dispatchEvent(new CustomEvent("midi8:goto-scene", { detail: "contacto" }));
-  };
-
   return (
-    <div className="relative w-full h-full flex flex-col justify-center pt-16 pb-10 sm:pb-8">
-      <ParallaxPlane depth="slow" className="max-w-7xl w-full mx-auto px-5 sm:px-6">
+    <section id="servicos" className="relative w-full py-20 sm:py-28 scroll-mt-16">
+      <div className="max-w-7xl w-full mx-auto px-5 sm:px-6">
         {/* Cabeçalho da secção */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-3.5 sm:mb-5">
-          <div>
-            <p className="eyebrow mb-1.5">Serviços</p>
-            <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.05]">
-              Os Nossos <em className="italic font-normal">Serviços</em>
-            </h2>
-            <p className="hidden sm:block text-sm text-muted mt-1">
-              Soluções completas de web, software, IA, automação e comunicação digital.
-            </p>
-          </div>
-
-          {/* Controlos do carrossel + CTA reta coerente com o header */}
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              type="button"
-              onClick={() => scrollByCard(-1)}
-              aria-label="Serviço anterior"
-              className="w-9 h-9 border border-border bg-white hover:bg-surface flex items-center justify-center text-foreground transition-colors cursor-pointer"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollByCard(1)}
-              aria-label="Próximo serviço"
-              className="w-9 h-9 border border-border bg-white hover:bg-surface flex items-center justify-center text-foreground transition-colors cursor-pointer"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-              </svg>
-            </button>
-            <Link
-              href="/#contacto"
-              onClick={handleRequestProposal}
-              className="inline-flex items-center gap-2 border border-foreground bg-foreground text-white px-4 py-2 text-xs sm:text-sm font-normal tracking-wide hover:bg-transparent hover:text-foreground transition-colors ml-1"
-            >
-              <span>Pedir Proposta</span>
-              <span aria-hidden="true">↗</span>
-            </Link>
-          </div>
+        <div className="mb-6 sm:mb-7">
+          <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.05]">
+            {locale === "pt" ? (
+              <>
+                Os Nossos <em className="italic font-normal">Serviços</em>
+              </>
+            ) : (
+              <>
+                Our <em className="italic font-normal">Services</em>
+              </>
+            )}
+          </h2>
+          <p className="text-sm sm:text-base text-muted mt-1.5">
+            {locale === "pt"
+              ? "Soluções digitais desenhadas à medida do seu negócio."
+              : "Digital solutions tailored to your business."}
+          </p>
         </div>
 
-        {/* Filtros por categoria (horizontal no mobile, wrap no desktop) */}
-        <div className="flex flex-nowrap sm:flex-wrap items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar mb-4 sm:mb-6 pb-1">
-          {CATEGORIES.map((cat) => {
+        {/* Filtros por categoria */}
+        <div className="flex flex-nowrap sm:flex-wrap items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar mb-7 pb-1">
+          {categories.map((cat) => {
             const selected = category === cat.id;
             return (
               <button
@@ -383,68 +437,95 @@ export default function ServicesCarousel() {
             );
           })}
         </div>
-      </ParallaxPlane>
+      </div>
 
       {/* Carrossel horizontal full-bleed com Click & Drag + Barra de progresso */}
-      <ParallaxPlane depth="deep" className="max-w-[1440px] w-full mx-auto">
+      <div className="max-w-[1440px] w-full mx-auto">
         <div
           ref={trackRef}
           onScroll={updateScrollProgress}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={endMouseDrag}
-          onMouseLeave={endMouseDrag}
-          className="flex gap-4 sm:gap-5 overflow-x-auto no-scrollbar snap-x snap-mandatory px-5 sm:px-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))] pb-4 pt-2 cursor-grab active:cursor-grabbing"
+          onMouseLeave={() => {
+            endMouseDrag();
+            setHoveredId(null);
+          }}
+          className="flex gap-4 sm:gap-5 overflow-x-auto no-scrollbar snap-x snap-mandatory px-5 sm:px-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))] pb-6 pt-3 cursor-grab active:cursor-grabbing"
         >
-          {visibleServices.map((service, index) => {
-            const isActive = activeId === service.id;
-            const orderNum = String(index + 1).padStart(2, "0");
+          {visibleServices.map((service) => {
+            const isHovered = hoveredId === service.id;
             return (
               <article
                 key={service.id}
                 onMouseEnter={() => {
-                  if (!dragRef.current.active) setActiveId(service.id);
+                  if (!dragRef.current.active) setHoveredId(service.id);
+                }}
+                onMouseLeave={() => {
+                  setHoveredId((prev) => (prev === service.id ? null : prev));
                 }}
                 onClick={() => {
-                  if (!dragRef.current.moved) setActiveId(service.id);
+                  if (!dragRef.current.moved) {
+                    setHoveredId((prev) => (prev === service.id ? null : service.id));
+                  }
                 }}
-                className={`service-card snap-start shrink-0 w-[78vw] sm:w-[320px] h-[255px] sm:h-[320px] p-5 sm:p-6 flex flex-col justify-between overflow-hidden cursor-pointer select-none ${
-                  isActive ? "service-card--active -translate-y-1.5" : ""
+                className={`service-card snap-start shrink-0 w-[80vw] sm:w-[330px] h-[305px] sm:h-[340px] p-6 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer select-none ${
+                  isHovered ? "service-card--active -translate-y-2" : ""
                 }`}
-                style={isActive ? { background: service.gradient } : undefined}
               >
-                {/* Ícone minimalista e índice numérico no topo */}
-                <div className="relative z-10 flex items-center justify-between">
-                  <div className="text-foreground">{service.icon}</div>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`font-display italic text-sm tracking-wider transition-colors duration-300 ${
-                        isActive ? "text-foreground/80" : "text-subtle"
-                      }`}
-                    >
-                      {orderNum}
-                    </span>
-                    {isActive && (
-                      <span className="w-2 h-2 rounded-full bg-white/90 shadow-sm" aria-hidden="true" />
-                    )}
-                  </div>
+                {/* Camada de gradiente suave para crossfade sem saltos bruscos */}
+                <div
+                  className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${
+                    isHovered ? "opacity-100" : "opacity-0"
+                  }`}
+                  style={{ background: service.gradient }}
+                  aria-hidden="true"
+                />
+
+                {/* Véu escuro subtil na metade inferior ao passar o rato */}
+                <div
+                  className={`pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/28 via-black/10 to-transparent transition-opacity duration-500 ${
+                    isHovered ? "opacity-100" : "opacity-0"
+                  }`}
+                  aria-hidden="true"
+                />
+
+                {/* Ícone minimalista em caixa branca e categoria discreta no topo */}
+                <div className="relative z-10 flex items-center justify-between gap-3">
+                  <span
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 ${
+                      isHovered
+                        ? "bg-white/90 border-white text-foreground shadow-xs"
+                        : "bg-white border-black/[0.06] text-foreground shadow-2xs"
+                    }`}
+                  >
+                    {service.icon}
+                  </span>
+
+                  <span
+                    className={`text-[11px] font-sans tracking-wide uppercase transition-colors duration-300 ${
+                      isHovered ? "text-foreground/75" : "text-subtle"
+                    }`}
+                  >
+                    {categoryLabels[service.category]}
+                  </span>
                 </div>
 
-                {/* Conteúdo ancorado em baixo (título + descrição) */}
+                {/* Conteúdo ancorado em baixo em sans-serif limpa e legível */}
                 <div className="relative z-10">
                   <h3
-                    className={`text-lg sm:text-xl font-medium leading-snug mb-2 transition-colors duration-300 ${
-                      isActive ? "text-white" : "text-foreground"
+                    className={`font-sans text-base sm:text-[17px] font-semibold tracking-tight leading-snug mb-2 transition-colors duration-300 ${
+                      isHovered ? "text-white" : "text-foreground"
                     }`}
                   >
-                    {service.title}
+                    {service.title[locale]}
                   </h3>
                   <p
-                    className={`text-xs sm:text-[13px] leading-relaxed transition-colors duration-300 ${
-                      isActive ? "text-white/90" : "text-muted"
+                    className={`text-xs sm:text-[13px] leading-relaxed line-clamp-4 transition-colors duration-300 ${
+                      isHovered ? "text-white/90" : "text-muted"
                     }`}
                   >
-                    {service.description}
+                    {service.description[locale]}
                   </p>
                 </div>
               </article>
@@ -461,7 +542,7 @@ export default function ServicesCarousel() {
             />
           </div>
         </div>
-      </ParallaxPlane>
-    </div>
+      </div>
+    </section>
   );
 }

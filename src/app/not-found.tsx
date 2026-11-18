@@ -3,11 +3,9 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <main className="flex-1 flex items-center justify-center px-6 pt-28 pb-20 text-foreground">
-      <section className="glass-card w-full max-w-2xl p-10 sm:p-14 max-md:px-0 max-md:py-8 text-center max-md:text-left">
-        <p className="eyebrow mb-4">Erro 404</p>
+      <section className="border border-border bg-white w-full max-w-2xl p-10 sm:p-14 max-md:px-6 max-md:py-8 text-center max-md:text-left">
         <h1 className="text-4xl sm:text-5xl max-md:text-[2.5rem] max-md:leading-[1.05] font-medium tracking-tight mb-4">
-          Página não{" "}
-          <span className="text-gradient">encontrada.</span>
+          Página não <em className="italic font-normal">encontrada.</em>
         </h1>
         <p className="text-sm sm:text-base text-muted leading-relaxed mb-8 max-w-md mx-auto max-md:mx-0">
           O endereço que procurou não existe ou foi movido. Pode voltar ao início ou falar connosco diretamente.
