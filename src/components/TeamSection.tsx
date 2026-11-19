@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState, type PointerEvent } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import {
   motion,
@@ -10,8 +11,11 @@ import {
   useTransform,
 } from "framer-motion";
 import KineticHeading from "@/components/KineticHeading";
-import TeamMemberModal from "@/components/TeamMemberModal";
 import { useLanguage, type Locale } from "@/context/LanguageContext";
+
+const TeamMemberModal = dynamic(() => import("@/components/TeamMemberModal"), {
+  ssr: false,
+});
 
 type Department =
   | "Produto & Tecnologia"
@@ -263,6 +267,7 @@ export default function TeamSection() {
   const [selectedDepartment, setSelectedDepartment] = useState<"all" | Department>("all");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [hasOpenedModal, setHasOpenedModal] = useState(false);
   const { locale } = useLanguage();
   const deptLabels = DEPARTMENT_LABELS[locale];
 
@@ -377,7 +382,10 @@ export default function TeamSection() {
                   setActiveIndex((prev) => (prev === index ? null : prev))
                 }
                 onOpen={() => {
-                  if (isMatch) setOpenId(member.id);
+                  if (isMatch) {
+                    setHasOpenedModal(true);
+                    setOpenId(member.id);
+                  }
                 }}
               />
             );
@@ -397,22 +405,24 @@ export default function TeamSection() {
         </div>
       </div>
 
-      <TeamMemberModal
-        member={
-          openMember
-            ? {
-                id: openMember.id,
-                name: openMember.name,
-                image: openMember.image,
-                department: deptLabels[openMember.department],
-              }
-            : null
-        }
-        locale={locale}
-        onClose={closeModal}
-        onPrev={openPos > 0 ? goPrev : undefined}
-        onNext={openPos >= 0 && openPos < visibleMembers.length - 1 ? goNext : undefined}
-      />
+      {hasOpenedModal && (
+        <TeamMemberModal
+          member={
+            openMember
+              ? {
+                  id: openMember.id,
+                  name: openMember.name,
+                  image: openMember.image,
+                  department: deptLabels[openMember.department],
+                }
+              : null
+          }
+          locale={locale}
+          onClose={closeModal}
+          onPrev={openPos > 0 ? goPrev : undefined}
+          onNext={openPos >= 0 && openPos < visibleMembers.length - 1 ? goNext : undefined}
+        />
+      )}
     </section>
   );
 }

@@ -6,7 +6,6 @@ import MotionProvider from "@/components/MotionProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { CONTACT_EMAIL, CONTACT_PHONE, SOCIAL } from "@/lib/contact";
 import { siteUrl } from "@/lib/site";
-import AmbientAudio from "@/components/AmbientAudio";
 import TransitionCanvas from "@/components/TransitionCanvas";
 import "./globals.css";
 
@@ -111,7 +110,6 @@ export default function RootLayout({
             <Navbar />
             {children}
             <Footer />
-            <AmbientAudio />
             <TransitionCanvas />
           </MotionProvider>
         </LanguageProvider>

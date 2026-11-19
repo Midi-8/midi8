@@ -2,7 +2,14 @@ import { CONTACT_EMAIL, toContactRequest, validateContact } from "@/lib/contact"
 
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const RATE_MAX_REQUESTS = 5;
+const MAX_BODY_BYTES = 64 * 1024; // 64 KB — protege contra payloads abusivos sem limitar textos normais
 const requestLog = new Map<string, number[]>();
+
+const NO_STORE_HEADERS = { "Cache-Control": "no-store" } as const;
+
+function jsonResponse(body: unknown, status = 200) {
+  return Response.json(body, { status, headers: NO_STORE_HEADERS });
+}
 
 function getClientIp(request: Request): string {
   const forwarded = request.headers.get("x-forwarded-for");
@@ -11,6 +18,31 @@ function getClientIp(request: Request): string {
     if (first) return first;
   }
   return request.headers.get("x-real-ip")?.trim() || "unknown";
+}
+
+function isSameOrigin(request: Request): boolean {
+  if (process.env.NODE_ENV !== "production") return true;
+
+  const secFetchSite = request.headers.get("sec-fetch-site");
+  if (secFetchSite && secFetchSite !== "same-origin" && secFetchSite !== "same-site" && secFetchSite !== "none") {
+    return false;
+  }
+
+  const origin = request.headers.get("origin");
+  const host = request.headers.get("host");
+  if (origin && host) {
+    try {
+      return new URL(origin).host === host;
+    } catch {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function sanitizeHeaderValue(value: string): string {
+  return value.replace(/[\r\n]+/g, " ").trim().slice(0, 200);
 }
 
 function isRateLimited(ip: string, now: number): boolean {
@@ -40,32 +72,60 @@ function isRateLimited(ip: string, now: number): boolean {
 // Envia o pedido por email via API do Resend (sem dependência).
 // Sem RESEND_API_KEY responde 503 e o formulário oferece o fallback mailto.
 export async function POST(request: Request) {
+  if (!isSameOrigin(request)) {
+    return jsonResponse({ error: "forbidden_origin" }, 403);
+  }
+
+  const contentType = request.headers.get("content-type") ?? "";
+  if (!contentType.toLowerCase().includes("application/json")) {
+    return jsonResponse({ error: "unsupported_media_type" }, 415);
+  }
+
+  const contentLength = Number(request.headers.get("content-length") ?? 0);
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+    return jsonResponse({ error: "payload_too_large" }, 413);
+  }
+
+  let rawText: string;
+  try {
+    rawText = await request.text();
+  } catch {
+    return jsonResponse({ error: "invalid_body" }, 400);
+  }
+
+  if (new TextEncoder().encode(rawText).length > MAX_BODY_BYTES) {
+    return jsonResponse({ error: "payload_too_large" }, 413);
+  }
+
   let raw: unknown;
   try {
-    raw = await request.json();
+    raw = JSON.parse(rawText);
   } catch {
-    return Response.json({ error: "invalid_json" }, { status: 400 });
+    return jsonResponse({ error: "invalid_json" }, 400);
   }
 
   // Honeypot: bots preenchem o campo escondido "website". Fingimos sucesso.
   if (raw && typeof raw === "object" && (raw as Record<string, unknown>).website) {
-    return Response.json({ ok: true });
+    return jsonResponse({ ok: true });
   }
 
   if (isRateLimited(getClientIp(request), Date.now())) {
-    return Response.json({ error: "rate_limited" }, { status: 429 });
+    return jsonResponse({ error: "rate_limited" }, 429);
   }
 
   const data = toContactRequest(raw);
   const errors = validateContact(data);
   if (Object.keys(errors).length > 0) {
-    return Response.json({ error: "invalid", errors }, { status: 422 });
+    return jsonResponse({ error: "invalid", errors }, 422);
   }
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    return Response.json({ error: "unconfigured" }, { status: 503 });
+    return jsonResponse({ error: "unconfigured" }, 503);
   }
+
+  const safeCompany = sanitizeHeaderValue(data.company);
+  const safeAreas = sanitizeHeaderValue(data.areas.join(", "));
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -74,7 +134,7 @@ export async function POST(request: Request) {
       from: process.env.CONTACT_FROM ?? "Midi8 <site@midi8.com>",
       to: [process.env.CONTACT_TO ?? CONTACT_EMAIL],
       reply_to: data.email,
-      subject: `Pedido de reunião — ${data.company} (${data.areas.join(", ")})`,
+      subject: `Pedido de reunião — ${safeCompany} (${safeAreas})`,
       text: [
         `Nome: ${data.name}`,
         `Email: ${data.email}`,
@@ -87,7 +147,7 @@ export async function POST(request: Request) {
   }).catch(() => null);
 
   if (!res?.ok) {
-    return Response.json({ error: "send_failed" }, { status: 502 });
+    return jsonResponse({ error: "send_failed" }, 502);
   }
-  return Response.json({ ok: true });
+  return jsonResponse({ ok: true });
 }

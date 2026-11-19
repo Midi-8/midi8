@@ -9,7 +9,6 @@ import {
   useTransform,
 } from "framer-motion";
 import AuroraCanvas from "@/components/AuroraCanvas";
-import AuroraVideoBackground from "@/components/AuroraVideoBackground";
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -44,9 +43,6 @@ export default function Hero() {
       id="hero"
       className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center px-6 py-24 overflow-hidden"
     >
-      {/* Background video (aurora) */}
-      <AuroraVideoBackground />
-
       {/* Fade aurora only at the top of the Hero */}
       <motion.div
         style={
