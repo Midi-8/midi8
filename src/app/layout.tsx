@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Geist } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -36,8 +36,15 @@ const geistSans = Geist({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  themeColor: "#fafaf9",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: "/",
+  },
   title: "Midi8",
   icons: {
     icon: [
@@ -67,6 +74,8 @@ export const metadata: Metadata = {
   authors: [{ name: "Midi8" }],
   openGraph: {
     title: "Midi8",
+    siteName: "Midi8",
+    url: siteUrl,
     description:
       "Web Design, Software, Automação, IA, Marketing Digital e Consultoria num único parceiro.",
     type: "website",

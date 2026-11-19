@@ -33,10 +33,6 @@ export default function Hero() {
   const auroraScale = useTransform(smoothProgress, [0, 0.75], [1, 1.08]);
   const auroraY = useTransform(smoothProgress, [0, 0.75], [0, -40]);
 
-  // Parallax layers – move slower than the main content
-  const layer1Y = useTransform(smoothProgress, [0, 1], [0, -30]);
-  const layer2Y = useTransform(smoothProgress, [0, 1], [0, -60]);
-
   return (
     <section
       ref={sectionRef}
@@ -56,18 +52,6 @@ export default function Hero() {
         <AuroraCanvas />
         <div className="top-aurora-grain" />
       </motion.div>
-
-      {/* Parallax decorative layers */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{ y: layer1Y, background: "rgba(20,94,255,0.04)" }}
-        aria-hidden="true"
-      />
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{ y: layer2Y, background: "rgba(0,232,150,0.03)" }}
-        aria-hidden="true"
-      />
 
       {/* Title with smooth scroll reaction */}
       <motion.div
