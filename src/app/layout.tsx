@@ -6,7 +6,6 @@ import MotionProvider from "@/components/MotionProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { CONTACT_EMAIL, CONTACT_PHONE, SOCIAL } from "@/lib/contact";
 import { siteUrl } from "@/lib/site";
-import TransitionCanvas from "@/components/TransitionCanvas";
 import "./globals.css";
 
 const organizationJsonLd = {
@@ -119,7 +118,6 @@ export default function RootLayout({
             <Navbar />
             {children}
             <Footer />
-            <TransitionCanvas />
           </MotionProvider>
         </LanguageProvider>
       </body>

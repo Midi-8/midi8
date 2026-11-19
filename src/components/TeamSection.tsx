@@ -193,16 +193,8 @@ function TeamMemberCard({
             : { scale: dockScale, y: dockY }
         }
         transition={DOCK_SPRING}
-        className="relative w-full aspect-[4/5] origin-bottom"
+        className="relative w-full aspect-[4/5] origin-bottom will-change-transform"
       >
-        {/* Halo cromático subtil atrás do membro ativo */}
-        <div
-          aria-hidden="true"
-          className={`pointer-events-none -inset-2 absolute rounded-[34px] bg-gradient-to-tr from-[#A818FF]/22 via-[#145EFF]/18 to-[#00E896]/22 blur-xl transition-opacity duration-500 ${
-            isActive ? "opacity-100" : "opacity-0"
-          }`}
-        />
-
         <div
           className={`relative isolate w-full h-full rounded-[28px] sm:rounded-[32px] overflow-hidden [transform:translateZ(0)] transition-[box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-focus-visible:ring-2 group-focus-visible:ring-brand-blue group-focus-visible:ring-offset-4 ${
             isActive

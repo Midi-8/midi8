@@ -33,15 +33,17 @@ export default function Navbar() {
   const ctaLabel = locale === "pt" ? "Contacta-nos" : "Contact us";
 
   useEffect(() => {
-    const updateScrollState = () => {
-      const heroEl = document.getElementById("hero");
-      const pastHero = heroEl
-        ? heroEl.getBoundingClientRect().bottom <= 72
-        : window.scrollY > 24;
-      setIsIsland(pastHero);
+    let rafId = 0;
 
-      if (heroEl && heroEl.getBoundingClientRect().bottom > 140) {
-        setActiveSection(null);
+    const updateScrollState = () => {
+      rafId = 0;
+      const heroEl = document.getElementById("hero");
+      const heroBottom = heroEl ? heroEl.getBoundingClientRect().bottom : null;
+      const pastHero = heroBottom !== null ? heroBottom <= 72 : window.scrollY > 24;
+      setIsIsland((prev) => (prev === pastHero ? prev : pastHero));
+
+      if (heroBottom !== null && heroBottom > 140) {
+        setActiveSection((prev) => (prev === null ? prev : null));
         return;
       }
 
@@ -53,16 +55,21 @@ export default function Navbar() {
           current = id;
         }
       }
-      setActiveSection(current);
+      setActiveSection((prev) => (prev === current ? prev : current));
     };
 
-    const raf = window.requestAnimationFrame(updateScrollState);
-    window.addEventListener("scroll", updateScrollState, { passive: true });
-    window.addEventListener("resize", updateScrollState, { passive: true });
+    const scheduleUpdate = () => {
+      if (rafId !== 0) return;
+      rafId = window.requestAnimationFrame(updateScrollState);
+    };
+
+    scheduleUpdate();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate, { passive: true });
     return () => {
-      window.cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", updateScrollState);
-      window.removeEventListener("resize", updateScrollState);
+      if (rafId !== 0) window.cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
     };
   }, []);
 
@@ -78,14 +85,14 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed left-0 right-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`fixed left-0 right-0 z-50 transition-[top,padding] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           isIsland ? "top-3 sm:top-4 px-4 sm:px-6" : "top-0 px-0"
         }`}
       >
         <div
-          className={`relative mx-auto flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          className={`relative mx-auto flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] transition-[max-width,height,border-radius,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             isIsland
-              ? "max-w-5xl h-14 px-5 sm:px-6 rounded-2xl backdrop-blur-2xl backdrop-saturate-150 border border-white/65 ring-1 ring-black/[0.06] shadow-[0_16px_40px_-12px_rgba(20,94,255,0.22),0_6px_20px_-8px_rgba(168,24,255,0.16)]"
+              ? "max-w-5xl h-14 px-5 sm:px-6 rounded-2xl backdrop-blur-md backdrop-saturate-150 border border-white/65 ring-1 ring-black/[0.06] shadow-[0_14px_34px_-12px_rgba(20,94,255,0.2),0_6px_18px_-8px_rgba(168,24,255,0.14)]"
               : "max-w-7xl h-16 px-5 sm:px-6 rounded-none bg-transparent border border-transparent"
           }`}
           style={

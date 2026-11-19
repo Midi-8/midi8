@@ -246,8 +246,8 @@
   /* Painel do menu móvel */
   .glass-sheet {
     background: rgba(255, 255, 255, 0.96);
-    -webkit-backdrop-filter: blur(24px) saturate(160%);
-    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
   }
 
   /* Cartões do Carrossel de Serviços (estilo referência) */
@@ -417,49 +417,3 @@
   background: rgba(15, 23, 42, 0.28);
 }
 
-/* ─── Cursor Personalizado Midi8 (apenas desktop) ─── */
-
-@media (pointer: fine) {
-  html,
-  body {
-    cursor: url("/cursors/default.png") 3 2, auto;
-    cursor: -webkit-image-set(url("/cursors/default.png") 1x, url("/cursors/default@2x.png") 2x) 3 2, auto;
-    cursor: image-set(url("/cursors/default.png") 1x, url("/cursors/default@2x.png") 2x) 3 2, auto;
-  }
-
-  a,
-  button,
-  [role="button"],
-  [role="tab"],
-  label,
-  .cursor-pointer {
-    cursor: url("/cursors/pointer.png") 3 2, pointer;
-    cursor: -webkit-image-set(url("/cursors/pointer.png") 1x, url("/cursors/pointer@2x.png") 2x) 3 2, pointer;
-    cursor: image-set(url("/cursors/pointer.png") 1x, url("/cursors/pointer@2x.png") 2x) 3 2, pointer;
-  }
-
-  .cursor-grab,
-  .cursor-grab .service-card {
-    cursor: url("/cursors/grab.png") 14 14, grab;
-    cursor: -webkit-image-set(url("/cursors/grab.png") 1x, url("/cursors/grab@2x.png") 2x) 14 14, grab;
-    cursor: image-set(url("/cursors/grab.png") 1x, url("/cursors/grab@2x.png") 2x) 14 14, grab;
-  }
-
-  .active\:cursor-grabbing:active,
-  .active\:cursor-grabbing:active .service-card,
-  .cursor-grabbing {
-    cursor: url("/cursors/grabbing.png") 14 14, grabbing;
-    cursor: -webkit-image-set(url("/cursors/grabbing.png") 1x, url("/cursors/grabbing@2x.png") 2x) 14 14, grabbing;
-    cursor: image-set(url("/cursors/grabbing.png") 1x, url("/cursors/grabbing@2x.png") 2x) 14 14, grabbing;
-  }
-
-  input[type="text"],
-  input[type="email"],
-  textarea {
-    cursor: text;
-  }
-
-  button:disabled {
-    cursor: progress;
-  }
-}

@@ -43,16 +43,46 @@ const nextConfig: NextConfig = {
             value: "DENY",
           },
           {
-            key: "Strict-Transport-Security",
-            value: "max-age=63072000; includeSubDomains; preload",
-          },
-          {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
           },
           {
-            key: "Content-Security-Policy",
-            value: cspDirectives,
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
+          },
+          ...(isProd
+            ? [
+                {
+                  key: "Strict-Transport-Security",
+                  value: "max-age=63072000; includeSubDomains; preload",
+                },
+                {
+                  key: "Cross-Origin-Opener-Policy",
+                  value: "same-origin",
+                },
+                {
+                  key: "Content-Security-Policy",
+                  value: cspDirectives,
+                },
+              ]
+            : []),
+        ],
+      },
+      {
+        source: "/cursors/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/team/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=2592000, stale-while-revalidate=86400",
           },
         ],
       },

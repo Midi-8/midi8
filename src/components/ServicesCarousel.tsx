@@ -419,8 +419,10 @@ export default function ServicesCarousel() {
     velocity: 0,
   });
   const didDragRef = useRef(false);
+  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const totalRef = useRef(SERVICES.length);
   const [category, setCategory] = useState<CategoryId>("all");
-  const [renderPos, setRenderPos] = useState(0);
+  const [safeIndex, setSafeIndex] = useState(0);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const { locale } = useLanguage();
 
@@ -429,7 +431,31 @@ export default function ServicesCarousel() {
   const visibleServices =
     category === "all" ? SERVICES : SERVICES.filter((s) => s.category === category);
   const total = visibleServices.length;
-  const safeIndex = wrapIndex(Math.round(renderPos), total);
+
+  useEffect(() => {
+    totalRef.current = total;
+  }, [total]);
+
+  const applyStageTransforms = useCallback((pos: number) => {
+    const count = totalRef.current;
+    for (let i = 0; i < count; i++) {
+      const el = cardRefs.current[i];
+      if (!el) continue;
+      const diff = getCircularOffset(i, pos, count);
+      const stagePos = getCard3DStyle(diff, count);
+      el.style.transform = stagePos.transform;
+      el.style.opacity = String(stagePos.opacity);
+      el.style.zIndex = String(stagePos.zIndex);
+      el.style.visibility = stagePos.isVisible ? "visible" : "hidden";
+      el.style.pointerEvents = stagePos.isVisible ? "auto" : "none";
+    }
+    const nextIdx = wrapIndex(Math.round(pos), count);
+    setSafeIndex((prev) => (prev === nextIdx ? prev : nextIdx));
+  }, []);
+
+  useEffect(() => {
+    applyStageTransforms(physRef.current.current);
+  }, [category, total, applyStageTransforms]);
 
   const startLoop = useCallback(() => {
     if (physRef.current.rafId !== null) return;
@@ -440,24 +466,24 @@ export default function ServicesCarousel() {
       const dt = Math.max(1, Math.min(48, now - phys.lastFrameTime));
       phys.lastFrameTime = now;
 
-      const baseAlpha = phys.dragging ? 0.28 : 0.14;
+      const baseAlpha = phys.dragging ? 0.34 : 0.16;
       const alpha = 1 - Math.pow(1 - baseAlpha, dt / 16.6667);
       const diff = phys.target - phys.current;
 
       if (!phys.dragging && Math.abs(diff) < 0.001) {
         phys.current = phys.target;
         phys.rafId = null;
-        setRenderPos(phys.current);
+        applyStageTransforms(phys.current);
         return;
       }
 
       phys.current += diff * alpha;
-      setRenderPos(phys.current);
+      applyStageTransforms(phys.current);
       phys.rafId = window.requestAnimationFrame(tick);
     };
 
     physRef.current.rafId = window.requestAnimationFrame(tick);
-  }, []);
+  }, [applyStageTransforms]);
 
   const resetToFirst = useCallback(() => {
     const phys = physRef.current;
@@ -472,8 +498,9 @@ export default function ServicesCarousel() {
     phys.current = 0;
     phys.target = 0;
     phys.dragging = false;
-    setRenderPos(0);
-  }, []);
+    setSafeIndex(0);
+    applyStageTransforms(0);
+  }, [applyStageTransforms]);
 
   useEffect(() => {
     const phys = physRef.current;
@@ -714,26 +741,35 @@ export default function ServicesCarousel() {
           }}
           style={{
             perspective: "1400px",
-            maskImage: "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%)",
           }}
           className="relative w-full h-[390px] sm:h-[430px] flex items-center justify-center select-none overflow-hidden touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing focus-visible:outline-none [--wing-unit:165px] sm:[--wing-unit:235px] lg:[--wing-unit:270px]"
         >
+          {/* Fades laterais leves sem maskImage (mantém composição 3D 100% na GPU) */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 left-0 w-10 sm:w-20 z-30 bg-gradient-to-r from-background to-transparent"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-20 z-30 bg-gradient-to-l from-background to-transparent"
+          />
+
           {visibleServices.map((service, index) => {
-            const diff = getCircularOffset(index, renderPos, total);
-            const isCenter = Math.abs(diff) < 0.35;
+            const diff = getCircularOffset(index, safeIndex, total);
+            const initialStagePos = getCard3DStyle(diff, total);
+            const isCenter = index === safeIndex;
             const isHovered = hoveredId === service.id;
             const isSpotlit = isCenter || isHovered;
-            const stagePos = getCard3DStyle(diff, total);
 
             return (
               <article
                 key={service.id}
-                aria-hidden={!stagePos.isVisible}
-                tabIndex={stagePos.isVisible ? 0 : -1}
+                ref={(el) => {
+                  cardRefs.current[index] = el;
+                }}
+                tabIndex={initialStagePos.isVisible ? 0 : -1}
                 onMouseEnter={() => {
-                  if (stagePos.isVisible && !pointerRef.current.captured) {
+                  if (!pointerRef.current.captured) {
                     setHoveredId(service.id);
                   }
                 }}
@@ -741,29 +777,21 @@ export default function ServicesCarousel() {
                   setHoveredId((prev) => (prev === service.id ? null : prev));
                 }}
                 onClick={() => {
-                  if (didDragRef.current || !stagePos.isVisible) return;
-                  if (Math.abs(diff) >= 0.1) {
+                  if (didDragRef.current) return;
+                  if (index !== safeIndex) {
                     rotateToIndex(index);
                   }
                 }}
                 onKeyDown={(e) => {
-                  if ((e.key === "Enter" || e.key === " ") && stagePos.isVisible) {
+                  if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     rotateToIndex(index);
                   }
                 }}
                 style={{
-                  transform: stagePos.transform,
-                  opacity: stagePos.opacity,
-                  zIndex: stagePos.zIndex,
-                  filter:
-                    isHovered || stagePos.blurPx === 0
-                      ? "blur(0px)"
-                      : `blur(${stagePos.blurPx}px)`,
-                  pointerEvents: stagePos.isVisible ? "auto" : "none",
                   transition:
-                    "box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease",
-                  willChange: "transform, opacity, filter",
+                    "box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
+                  willChange: "transform, opacity",
                 }}
                 className={`service-card absolute w-[78vw] max-w-[330px] sm:w-[340px] h-[320px] sm:h-[360px] p-6 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer select-none [transform-style:preserve-3d] [backface-visibility:hidden] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue ${
                   isSpotlit ? "service-card--active" : ""
@@ -771,26 +799,16 @@ export default function ServicesCarousel() {
               >
                 {/* Camada de gradiente suave para crossfade sem saltos bruscos */}
                 <div
-                  className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${
+                  className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ${
                     isSpotlit ? "opacity-100" : "opacity-0"
                   }`}
                   style={{ background: service.gradient }}
                   aria-hidden="true"
                 />
 
-                {/* Reflexo especular de estúdio ligado ao ângulo de rotação */}
-                <div
-                  className="pointer-events-none absolute inset-0"
-                  style={{
-                    opacity: stagePos.sheenOpacity,
-                    background: `linear-gradient(115deg, transparent ${stagePos.sheenPercent - 24}%, rgba(255, 255, 255, 0.45) ${stagePos.sheenPercent}%, transparent ${stagePos.sheenPercent + 24}%)`,
-                  }}
-                  aria-hidden="true"
-                />
-
                 {/* Véu escuro para legibilidade estável nos gradientes ativos */}
                 <div
-                  className={`pointer-events-none absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/44 via-black/18 to-transparent transition-opacity duration-500 ${
+                  className={`pointer-events-none absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/44 via-black/18 to-transparent transition-opacity duration-300 ${
                     isSpotlit ? "opacity-100" : "opacity-0"
                   }`}
                   aria-hidden="true"

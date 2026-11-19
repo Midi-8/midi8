@@ -188,7 +188,13 @@ export default function AuroraCanvas() {
     let targetVelocity = 0;
     let smoothVelocity = 0;
 
+    let rafId: number | null = null;
+    let isInView = true;
+    let hasRevealed = false;
+    const startTime = performance.now();
+
     const onPointerMove = (e: PointerEvent) => {
+      if (!isInView || document.hidden) return;
       const rect = canvas.getBoundingClientRect();
       if (rect.width <= 0 || rect.height <= 0) return;
       const nx = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
@@ -202,11 +208,6 @@ export default function AuroraCanvas() {
       targetVelocity = Math.min(1.2, Math.hypot(dx, dy) * 14);
     };
     window.addEventListener("pointermove", onPointerMove, { passive: true });
-
-    let rafId: number | null = null;
-    let isInView = true;
-    let hasRevealed = false;
-    const startTime = performance.now();
 
     const drawFrame = (now: number) => {
       rafId = null;
@@ -229,6 +230,7 @@ export default function AuroraCanvas() {
         hasRevealed = true;
         canvas.style.opacity = "1";
         fallback.style.opacity = "0";
+        fallback.style.animationPlayState = "paused";
       }
 
       rafId = window.requestAnimationFrame(drawFrame);
