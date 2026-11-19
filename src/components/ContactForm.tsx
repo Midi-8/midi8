@@ -76,8 +76,8 @@ function Field({
   children: ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-sm text-secondary">
+    <div className="flex flex-col gap-1 sm:gap-2">
+      <label htmlFor={id} className="text-xs sm:text-sm text-secondary">
         {label}
       </label>
       {children}
@@ -168,29 +168,29 @@ export default function ContactForm() {
     errors[k] ? { "aria-invalid": true as const, "aria-describedby": `${k}-error` } : {};
 
   return (
-    <form onSubmit={onSubmit} noValidate className="neu-panel p-6 sm:p-9 flex flex-col gap-4 sm:gap-5">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+    <form onSubmit={onSubmit} noValidate className="neu-panel p-3.5 sm:p-9 flex flex-col gap-2.5 sm:gap-5">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-5">
         <Field id="name" label={copy.nameLabel} error={errors.name}>
-          <input id="name" name="name" autoComplete="name" className="neu-field" placeholder={copy.namePlaceholder} {...invalid("name")} />
+          <input id="name" name="name" autoComplete="name" className="neu-field max-sm:!py-2 max-sm:!px-2.5 max-sm:!text-xs" placeholder={copy.namePlaceholder} {...invalid("name")} />
         </Field>
         <Field id="company" label={copy.companyLabel} error={errors.company}>
-          <input id="company" name="company" autoComplete="organization" className="neu-field" placeholder={copy.companyPlaceholder} {...invalid("company")} />
+          <input id="company" name="company" autoComplete="organization" className="neu-field max-sm:!py-2 max-sm:!px-2.5 max-sm:!text-xs" placeholder={copy.companyPlaceholder} {...invalid("company")} />
         </Field>
       </div>
 
       <Field id="email" label={copy.emailLabel} error={errors.email}>
-        <input id="email" name="email" type="email" autoComplete="email" className="neu-field" placeholder={copy.emailPlaceholder} {...invalid("email")} />
+        <input id="email" name="email" type="email" autoComplete="email" className="neu-field max-sm:!py-2 max-sm:!px-2.5 max-sm:!text-xs" placeholder={copy.emailPlaceholder} {...invalid("email")} />
       </Field>
 
-      <fieldset className="flex flex-col gap-2" {...(errors.areas ? { "aria-describedby": "areas-error" } : {})}>
-        <legend className="text-sm text-secondary mb-1.5">
-          {copy.areasLegend} <span className="text-subtle text-xs">{copy.areasHint}</span>
+      <fieldset className="flex flex-col gap-1.5 sm:gap-2" {...(errors.areas ? { "aria-describedby": "areas-error" } : {})}>
+        <legend className="text-xs sm:text-sm text-secondary mb-1 sm:mb-1.5">
+          {copy.areasLegend} <span className="text-subtle text-[11px] sm:text-xs">{copy.areasHint}</span>
         </legend>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
           {AREAS.map((area) => {
             const isSelected = selectedAreas.includes(area);
             return (
-              <label key={area} className="neu-option justify-start">
+              <label key={area} className="neu-option justify-start max-sm:!py-2 max-sm:!px-2.5 max-sm:!text-[11px] max-sm:!gap-1.5">
                 <input
                   type="checkbox"
                   name="areas"
@@ -227,8 +227,8 @@ export default function ContactForm() {
         <textarea
           id="message"
           name="message"
-          rows={3}
-          className="neu-field resize-none min-h-24 sm:min-h-28"
+          rows={2}
+          className="neu-field resize-none min-h-16 sm:min-h-28 max-sm:!py-2 max-sm:!px-2.5 max-sm:!text-xs"
           placeholder={copy.messagePlaceholder}
           {...invalid("message")}
         />

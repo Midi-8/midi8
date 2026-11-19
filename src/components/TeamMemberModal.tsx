@@ -364,6 +364,7 @@ export default function TeamMemberModal({
             role="dialog"
             aria-modal="true"
             aria-labelledby="team-modal-name"
+            data-lenis-prevent
             onPointerMove={handlePointerMove}
             onPointerLeave={handlePointerLeave}
             initial={
@@ -382,7 +383,7 @@ export default function TeamMemberModal({
                 : { opacity: 0, y: 12, scale: 0.98 }
             }
             transition={{ duration: 0.35, ease: EASE }}
-            className="relative w-full max-w-[700px] max-h-[90dvh] overflow-y-auto no-scrollbar rounded-2xl bg-white/96 border border-black/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_28px_70px_-20px_rgba(15,23,42,0.26)] p-5 sm:p-7"
+            className="relative w-full max-w-[700px] max-h-[88dvh] overflow-y-auto no-scrollbar rounded-2xl bg-white/96 border border-black/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_28px_70px_-20px_rgba(15,23,42,0.26)] p-4 sm:p-7"
           >
             {/* Reflexo especular dinâmico igual aos cards da página */}
             <motion.div
@@ -396,7 +397,7 @@ export default function TeamMemberModal({
             />
 
             {/* Barra de topo com Departamento (sem bola) + Navegação e Fechar */}
-            <div className="relative z-10 flex items-center justify-between gap-3 pb-4 mb-5 border-b border-border">
+            <div className="relative z-10 flex items-center justify-between gap-3 pb-3 mb-4 sm:pb-4 sm:mb-5 border-b border-border">
               <div className="inline-flex items-center rounded-full bg-surface border border-border px-3 py-1">
                 <span className="text-[11px] font-sans uppercase tracking-wider text-secondary">
                   {member.department}
@@ -483,32 +484,32 @@ export default function TeamMemberModal({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.2, ease: EASE }}
-                className="relative z-10 grid grid-cols-1 sm:grid-cols-[210px_1fr] gap-5 sm:gap-6 items-start"
+                className="relative z-10 grid grid-cols-1 sm:grid-cols-[210px_1fr] gap-4 sm:gap-6 items-start"
               >
                 {/* ─── Coluna Esquerda: Retrato com o mesmo acabamento dos cards da equipa ─── */}
-                <div className="relative mx-auto sm:mx-0 w-44 sm:w-full aspect-[4/5] rounded-2xl overflow-hidden bg-[#e4e6eb] border border-black/[0.06] shadow-[0_18px_38px_-18px_rgba(15,23,42,0.2)]">
+                <div className="relative mx-auto sm:mx-0 w-28 sm:w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden bg-[#e4e6eb] border border-black/[0.06] shadow-[0_18px_38px_-18px_rgba(15,23,42,0.2)]">
                   <Image
                     src={member.image}
                     alt={`${profile.fullName} — ${member.department}`}
                     fill
-                    sizes="(max-width: 640px) 176px, 210px"
-                    className="object-cover object-top rounded-2xl mix-blend-multiply"
+                    sizes="(max-width: 640px) 112px, 210px"
+                    className="object-cover object-top rounded-xl sm:rounded-2xl mix-blend-multiply"
                     priority
                   />
                   <div
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 rounded-2xl shadow-[inset_0_0_22px_5px_rgba(255,255,255,0.68)]"
+                    className="pointer-events-none absolute inset-0 rounded-xl sm:rounded-2xl shadow-[inset_0_0_22px_5px_rgba(255,255,255,0.68)]"
                   />
                 </div>
 
                 {/* ─── Coluna Direita: Nome completo, Idade, Formação, Certificações, LinkedIn e Telemóvel ─── */}
-                <div className="flex flex-col gap-4 min-w-0">
+                <div className="flex flex-col gap-3 sm:gap-4 min-w-0">
                   {/* Nome Completo + Idade */}
                   <div>
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
                       <h3
                         id="team-modal-name"
-                        className="font-sans text-xl sm:text-2xl font-semibold tracking-tight text-foreground leading-snug"
+                        className="font-sans text-lg sm:text-2xl font-semibold tracking-tight text-foreground leading-snug"
                       >
                         {profile.fullName}
                       </h3>

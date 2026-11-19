@@ -192,7 +192,8 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setMobileOpen((v) => !v)}
-              className="md:hidden w-10 h-10 rounded-xl border border-foreground text-foreground flex items-center justify-center transition-transform active:scale-95"
+              className="md:hidden relative w-10 h-10 rounded-xl border border-foreground bg-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_8px_20px_-12px_rgba(15,23,42,0.16)] text-foreground flex items-center justify-center transition-transform active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue"
+              aria-expanded={mobileOpen}
               aria-label={
                 mobileOpen
                   ? locale === "pt"
@@ -203,15 +204,38 @@ export default function Navbar() {
                     : "Open menu"
               }
             >
-              <svg
-                className={`w-4 h-4 transition-transform duration-300 ${mobileOpen ? "rotate-45" : ""}`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />
-              </svg>
+              <span className="relative flex flex-col items-center justify-center w-4 h-3.5" aria-hidden="true">
+                <motion.span
+                  initial={false}
+                  animate={
+                    mobileOpen
+                      ? { y: 5, rotate: 45 }
+                      : { y: 0, rotate: 0 }
+                  }
+                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute top-[1px] h-[1.5px] w-4 rounded-full bg-current"
+                />
+                <motion.span
+                  initial={false}
+                  animate={
+                    mobileOpen
+                      ? { scaleX: 0, opacity: 0 }
+                      : { scaleX: 1, opacity: 1 }
+                  }
+                  transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute top-[6px] h-[1.5px] w-4 rounded-full bg-current"
+                />
+                <motion.span
+                  initial={false}
+                  animate={
+                    mobileOpen
+                      ? { y: -5, rotate: -45 }
+                      : { y: 0, rotate: 0 }
+                  }
+                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute top-[11px] h-[1.5px] w-4 rounded-full bg-current"
+                />
+              </span>
             </button>
           </div>
         </div>
@@ -248,12 +272,6 @@ export default function Navbar() {
                       aria-current={isActive ? "true" : undefined}
                     >
                       <span>{link.label}</span>
-                      {isActive && (
-                        <span
-                          className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#A818FF] to-[#00E896] shrink-0"
-                          aria-hidden="true"
-                        />
-                      )}
                     </Link>
                   </motion.div>
                 );

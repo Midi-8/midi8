@@ -50,10 +50,10 @@ export default function Footer() {
 
   return (
     <footer className="relative text-foreground bg-white border-t border-border">
-      <div className="max-w-7xl mx-auto px-6 pt-10 pb-6 sm:pt-12 sm:pb-6">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
-          {/* Marca & Slogan */}
-          <div className="md:col-span-5 flex flex-col gap-1">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-7 pb-5 sm:pt-12 sm:pb-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-10 items-start">
+          {/* Marca & Slogan (slogan sempre por baixo de Midi8) */}
+          <div className="md:col-span-5 flex flex-col gap-0.5 md:gap-1">
             <Link
               href="/#hero"
               onClick={scrollToTop}
@@ -64,86 +64,89 @@ export default function Footer() {
                 Midi<em className="italic font-normal">8</em>
               </span>
             </Link>
-            <p className="font-display text-lg sm:text-xl text-muted tracking-tight leading-tight">
+            <p className="font-display text-base sm:text-xl text-muted tracking-tight leading-tight">
               move forward, fast
             </p>
           </div>
 
-          {/* Secções */}
-          <div className="md:col-span-2 flex flex-col gap-3">
-            <p className="text-xs uppercase tracking-wider text-subtle">
-              {copy.sectionsTitle}
-            </p>
-            <ul className="flex flex-col gap-2 text-sm">
-              {copy.sectionLinks.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
+          {/* Secções, Redes e Contactos distribuídos por toda a largura no mobile/tablet (e colunas normais no desktop) */}
+          <div className="w-full md:col-span-7 flex justify-between gap-4 sm:gap-8 md:grid md:grid-cols-7 md:gap-x-8 items-start">
+            {/* Secções */}
+            <div className="md:col-span-2 flex flex-col gap-2 md:gap-3 shrink-0">
+              <p className="text-[10px] sm:text-xs uppercase tracking-wider text-subtle">
+                {copy.sectionsTitle}
+              </p>
+              <ul className="flex flex-col gap-1.5 md:gap-2 text-[11.5px] sm:text-sm">
+                {copy.sectionLinks.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="text-muted hover:text-foreground transition-colors whitespace-nowrap"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Redes Sociais */}
+            <div className="md:col-span-2 md:order-last flex flex-col gap-2 md:gap-3 shrink-0">
+              <p className="text-[10px] sm:text-xs uppercase tracking-wider text-subtle">
+                {copy.socialTitle}
+              </p>
+              <ul className="flex flex-col gap-1.5 md:gap-2 text-[11.5px] sm:text-sm">
+                <li>
+                  <a
+                    href={SOCIAL.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-muted hover:text-foreground transition-colors"
                   >
-                    {item.label}
-                  </Link>
+                    LinkedIn
+                  </a>
                 </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contacto */}
-          <div className="md:col-span-3 flex flex-col gap-3">
-            <p className="text-xs uppercase tracking-wider text-subtle">
-              {copy.contactTitle}
-            </p>
-            <div className="flex flex-col gap-2 text-sm">
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="text-muted hover:text-foreground transition-colors w-fit"
-              >
-                {CONTACT_EMAIL}
-              </a>
-              <a
-                href={CONTACT_PHONE_HREF}
-                className="text-muted hover:text-foreground transition-colors w-fit"
-              >
-                {CONTACT_PHONE}
-              </a>
+                <li>
+                  <a
+                    href={SOCIAL.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted hover:text-foreground transition-colors"
+                  >
+                    Instagram
+                  </a>
+                </li>
+              </ul>
             </div>
-          </div>
 
-          {/* Redes Sociais */}
-          <div className="md:col-span-2 flex flex-col gap-3">
-            <p className="text-xs uppercase tracking-wider text-subtle">
-              {copy.socialTitle}
-            </p>
-            <ul className="flex flex-col gap-2 text-sm">
-              <li>
+            {/* Contacto */}
+            <div className="md:col-span-3 flex flex-col gap-2 md:gap-3 min-w-0 max-md:text-right max-md:items-end">
+              <p className="text-[10px] sm:text-xs uppercase tracking-wider text-subtle">
+                {copy.contactTitle}
+              </p>
+              <div className="flex flex-col gap-1.5 md:gap-2 text-[11.5px] sm:text-sm min-w-0 max-md:items-end">
                 <a
-                  href={SOCIAL.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-foreground transition-colors"
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  className="text-muted hover:text-foreground transition-colors break-all sm:break-normal w-fit"
                 >
-                  LinkedIn
+                  {CONTACT_EMAIL}
                 </a>
-              </li>
-              <li>
                 <a
-                  href={SOCIAL.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-foreground transition-colors"
+                  href={CONTACT_PHONE_HREF}
+                  className="text-muted hover:text-foreground transition-colors whitespace-nowrap w-fit"
                 >
-                  Instagram
+                  {CONTACT_PHONE}
                 </a>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Barra Legal Minimalista */}
-      <div className="max-w-7xl mx-auto px-6 border-t border-border/80 pt-5 pb-6 sm:pt-5 sm:pb-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-subtle">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 border-t border-border/80 pt-3.5 pb-4 sm:pt-5 sm:pb-8 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4 text-[11px] sm:text-xs text-subtle">
         <p>© {currentYear} Midi8. {copy.rights}</p>
-        <div className="flex flex-wrap items-center gap-6">
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
           <Link href="/privacidade" className="hover:text-foreground transition-colors">
             {copy.privacy}
           </Link>

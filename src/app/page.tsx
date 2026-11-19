@@ -117,6 +117,16 @@ export default function Home() {
       ),
     },
     {
+      label: "LinkedIn",
+      value: "Midi8",
+      href: SOCIAL.linkedin,
+      icon: (
+        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77Z" />
+        </svg>
+      ),
+    },
+    {
       label: "Instagram",
       value: SOCIAL.instagramHandle,
       href: SOCIAL.instagram,
@@ -135,17 +145,17 @@ export default function Home() {
       <Hero />
 
       {/* ─── 01. A Midi8 ─── */}
-      <section id="sobre" className="relative w-full py-20 sm:py-28 px-5 sm:px-6 scroll-mt-16">
+      <section id="sobre" className="relative w-full py-14 sm:py-28 px-4 sm:px-6 scroll-mt-16">
         <div className="max-w-7xl w-full mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.5, ease: REVEAL_EASE }}
-            className="max-w-2xl mb-10 sm:mb-14"
+            className="max-w-2xl mb-7 sm:mb-14"
           >
             <KineticHeading
-              className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-4"
+              className="text-[1.75rem] sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-3 sm:mb-4"
               segments={
                 locale === "pt"
                   ? [
@@ -167,9 +177,14 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-7">
             {pillars.map((pillar, index) => (
-              <PillarCard3D key={pillar.variant} index={index} {...pillar} />
+              <div
+                key={pillar.variant}
+                className={index === 2 ? "col-span-2 md:col-span-1" : ""}
+              >
+                <PillarCard3D index={index} {...pillar} />
+              </div>
             ))}
           </div>
         </div>
@@ -182,8 +197,9 @@ export default function Home() {
       <TeamSection />
 
       {/* ─── 04. Contactos ─── */}
-      <section id="contacto" className="w-full py-20 sm:py-28 px-5 sm:px-6 scroll-mt-16">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+      <section id="contacto" className="w-full py-14 sm:py-28 px-4 sm:px-6 scroll-mt-16">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-x-16 lg:gap-y-7 items-start">
+          {/* Cabeçalho */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -192,7 +208,7 @@ export default function Home() {
             className="lg:col-span-5 lg:pt-2"
           >
             <KineticHeading
-              className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-4"
+              className="text-[1.75rem] sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-3 sm:mb-4"
               segments={
                 locale === "pt"
                   ? [
@@ -207,29 +223,49 @@ export default function Home() {
                     ]
               }
             />
-            <p className="text-sm sm:text-base text-muted leading-relaxed mb-7 max-w-md">
+            <p className="text-sm sm:text-base text-muted leading-relaxed max-w-md">
               {locale === "pt"
                 ? "Conte-nos o que pretende construir, otimizar ou escalar."
                 : "Tell us what you want to build, optimize, or scale."}
             </p>
+          </motion.div>
 
-            <div className="flex flex-col gap-3 max-w-md">
+          {/* Formulário (acima dos cards no mobile; coluna direita no desktop) */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.55, delay: 0.06, ease: REVEAL_EASE }}
+            className="lg:col-span-7 lg:row-span-2"
+          >
+            <ContactForm />
+          </motion.div>
+
+          {/* Cards de contacto & redes (abaixo do formulário no mobile em 2×2; coluna esquerda no desktop) */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.5, delay: 0.08, ease: REVEAL_EASE }}
+            className="lg:col-span-5"
+          >
+            <div className="grid grid-cols-2 lg:flex lg:flex-col gap-2.5 lg:gap-3 lg:max-w-md">
               {contacts.map((c) => (
                 <a
                   key={c.label}
                   href={c.href}
                   {...(c.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className="group flex items-center justify-between gap-4 rounded-2xl border border-border bg-white p-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-light hover:shadow-[0_14px_32px_-20px_rgba(15,23,42,0.12)]"
+                  className="group flex items-start lg:items-center justify-between gap-3 lg:gap-4 rounded-2xl border border-black/[0.08] bg-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_12px_28px_-22px_rgba(15,23,42,0.16)] p-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-light hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_16px_34px_-20px_rgba(15,23,42,0.18)]"
                 >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <span className="w-9 h-9 rounded-xl bg-surface border border-border flex items-center justify-center text-foreground shrink-0 transition-colors group-hover:bg-foreground group-hover:text-white group-hover:border-foreground">
+                  <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2.5 lg:gap-3 min-w-0 w-full">
+                    <span className="w-8 h-8 lg:w-9 lg:h-9 rounded-xl bg-surface border border-border flex items-center justify-center text-foreground shrink-0 transition-colors group-hover:bg-foreground group-hover:text-white group-hover:border-foreground">
                       {c.icon}
                     </span>
-                    <div className="min-w-0">
-                      <p className="text-[11px] uppercase tracking-wider text-subtle">
+                    <div className="min-w-0 w-full">
+                      <p className="text-[10px] lg:text-[11px] uppercase tracking-wider text-subtle">
                         {c.label}
                       </p>
-                      <p className="text-sm text-foreground truncate">
+                      <p className="text-xs lg:text-sm font-medium text-foreground truncate mt-0.5 lg:mt-0">
                         {c.value}
                       </p>
                     </div>
@@ -237,16 +273,6 @@ export default function Home() {
                 </a>
               ))}
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.55, delay: 0.08, ease: REVEAL_EASE }}
-            className="lg:col-span-7"
-          >
-            <ContactForm />
           </motion.div>
         </div>
       </section>

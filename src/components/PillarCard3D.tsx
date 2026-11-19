@@ -183,10 +183,10 @@ export default function PillarCard3D({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 18 }}
+      initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: REVEAL_EASE }}
+      viewport={{ once: true, amount: 0.05 }}
+      transition={{ duration: 0.45, delay: index * 0.05, ease: REVEAL_EASE }}
       style={{ perspective: 1100 }}
       className="h-full"
     >
@@ -198,7 +198,7 @@ export default function PillarCard3D({
             ? { transformStyle: "preserve-3d" }
             : { rotateX, rotateY, transformStyle: "preserve-3d" }
         }
-        className="group relative h-full min-h-[260px] sm:min-h-[295px] p-7 sm:p-8 flex flex-col justify-between select-none will-change-transform"
+        className="group relative h-full min-h-[168px] sm:min-h-[295px] p-3.5 sm:p-8 flex flex-col justify-between select-none will-change-transform"
       >
         {/* Sombra reativa no plano inferior */}
         <motion.div
@@ -252,7 +252,7 @@ export default function PillarCard3D({
                 ? { transformStyle: "preserve-3d" }
                 : { x: sculptureX, y: sculptureY, transformStyle: "preserve-3d" }
             }
-            className="pointer-events-none mb-5 w-fit"
+            className="pointer-events-none mb-2 sm:mb-5 w-fit scale-75 sm:scale-100 origin-top-left"
           >
             <PillarSculpture3D
               variant={variant}
@@ -262,16 +262,16 @@ export default function PillarCard3D({
           </motion.div>
 
           <div style={{ transform: "translateZ(22px)" }}>
-            <h3 className="text-xl sm:text-2xl font-medium text-foreground mb-2">
+            <h3 className="text-[15px] sm:text-2xl font-medium text-foreground leading-snug mb-1 sm:mb-2">
               {title}
             </h3>
-            <p className="text-sm text-muted leading-relaxed">{description}</p>
+            <p className="text-[11.5px] sm:text-sm text-muted leading-snug sm:leading-relaxed">{description}</p>
           </div>
         </div>
 
         <div
           style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }}
-          className="relative z-10 flex flex-wrap gap-1.5 pt-5 mt-6 border-t border-border/80"
+          className="relative z-10 flex flex-wrap gap-1 sm:gap-1.5 pt-2.5 mt-3 sm:pt-5 sm:mt-6 border-t border-border/80"
         >
           {tags.map((tag) => (
             <ServiceCategoryTag

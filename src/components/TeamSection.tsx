@@ -196,7 +196,7 @@ function TeamMemberCard({
         className="relative w-full aspect-[4/5] origin-bottom will-change-transform"
       >
         <div
-          className={`relative isolate w-full h-full rounded-[28px] sm:rounded-[32px] overflow-hidden [transform:translateZ(0)] transition-[box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-focus-visible:ring-2 group-focus-visible:ring-brand-blue group-focus-visible:ring-offset-4 ${
+          className={`relative isolate w-full h-full rounded-[16px] sm:rounded-[32px] overflow-hidden [transform:translateZ(0)] transition-[box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-focus-visible:ring-2 group-focus-visible:ring-brand-blue group-focus-visible:ring-offset-4 ${
             isActive
               ? "bg-[#e4e6eb] shadow-[0_26px_54px_-16px_rgba(15,23,42,0.24)]"
               : "bg-[#d5d7dc]"
@@ -214,8 +214,8 @@ function TeamMemberCard({
               src={member.image}
               alt={`${member.name} — ${translatedDepartment}`}
               fill
-              sizes="(max-width: 640px) 46vw, (max-width: 768px) 31vw, 220px"
-              className={`object-cover object-top rounded-[28px] sm:rounded-[32px] mix-blend-multiply transition-[filter,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              sizes="(max-width: 640px) 30vw, (max-width: 768px) 31vw, 220px"
+              className={`object-cover object-top rounded-[16px] sm:rounded-[32px] mix-blend-multiply transition-[filter,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                 isActive
                   ? "grayscale-0 contrast-100 opacity-100"
                   : "grayscale contrast-[0.92] opacity-85"
@@ -224,7 +224,7 @@ function TeamMemberCard({
           </motion.div>
 
           <div
-            className={`pointer-events-none absolute inset-0 rounded-[28px] sm:rounded-[32px] shadow-[inset_0_0_24px_6px_rgba(255,255,255,0.68)] transition-opacity duration-500 ${
+            className={`pointer-events-none absolute inset-0 rounded-[16px] sm:rounded-[32px] shadow-[inset_0_0_24px_6px_rgba(255,255,255,0.68)] transition-opacity duration-500 ${
               isActive ? "opacity-100" : "opacity-0"
             }`}
             aria-hidden="true"
@@ -233,18 +233,18 @@ function TeamMemberCard({
       </motion.div>
 
       {/* Nome e departamento centrados por baixo do retrato */}
-      <div className="mt-4 flex flex-col items-center min-h-[42px] w-full px-1">
+      <div className="mt-2 sm:mt-4 flex flex-col items-center min-h-[34px] sm:min-h-[42px] w-full px-0.5 sm:px-1">
         <p
           className={`font-sans tracking-tight leading-snug transition-all duration-300 ${
             isActive
-              ? "text-base sm:text-[17px] font-semibold text-foreground"
-              : "text-sm sm:text-[15px] font-medium text-foreground/80"
+              ? "text-[12.5px] sm:text-[17px] font-semibold text-foreground"
+              : "text-[11.5px] sm:text-[15px] font-medium text-foreground/80"
           }`}
         >
           {member.name}
         </p>
         <p
-          className={`text-[11px] sm:text-xs leading-snug mt-0.5 transition-colors duration-300 ${
+          className={`text-[9.5px] sm:text-xs leading-tight mt-0.5 transition-colors duration-300 ${
             isActive ? "text-foreground/85" : "text-subtle"
           }`}
         >
@@ -283,7 +283,7 @@ export default function TeamSection() {
   return (
     <section
       id="equipa"
-      className="w-full py-20 sm:py-28 px-5 sm:px-6 scroll-mt-16"
+      className="w-full py-14 sm:py-28 px-4 sm:px-6 scroll-mt-16"
     >
       <div className="max-w-7xl w-full mx-auto">
         {/* ─── Cabeçalho da secção ─── */}
@@ -352,7 +352,7 @@ export default function TeamSection() {
         {/* ─── 6 Membros lado a lado em perspetiva 3D Dock ─── */}
         <div
           style={{ perspective: 1000 }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-5 items-end pt-6 pb-2"
+          className="grid grid-cols-3 md:grid-cols-6 gap-2.5 sm:gap-5 items-end pt-3 sm:pt-6 pb-2"
           onMouseLeave={() => setActiveIndex(null)}
         >
           {teamMembers.map((member, index) => {
@@ -384,8 +384,8 @@ export default function TeamSection() {
           })}
         </div>
 
-        {/* ─── Linha horizontal inferior com indicador em gradiente ─── */}
-        <div className="mt-6 sm:mt-8 h-[1.5px] w-full bg-border overflow-hidden relative">
+        {/* ─── Linha horizontal inferior com indicador em gradiente (apenas desktop) ─── */}
+        <div className="hidden md:block mt-6 sm:mt-8 h-[1.5px] w-full bg-border overflow-hidden relative">
           <div
             className={`h-full w-1/6 bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               activeIndex !== null ? "opacity-100" : "opacity-0"

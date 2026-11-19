@@ -742,7 +742,7 @@ export default function ServicesCarousel() {
           style={{
             perspective: "1400px",
           }}
-          className="relative w-full h-[390px] sm:h-[430px] flex items-center justify-center select-none overflow-hidden touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing focus-visible:outline-none [--wing-unit:165px] sm:[--wing-unit:235px] lg:[--wing-unit:270px]"
+          className="relative w-full h-[305px] sm:h-[430px] flex items-center justify-center select-none overflow-hidden touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing focus-visible:outline-none [--wing-unit:132px] sm:[--wing-unit:235px] lg:[--wing-unit:270px]"
         >
           {/* Fades laterais leves sem maskImage (mantém composição 3D 100% na GPU) */}
           <div
@@ -793,7 +793,7 @@ export default function ServicesCarousel() {
                     "box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
                   willChange: "transform, opacity",
                 }}
-                className={`service-card absolute w-[78vw] max-w-[330px] sm:w-[340px] h-[320px] sm:h-[360px] p-6 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer select-none [transform-style:preserve-3d] [backface-visibility:hidden] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue ${
+                className={`service-card absolute w-[72vw] max-w-[264px] sm:w-[340px] sm:max-w-none h-[264px] sm:h-[360px] p-5 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer select-none [transform-style:preserve-3d] [backface-visibility:hidden] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-blue ${
                   isSpotlit ? "service-card--active" : ""
                 }`}
               >
@@ -817,7 +817,7 @@ export default function ServicesCarousel() {
                 {/* Ícone minimalista em caixa branca e categoria discreta no topo */}
                 <div className="relative z-10 flex items-center justify-between gap-3">
                   <span
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 ${
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center border transition-all duration-300 ${
                       isSpotlit
                         ? "bg-white/90 border-white text-foreground shadow-xs"
                         : "bg-white border-black/[0.06] text-foreground shadow-2xs"
@@ -827,7 +827,7 @@ export default function ServicesCarousel() {
                   </span>
 
                   <span
-                    className={`text-[11px] font-sans tracking-wide uppercase transition-colors duration-300 ${
+                    className={`text-[10px] sm:text-[11px] font-sans tracking-wide uppercase transition-colors duration-300 ${
                       isSpotlit ? "text-foreground/75" : "text-subtle"
                     }`}
                   >
@@ -838,14 +838,14 @@ export default function ServicesCarousel() {
                 {/* Conteúdo ancorado em baixo em sans-serif limpa e legível */}
                 <div className="relative z-10">
                   <h3
-                    className={`font-sans text-base sm:text-[17px] font-semibold tracking-tight leading-snug mb-2 transition-colors duration-300 ${
+                    className={`font-sans text-[15px] sm:text-[17px] font-semibold tracking-tight leading-snug mb-1.5 sm:mb-2 transition-colors duration-300 ${
                       isSpotlit ? "text-white" : "text-foreground"
                     }`}
                   >
                     {service.title[locale]}
                   </h3>
                   <p
-                    className={`text-xs sm:text-[13px] leading-relaxed line-clamp-4 transition-colors duration-300 ${
+                    className={`text-[11.5px] sm:text-[13px] leading-relaxed line-clamp-4 transition-colors duration-300 ${
                       isSpotlit ? "text-white/90" : "text-muted"
                     }`}
                   >

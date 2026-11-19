@@ -24,7 +24,7 @@ function tokenizeSegments(segments: readonly HeadingSegment[]): TokenizedSegment
   for (const seg of segments) {
     const words = seg.text.trim().split(/\s+/).filter(Boolean);
     const tokenizedWords = words.map((word) => {
-      const delay = wordCounter * 0.045;
+      const delay = wordCounter * 0.055;
       wordCounter += 1;
       return { word, delay };
     });
@@ -76,23 +76,23 @@ export default function KineticHeading({
           const isLastWord = wordIdx === seg.words.length - 1;
           return (
             <span key={`${segIdx}-${wordIdx}`}>
-              <span className="inline-block overflow-hidden align-bottom pb-[0.14em] -mb-[0.14em] px-[0.06em] -mx-[0.06em]">
+              <span className="inline-block overflow-hidden align-bottom pb-[0.16em] -mb-[0.16em] px-[0.08em] -mx-[0.08em]">
                 <motion.span
-                  initial={{ y: "100%", opacity: 0 }}
+                  initial={{ y: "75%", opacity: 0, filter: "blur(8px)" }}
                   animate={
                     isInView
-                      ? { y: "0%", opacity: 1 }
-                      : { y: "100%", opacity: 0 }
+                      ? { y: "0%", opacity: 1, filter: "blur(0px)" }
+                      : { y: "75%", opacity: 0, filter: "blur(8px)" }
                   }
                   transition={{
-                    duration: 0.58,
+                    duration: 0.62,
                     delay: entry.delay,
                     ease: REVEAL_EASE,
                   }}
                   className={
                     seg.italic
-                      ? "inline-block kinetic-italic-shimmer"
-                      : "inline-block"
+                      ? "inline-block kinetic-italic-shimmer will-change-[transform,opacity,filter]"
+                      : "inline-block will-change-[transform,opacity,filter]"
                   }
                 >
                   {entry.word}

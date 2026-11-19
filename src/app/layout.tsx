@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Geist } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MotionProvider from "@/components/MotionProvider";
+import SmoothScroll from "@/components/SmoothScroll";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { CONTACT_EMAIL, CONTACT_PHONE, SOCIAL } from "@/lib/contact";
 import { siteUrl } from "@/lib/site";
@@ -115,6 +116,7 @@ export default function RootLayout({
         />
         <LanguageProvider>
           <MotionProvider>
+            <SmoothScroll />
             <Navbar />
             {children}
             <Footer />
