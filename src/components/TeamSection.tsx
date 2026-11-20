@@ -54,37 +54,37 @@ const teamMembers: TeamMember[] = [
     id: "jose-francisco-pedroso",
     name: "José Pedroso",
     department: "Marketing & Comunicação",
-    image: "/team/member-3.jpg",
+    image: "/team/member-3.webp",
   },
   {
     id: "joao-miguel-santos-gouveia",
     name: "João Gouveia",
     department: "Produto & Tecnologia",
-    image: "/team/member-2.jpg",
+    image: "/team/member-2.webp",
   },
   {
     id: "miguel-marques-silva",
     name: "Miguel Silva",
     department: "Produto & Tecnologia",
-    image: "/team/member-1.jpg",
+    image: "/team/member-1.webp",
   },
   {
     id: "hugo-mateus-sa",
     name: "Hugo Sá",
     department: "Diagnóstico & Negócio",
-    image: "/team/member-4.jpg",
+    image: "/team/member-4.webp",
   },
   {
     id: "vitor-hugo-carneiro",
     name: "Vitor Carneiro",
     department: "Produto & Tecnologia",
-    image: "/team/member-5.jpg",
+    image: "/team/member-5.webp",
   },
   {
     id: "goncalo-jose-silva",
     name: "Gonçalo Silva",
     department: "Marketing & Comunicação",
-    image: "/team/member-6.jpg",
+    image: "/team/member-6.webp",
   },
 ];
 

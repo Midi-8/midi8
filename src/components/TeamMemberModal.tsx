@@ -48,54 +48,38 @@ export interface TeamProfile {
 
 export const TEAM_PROFILES: Record<string, TeamProfile> = {
   "jose-francisco-pedroso": {
-    fullName: "José Francisco Pedroso",
-    age: 22,
+    fullName: "José Francisco Rodrigues Sousa Pedroso",
+    age: 20,
     education: {
-      pt: ["Licenciatura em Marketing e Comunicação Empresarial"],
-      en: ["BSc in Marketing & Corporate Communication"],
+      pt: ["Licenciatura em Ciências da Comunicação"],
+      en: ["BSc in Communication Sciences"],
     },
     certifications: {
-      pt: [
-        "Meta Certified Digital Marketing Associate",
-        "Google Ads Search & Display",
-        "HubSpot Content Strategy",
-      ],
-      en: [
-        "Meta Certified Digital Marketing Associate",
-        "Google Ads Search & Display",
-        "HubSpot Content Strategy",
-      ],
+      pt: [],
+      en: [],
     },
-    linkedinHandle: "linkedin.com/in/jose-pedroso",
-    linkedinUrl: "https://www.linkedin.com/in/jose-pedroso",
-    phone: "+351 930 426 057",
-    phoneHref: "tel:+351930426057",
+    linkedinHandle: "linkedin.com/in/josé-pedroso",
+    linkedinUrl: "https://www.linkedin.com/in/jos%C3%A9-pedroso-46663b396",
+    phone: "+351 929 332 271",
+    phoneHref: "tel:+351929332271",
     accentHex: "#00C885",
     accentRgb: "0, 200, 133",
   },
   "joao-miguel-santos-gouveia": {
     fullName: "João Miguel Santos Gouveia",
-    age: 22,
+    age: 21,
     education: {
-      pt: ["Engenharia Informática e de Computadores"],
-      en: ["BSc in Computer Science & Software Engineering"],
+      pt: ["CTeSP em E-Commerce"],
+      en: ["Higher Technical Degree (CTeSP) in E-Commerce"],
     },
     certifications: {
-      pt: [
-        "AWS Certified Cloud Practitioner",
-        "Meta Back-End Developer",
-        "Arquitetura de Sistemas & APIs",
-      ],
-      en: [
-        "AWS Certified Cloud Practitioner",
-        "Meta Back-End Developer",
-        "Systems Architecture & APIs",
-      ],
+      pt: [],
+      en: [],
     },
-    linkedinHandle: "linkedin.com/in/joao-gouveia",
-    linkedinUrl: "https://www.linkedin.com/in/joao-gouveia",
-    phone: "+351 930 426 057",
-    phoneHref: "tel:+351930426057",
+    linkedinHandle: "linkedin.com/in/joão-gouveia",
+    linkedinUrl: "https://www.linkedin.com/in/jo%C3%A3o-gouveia-7baba4385",
+    phone: "+351 919 464 665",
+    phoneHref: "tel:+351919464665",
     accentHex: "#A818FF",
     accentRgb: "168, 24, 255",
   },
@@ -138,80 +122,80 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     accentRgb: "20, 94, 255",
   },
   "hugo-mateus-sa": {
-    fullName: "Hugo Mateus Sá",
-    age: 22,
+    fullName: "Hugo Mateus Ferreira Sá",
+    age: 21,
     education: {
-      pt: ["Licenciatura em Gestão e Estratégia Empresarial"],
-      en: ["BSc in Business Management & Strategy"],
+      pt: [
+        "Licenciatura em Administração Pública",
+        "Mestrado em Gestão e Negócios",
+      ],
+      en: [
+        "BSc in Public Administration",
+        "MSc in Management & Business",
+      ],
     },
     certifications: {
       pt: [
-        "Google Business Intelligence & Analytics",
-        "Lean Six Sigma Process Optimization",
-        "Shopify Partner Commerce Foundations",
+        "Excel II — Advanced User",
+        "STATA & Applied Econometrics",
       ],
       en: [
-        "Google Business Intelligence & Analytics",
-        "Lean Six Sigma Process Optimization",
-        "Shopify Partner Commerce Foundations",
+        "Excel II — Advanced User",
+        "STATA & Applied Econometrics",
       ],
     },
-    linkedinHandle: "linkedin.com/in/hugo-mateus-sa",
-    linkedinUrl: "https://www.linkedin.com/in/hugo-mateus-sa",
-    phone: "+351 930 426 057",
-    phoneHref: "tel:+351930426057",
+    linkedinHandle: "linkedin.com/in/hugo-sá",
+    linkedinUrl: "https://www.linkedin.com/in/hugo-s%C3%A1-924b9332a/",
+    phone: "+351 911 764 432",
+    phoneHref: "tel:+351911764432",
     accentHex: "#145EFF",
     accentRgb: "20, 94, 255",
   },
   "vitor-hugo-carneiro": {
-    fullName: "Vitor Hugo Carneiro",
-    age: 22,
+    fullName: "Vitor Hugo Marques Carneiro",
+    age: 21,
     education: {
-      pt: ["Engenharia Informática — Inteligência Artificial e Automação"],
-      en: ["BSc in Computer Engineering — AI & Automation"],
+      pt: ["Licenciatura em Engenharia Informática"],
+      en: ["BSc in Computer Engineering"],
     },
     certifications: {
-      pt: [
-        "DeepLearning.AI Generative AI & LLMs",
-        "n8n & Make Advanced Workflow Automation",
-        "Microsoft Azure AI Fundamentals",
-      ],
-      en: [
-        "DeepLearning.AI Generative AI & LLMs",
-        "n8n & Make Advanced Workflow Automation",
-        "Microsoft Azure AI Fundamentals",
-      ],
+      pt: [],
+      en: [],
     },
-    linkedinHandle: "linkedin.com/in/vitor-hugo-carneiro",
-    linkedinUrl: "https://www.linkedin.com/in/vitor-hugo-carneiro",
-    phone: "+351 930 426 057",
-    phoneHref: "tel:+351930426057",
+    linkedinHandle: "linkedin.com/in/vitor-carneiro0",
+    linkedinUrl: "https://www.linkedin.com/in/vitor-carneiro0/",
+    phone: "+351 964 234 045",
+    phoneHref: "tel:+351964234045",
     accentHex: "#A818FF",
     accentRgb: "168, 24, 255",
   },
   "goncalo-jose-silva": {
-    fullName: "Gonçalo José Silva",
-    age: 22,
+    fullName: "Gonçalo José Cunha da Silva",
+    age: 21,
     education: {
-      pt: ["Licenciatura em Marketing Digital e Gestão Comercial"],
-      en: ["BSc in Digital Marketing & Commercial Management"],
+      pt: ["Licenciatura em Marketing"],
+      en: ["BSc in Marketing"],
     },
     certifications: {
       pt: [
-        "Google Analytics 4 & Tag Manager",
-        "Google Ads Performance Max",
-        "Meta Media Buying Professional",
+        {
+          title: "Certificação de Inglês",
+          issued: "Emitido em 23/09/2022",
+          credentialId: "Certificate No. C0036656",
+        },
       ],
       en: [
-        "Google Analytics 4 & Tag Manager",
-        "Google Ads Performance Max",
-        "Meta Media Buying Professional",
+        {
+          title: "English Certification",
+          issued: "Issued 23/09/2022",
+          credentialId: "Certificate No. C0036656",
+        },
       ],
     },
-    linkedinHandle: "linkedin.com/in/goncalo-jose-silva",
-    linkedinUrl: "https://www.linkedin.com/in/goncalo-jose-silva",
-    phone: "+351 930 426 057",
-    phoneHref: "tel:+351930426057",
+    linkedinHandle: "linkedin.com/in/gonçalo-silva",
+    linkedinUrl: "https://www.linkedin.com/in/gon%C3%A7alo-silva-83a632433",
+    phone: "+351 926 538 871",
+    phoneHref: "tel:+351926538871",
     accentHex: "#00C885",
     accentRgb: "0, 200, 133",
   },
@@ -555,48 +539,50 @@ export default function TeamMemberModal({
                     </div>
                   </div>
 
-                  {/* Certificações */}
-                  <div>
-                    <p className="text-[11px] uppercase tracking-wider text-subtle mb-2">
-                      {copy.certifications}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {profile.certifications[locale].map((cert) => {
-                        if (typeof cert === "string") {
+                  {/* Certificações (mostrado apenas quando existem certificações) */}
+                  {profile.certifications[locale].length > 0 && (
+                    <div>
+                      <p className="text-[11px] uppercase tracking-wider text-subtle mb-2">
+                        {copy.certifications}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {profile.certifications[locale].map((cert) => {
+                          if (typeof cert === "string") {
+                            return (
+                              <span
+                                key={cert}
+                                className="inline-flex items-center rounded-full bg-white border border-border px-2.5 py-1 text-[11px] text-foreground shadow-2xs"
+                              >
+                                {cert}
+                              </span>
+                            );
+                          }
                           return (
-                            <span
-                              key={cert}
-                              className="inline-flex items-center rounded-full bg-white border border-border px-2.5 py-1 text-[11px] text-foreground shadow-2xs"
+                            <div
+                              key={cert.title}
+                              className="w-full rounded-xl bg-white border border-border p-3 shadow-2xs"
                             >
-                              {cert}
-                            </span>
+                              <p className="text-xs sm:text-[13px] font-medium text-foreground leading-snug">
+                                {cert.title}
+                              </p>
+                              {cert.issuer && (
+                                <p className="text-[11px] text-secondary mt-0.5">
+                                  {cert.issuer}
+                                </p>
+                              )}
+                              {(cert.issued || cert.credentialId) && (
+                                <p className="text-[11px] text-subtle mt-1">
+                                  {[cert.issued, cert.credentialId]
+                                    .filter(Boolean)
+                                    .join(" · ")}
+                                </p>
+                              )}
+                            </div>
                           );
-                        }
-                        return (
-                          <div
-                            key={cert.title}
-                            className="w-full rounded-xl bg-white border border-border p-3 shadow-2xs"
-                          >
-                            <p className="text-xs sm:text-[13px] font-medium text-foreground leading-snug">
-                              {cert.title}
-                            </p>
-                            {cert.issuer && (
-                              <p className="text-[11px] text-secondary mt-0.5">
-                                {cert.issuer}
-                              </p>
-                            )}
-                            {(cert.issued || cert.credentialId) && (
-                              <p className="text-[11px] text-subtle mt-1">
-                                {[cert.issued, cert.credentialId]
-                                  .filter(Boolean)
-                                  .join(" · ")}
-                              </p>
-                            )}
-                          </div>
-                        );
-                      })}
+                        })}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* LinkedIn & Número de Telemóvel (mesmo estilo dos cards de contacto da página) */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
