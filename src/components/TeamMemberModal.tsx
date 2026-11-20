@@ -38,6 +38,7 @@ export interface TeamProfile {
   age: number;
   education: Localized<string[]>;
   certifications: Localized<(string | CertificationItem)[]>;
+  recognitions?: Localized<CertificationItem[]>;
   linkedinHandle: string;
   linkedinUrl: string;
   phone: string;
@@ -57,6 +58,20 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     certifications: {
       pt: [],
       en: [],
+    },
+    recognitions: {
+      pt: [
+        {
+          title: "Seleção Oficial: Documentário \"Fio Condutor\"",
+          issuer: "Exposição Interwoven Journeys — Tallinn People’s Museum, Estónia",
+        },
+      ],
+      en: [
+        {
+          title: "Official Selection: Documentary \"Fio Condutor\"",
+          issuer: "Interwoven Journeys exhibition — Tallinn People’s Museum, Estonia",
+        },
+      ],
     },
     linkedinHandle: "linkedin.com/in/josé-pedroso",
     linkedinUrl: "https://www.linkedin.com/in/jos%C3%A9-pedroso-46663b396",
@@ -208,6 +223,7 @@ const COPY = {
     yearsUnit: "Anos",
     education: "Formação",
     certifications: "Certificações",
+    recognitions: "Reconhecimentos",
     linkedin: "LinkedIn",
     phone: "Telemóvel",
     close: "Fechar",
@@ -220,6 +236,7 @@ const COPY = {
     yearsUnit: "Years old",
     education: "Education",
     certifications: "Certifications",
+    recognitions: "Recognitions",
     linkedin: "LinkedIn",
     phone: "Mobile",
     close: "Close",
@@ -580,6 +597,30 @@ export default function TeamMemberModal({
                             </div>
                           );
                         })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Reconhecimentos (apenas quando existem) */}
+                  {profile.recognitions && profile.recognitions[locale].length > 0 && (
+                    <div>
+                      <p className="text-[11px] uppercase tracking-wider text-subtle mb-2">
+                        {copy.recognitions}
+                      </p>
+                      <div className="flex flex-col gap-2">
+                        {profile.recognitions[locale].map((rec) => (
+                          <div
+                            key={rec.title}
+                            className="w-full rounded-xl bg-white border border-border p-3 shadow-2xs"
+                          >
+                            <p className="text-xs sm:text-[13px] font-medium text-foreground leading-snug">
+                              {rec.title}
+                            </p>
+                            {rec.issuer && (
+                              <p className="text-[11px] text-secondary mt-0.5">{rec.issuer}</p>
+                            )}
+                          </div>
+                        ))}
                       </div>
                     </div>
                   )}
