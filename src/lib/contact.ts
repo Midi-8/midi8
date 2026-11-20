@@ -23,13 +23,6 @@ export const AREA_LABELS: Record<"pt" | "en", Record<Area, string>> = {
   },
 };
 
-export const CATEGORY_TO_AREA: Record<string, Area> = {
-  "web-software": "Web, Software & Mobile",
-  "ia-automacao": "Automação, IA & Dados",
-  marketing: "Estratégia, Marketing & Campanhas",
-  "consultoria-ecom": "Consultoria & E-commerce",
-};
-
 export type ContactRequest = {
   name: string;
   email: string;

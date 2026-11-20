@@ -8,7 +8,6 @@ interface MagneticBaseProps {
   className?: string;
   wrapperClassName?: string;
   "aria-label"?: string;
-  strength?: number;
 }
 
 type MagneticLinkProps = MagneticBaseProps & {

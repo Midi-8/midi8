@@ -369,18 +369,11 @@ function getCard3DStyle(diff: number, total: number) {
     }
   }
 
-  const blurPx = abs <= 0.35 ? 0 : Math.min(3.2, (abs - 0.35) * 1.45);
-  const sheenPercent = Math.max(-20, Math.min(120, 50 + diff * 36));
-  const sheenOpacity = Math.max(0, 0.42 - abs * 0.16);
-
   return {
     transform: `translate3d(calc(var(--wing-unit, 270px) * ${(sign * xFactor).toFixed(4)}), 0px, ${zPx.toFixed(1)}px) rotateY(${rotY.toFixed(2)}deg) scale(${scale.toFixed(4)})`,
     opacity: Number(opacity.toFixed(3)),
     zIndex: Math.max(0, Math.round(100 - abs * 30)),
     isVisible: opacity > 0.01,
-    blurPx: Number(blurPx.toFixed(2)),
-    sheenPercent: Number(sheenPercent.toFixed(1)),
-    sheenOpacity: Number(sheenOpacity.toFixed(3)),
   };
 }
 
