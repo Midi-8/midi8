@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import MagneticButton from "@/components/MagneticButton";
 import { useLanguage } from "@/context/LanguageContext";
@@ -11,27 +12,32 @@ const SECTION_IDS = ["sobre", "servicos", "equipa", "contacto"] as const;
 
 const NAV_LINKS = {
   pt: [
-    { sectionId: "sobre", label: "A Midi8", href: "/#sobre" },
-    { sectionId: "servicos", label: "Serviços", href: "/#servicos" },
-    { sectionId: "equipa", label: "Equipa", href: "/#equipa" },
-    { sectionId: "contacto", label: "Contactos", href: "/#contacto" },
+    { sectionId: "sobre", label: "A Midi8", href: "/sobre" },
+    { sectionId: "servicos", label: "Serviços", href: "/servicos" },
+    { sectionId: "equipa", label: "Equipa", href: "/equipa" },
+    { sectionId: "contacto", label: "Contactos", href: "/contacto" },
   ],
   en: [
-    { sectionId: "sobre", label: "About", href: "/#sobre" },
-    { sectionId: "servicos", label: "Services", href: "/#servicos" },
-    { sectionId: "equipa", label: "Team", href: "/#equipa" },
-    { sectionId: "contacto", label: "Contact", href: "/#contacto" },
+    { sectionId: "sobre", label: "About", href: "/sobre" },
+    { sectionId: "servicos", label: "Services", href: "/servicos" },
+    { sectionId: "equipa", label: "Team", href: "/equipa" },
+    { sectionId: "contacto", label: "Contact", href: "/contacto" },
   ],
 } as const;
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isIsland, setIsIsland] = useState(false);
-  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [scrollSection, setScrollSection] = useState<string | null>(null);
   const { locale, setLocale } = useLanguage();
+  const pathname = usePathname();
 
   const navLinks = NAV_LINKS[locale];
   const ctaLabel = locale === "pt" ? "Contacta-nos" : "Contact us";
+  const routeSection =
+    SECTION_IDS.find((id) => pathname === `/${id}` || pathname.startsWith(`/${id}/`)) ??
+    null;
+  const activeSection = routeSection ?? (pathname === "/" ? scrollSection : null);
 
   useEffect(() => {
     let rafId = 0;
@@ -43,8 +49,10 @@ export default function Navbar() {
       const pastHero = heroBottom !== null ? heroBottom <= 72 : window.scrollY > 24;
       setIsIsland((prev) => (prev === pastHero ? prev : pastHero));
 
+      if (pathname !== "/") return;
+
       if (heroBottom !== null && heroBottom > 140) {
-        setActiveSection((prev) => (prev === null ? prev : null));
+        setScrollSection((prev) => (prev === null ? prev : null));
         return;
       }
 
@@ -56,7 +64,7 @@ export default function Navbar() {
           current = id;
         }
       }
-      setActiveSection((prev) => (prev === current ? prev : current));
+      setScrollSection((prev) => (prev === current ? prev : current));
     };
 
     const scheduleUpdate = () => {
@@ -72,7 +80,7 @@ export default function Navbar() {
       window.removeEventListener("scroll", scheduleUpdate);
       window.removeEventListener("resize", scheduleUpdate);
     };
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     if (mobileOpen) {
@@ -107,7 +115,7 @@ export default function Navbar() {
         >
           {/* Logótipo à esquerda */}
           <Link
-            href="/#hero"
+            href="/"
             onClick={() => setMobileOpen(false)}
             className="inline-flex items-center group shrink-0 justify-self-start"
             aria-label={locale === "pt" ? "Midi8 — Página inicial" : "Midi8 — Home"}
@@ -187,7 +195,7 @@ export default function Navbar() {
             </div>
 
             <MagneticButton
-              href="/#contacto"
+              href="/contacto"
               onClick={() => setMobileOpen(false)}
               aria-label={ctaLabel}
               wrapperClassName="hidden md:inline-flex"
@@ -325,7 +333,7 @@ export default function Navbar() {
                 </div>
 
                 <Link
-                  href="/#contacto"
+                  href="/contacto"
                   onClick={() => setMobileOpen(false)}
                   className="inline-flex items-center justify-center w-full py-4 rounded-full border border-foreground bg-foreground text-white text-sm tracking-wide hover:bg-[#1a2234] transition-colors"
                 >

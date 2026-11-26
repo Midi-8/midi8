@@ -14,12 +14,12 @@ const FOOTER_TEXT = {
     privacy: "Política de Privacidade",
     terms: "Termos e Condições",
     top: "Topo",
-    toTopLabel: "Midi8 — Voltar ao topo",
+    toTopLabel: "Midi8 — Página inicial",
     sectionLinks: [
-      { label: "A Midi8", href: "/#sobre" },
-      { label: "Serviços", href: "/#servicos" },
-      { label: "Equipa", href: "/#equipa" },
-      { label: "Contactos", href: "/#contacto" },
+      { label: "A Midi8", href: "/sobre" },
+      { label: "Serviços", href: "/servicos" },
+      { label: "Equipa", href: "/equipa" },
+      { label: "Contactos", href: "/contacto" },
     ],
   },
   en: {
@@ -30,12 +30,12 @@ const FOOTER_TEXT = {
     privacy: "Privacy Policy",
     terms: "Terms & Conditions",
     top: "Top",
-    toTopLabel: "Midi8 — Back to top",
+    toTopLabel: "Midi8 — Home",
     sectionLinks: [
-      { label: "About", href: "/#sobre" },
-      { label: "Services", href: "/#servicos" },
-      { label: "Team", href: "/#equipa" },
-      { label: "Contact", href: "/#contacto" },
+      { label: "About", href: "/sobre" },
+      { label: "Services", href: "/servicos" },
+      { label: "Team", href: "/equipa" },
+      { label: "Contact", href: "/contacto" },
     ],
   },
 } as const;
@@ -56,8 +56,7 @@ export default function Footer() {
           {/* Marca & Slogan (slogan sempre por baixo de Midi8) */}
           <div className="md:col-span-5 flex flex-col gap-1.5 md:gap-2">
             <Link
-              href="/#hero"
-              onClick={scrollToTop}
+              href="/"
               className="inline-flex items-center group w-fit"
               aria-label={copy.toTopLabel}
             >

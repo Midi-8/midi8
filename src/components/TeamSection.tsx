@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState, type PointerEvent } from "react";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import {
   motion,
@@ -326,29 +327,43 @@ export default function TeamSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-6 sm:mb-7"
+          className="mb-6 sm:mb-7 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
         >
-          <KineticHeading
-            className="type-headline-lg text-foreground"
-            segments={
-              locale === "pt"
-                ? [
-                    { text: "Conheça a " },
-                    { text: "nossa", italic: true },
-                    { text: " equipa" },
-                  ]
-                : [
-                    { text: "Meet " },
-                    { text: "our", italic: true },
-                    { text: " team" },
-                  ]
-            }
-          />
-          <p className="type-body text-muted max-w-xl mt-3 text-pretty">
-            {locale === "pt"
-              ? "Especialistas em tecnologia, comunicação e estratégia."
-              : "Specialists in technology, communication, and strategy."}
-          </p>
+          <div>
+            <KineticHeading
+              className="type-headline-lg text-foreground"
+              segments={
+                locale === "pt"
+                  ? [
+                      { text: "Conheça a " },
+                      { text: "nossa", italic: true },
+                      { text: " equipa" },
+                    ]
+                  : [
+                      { text: "Meet " },
+                      { text: "our", italic: true },
+                      { text: " team" },
+                    ]
+              }
+            />
+            <p className="type-body text-muted max-w-xl mt-3 text-pretty">
+              {locale === "pt"
+                ? "Especialistas em tecnologia, comunicação e estratégia."
+                : "Specialists in technology, communication, and strategy."}
+            </p>
+          </div>
+          <Link
+            href="/equipa"
+            className="group inline-flex items-center gap-1.5 text-xs sm:text-sm text-muted hover:text-foreground transition-colors shrink-0 w-fit"
+          >
+            <span>{locale === "pt" ? "Ver perfis completos" : "View full profiles"}</span>
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-200 group-hover:translate-x-0.5"
+            >
+              →
+            </span>
+          </Link>
         </motion.div>
 
         {/* ─── Filtros por departamento ─── */}

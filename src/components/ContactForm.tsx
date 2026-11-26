@@ -90,10 +90,12 @@ function Field({
   );
 }
 
-export default function ContactForm() {
+export default function ContactForm({ initialArea }: { initialArea?: Area } = {}) {
   const [errors, setErrors] = useState<ContactErrors>({});
   const [status, setStatus] = useState<Status>("idle");
-  const [selectedAreas, setSelectedAreas] = useState<Area[]>([]);
+  const [selectedAreas, setSelectedAreas] = useState<Area[]>(() =>
+    initialArea ? [initialArea] : []
+  );
   const [sentData, setSentData] = useState<ContactRequest | null>(null);
   const { locale } = useLanguage();
 

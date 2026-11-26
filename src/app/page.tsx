@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import Hero from "@/components/Hero";
 import KineticHeading from "@/components/KineticHeading";
@@ -153,29 +154,43 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.5, ease: REVEAL_EASE }}
-            className="max-w-5xl mb-7 sm:mb-14"
+            className="mb-7 sm:mb-14 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
           >
-            <KineticHeading
-              className="type-headline-lg text-foreground mb-3 sm:mb-4"
-              segments={
-                locale === "pt"
-                  ? [
-                      { text: "Design simples. " },
-                      { text: "Código", italic: true },
-                      { text: " rigoroso. Resultados reais." },
-                    ]
-                  : [
-                      { text: "Simple design. " },
-                      { text: "Rigorous", italic: true },
-                      { text: " code. Real results." },
-                    ]
-              }
-            />
-            <p className="type-body text-muted max-w-xl text-pretty">
-              {locale === "pt"
-                ? "Engenharia, inteligência artificial e comunicação para resolver problemas reais."
-                : "Engineering, artificial intelligence, and communication to solve real problems."}
-            </p>
+            <div className="max-w-5xl">
+              <KineticHeading
+                className="type-headline-lg text-foreground mb-3 sm:mb-4"
+                segments={
+                  locale === "pt"
+                    ? [
+                        { text: "Design simples. " },
+                        { text: "Código", italic: true },
+                        { text: " rigoroso. Resultados reais." },
+                      ]
+                    : [
+                        { text: "Simple design. " },
+                        { text: "Rigorous", italic: true },
+                        { text: " code. Real results." },
+                      ]
+                }
+              />
+              <p className="type-body text-muted max-w-xl text-pretty">
+                {locale === "pt"
+                  ? "Engenharia, inteligência artificial e comunicação para resolver problemas reais."
+                  : "Engineering, artificial intelligence, and communication to solve real problems."}
+              </p>
+            </div>
+            <Link
+              href="/sobre"
+              className="group inline-flex items-center gap-1.5 text-xs sm:text-sm text-muted hover:text-foreground transition-colors shrink-0 w-fit"
+            >
+              <span>{locale === "pt" ? "Explorar a Midi8" : "Explore Midi8"}</span>
+              <span
+                aria-hidden="true"
+                className="transition-transform duration-200 group-hover:translate-x-0.5"
+              >
+                →
+              </span>
+            </Link>
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-7">
@@ -242,6 +257,18 @@ export default function Home() {
                 ? "Conte-nos o que pretende construir, otimizar ou escalar."
                 : "Tell us what you want to build, optimize, or scale."}
             </p>
+            <Link
+              href="/contacto"
+              className="group inline-flex items-center gap-1.5 text-xs sm:text-sm text-muted hover:text-foreground transition-colors mt-3 w-fit"
+            >
+              <span>{locale === "pt" ? "Página de contacto & FAQ" : "Contact page & FAQ"}</span>
+              <span
+                aria-hidden="true"
+                className="transition-transform duration-200 group-hover:translate-x-0.5"
+              >
+                →
+              </span>
+            </Link>
           </motion.div>
 
           {/* Formulário (acima dos cards no mobile; coluna direita no desktop) */}

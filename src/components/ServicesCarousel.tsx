@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import KineticHeading from "@/components/KineticHeading";
 import ServiceIcon from "@/components/ServiceIcon";
@@ -13,12 +15,19 @@ export function ServiceCategoryTag({
   category: string;
   label: string;
 }) {
+  const router = useRouter();
+
   return (
     <button
       type="button"
       onClick={() => {
-        window.dispatchEvent(new CustomEvent("midi8:select-category", { detail: category }));
-        document.getElementById("servicos")?.scrollIntoView({ behavior: "smooth" });
+        const target = document.getElementById("servicos");
+        if (target) {
+          window.dispatchEvent(new CustomEvent("midi8:select-category", { detail: category }));
+          target.scrollIntoView({ behavior: "smooth" });
+        } else {
+          router.push(`/servicos?cat=${encodeURIComponent(category)}`);
+        }
       }}
       className="rounded-full bg-white/90 border border-border px-2.5 py-0.5 text-[11px] text-muted hover:text-foreground hover:border-border-strong active:scale-[0.97] transition-all cursor-pointer"
     >
@@ -667,21 +676,35 @@ export default function ServicesCarousel() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-6 sm:mb-7"
+          className="mb-6 sm:mb-7 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
         >
-          <KineticHeading
-            className="type-headline-lg text-foreground"
-            segments={
-              locale === "pt"
-                ? [{ text: "Os Nossos " }, { text: "Serviços", italic: true }]
-                : [{ text: "Our " }, { text: "Services", italic: true }]
-            }
-          />
-          <p className="type-body text-muted mt-1.5 text-pretty">
-            {locale === "pt"
-              ? "Soluções digitais desenhadas à medida do seu negócio."
-              : "Digital solutions tailored to your business."}
-          </p>
+          <div>
+            <KineticHeading
+              className="type-headline-lg text-foreground"
+              segments={
+                locale === "pt"
+                  ? [{ text: "Os Nossos " }, { text: "Serviços", italic: true }]
+                  : [{ text: "Our " }, { text: "Services", italic: true }]
+              }
+            />
+            <p className="type-body text-muted mt-1.5 text-pretty">
+              {locale === "pt"
+                ? "Soluções digitais desenhadas à medida do seu negócio."
+                : "Digital solutions tailored to your business."}
+            </p>
+          </div>
+          <Link
+            href="/servicos"
+            className="group inline-flex items-center gap-1.5 text-xs sm:text-sm text-muted hover:text-foreground transition-colors shrink-0 w-fit"
+          >
+            <span>{locale === "pt" ? "Ver catálogo completo" : "View full catalog"}</span>
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-200 group-hover:translate-x-0.5"
+            >
+              →
+            </span>
+          </Link>
         </motion.div>
 
         {/* Filtros por categoria */}
