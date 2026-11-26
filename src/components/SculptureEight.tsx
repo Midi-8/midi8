@@ -31,7 +31,8 @@ interface Particle {
   phase: number;
   loopPhase: number;
   depthFactor: number;
-  layer: 0 | 1 | 2; // 0 = casca principal, 1 = contorno biselado 360°, 2 = núcleo vítreo interno
+  // 0 = superfície frontal/traseira, 1 = parede lateral biselada contínua, 2 = enchimento volumétrico interno
+  layer: 0 | 1 | 2;
 }
 
 interface AmbientSpark {
@@ -54,6 +55,12 @@ interface Shockwave {
   originY: number;
 }
 
+interface BuiltSculpture {
+  particles: Particle[];
+  // Pares de índices [a0, b0, a1, b1, ...] pré-calculados que interligam frente, núcleo e traseira em 3D
+  latticeEdges: Int32Array;
+}
+
 // Paleta oficial exata extraída de public/midi8-8.webp (0..1)
 const OFFICIAL_SPARK_COLORS: readonly [number, number, number][] = [
   [192 / 255, 21 / 255, 1.0], // Violeta-Magenta #C015FF
@@ -64,10 +71,10 @@ const OFFICIAL_SPARK_COLORS: readonly [number, number, number][] = [
 const POINT_VERT = `
 attribute vec2 aPos;
 attribute vec3 aColor;
-attribute vec4 aMeta; // x=sizePx, y=alpha, z=spec, w=focus
+attribute vec4 aMeta; // x=sizePx, y=alpha, z=spec, w=shade
 
 varying vec3 vColor;
-varying vec3 vMeta; // x=alpha, y=spec, z=focus
+varying vec3 vMeta; // x=alpha, y=spec, z=shade
 
 void main() {
   gl_Position = vec4(aPos, 0.0, 1.0);
@@ -89,21 +96,21 @@ void main() {
   if (r2 > 1.0) discard;
 
   float r = sqrt(r2);
-  // Profundidade de campo ótica: frente ultra-nítida, traseira suavemente desfocada
-  float edgeSoft = mix(0.46, 0.18, vMeta.z);
+  // Profundidade de campo ótica suave
+  float edgeSoft = mix(0.42, 0.16, clamp(vMeta.z, 0.0, 1.0));
   float disc = 1.0 - smoothstep(1.0 - edgeSoft, 1.0, r);
 
-  // Sombreamento 3D de micro-esfera cristalina com luz de estúdio superior esquerda
+  // Sombreamento 3D físico de micro-esfera vítrea com luz principal + luz de recorte
   float nz = sqrt(max(0.0, 1.0 - r2));
   vec3 sphereN = normalize(vec3(uv.x, -uv.y, nz));
-  vec3 keyLight = normalize(vec3(-0.42, 0.56, 0.71));
-  vec3 fillLight = normalize(vec3(0.55, -0.35, 0.75));
+  vec3 keyLight = normalize(vec3(-0.44, 0.56, 0.70));
+  vec3 rimLight = normalize(vec3(0.58, -0.34, 0.74));
   vec3 halfVec = normalize(keyLight + vec3(0.0, 0.0, 1.0));
 
   float diff = max(0.0, dot(sphereN, keyLight));
-  float fill = max(0.0, dot(sphereN, fillLight)) * 0.25;
-  float microSpec = pow(max(0.0, dot(sphereN, halfVec)), 15.0);
-  float rimSheen = pow(1.0 - nz, 2.3);
+  float rim = max(0.0, dot(sphereN, rimLight)) * 0.24;
+  float microSpec = pow(max(0.0, dot(sphereN, halfVec)), 16.0);
+  float fresnel = pow(1.0 - nz, 2.35);
 
   // Iridescência Fresnel subtil dentro da paleta oficial (#C015FF -> #0069F8 -> #00E8B2)
   vec3 iridTint = mix(
@@ -111,11 +118,14 @@ void main() {
     vec3(0.0, 0.910, 0.698),
     clamp(0.5 + 0.5 * (uv.x * 0.8 - uv.y * 0.6), 0.0, 1.0)
   );
-  vec3 baseCol = mix(vColor, iridTint, rimSheen * (0.14 + vMeta.y * 0.22));
-  vec3 col = baseCol * (0.86 + 0.18 * diff + fill);
+  vec3 baseCol = mix(vColor, iridTint, fresnel * (0.14 + vMeta.y * 0.24));
+
+  // Contraste volumétrico realista: frente luminosa, traseira e cavidades ligeiramente mais profundas
+  float bodyShade = mix(0.72, 1.06, clamp(vMeta.z, 0.0, 1.0));
+  vec3 col = baseCol * bodyShade * (0.82 + 0.22 * diff + rim);
 
   // Brilho especular cristalino perolado
-  float glint = vMeta.y * 0.46 + microSpec * (0.36 + vMeta.y * 0.52) + rimSheen * vMeta.y * 0.24;
+  float glint = vMeta.y * 0.44 + microSpec * (0.38 + vMeta.y * 0.52) + fresnel * vMeta.y * 0.24;
   col = mix(col, vec3(1.0), clamp(glint, 0.0, 0.88));
 
   float alpha = disc * vMeta.x;
@@ -195,11 +205,11 @@ function createAmbientSparks(count: number): AmbientSpark[] {
     sparks.push({
       angle: t * Math.PI * 2,
       speed: (i % 2 === 0 ? 1 : -1) * (0.15 + (i % 5) * 0.042),
-      radiusX: 0.7 + ((i * 37) % 100) * 0.005,
+      radiusX: 0.72 + ((i * 37) % 100) * 0.0048,
       radiusZ: 0.44 + ((i * 29) % 100) * 0.0042,
       yOffset: (((i * 19) % 100) / 100 - 0.5) * 1.48,
       phase: i * 1.23,
-      size: 2.6 + (i % 3) * 0.85,
+      size: 2.5 + (i % 3) * 0.85,
       r: color[0],
       g: color[1],
       b: color[2],
@@ -226,25 +236,31 @@ function sampleRibbonPoint(u: number, phaseOffset: number, radiusScale: number) 
 }
 
 /**
- * Amostra a silhueta e gradiente oficiais exatos de /midi8-8.webp com
- * campo de distância suave (Chamfer 2-pass) para construir um volume 3D
- * escultórico completo (face frontal, face traseira, parede lateral biselada
- * de perfil 360° e núcleo vítreo interno).
+ * Constrói uma escultura 3D volumétrica contínua diretamente a partir da silhueta
+ * e gradiente oficiais exatos de /midi8-8.webp:
+ * - Superfícies frontal e traseira suavemente arredondadas (secção elíptica)
+ * - Parede lateral biselada contínua em toda a profundidade Z (sem fendas a 90°)
+ * - Enchimento volumétrico interno contínuo entre frente e trás
+ * - Malha estrutural de filamentos 3D pré-calculados que interligam frente, núcleo e traseira
  */
-function buildSculptureParticles(img: HTMLImageElement): Particle[] {
-  const sampleW = 156;
-  const sampleH = Math.round((img.height / img.width) * sampleW);
+function buildSculpture(img: HTMLImageElement): BuiltSculpture {
+  const pad = 8;
+  const innerW = 148;
+  const innerH = Math.round((img.height / img.width) * innerW);
+  const sampleW = innerW + pad * 2;
+  const sampleH = innerH + pad * 2;
   const off = document.createElement("canvas");
   off.width = sampleW;
   off.height = sampleH;
   const octx = off.getContext("2d");
-  if (!octx) return [];
+  if (!octx) return { particles: [], latticeEdges: new Int32Array(0) };
 
-  octx.drawImage(img, 0, 0, sampleW, sampleH);
+  // Margem transparente em volta da imagem para o campo de distância arredondar perfeitamente a base e o topo
+  octx.drawImage(img, pad, pad, innerW, innerH);
   const imgData = octx.getImageData(0, 0, sampleW, sampleH).data;
   const totalPixels = sampleW * sampleH;
 
-  // 1. Campo de distância 2-pass (Chamfer) para volume 3D suave e normais reais
+  // 1. Campo de distância 2-pass (Chamfer) para espessura tubular suave e normais 3D reais
   const dist = new Float32Array(totalPixels);
   const INF = 1e6;
   for (let i = 0; i < totalPixels; i++) {
@@ -292,52 +308,51 @@ function buildSculptureParticles(img: HTMLImageElement): Particle[] {
     return dist[y * sampleW + x];
   };
 
-  const built: Particle[] = [];
+  const particles: Particle[] = [];
+  const edgePairs: number[] = [];
   const halfW = sampleW * 0.5;
   const halfH = sampleH * 0.5;
-  const normScale = Math.max(sampleW, sampleH) * 0.5;
+  const normScale = Math.max(innerW, innerH) * 0.5;
   const step = 2;
+
+  // Regista índice da partícula frontal de cada célula da grelha para criar ligações longitudinais suaves
+  const gridCols = Math.ceil(sampleW / step);
+  const gridRows = Math.ceil(sampleH / step);
+  const frontGrid = new Int32Array(gridCols * gridRows).fill(-1);
+  const backGrid = new Int32Array(gridCols * gridRows).fill(-1);
 
   const pushParticle = (
     x: number,
     y: number,
-    sideSign: number,
+    zNorm: number, // -1 (traseira) .. 0 (centro) .. +1 (frente)
     dNorm: number,
     r: number,
     g: number,
     b: number,
     layer: 0 | 1 | 2,
     seed: number
-  ) => {
+  ): number => {
     const h1 = hash01(x, y, seed);
     const h2 = hash01(x, y, seed + 13);
     const h3 = hash01(x, y, seed + 29);
 
-    const jitterScale = layer === 1 ? 0.0045 : 0.0105;
+    const jitterScale = layer === 1 ? 0.0045 : 0.01;
     const bx = (x - halfW) / normScale + (h1 - 0.5) * jitterScale;
     const by = (y - halfH) / normScale + (h2 - 0.5) * jitterScale;
 
-    // Secção transversal tubular suave (perfil elíptico) + torção arquitetónica entre os anéis
-    const profile = Math.sqrt(Math.max(0.015, 1 - (1 - dNorm) * (1 - dNorm)));
-    const twistZ = bx * by * 0.26;
-    let bevelZ = 0;
-    if (layer === 1) {
-      // Parede lateral biselada contínua (assegura perfil sólido em rotação 360°)
-      bevelZ = sideSign * (0.012 + profile * 0.105);
-    } else if (layer === 2) {
-      // Núcleo vítreo interior (dá profundidade translúcida real)
-      bevelZ = (h3 - 0.5) * profile * 0.18;
-    } else {
-      bevelZ = sideSign * (0.025 + profile * 0.21);
-    }
-    const bz = twistZ + bevelZ;
+    // Secção transversal tubular verdadeiramente redonda (sem degrau plano na base nem no topo)
+    const profile = Math.sqrt(Math.max(0, 1 - (1 - dNorm) * (1 - dNorm)));
+    const halfThick = profile * 0.215;
+    const twistZ = bx * by * 0.24;
+    const bz = twistZ + zNorm * halfThick;
 
-    // Gradiente do campo de distância -> normal 3D real da superfície
+    // Normal 3D real da superfície (gradiente do campo de distância + direção em Z)
     const gx = distAt(x + 1, y) - distAt(x - 1, y);
     const gy = distAt(x, y + 1) - distAt(x, y - 1);
-    const rawNx = -gx * 0.52;
-    const rawNy = -gy * 0.52;
-    const rawNz = layer === 1 && sideSign === 0 ? 0.05 : sideSign * (0.28 + dNorm * 2.15);
+    const radialWeight = layer === 1 ? 0.9 : 0.52;
+    const rawNx = -gx * radialWeight;
+    const rawNy = -gy * radialWeight;
+    const rawNz = zNorm * (0.35 + dNorm * 2.1);
     const nLen = Math.hypot(rawNx, rawNy, rawNz) || 1;
 
     // Fase paramétrica contínua ao longo dos dois anéis do "8"
@@ -355,12 +370,13 @@ function buildSculptureParticles(img: HTMLImageElement): Particle[] {
 
     const size =
       layer === 1
-        ? 2.55 + dNorm * 1.05
+        ? 2.55 + dNorm * 0.95
         : layer === 2
-          ? 3.8 + dNorm * 1.8
-          : 3.25 + dNorm * 2.35;
+          ? 2.95 + dNorm * 1.45
+          : 3.15 + dNorm * 2.15;
 
-    built.push({
+    const idx = particles.length;
+    particles.push({
       bx,
       by,
       bz,
@@ -385,10 +401,16 @@ function buildSculptureParticles(img: HTMLImageElement): Particle[] {
       depthFactor: dNorm,
       layer,
     });
+    return idx;
   };
 
-  for (let y = 0; y < sampleH; y += step) {
-    for (let x = 0; x < sampleW; x += step) {
+  for (let gy = 0; gy < gridRows; gy++) {
+    const y = gy * step;
+    if (y >= sampleH) continue;
+    for (let gx = 0; gx < gridCols; gx++) {
+      const x = gx * step;
+      if (x >= sampleW) continue;
+
       const i = y * sampleW + x;
       const d = dist[i];
       if (d <= 0) continue;
@@ -398,39 +420,100 @@ function buildSculptureParticles(img: HTMLImageElement): Particle[] {
       const g = imgData[idx + 1];
       const b = imgData[idx + 2];
       const dNorm = Math.min(1, d / maxDist);
+      const cellIdx = gy * gridCols + gx;
 
-      if (dNorm < 0.25) {
-        // Contorno biselado 3D contínuo (frente + costura central lateral + trás)
-        pushParticle(x, y, 0.45, dNorm, r, g, b, 1, 1);
-        if ((x + y) % 4 === 0) {
-          pushParticle(x, y, 0, dNorm, r, g, b, 1, 5);
-          pushParticle(x, y, -0.45, dNorm, r, g, b, 1, 7);
+      if (dNorm < 0.28) {
+        // Parede lateral biselada contínua: preenche suavemente de -1 a +1 em Z (perfil 90° fechado e sólido!)
+        const fIdx = pushParticle(x, y, 0.82, dNorm, r, g, b, 1, 1);
+        const bIdx = pushParticle(x, y, -0.82, dNorm, r, g, b, 1, 7);
+        frontGrid[cellIdx] = fIdx;
+        backGrid[cellIdx] = bIdx;
+
+        // Pontos intermédios da parede lateral que eliminam qualquer fenda entre frente e trás
+        const parity = (gx + gy) % 3;
+        if (parity === 0) {
+          const mIdx = pushParticle(x, y, 0.0, dNorm, r, g, b, 1, 5);
+          // Interligação estrutural direta frente <-> parede central <-> trás
+          if ((gx + gy) % 6 === 0) {
+            edgePairs.push(fIdx, mIdx, mIdx, bIdx);
+          }
+        } else if (parity === 1) {
+          pushParticle(x, y, 0.36, dNorm, r, g, b, 1, 9);
+        } else {
+          pushParticle(x, y, -0.36, dNorm, r, g, b, 1, 13);
         }
       } else {
-        // Dupla casca escultórica (frente + trás) + núcleo translúcido interior
-        pushParticle(x, y, 1, dNorm, r, g, b, 0, 3);
-        if (dNorm > 0.34) {
-          pushParticle(x, y, -1, dNorm, r, g, b, 0, 11);
-        }
-        if (dNorm > 0.56 && (x + y) % 6 === 0) {
-          pushParticle(x, y, 0, dNorm, r, g, b, 2, 17);
+        // Superfícies frontal e traseira principais
+        const fIdx = pushParticle(x, y, 1.0, dNorm, r, g, b, 0, 3);
+        const bIdx = pushParticle(x, y, -1.0, dNorm, r, g, b, 0, 11);
+        frontGrid[cellIdx] = fIdx;
+        backGrid[cellIdx] = bIdx;
+
+        // Enchimento volumétrico contínuo entre frente e trás (distribuição estratificada sem 3 camadas separadas!)
+        const strata = (gx * 3 + gy * 5) % 5;
+        const zFill = (strata - 2) * 0.36 + (hash01(x, y, 23) - 0.5) * 0.2;
+        if ((gx + gy) % 2 === 0) {
+          const coreIdx = pushParticle(x, y, zFill, dNorm, r, g, b, 2, 17);
+
+          // Ligações estruturais transversais (interligam frente, volume interno e traseira num bloco coeso!)
+          if (gx % 4 === 0 && gy % 4 === 0) {
+            edgePairs.push(fIdx, coreIdx, coreIdx, bIdx);
+          }
         }
       }
     }
   }
 
-  return built;
+  // 2. Ligações estruturais longitudinais/diagonais suaves na superfície frontal e traseira
+  for (let gy = 0; gy < gridRows - 2; gy += 3) {
+    for (let gx = 0; gx < gridCols - 2; gx += 3) {
+      const c0 = gy * gridCols + gx;
+      const f0 = frontGrid[c0];
+      const b0 = backGrid[c0];
+      if (f0 >= 0) {
+        const fRight = frontGrid[c0 + 2];
+        const fDown = frontGrid[(gy + 2) * gridCols + gx];
+        if (fRight >= 0) edgePairs.push(f0, fRight);
+        if (fDown >= 0) edgePairs.push(f0, fDown);
+      }
+      if (b0 >= 0) {
+        const bRight = backGrid[c0 + 2];
+        const bDown = backGrid[(gy + 2) * gridCols + gx];
+        if (bRight >= 0) edgePairs.push(b0, bRight);
+        if (bDown >= 0) edgePairs.push(b0, bDown);
+      }
+    }
+  }
+
+  // Limitar a 680 arestas estruturais bem distribuídas para manter 60fps constantes
+  const maxStructuralEdges = 680;
+  const totalPairs = edgePairs.length >> 1;
+  let latticeEdges: Int32Array;
+  if (totalPairs <= maxStructuralEdges) {
+    latticeEdges = new Int32Array(edgePairs);
+  } else {
+    latticeEdges = new Int32Array(maxStructuralEdges * 2);
+    const strideStep = totalPairs / maxStructuralEdges;
+    for (let k = 0; k < maxStructuralEdges; k++) {
+      const srcPair = Math.floor(k * strideStep) * 2;
+      latticeEdges[k * 2] = edgePairs[srcPair];
+      latticeEdges[k * 2 + 1] = edgePairs[srcPair + 1];
+    }
+  }
+
+  return { particles, latticeEdges };
 }
 
 /**
- * SculptureEight - Escultura 3D volumétrica em WebGL construída diretamente
+ * SculptureEight - Escultura 3D volumétrica realista em WebGL construída diretamente
  * a partir da silhueta e gradiente oficiais exatos do "8" da midi8.
  *
- * - ~5.200 micro-esferas cristalinas com sombreamento 3D, iridescência Fresnel e profundidade de campo
- * - Volume completo em 360° (face frontal, traseira, costura lateral biselada e núcleo vítreo)
- * - Duas correntes orbitais luminosas em 3D + 32 micro-partículas em gravidade zero
- * - Entrada em morfogénese, rotação 360° com inércia, campo magnético com filamentos de seda,
- *   até 4 ondas de choque simultâneas ao clicar e recristalização ao fazer duplo clique
+ * - Volume 3D contínuo em 360° (superfícies frontal e traseira, parede lateral biselada
+ *   sem fendas e enchimento volumétrico interno com sombreamento realista)
+ * - Malha estrutural de filamentos 3D interligada entre frente, núcleo e traseira
+ * - Iridescência Fresnel na GPU + corrente luminosa contínua nos dois anéis
+ * - Arrasto livre 360° com inércia, campo magnético sedoso, até 4 ondas de choque
+ *   simultâneas ao clicar e recristalização ao fazer duplo clique
  */
 export default function SculptureEight() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -497,12 +580,13 @@ export default function SculptureEight() {
     let height = 1;
     let dpr = 1;
     let particles: Particle[] = [];
+    let latticeEdges: Int32Array = new Int32Array(0);
     let morphStart = 0;
     const sparks = createAmbientSparks(32);
 
     // Buffers reutilizáveis sem alocações por frame
-    const MAX_POINTS = 8500;
-    const MAX_LINE_SEGS = 760;
+    const MAX_POINTS = 10500;
+    const MAX_LINE_SEGS = 1350;
     const BUCKETS = 256;
 
     const pxArr = new Float32Array(MAX_POINTS);
@@ -514,7 +598,7 @@ export default function SculptureEight() {
     const pSizeArr = new Float32Array(MAX_POINTS);
     const pAlphaArr = new Float32Array(MAX_POINTS);
     const pSpecArr = new Float32Array(MAX_POINTS);
-    const pFocusArr = new Float32Array(MAX_POINTS);
+    const pShadeArr = new Float32Array(MAX_POINTS);
     const pBucketArr = new Uint8Array(MAX_POINTS);
 
     const bucketCounts = new Int32Array(BUCKETS);
@@ -712,7 +796,6 @@ export default function SculptureEight() {
       pointer.sny += (pointer.ny - pointer.sny) * 0.085;
       pointer.speed *= 0.88;
 
-      // Inércia sedosa + regresso natural à pose principal após arrasto 360°
       if (!pointer.dragging) {
         orbit.yaw += orbit.vyaw;
         orbit.pitch = Math.max(-1.08, Math.min(1.08, orbit.pitch + orbit.vpitch));
@@ -735,10 +818,10 @@ export default function SculptureEight() {
       const morphEase = morphRaw >= 1 ? 1 : 1 - Math.pow(2, -10 * morphRaw);
       const morphInv = 1 - morphEase;
 
-      const floatY = prefersReduced ? 0 : Math.sin(t * 1.15) * 6.0;
-      const scalePx = Math.min(width * 0.56, height * 0.435);
+      const floatY = prefersReduced ? 0 : Math.sin(t * 1.15) * 5.5;
+      const scalePx = Math.min(width * 0.55, height * 0.415);
       const cx = width * 0.5;
-      const cy = height * 0.48 + floatY;
+      const cy = height * 0.455 + floatY;
 
       if (shadowRef.current) {
         const sScale = 1 - floatY * 0.014;
@@ -772,7 +855,6 @@ export default function SculptureEight() {
 
       const fov = 3.3;
 
-      // Atualizar ondas de choque ativas
       let hasActiveWave = false;
       for (let w = 0; w < shockwaves.length; w++) {
         const sw = shockwaves[w];
@@ -793,14 +875,14 @@ export default function SculptureEight() {
       let count = 0;
       let activeCount = 0;
 
-      // 1. Projetar todas as partículas do "8" com física de mola + iluminação 3D + Fresnel
+      // 1. Projetar todas as partículas do volume 3D do "8"
       const pLen = particles.length;
       for (let i = 0; i < pLen && count < MAX_POINTS; i++) {
         const p = particles[i];
 
         const wave = prefersReduced
           ? 0
-          : Math.sin(t * 1.5 + p.by * 3.6 + p.phase * 0.4) * 0.009;
+          : Math.sin(t * 1.5 + p.by * 3.6 + p.phase * 0.4) * 0.008;
 
         const baseX = p.bx + (p.sx0 - p.bx) * morphInv;
         const baseY = p.by + (p.sy0 - p.by) * morphInv;
@@ -810,13 +892,11 @@ export default function SculptureEight() {
         const py = baseY + p.oy + wave;
         const pz = baseZ + p.oz;
 
-        // Rotação 3D da posição
         const x1 = px * cosY - pz * sinY;
         const z1 = px * sinY + pz * cosY;
         const y2 = py * cosX - z1 * sinX;
         const z2 = py * sinX + z1 * cosX;
 
-        // Rotação 3D da normal da superfície
         const nx1 = p.nx * cosY - p.nz * sinY;
         const nz1 = p.nx * sinY + p.nz * cosY;
         const ny2 = p.ny * cosX - nz1 * sinX;
@@ -869,7 +949,7 @@ export default function SculptureEight() {
           }
         }
 
-        // Mola elástica de precisão que reconstrói perfeitamente a silhueta oficial
+        // Mola elástica de precisão
         p.vx += -p.ox * 0.068;
         p.vy += -p.oy * 0.068;
         p.vz += -p.oz * 0.068;
@@ -883,27 +963,39 @@ export default function SculptureEight() {
         const disp = Math.hypot(p.ox, p.oy, p.oz);
         const energy = Math.min(1, disp * 7.0 + pulseBoost * 0.95);
 
-        // Iluminação 3D escultórica + Fresnel + corrente nos 2 anéis + varrimento + foco do cursor
+        // Iluminação 3D realista: luz direcional + Fresnel + profundidade volumétrica
         const ndl = Math.max(0, nx1 * lxN + ny2 * lyN + nz2 * lzN);
         const fresnel = Math.pow(1 - Math.abs(Math.max(-1, Math.min(1, nz2))), 2.1);
 
         const loopPulseRaw = prefersReduced ? 0 : Math.cos(p.loopPhase - loopWavePhase);
         const loopCurrent =
-          loopPulseRaw > 0.45 ? Math.pow((loopPulseRaw - 0.45) / 0.55, 2) * 0.46 : 0;
+          loopPulseRaw > 0.45 ? Math.pow((loopPulseRaw - 0.45) / 0.55, 2) * 0.44 : 0;
 
         const diagCoord = p.bx * 0.62 + p.by * 0.78;
         const gleamDist = Math.abs(diagCoord - gleamCycle);
         const gleam = prefersReduced ? 0 : Math.max(0, 1 - gleamDist / 0.27);
-        const gleamBoost = gleam * gleam * 0.56;
+        const gleamBoost = gleam * gleam * 0.54;
 
         const depthNorm = Math.max(0, Math.min(1, (0.54 - z2) / 1.08));
+        // Sombreamento realista: núcleo interior ligeiramente mais rico/profundo, frente nítida
+        const shade = Math.max(
+          0,
+          Math.min(
+            1,
+            depthNorm * 0.62 +
+              ndl * 0.44 -
+              (p.layer === 2 ? 0.16 : 0) +
+              (p.layer === 1 ? 0.06 : 0)
+          )
+        );
+
         const spec = Math.min(
           1,
           ndl * 0.42 +
             fresnel * 0.3 +
             loopCurrent +
             gleamBoost +
-            cursorSpot * 0.45 +
+            cursorSpot * 0.44 +
             pulseBoost * 0.72 +
             energy * 0.22
         );
@@ -913,21 +1005,21 @@ export default function SculptureEight() {
           persp *
           sizeScale *
           (1 +
-            pulseBoost * 0.38 +
-            loopCurrent * 0.16 +
-            gleamBoost * 0.14 +
-            cursorSpot * 0.18 +
+            pulseBoost * 0.36 +
+            loopCurrent * 0.14 +
+            gleamBoost * 0.12 +
+            cursorSpot * 0.16 +
             energy * 0.12);
 
-        const baseAlpha = p.layer === 1 ? 0.58 : p.layer === 2 ? 0.22 : 0.34;
+        const baseAlpha = p.layer === 1 ? 0.56 : p.layer === 2 ? 0.32 : 0.38;
         const alpha =
           Math.min(
             1,
             baseAlpha +
-              depthNorm * (p.layer === 2 ? 0.35 : 0.6) +
-              loopCurrent * 0.16 +
+              depthNorm * (p.layer === 2 ? 0.42 : 0.56) +
+              loopCurrent * 0.14 +
               pulseBoost * 0.22 +
-              gleamBoost * 0.14 +
+              gleamBoost * 0.12 +
               cursorSpot * 0.14
           ) *
           (0.35 + morphEase * 0.65);
@@ -938,10 +1030,10 @@ export default function SculptureEight() {
         prArr[count] = p.r;
         pgArr[count] = p.g;
         pbArr[count] = p.b;
-        pSizeArr[count] = Math.min(26 * dpr, Math.max(2.0 * dpr, pointSize));
+        pSizeArr[count] = Math.min(24 * dpr, Math.max(2.0 * dpr, pointSize));
         pAlphaArr[count] = alpha;
         pSpecArr[count] = spec;
-        pFocusArr[count] = p.layer === 2 ? depthNorm * 0.45 : depthNorm;
+        pShadeArr[count] = shade;
 
         const bNorm = Math.max(0, Math.min(1, (1.2 - z2) / 2.4));
         pBucketArr[count] = (bNorm * 255) | 0;
@@ -955,11 +1047,43 @@ export default function SculptureEight() {
         count += 1;
       }
 
-      // 2. Projetar micro-partículas orbitais + 2 pérolas luminosas das correntes 3D
       const invW = 2 / width;
       const invH = 2 / height;
       let segs = 0;
 
+      // 2. Malha estrutural 3D permanente que interliga frente, núcleo e traseira + curvas do "8"
+      const edgeCount = latticeEdges.length >> 1;
+      for (let e = 0; e < edgeCount && segs < MAX_LINE_SEGS; e++) {
+        const ia = latticeEdges[e * 2];
+        const ib = latticeEdges[e * 2 + 1];
+        if (ia >= pLen || ib >= pLen) continue;
+
+        const avgZ = (pzArr[ia] + pzArr[ib]) * 0.5;
+        const depthVis = Math.max(0.25, Math.min(1, (0.65 - avgZ) / 1.3));
+        const specBoost = (pSpecArr[ia] + pSpecArr[ib]) * 0.5;
+        const lineAlpha = Math.min(
+          0.34,
+          (0.11 + depthVis * 0.12 + specBoost * 0.12) * morphEase
+        );
+
+        const base = segs * 12;
+        lineBufferData[base] = pxArr[ia] * invW - 1;
+        lineBufferData[base + 1] = 1 - pyArr[ia] * invH;
+        lineBufferData[base + 2] = prArr[ia];
+        lineBufferData[base + 3] = pgArr[ia];
+        lineBufferData[base + 4] = pbArr[ia];
+        lineBufferData[base + 5] = lineAlpha;
+
+        lineBufferData[base + 6] = pxArr[ib] * invW - 1;
+        lineBufferData[base + 7] = 1 - pyArr[ib] * invH;
+        lineBufferData[base + 8] = prArr[ib];
+        lineBufferData[base + 9] = pgArr[ib];
+        lineBufferData[base + 10] = pbArr[ib];
+        lineBufferData[base + 11] = lineAlpha;
+        segs += 1;
+      }
+
+      // 3. Micro-partículas orbitais + 2 correntes luminosas 3D
       if (!prefersReduced) {
         for (let i = 0; i < sparks.length && count < MAX_POINTS; i++) {
           const sp = sparks[i];
@@ -989,17 +1113,16 @@ export default function SculptureEight() {
             18 * dpr,
             Math.max(2.2 * dpr, sp.size * persp * sizeScale * (0.85 + twinkle * 0.35))
           );
-          pAlphaArr[count] = (0.16 + depthNorm * 0.4) * twinkle * morphEase;
+          pAlphaArr[count] = (0.16 + depthNorm * 0.38) * twinkle * morphEase;
           pSpecArr[count] = 0.68;
-          pFocusArr[count] = depthNorm * 0.7;
+          pShadeArr[count] = 0.85;
 
           const bNorm = Math.max(0, Math.min(1, (1.2 - z2) / 2.4));
           pBucketArr[count] = (bNorm * 255) | 0;
           count += 1;
         }
 
-        // Duas correntes orbitais finíssimas que abraçam a escultura em 3D
-        const ribbonSteps = 26;
+        const ribbonSteps = 24;
         for (let rIdx = 0; rIdx < 2; rIdx++) {
           const headT = t * (rIdx === 0 ? 0.78 : -0.66) + rIdx * Math.PI;
           const radScale = rIdx === 0 ? 1.04 : 0.96;
@@ -1009,7 +1132,7 @@ export default function SculptureEight() {
           let prevSy = 0;
 
           for (let s = 0; s <= ribbonSteps; s++) {
-            const frac = s / ribbonSteps; // 0 = cauda, 1 = cabeça luminosa
+            const frac = s / ribbonSteps;
             const u = headT - (1 - frac) * 1.45;
             const pt = sampleRibbonPoint(u, rIdx * 1.57, radScale);
 
@@ -1044,7 +1167,6 @@ export default function SculptureEight() {
               segs += 1;
             }
 
-            // Pérola luminosa na cabeça de cada corrente orbital
             if (s === ribbonSteps && count < MAX_POINTS) {
               pxArr[count] = sx;
               pyArr[count] = sy;
@@ -1052,10 +1174,10 @@ export default function SculptureEight() {
               prArr[count] = colB[0];
               pgArr[count] = colB[1];
               pbArr[count] = colB[2];
-              pSizeArr[count] = Math.min(18 * dpr, Math.max(3.2 * dpr, 5.4 * persp * sizeScale));
+              pSizeArr[count] = Math.min(18 * dpr, Math.max(3.2 * dpr, 5.2 * persp * sizeScale));
               pAlphaArr[count] = 0.78 * morphEase;
               pSpecArr[count] = 0.92;
-              pFocusArr[count] = 0.95;
+              pShadeArr[count] = 1.0;
 
               const bNorm = Math.max(0, Math.min(1, (1.2 - z2) / 2.4));
               pBucketArr[count] = (bNorm * 255) | 0;
@@ -1068,9 +1190,9 @@ export default function SculptureEight() {
         }
       }
 
-      // 3. Anéis cromáticos luminosos em WebGL para cada onda de choque ativa ao clicar
+      // 4. Anéis cromáticos luminosos em WebGL ao clicar
       if (hasActiveWave) {
-        const ringVerts = 40;
+        const ringVerts = 36;
         for (let w = 0; w < shockwaves.length; w++) {
           const sw = shockwaves[w];
           if (!sw.active) continue;
@@ -1111,7 +1233,7 @@ export default function SculptureEight() {
         }
       }
 
-      // 4. Filamentos translúcidos de seda entre partículas energetizadas
+      // 5. Filamentos translúcidos de seda dinâmicos entre partículas energetizadas
       if (activeCount > 1) {
         const maxDist = width < 320 ? 24 : 30;
         const maxDistSq = maxDist * maxDist;
@@ -1172,7 +1294,7 @@ export default function SculptureEight() {
         gl.drawArrays(gl.LINES, 0, segs * 2);
       }
 
-      // 5. Ordenação O(N) por profundidade (256 buckets, zero GC)
+      // 6. Ordenação O(N) por profundidade (256 buckets, zero GC)
       bucketCounts.fill(0);
       for (let i = 0; i < count; i++) {
         bucketCounts[pBucketArr[i]] += 1;
@@ -1188,7 +1310,7 @@ export default function SculptureEight() {
         bucketOffsets[b] += 1;
       }
 
-      // 6. Empacotar vértices em clip-space e renderizar micro-esferas 3D na GPU
+      // 7. Empacotar vértices em clip-space e renderizar micro-esferas 3D na GPU
       for (let k = 0; k < count; k++) {
         const i = sortedOrder[k];
         const base = k * 9;
@@ -1200,7 +1322,7 @@ export default function SculptureEight() {
         pointBufferData[base + 5] = pSizeArr[i];
         pointBufferData[base + 6] = pAlphaArr[i];
         pointBufferData[base + 7] = pSpecArr[i];
-        pointBufferData[base + 8] = pFocusArr[i];
+        pointBufferData[base + 8] = pShadeArr[i];
       }
 
       gl.useProgram(pointProg);
@@ -1224,7 +1346,9 @@ export default function SculptureEight() {
     img.src = "/midi8-8.webp";
     img.onload = () => {
       if (disposed) return;
-      particles = buildSculptureParticles(img);
+      const built = buildSculpture(img);
+      particles = built.particles;
+      latticeEdges = built.latticeEdges;
       morphStart = performance.now();
       if (prefersReduced) {
         renderFrame(morphStart);
@@ -1263,7 +1387,7 @@ export default function SculptureEight() {
   }, []);
 
   return (
-    <div className="relative w-full max-w-[310px] sm:max-w-[390px] lg:max-w-[430px] h-[250px] sm:h-[360px] lg:h-[420px] flex flex-col items-center justify-center select-none">
+    <div className="relative w-full max-w-[330px] sm:max-w-[420px] lg:max-w-[460px] h-[270px] sm:h-[390px] lg:h-[450px] flex flex-col items-center justify-center select-none">
       {/* Halo atmosférico suave alinhado à paleta oficial exata do "8" da midi8 */}
       <div
         aria-hidden="true"
@@ -1274,15 +1398,15 @@ export default function SculptureEight() {
         className="pointer-events-none absolute inset-0 blur-2xl opacity-90"
       />
 
-      {/* Sombra de estúdio sem contacto na base (reage à flutuação 3D) */}
+      {/* Sombra de estúdio distante sem contacto na base (reage à flutuação 3D) */}
       <div
         ref={shadowRef}
         aria-hidden="true"
         style={{
           background:
-            "radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0, 105, 248, 0.16) 0%, rgba(192, 21, 255, 0.08) 45%, rgba(0, 232, 178, 0) 76%)",
+            "radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0, 105, 248, 0.11) 0%, rgba(192, 21, 255, 0.05) 48%, rgba(0, 232, 178, 0) 76%)",
         }}
-        className="pointer-events-none absolute bottom-3 sm:bottom-4 w-[48%] h-7 rounded-full blur-md will-change-transform"
+        className="pointer-events-none absolute bottom-1 sm:bottom-2 w-[42%] h-6 rounded-full blur-lg will-change-transform"
       />
 
       {webglUnavailable ? (

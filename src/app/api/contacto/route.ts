@@ -1,4 +1,5 @@
 import { CONTACT_EMAIL, toContactRequest, validateContact } from "@/lib/contact";
+import { siteDomain } from "@/lib/site";
 
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const RATE_MAX_REQUESTS = 5;
@@ -131,7 +132,7 @@ export async function POST(request: Request) {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: process.env.CONTACT_FROM ?? "midi8 <site@midi8.com>",
+      from: process.env.CONTACT_FROM ?? `midi8 <site@${siteDomain}>`,
       to: [process.env.CONTACT_TO ?? CONTACT_EMAIL],
       reply_to: data.email,
       subject: `Pedido de reunião - ${safeCompany} (${safeAreas})`,

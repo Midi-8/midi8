@@ -80,7 +80,7 @@ const teamMembers: TeamMember[] = [
     initials: "HS",
     department: "Diagnóstico & Negócio",
     accentRgb: "0, 105, 248",
-    image: "/team/member-4.png",
+    image: "/team/member-4.webp",
   },
   {
     id: "vitor-hugo-carneiro",

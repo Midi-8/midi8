@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { MIDI8_LOGO_DATA_URI } from "@/lib/midi8-logo-data-uri";
+import { siteDomain } from "@/lib/site";
 
 export const OG_ALT = "midi8 - Tecnologia, Software, Automação & Comunicação Digital";
 export const OG_SIZE = { width: 1200, height: 630 } as const;
@@ -49,7 +50,7 @@ export function renderBrandOgImage() {
               fontWeight: 500,
             }}
           >
-            midi8.com
+            {siteDomain}
           </div>
         </div>
 

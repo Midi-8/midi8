@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import ServicosContent from "./ServicosContent";
 
 export const metadata: Metadata = {
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
     "Explore os 13 serviços da midi8 em Web Design, Software à Medida, Automação, IA, Dados, Marketing Digital, Consultoria e E-commerce.",
   alternates: { canonical: "/servicos" },
   openGraph: {
-    title: "Serviços | midi8",
+    title: "midi8 | Serviços",
     description:
       "Catálogo completo de soluções digitais, engenharia, IA e estratégia de crescimento.",
     type: "website",
@@ -18,8 +19,11 @@ export const metadata: Metadata = {
 
 export default function ServicosPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen" />}>
-      <ServicosContent />
-    </Suspense>
+    <>
+      <BreadcrumbJsonLd name="Serviços" path="/servicos" />
+      <Suspense fallback={<div className="min-h-screen" />}>
+        <ServicosContent />
+      </Suspense>
+    </>
   );
 }

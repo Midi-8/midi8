@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import PrivacidadeContent from "./PrivacidadeContent";
 
 export const metadata: Metadata = {
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
     "Informação transparente sobre o tratamento de dados pessoais, direitos dos titulares e conformidade com o RGPD na midi8.",
   alternates: { canonical: "/privacidade" },
   openGraph: {
-    title: "Política de Privacidade | midi8",
+    title: "midi8 | Política de Privacidade",
     description:
       "Informação transparente sobre o tratamento de dados pessoais e conformidade com o RGPD na midi8.",
     type: "website",
@@ -16,5 +17,10 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacidadePage() {
-  return <PrivacidadeContent />;
+  return (
+    <>
+      <BreadcrumbJsonLd name="Política de Privacidade" path="/privacidade" />
+      <PrivacidadeContent />
+    </>
+  );
 }

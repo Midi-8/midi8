@@ -161,7 +161,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     phone: "+351 911 764 432",
     phoneHref: "tel:+351911764432",
     accentRgb: "0, 105, 248",
-    image: "/team/member-4.png",
+    image: "/team/member-4.webp",
   },
   "vitor-hugo-carneiro": {
     fullName: "Vitor Hugo Marques Carneiro",
