@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import ServicosContent from "./ServicosContent";
 
 export const metadata: Metadata = {
-  title: "Serviços | Midi8",
+  title: "Midi8",
   description:
     "Explore os 13 serviços da Midi8 em Web Design, Software à Medida, Automação, IA, Dados, Marketing Digital, Consultoria e E-commerce.",
   alternates: { canonical: "/servicos" },

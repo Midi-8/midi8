@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import PrivacidadeContent from "./PrivacidadeContent";
 
 export const metadata: Metadata = {
-  title: "Política de Privacidade | Midi8",
+  title: "Midi8",
   description:
     "Informação transparente sobre o tratamento de dados pessoais, direitos dos titulares e conformidade com o RGPD na Midi8.",
   openGraph: {

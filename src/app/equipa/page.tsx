@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import EquipaContent from "./EquipaContent";
 
 export const metadata: Metadata = {
-  title: "Equipa | Midi8",
+  title: "Midi8",
   description:
     "Conheça os especialistas da Midi8 em Produto & Tecnologia, Marketing & Comunicação e Diagnóstico & Negócio.",
   alternates: { canonical: "/equipa" },

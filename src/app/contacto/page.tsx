@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import ContactoContent from "./ContactoContent";
 
 export const metadata: Metadata = {
-  title: "Contactos | Midi8",
+  title: "Midi8",
   description:
     "Fale com a Midi8 para agendar uma reunião de diagnóstico gratuita e dar vida ao seu próximo projeto digital.",
   alternates: { canonical: "/contacto" },
