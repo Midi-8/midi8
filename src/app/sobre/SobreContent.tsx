@@ -195,21 +195,6 @@ const PRINCIPLES: Record<Locale, { title: string; body: string }[]> = {
   ],
 };
 
-const STACK = [
-  "Next.js",
-  "TypeScript",
-  "React",
-  "Tailwind CSS",
-  "Python",
-  "Node.js",
-  "OpenAI & LLMs",
-  "n8n / Make",
-  "PostgreSQL",
-  "Shopify",
-  "Power BI / STATA",
-  "Google & Meta Ads",
-] as const;
-
 export default function SobreContent() {
   const { locale } = useLanguage();
   const [activeStepIndex, setActiveStepIndex] = useState(0);
@@ -420,10 +405,10 @@ export default function SobreContent() {
         <div className="section-divider" />
       </div>
 
-      {/* ─── Princípios & Stack ─── */}
+      {/* ─── Princípios ─── */}
       <section className="w-full py-14 sm:py-24 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-14 sm:mb-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-10 sm:mb-12">
             {PRINCIPLES[locale].map((p, i) => (
               <motion.article
                 key={p.title}
@@ -448,37 +433,13 @@ export default function SobreContent() {
             ))}
           </div>
 
-          {/* Stack & CTA */}
-          <div className="rounded-2xl border border-black/[0.08] bg-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_1px_2px_rgba(15,23,42,0.04),0_20px_44px_-26px_rgba(15,23,42,0.14)] p-6 sm:p-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-            <div className="max-w-xl">
-              <p className="type-label text-subtle mb-2">
-                {locale === "pt" ? "Stack & Ecossistema" : "Stack & Ecosystem"}
-              </p>
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">
-                {locale === "pt"
-                  ? "Ferramentas modernas escolhidas pela fiabilidade."
-                  : "Modern tools chosen for reliability."}
-              </h2>
-              <div className="flex flex-wrap gap-1.5">
-                {STACK.map((tech) => (
-                  <span
-                    key={tech}
-                    className="rounded-full bg-surface border border-border px-3 py-1 text-xs text-foreground"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
-              <Link href="/equipa" className="cta-button cta-secondary">
-                {locale === "pt" ? "Conhecer a equipa" : "Meet the team"}
-              </Link>
-              <Link href="/contacto" className="cta-button">
-                {locale === "pt" ? "Falar connosco" : "Start a project"}
-              </Link>
-            </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/equipa" className="cta-button cta-secondary">
+              {locale === "pt" ? "Conhecer a equipa" : "Meet the team"}
+            </Link>
+            <Link href="/contacto" className="cta-button">
+              {locale === "pt" ? "Falar connosco" : "Start a project"}
+            </Link>
           </div>
         </div>
       </section>
