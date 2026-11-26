@@ -670,14 +670,14 @@ export default function ServicesCarousel() {
           className="mb-6 sm:mb-7"
         >
           <KineticHeading
-            className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.05]"
+            className="type-headline-lg text-foreground"
             segments={
               locale === "pt"
                 ? [{ text: "Os Nossos " }, { text: "Serviços", italic: true }]
                 : [{ text: "Our " }, { text: "Services", italic: true }]
             }
           />
-          <p className="text-sm sm:text-base text-muted mt-1.5">
+          <p className="type-body text-muted mt-1.5">
             {locale === "pt"
               ? "Soluções digitais desenhadas à medida do seu negócio."
               : "Digital solutions tailored to your business."}
@@ -831,7 +831,7 @@ export default function ServicesCarousel() {
                 {/* Conteúdo ancorado em baixo em sans-serif limpa e legível */}
                 <div className="relative z-10">
                   <h3
-                    className={`font-sans text-[15px] sm:text-[17px] font-semibold tracking-tight leading-snug mb-1.5 sm:mb-2 transition-colors duration-300 ${
+                    className={`font-sans text-[15px] sm:text-[17px] font-bold tracking-tight leading-snug mb-1.5 sm:mb-2 transition-colors duration-300 ${
                       isSpotlit ? "text-white" : "text-foreground"
                     }`}
                   >

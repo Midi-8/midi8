@@ -33,6 +33,7 @@ export default function Hero() {
   const auroraOpacity = useTransform(smoothProgress, [0, 0.75], [1, 0]);
   const auroraScale = useTransform(smoothProgress, [0, 0.75], [1, 1.08]);
   const auroraY = useTransform(smoothProgress, [0, 0.75], [0, -40]);
+  const cueOpacity = useTransform(smoothProgress, [0, 0.14], [1, 0]);
 
   return (
     <section
@@ -79,11 +80,32 @@ export default function Hero() {
               className="w-[clamp(14rem,62vw,29rem)] h-auto select-none"
             />
           </h1>
-          <p className="font-display text-[clamp(1.65rem,6.5vw,4.5rem)] font-medium tracking-tight leading-[1.02] text-foreground/85 mt-4 sm:mt-6">
+          <p className="type-headline-md text-foreground/85 mt-4 sm:mt-6">
             move <em className="italic font-normal">forward</em>, fast
           </p>
         </motion.div>
       </motion.div>
+
+      {/* Indicador discreto de scroll no fundo do Hero */}
+      <motion.a
+        href="#sobre"
+        aria-label="Continuar para A Midi8"
+        style={prefersReducedMotion ? undefined : { opacity: cueOpacity }}
+        className="group absolute bottom-7 sm:bottom-9 left-1/2 -translate-x-1/2 z-10 inline-flex flex-col items-center gap-1.5 text-subtle/75 hover:text-foreground transition-colors"
+      >
+        <motion.svg
+          animate={prefersReducedMotion ? undefined : { y: [0, 4, 0] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={1.6}
+          aria-hidden="true"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m0 0l-5-5m5 5l5-5" />
+        </motion.svg>
+      </motion.a>
     </section>
   );
 }

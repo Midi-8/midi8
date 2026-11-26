@@ -152,10 +152,10 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.5, ease: REVEAL_EASE }}
-            className="max-w-2xl mb-7 sm:mb-14"
+            className="max-w-5xl mb-7 sm:mb-14"
           >
             <KineticHeading
-              className="text-[1.75rem] sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-3 sm:mb-4"
+              className="type-headline-lg text-foreground mb-3 sm:mb-4"
               segments={
                 locale === "pt"
                   ? [
@@ -170,7 +170,7 @@ export default function Home() {
                     ]
               }
             />
-            <p className="text-sm sm:text-base text-muted leading-relaxed">
+            <p className="type-body text-muted max-w-xl">
               {locale === "pt"
                 ? "Engenharia, inteligência artificial e comunicação para resolver problemas reais."
                 : "Engineering, artificial intelligence, and communication to solve real problems."}
@@ -208,7 +208,7 @@ export default function Home() {
             className="lg:col-span-5 lg:pt-2"
           >
             <KineticHeading
-              className="text-[1.75rem] sm:text-5xl font-medium tracking-tight text-foreground leading-[1.06] mb-3 sm:mb-4"
+              className="type-headline-lg text-foreground mb-3 sm:mb-4"
               segments={
                 locale === "pt"
                   ? [
@@ -223,7 +223,7 @@ export default function Home() {
                     ]
               }
             />
-            <p className="text-sm sm:text-base text-muted leading-relaxed max-w-md">
+            <p className="type-body text-muted max-w-md">
               {locale === "pt"
                 ? "Conte-nos o que pretende construir, otimizar ou escalar."
                 : "Tell us what you want to build, optimize, or scale."}
@@ -265,7 +265,7 @@ export default function Home() {
                       <p className="text-[10px] lg:text-[11px] uppercase tracking-wider text-subtle">
                         {c.label}
                       </p>
-                      <p className="text-xs lg:text-sm font-medium text-foreground truncate mt-0.5 lg:mt-0">
+                      <p className="text-xs lg:text-sm font-normal text-foreground truncate mt-0.5 lg:mt-0">
                         {c.value}
                       </p>
                     </div>

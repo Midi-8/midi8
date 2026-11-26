@@ -492,7 +492,7 @@ export default function TeamMemberModal({
                     </span>
                     <h3
                       id="team-modal-name"
-                      className="font-sans text-lg sm:text-2xl font-semibold tracking-tight text-foreground leading-snug"
+                      className="font-sans text-lg sm:text-2xl font-bold tracking-tight text-foreground leading-snug"
                     >
                       {profile.fullName}
                     </h3>
@@ -528,7 +528,7 @@ export default function TeamMemberModal({
                           {profile.education[locale].map((degree) => (
                             <li
                               key={degree}
-                              className="text-xs sm:text-[13px] font-medium text-foreground leading-snug"
+                              className="text-xs sm:text-[13px] font-normal text-foreground leading-snug"
                             >
                               {degree}
                             </li>
@@ -561,7 +561,7 @@ export default function TeamMemberModal({
                               key={cert.title}
                               className="w-full rounded-xl bg-white border border-border p-3 shadow-2xs"
                             >
-                              <p className="text-xs sm:text-[13px] font-medium text-foreground leading-snug">
+                              <p className="text-xs sm:text-[13px] font-bold text-foreground leading-snug">
                                 {cert.title}
                               </p>
                               {cert.issuer && (
@@ -595,7 +595,7 @@ export default function TeamMemberModal({
                             key={rec.title}
                             className="w-full rounded-xl bg-white border border-border p-3 shadow-2xs"
                           >
-                            <p className="text-xs sm:text-[13px] font-medium text-foreground leading-snug">
+                            <p className="text-xs sm:text-[13px] font-bold text-foreground leading-snug">
                               {rec.title}
                             </p>
                             {rec.issuer && (
@@ -628,7 +628,7 @@ export default function TeamMemberModal({
                         <p className="text-[10px] uppercase tracking-wider text-subtle">
                           {copy.linkedin}
                         </p>
-                        <p className="text-xs font-medium text-foreground truncate">
+                        <p className="text-xs font-normal text-foreground truncate">
                           {profile.linkedinHandle}
                         </p>
                       </div>
@@ -657,7 +657,7 @@ export default function TeamMemberModal({
                         <p className="text-[10px] uppercase tracking-wider text-subtle">
                           {copy.phone}
                         </p>
-                        <p className="text-xs font-medium text-foreground truncate">
+                        <p className="text-xs font-normal text-foreground truncate">
                           {profile.phone}
                         </p>
                       </div>

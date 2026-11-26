@@ -30,7 +30,35 @@
 
   /* ── Movimento ── */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ── Tipografia (estrutura pronta para Neue Haas Grotesk Display 400/700; fallback temporário: Inter) ── */
+  --font-primary: "Neue Haas Grotesk Display", var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* ── Escala tipográfica (Swiss Grotesk equilibrada para o layout Midi8) ── */
+  --text-display: clamp(3.5rem, 9vw, 8.5rem);               /* 56px → 136px */
+  --text-headline-lg: clamp(1.75rem, 3.6vw, 3.25rem);       /* 28px → 52px */
+  --text-headline-md: clamp(1.25rem, 2.2vw, 2.125rem);      /* 20px → 34px */
+  --text-body-lg: 0.9375rem;                                /* 15px */
+  --text-body-default: 1rem;                                /* 16px */
+  --text-label: 0.8125rem;                                  /* 13px */
 }
+
+/* Quando tiveres os ficheiros licenciados em /public/fonts/, basta descomentar:
+@font-face {
+  font-family: "Neue Haas Grotesk Display";
+  src: url("/fonts/NeueHaasDisplay-Roman.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Neue Haas Grotesk Display";
+  src: url("/fonts/NeueHaasDisplay-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+*/
 
 @theme inline {
   --color-background: var(--background);
@@ -45,8 +73,8 @@
   --color-border-light: var(--border-light);
   --color-border-strong: var(--border-strong);
   --color-danger: var(--danger);
-  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
-  --font-display: var(--font-ornate), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-primary);
+  --font-display: var(--font-primary);
 }
 
 /* ─── Base ─── */
@@ -54,13 +82,18 @@
 @layer base {
   html {
     background: var(--background);
+    font-family: var(--font-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
     background: var(--background);
     color: var(--foreground);
-    font-family: var(--font-sans);
+    font-family: var(--font-primary);
     font-weight: 400;
+    font-size: var(--text-body-default);
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-variant-numeric: tabular-nums;
@@ -72,18 +105,85 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-feature-settings: "liga" 1, "dlig" 1, "swsh" 1, "calt" 1;
-    letter-spacing: -0.02em;
+    font-family: var(--font-primary);
+    font-weight: 400;
     text-wrap: balance;
+  }
+
+  h1 {
+    font-weight: 700;
+    line-height: 0.74;
+    letter-spacing: -0.03em;
+  }
+
+  h2 {
+    font-weight: 400;
+    line-height: 1.33;
+    letter-spacing: 0;
+  }
+
+  h3 {
+    font-weight: 400;
+    line-height: 1.33;
+    letter-spacing: 0;
   }
 }
 
 .font-display {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-feature-settings: "liga" 1, "dlig" 1, "swsh" 1, "calt" 1;
+  font-family: var(--font-primary);
+}
+
+/* ─── Utilitários da Escala Tipográfica ─── */
+
+@layer utilities {
+  .type-display {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: var(--text-display);
+    line-height: 0.74;
+    letter-spacing: -0.03em;
+  }
+
+  .type-headline-lg {
+    font-family: var(--font-primary);
+    font-weight: 400;
+    font-size: var(--text-headline-lg);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+  }
+
+  .type-headline-md {
+    font-family: var(--font-primary);
+    font-weight: 400;
+    font-size: var(--text-headline-md);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  .type-body-lg {
+    font-family: var(--font-primary);
+    font-weight: 400;
+    font-size: var(--text-body-lg);
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+  }
+
+  .type-body {
+    font-family: var(--font-primary);
+    font-weight: 400;
+    font-size: var(--text-body-default);
+    line-height: 1.6;
+    letter-spacing: 0;
+  }
+
+  .type-label {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: var(--text-label);
+    line-height: 1.22;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
 }
 
 @keyframes kinetic-shimmer {
@@ -276,9 +376,11 @@
     border-radius: 9999px;
     background: var(--foreground);
     color: #ffffff;
-    font-size: 0.875rem;
-    font-weight: 400;
-    letter-spacing: 0.02em;
+    font-size: var(--text-label);
+    font-weight: 700;
+    line-height: 1.22;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
     text-decoration: none;
     cursor: pointer;
     box-shadow: 0 8px 22px -12px rgba(11, 15, 23, 0.35);

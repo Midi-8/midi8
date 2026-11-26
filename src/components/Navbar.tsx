@@ -132,10 +132,10 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`relative px-3.5 py-2 text-sm transition-colors whitespace-nowrap ${
+                  className={`relative px-3.5 py-2 type-body-lg transition-colors whitespace-nowrap ${
                     isActive
-                      ? "font-medium text-foreground"
-                      : "font-normal text-foreground/70 hover:text-foreground"
+                      ? "text-foreground"
+                      : "text-foreground/70 hover:text-foreground"
                   }`}
                 >
                   {link.label}
@@ -163,7 +163,7 @@ export default function Navbar() {
                 aria-pressed={locale === "pt"}
                 className={`px-1 transition-colors cursor-pointer ${
                   locale === "pt"
-                    ? "font-semibold text-foreground"
+                    ? "font-bold text-foreground"
                     : "text-muted hover:text-foreground"
                 }`}
               >
@@ -178,7 +178,7 @@ export default function Navbar() {
                 aria-pressed={locale === "en"}
                 className={`px-1 transition-colors cursor-pointer ${
                   locale === "en"
-                    ? "font-semibold text-foreground"
+                    ? "font-bold text-foreground"
                     : "text-muted hover:text-foreground"
                 }`}
               >
@@ -191,7 +191,7 @@ export default function Navbar() {
               onClick={() => setMobileOpen(false)}
               aria-label={ctaLabel}
               wrapperClassName="hidden md:inline-flex"
-              className="inline-flex items-center justify-center rounded-full border border-foreground bg-transparent text-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide whitespace-nowrap transition-colors"
+              className="inline-flex items-center justify-center rounded-full border border-foreground bg-transparent text-foreground hover:text-white px-5 py-2.5 type-label whitespace-nowrap transition-colors"
             >
               <span>{ctaLabel}</span>
             </MagneticButton>
@@ -273,7 +273,7 @@ export default function Navbar() {
                       onClick={() => setMobileOpen(false)}
                       className={`flex items-center justify-between py-4 text-3xl tracking-tight border-b border-border transition-colors ${
                         isActive
-                          ? "font-medium text-foreground"
+                          ? "font-bold text-foreground"
                           : "font-normal text-foreground/75 hover:text-foreground"
                       }`}
                       aria-current={isActive ? "true" : undefined}
@@ -301,7 +301,7 @@ export default function Navbar() {
                     aria-pressed={locale === "pt"}
                     className={`px-3 py-1 transition-colors cursor-pointer ${
                       locale === "pt"
-                        ? "font-semibold text-foreground"
+                        ? "font-bold text-foreground"
                         : "text-muted hover:text-foreground"
                     }`}
                   >
@@ -316,7 +316,7 @@ export default function Navbar() {
                     aria-pressed={locale === "en"}
                     className={`px-3 py-1 transition-colors cursor-pointer ${
                       locale === "en"
-                        ? "font-semibold text-foreground"
+                        ? "font-bold text-foreground"
                         : "text-muted hover:text-foreground"
                     }`}
                   >

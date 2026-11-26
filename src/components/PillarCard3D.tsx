@@ -262,7 +262,7 @@ export default function PillarCard3D({
           </motion.div>
 
           <div style={{ transform: "translateZ(22px)" }}>
-            <h3 className="text-[15px] sm:text-2xl font-medium text-foreground leading-snug mb-1 sm:mb-2">
+            <h3 className="text-[15px] sm:text-2xl font-normal text-foreground leading-snug mb-1 sm:mb-2">
               {title}
             </h3>
             <p className="text-[11.5px] sm:text-sm text-muted leading-snug sm:leading-relaxed">{description}</p>

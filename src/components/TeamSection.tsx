@@ -219,16 +219,6 @@ function TeamMemberCard({
             }`}
           />
 
-          {/* Número discreto no canto superior esquerdo */}
-          <span
-            aria-hidden="true"
-            className={`absolute top-2.5 left-2.5 sm:top-4 sm:left-4 font-sans text-[10px] sm:text-[11px] tracking-widest tabular-nums transition-colors duration-300 ${
-              isActive ? "text-foreground/70" : "text-subtle/75"
-            }`}
-          >
-            {String(index + 1).padStart(2, "0")}
-          </span>
-
           {/* Indicador clicável ↗ no canto superior direito */}
           <span
             aria-hidden="true"
@@ -281,8 +271,8 @@ function TeamMemberCard({
         <p
           className={`font-sans tracking-tight leading-snug transition-all duration-300 ${
             isActive
-              ? "text-[12.5px] sm:text-[17px] font-semibold text-foreground"
-              : "text-[11.5px] sm:text-[15px] font-medium text-foreground/80"
+              ? "text-[12.5px] sm:text-[17px] font-bold text-foreground"
+              : "text-[11.5px] sm:text-[15px] font-normal text-foreground/80"
           }`}
         >
           {member.name}
@@ -339,7 +329,7 @@ export default function TeamSection() {
           className="mb-6 sm:mb-7"
         >
           <KineticHeading
-            className="text-3xl sm:text-5xl font-medium tracking-tight text-foreground leading-[1.05]"
+            className="type-headline-lg text-foreground"
             segments={
               locale === "pt"
                 ? [
@@ -354,7 +344,7 @@ export default function TeamSection() {
                   ]
             }
           />
-          <p className="text-sm sm:text-base text-muted max-w-xl leading-relaxed mt-3">
+          <p className="type-body text-muted max-w-xl mt-3">
             {locale === "pt"
               ? "Especialistas em tecnologia, comunicação e estratégia."
               : "Specialists in technology, communication, and strategy."}

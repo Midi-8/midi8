@@ -13,7 +13,7 @@ export default function TermosContent() {
         <article className="max-w-4xl mx-auto px-6">
           {/* Header */}
           <header className="mb-12 border-b border-border pb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-foreground mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
               Terms &amp; Conditions
             </h1>
             <p className="text-sm text-subtle">
@@ -36,7 +36,7 @@ export default function TermosContent() {
 
             {/* 1. Ownership */}
             <section aria-labelledby="titularidade" className="space-y-3">
-              <h2 id="titularidade" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="titularidade" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 1. Identification of the Website Owner
               </h2>
               <p>
@@ -60,7 +60,7 @@ export default function TermosContent() {
 
             {/* 2. Scope */}
             <section aria-labelledby="objeto" className="space-y-3">
-              <h2 id="objeto" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="objeto" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 2. Scope of Services
               </h2>
               <p>
@@ -87,7 +87,7 @@ export default function TermosContent() {
 
             {/* 3. IP */}
             <section aria-labelledby="propriedade-intelectual" className="space-y-3">
-              <h2 id="propriedade-intelectual" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="propriedade-intelectual" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 3. Intellectual and Industrial Property
               </h2>
               <p>
@@ -100,7 +100,7 @@ export default function TermosContent() {
 
             {/* 4. Terms of Use */}
             <section aria-labelledby="utilizacao" className="space-y-3">
-              <h2 id="utilizacao" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="utilizacao" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 4. Website Use and Acceptable Conduct
               </h2>
               <p>
@@ -115,7 +115,7 @@ export default function TermosContent() {
 
             {/* 5. Liability */}
             <section aria-labelledby="responsabilidade" className="space-y-3">
-              <h2 id="responsabilidade" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="responsabilidade" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 5. Limitation of Liability
               </h2>
               <p>
@@ -128,7 +128,7 @@ export default function TermosContent() {
 
             {/* 6. External Links */}
             <section aria-labelledby="links-terceiros" className="space-y-3">
-              <h2 id="links-terceiros" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="links-terceiros" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 6. External Links
               </h2>
               <p>
@@ -138,7 +138,7 @@ export default function TermosContent() {
 
             {/* 7. Changes to Terms */}
             <section aria-labelledby="alteracoes" className="space-y-3">
-              <h2 id="alteracoes" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="alteracoes" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 7. Amendments to Terms &amp; Conditions
               </h2>
               <p>
@@ -148,7 +148,7 @@ export default function TermosContent() {
 
             {/* 8. Law & Jurisdiction */}
             <section aria-labelledby="lei-foro" className="space-y-3 bg-surface/40 p-5 rounded-2xl border border-border">
-              <h2 id="lei-foro" className="text-lg sm:text-xl font-medium text-foreground tracking-tight">
+              <h2 id="lei-foro" className="text-lg sm:text-xl font-normal text-foreground tracking-tight">
                 8. Governing Law and Jurisdiction
               </h2>
               <p>
@@ -189,7 +189,7 @@ export default function TermosContent() {
       <article className="max-w-4xl mx-auto px-6">
         {/* Cabeçalho da Página */}
         <header className="mb-12 border-b border-border pb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-foreground mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
             Termos e Condições
           </h1>
           <p className="text-sm text-subtle">
@@ -211,7 +211,7 @@ export default function TermosContent() {
 
           {/* 1. Titularidade */}
           <section aria-labelledby="titularidade" className="space-y-3">
-            <h2 id="titularidade" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="titularidade" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               1. Identificação do Titular do Website
             </h2>
             <p>
@@ -235,7 +235,7 @@ export default function TermosContent() {
 
           {/* 2. Objeto e Âmbito */}
           <section aria-labelledby="objeto" className="space-y-3">
-            <h2 id="objeto" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="objeto" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               2. Objeto e Âmbito dos Serviços
             </h2>
             <p>
@@ -262,7 +262,7 @@ export default function TermosContent() {
 
           {/* 3. Propriedade Intelectual */}
           <section aria-labelledby="propriedade-intelectual" className="space-y-3">
-            <h2 id="propriedade-intelectual" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="propriedade-intelectual" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               3. Propriedade Intelectual e Industrial
             </h2>
             <p>
@@ -275,7 +275,7 @@ export default function TermosContent() {
 
           {/* 4. Condições de Utilização */}
           <section aria-labelledby="utilizacao" className="space-y-3">
-            <h2 id="utilizacao" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="utilizacao" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               4. Condições de Utilização do Website
             </h2>
             <p>
@@ -290,7 +290,7 @@ export default function TermosContent() {
 
           {/* 5. Limitação de Responsabilidade */}
           <section aria-labelledby="responsabilidade" className="space-y-3">
-            <h2 id="responsabilidade" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="responsabilidade" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               5. Limitação de Responsabilidade
             </h2>
             <p>
@@ -303,7 +303,7 @@ export default function TermosContent() {
 
           {/* 6. Ligações a Terceiros */}
           <section aria-labelledby="links-terceiros" className="space-y-3">
-            <h2 id="links-terceiros" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="links-terceiros" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               6. Ligações Externas (Links para Terceiros)
             </h2>
             <p>
@@ -313,7 +313,7 @@ export default function TermosContent() {
 
           {/* 7. Alterações aos Termos */}
           <section aria-labelledby="alteracoes" className="space-y-3">
-            <h2 id="alteracoes" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="alteracoes" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               7. Alterações aos Termos e Condições
             </h2>
             <p>
@@ -323,7 +323,7 @@ export default function TermosContent() {
 
           {/* 8. Lei Aplicável e Foro */}
           <section aria-labelledby="lei-foro" className="space-y-3 bg-surface/40 p-5 rounded-2xl border border-border">
-            <h2 id="lei-foro" className="text-lg sm:text-xl font-medium text-foreground tracking-tight">
+            <h2 id="lei-foro" className="text-lg sm:text-xl font-normal text-foreground tracking-tight">
               8. Lei Aplicável e Foro Competente
             </h2>
             <p>

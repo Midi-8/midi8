@@ -13,7 +13,7 @@ export default function PrivacidadeContent() {
         <article className="max-w-4xl mx-auto px-6">
           {/* Page Header */}
           <header className="mb-12 border-b border-border pb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-foreground mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
               Privacy Policy
             </h1>
             <p className="text-sm text-subtle">
@@ -36,7 +36,7 @@ export default function PrivacidadeContent() {
 
             {/* 1. Controller */}
             <section aria-labelledby="resp-tratamento" className="space-y-3">
-              <h2 id="resp-tratamento" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="resp-tratamento" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 1. Identification of the Data Controller
               </h2>
               <p>
@@ -60,7 +60,7 @@ export default function PrivacidadeContent() {
 
             {/* 2. Data Collected & Purposes */}
             <section aria-labelledby="dados-recolhidos" className="space-y-3">
-              <h2 id="dados-recolhidos" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="dados-recolhidos" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 2. Data Collected, Purposes, and Lawful Grounds
               </h2>
               <p>
@@ -68,7 +68,7 @@ export default function PrivacidadeContent() {
               </p>
               <div className="space-y-4">
                 <div className="p-4 rounded-xl bg-surface/40 border border-border">
-                  <h3 className="text-base font-medium text-foreground mb-1">
+                  <h3 className="text-base font-bold text-foreground mb-1">
                     a) Contact Forms and Technical Meeting Scheduling
                   </h3>
                   <p className="text-sm text-muted mb-2">
@@ -80,7 +80,7 @@ export default function PrivacidadeContent() {
                 </div>
 
                 <div className="p-4 rounded-xl bg-surface/40 border border-border">
-                  <h3 className="text-base font-medium text-foreground mb-1">
+                  <h3 className="text-base font-bold text-foreground mb-1">
                     b) Browsing and Infrastructure Security
                   </h3>
                   <p className="text-sm text-muted mb-2">
@@ -95,7 +95,7 @@ export default function PrivacidadeContent() {
 
             {/* 3. Retention Periods */}
             <section aria-labelledby="prazos-conservacao" className="space-y-3">
-              <h2 id="prazos-conservacao" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="prazos-conservacao" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 3. Data Retention Periods
               </h2>
               <p>
@@ -116,7 +116,7 @@ export default function PrivacidadeContent() {
 
             {/* 4. Processors & Third Parties */}
             <section aria-labelledby="destinatarios" className="space-y-3">
-              <h2 id="destinatarios" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="destinatarios" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 4. Sharing with Processors and Third Parties
               </h2>
               <p>
@@ -134,7 +134,7 @@ export default function PrivacidadeContent() {
 
             {/* 5. Cookies */}
             <section aria-labelledby="cookies" className="space-y-3">
-              <h2 id="cookies" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="cookies" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 5. Cookies and Tracking Technologies
               </h2>
               <p>
@@ -148,7 +148,7 @@ export default function PrivacidadeContent() {
 
             {/* 6. Data Subject Rights */}
             <section aria-labelledby="direitos-titular" className="space-y-3">
-              <h2 id="direitos-titular" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="direitos-titular" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 6. Rights of Data Subjects
               </h2>
               <p>
@@ -191,7 +191,7 @@ export default function PrivacidadeContent() {
 
             {/* 7. Supervisory Authority */}
             <section aria-labelledby="cnpd" className="space-y-3 bg-surface/40 p-5 rounded-2xl border border-border">
-              <h2 id="cnpd" className="text-lg sm:text-xl font-medium text-foreground tracking-tight">
+              <h2 id="cnpd" className="text-lg sm:text-xl font-normal text-foreground tracking-tight">
                 7. Right to Lodge a Complaint with the Supervisory Authority (CNPD)
               </h2>
               <p>
@@ -206,7 +206,7 @@ export default function PrivacidadeContent() {
 
             {/* 8. Changes to Policy */}
             <section aria-labelledby="alteracoes" className="space-y-3">
-              <h2 id="alteracoes" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+              <h2 id="alteracoes" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
                 8. Changes to this Privacy Policy
               </h2>
               <p>
@@ -244,7 +244,7 @@ export default function PrivacidadeContent() {
       <article className="max-w-4xl mx-auto px-6">
         {/* Cabeçalho da Página */}
         <header className="mb-12 border-b border-border pb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-foreground mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
             Política de Privacidade
           </h1>
           <p className="text-sm text-subtle">
@@ -266,7 +266,7 @@ export default function PrivacidadeContent() {
 
           {/* 1. Responsável pelo Tratamento */}
           <section aria-labelledby="resp-tratamento" className="space-y-3">
-            <h2 id="resp-tratamento" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="resp-tratamento" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               1. Identificação do Responsável pelo Tratamento
             </h2>
             <p>
@@ -290,7 +290,7 @@ export default function PrivacidadeContent() {
 
           {/* 2. Dados Recolhidos e Finalidades */}
           <section aria-labelledby="dados-recolhidos" className="space-y-3">
-            <h2 id="dados-recolhidos" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="dados-recolhidos" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               2. Dados Recolhidos, Finalidades e Fundamentos de Licitude
             </h2>
             <p>
@@ -298,7 +298,7 @@ export default function PrivacidadeContent() {
             </p>
             <div className="space-y-4">
               <div className="p-4 rounded-xl bg-surface/40 border border-border">
-                <h3 className="text-base font-medium text-foreground mb-1">
+                <h3 className="text-base font-bold text-foreground mb-1">
                   a) Formulários de Contacto e Agendamento de Reuniões Técnicas
                 </h3>
                 <p className="text-sm text-muted mb-2">
@@ -310,7 +310,7 @@ export default function PrivacidadeContent() {
               </div>
 
               <div className="p-4 rounded-xl bg-surface/40 border border-border">
-                <h3 className="text-base font-medium text-foreground mb-1">
+                <h3 className="text-base font-bold text-foreground mb-1">
                   b) Navegação e Segurança da Infraestrutura
                 </h3>
                 <p className="text-sm text-muted mb-2">
@@ -325,7 +325,7 @@ export default function PrivacidadeContent() {
 
           {/* 3. Prazos de Conservação */}
           <section aria-labelledby="prazos-conservacao" className="space-y-3">
-            <h2 id="prazos-conservacao" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="prazos-conservacao" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               3. Prazos de Conservação dos Dados
             </h2>
             <p>
@@ -346,7 +346,7 @@ export default function PrivacidadeContent() {
 
           {/* 4. Subcontratantes e Destinatários */}
           <section aria-labelledby="destinatarios" className="space-y-3">
-            <h2 id="destinatarios" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="destinatarios" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               4. Partilha com Subcontratantes e Terceiros
             </h2>
             <p>
@@ -364,7 +364,7 @@ export default function PrivacidadeContent() {
 
           {/* 5. Cookies e Tecnologias de Rastreamento */}
           <section aria-labelledby="cookies" className="space-y-3">
-            <h2 id="cookies" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="cookies" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               5. Cookies e Tecnologias de Rastreamento
             </h2>
             <p>
@@ -378,7 +378,7 @@ export default function PrivacidadeContent() {
 
           {/* 6. Direitos dos Titulares */}
           <section aria-labelledby="direitos-titular" className="space-y-3">
-            <h2 id="direitos-titular" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="direitos-titular" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               6. Direitos dos Titulares dos Dados
             </h2>
             <p>
@@ -421,7 +421,7 @@ export default function PrivacidadeContent() {
 
           {/* 7. Reclamação junto da CNPD */}
           <section aria-labelledby="cnpd" className="space-y-3 bg-surface/40 p-5 rounded-2xl border border-border">
-            <h2 id="cnpd" className="text-lg sm:text-xl font-medium text-foreground tracking-tight">
+            <h2 id="cnpd" className="text-lg sm:text-xl font-normal text-foreground tracking-tight">
               7. Direito de Reclamação junto da Autoridade de Controlo (CNPD)
             </h2>
             <p>
@@ -436,7 +436,7 @@ export default function PrivacidadeContent() {
 
           {/* 8. Alterações à Política */}
           <section aria-labelledby="alteracoes" className="space-y-3">
-            <h2 id="alteracoes" className="text-xl sm:text-2xl font-medium text-foreground tracking-tight">
+            <h2 id="alteracoes" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
               8. Alterações à presente Política
             </h2>
             <p>

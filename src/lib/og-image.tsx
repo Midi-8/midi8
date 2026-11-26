@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { MIDI8_LOGO_DATA_URI } from "@/lib/midi8-logo-data-uri";
 
 export const OG_ALT = "Midi8 — Tecnologia, Software, Automação & Comunicação Digital";
 export const OG_SIZE = { width: 1200, height: 630 } as const;
@@ -60,31 +61,14 @@ export function renderBrandOgImage() {
             gap: "12px",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "baseline",
-              fontSize: "116px",
-              fontWeight: 500,
-              letterSpacing: "-0.04em",
-              color: "#0b0f17",
-              lineHeight: 0.92,
-            }}
-          >
-            <span>Midi</span>
-            <span
-              style={{
-                fontStyle: "italic",
-                fontWeight: 400,
-                marginLeft: "2px",
-                backgroundImage: "linear-gradient(135deg, #a818ff 0%, #145eff 50%, #00e896 100%)",
-                backgroundClip: "text",
-                color: "transparent",
-              }}
-            >
-              8
-            </span>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={MIDI8_LOGO_DATA_URI}
+            alt="Midi8"
+            width={420}
+            height={147}
+            style={{ width: "420px", height: "147px", objectFit: "contain" }}
+          />
 
           <div
             style={{

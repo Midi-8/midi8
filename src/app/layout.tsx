@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Geist } from "next/font/google";
+import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MotionProvider from "@/components/MotionProvider";
@@ -22,16 +22,10 @@ const organizationJsonLd = {
   sameAs: [SOCIAL.linkedin, SOCIAL.instagram],
 };
 
-const ornateSerif = Cormorant_Garamond({
-  variable: "--font-ornate",
-  weight: ["400", "500"],
+const inter = Inter({
+  variable: "--font-inter",
+  weight: ["400", "700"],
   style: ["normal", "italic"],
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
   subsets: ["latin"],
   display: "swap",
 });
@@ -101,13 +95,11 @@ export default function RootLayout({
   return (
     <html
       lang="pt"
-      className={`${ornateSerif.variable} ${geistSans.variable} h-full antialiased`}
+      className={`${inter.variable} h-full antialiased`}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
-      <body
-        className={`${geistSans.className} min-h-full flex flex-col bg-background text-foreground font-normal`}
-      >
+      <body className="min-h-full flex flex-col bg-background text-foreground font-normal">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

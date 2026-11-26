@@ -155,7 +155,7 @@ export default function ContactForm() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-2xl font-medium tracking-tight mb-3">{copy.sentTitle}</h2>
+        <h2 className="text-2xl font-normal tracking-tight mb-3">{copy.sentTitle}</h2>
         <p className="text-muted mb-8">{copy.sentBody}</p>
         <button type="button" className="neu-option" onClick={() => setStatus("idle")}>
           {copy.sentAgain}
@@ -262,7 +262,7 @@ export default function ContactForm() {
           disabled={status === "sending"}
           aria-busy={status === "sending"}
           wrapperClassName="inline-flex self-end sm:self-auto"
-          className="inline-flex items-center justify-center gap-2 rounded-full border border-foreground bg-transparent text-foreground hover:text-white px-5 py-2 text-xs sm:text-sm font-normal tracking-wide whitespace-nowrap shrink-0 cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-progress"
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-foreground bg-transparent text-foreground hover:text-white px-5 py-2.5 type-label whitespace-nowrap shrink-0 cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-progress"
         >
           <span>{status === "sending" ? copy.submitSending : copy.submitIdle}</span>
           {status === "sending" && <span className="spinner" aria-hidden="true" />}
