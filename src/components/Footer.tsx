@@ -61,15 +61,15 @@ export default function Footer() {
               aria-label={copy.toTopLabel}
             >
               <Image
-                src="/midi8-logo.webp"
+                src="/midi8-brand-logo.webp?v=official"
                 alt="midi8"
-                width={725}
-                height={253}
-                sizes="(max-width: 640px) 84px, 96px"
+                width={774}
+                height={293}
+                unoptimized
                 className="h-6 sm:h-[26px] w-auto transition-opacity duration-200 group-hover:opacity-75"
               />
             </Link>
-            <p className="font-display text-base sm:text-xl text-muted tracking-tight leading-tight">
+            <p className="font-display text-xs sm:text-[13px] text-muted tracking-tight leading-tight">
               move <em className="italic font-normal">forward</em>, fast
             </p>
           </div>

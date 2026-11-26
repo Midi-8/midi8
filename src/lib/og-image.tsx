@@ -17,7 +17,7 @@ export function renderBrandOgImage() {
           padding: "72px 84px",
           backgroundColor: "#fafaf9",
           backgroundImage:
-            "radial-gradient(circle at 18% -8%, rgba(168, 24, 255, 0.32) 0%, transparent 46%), radial-gradient(circle at 50% -12%, rgba(20, 94, 255, 0.28) 0%, transparent 50%), radial-gradient(circle at 82% -8%, rgba(0, 232, 150, 0.30) 0%, transparent 46%)",
+            "radial-gradient(circle at 18% -8%, rgba(192, 21, 255, 0.32) 0%, transparent 46%), radial-gradient(circle at 50% -12%, rgba(0, 105, 248, 0.28) 0%, transparent 50%), radial-gradient(circle at 82% -8%, rgba(0, 232, 178, 0.30) 0%, transparent 46%)",
           color: "#0b0f17",
           fontFamily: "system-ui, -apple-system, sans-serif",
         }}
@@ -66,8 +66,8 @@ export function renderBrandOgImage() {
             src={MIDI8_LOGO_DATA_URI}
             alt="midi8"
             width={420}
-            height={147}
-            style={{ width: "420px", height: "147px", objectFit: "contain" }}
+            height={159}
+            style={{ width: "420px", height: "159px", objectFit: "contain" }}
           />
 
           <div
@@ -112,7 +112,7 @@ export function renderBrandOgImage() {
             style={{
               width: "100%",
               height: "2px",
-              backgroundImage: "linear-gradient(90deg, #a818ff 0%, #145eff 50%, #00e896 100%)",
+              backgroundImage: "linear-gradient(90deg, #c015ff 0%, #0069f8 50%, #00e8b2 100%)",
               opacity: 0.75,
             }}
           />

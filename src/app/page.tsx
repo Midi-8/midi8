@@ -16,8 +16,8 @@ const REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
 const PILLARS = {
   pt: [
     {
-      accentHex: "#A818FF",
-      accentRgb: "168, 24, 255",
+      accentHex: "#C015FF",
+      accentRgb: "192, 21, 255",
       variant: "layers",
       title: "Engenharia & Produto",
       description: "Websites, plataformas web, software à medida e aplicações móveis.",
@@ -28,8 +28,8 @@ const PILLARS = {
       ],
     },
     {
-      accentHex: "#145EFF",
-      accentRgb: "20, 94, 255",
+      accentHex: "#0069F8",
+      accentRgb: "0, 105, 248",
       variant: "orbit",
       title: "Automação, IA & Dados",
       description: "Integração de sistemas, automação de processos, IA e dados.",
@@ -40,8 +40,8 @@ const PILLARS = {
       ],
     },
     {
-      accentHex: "#00C885",
-      accentRgb: "0, 200, 133",
+      accentHex: "#00E8B2",
+      accentRgb: "0, 232, 178",
       variant: "prism",
       title: "Comunicação & Crescimento",
       description: "Estratégia digital, campanhas, redes sociais e e-commerce.",
@@ -54,8 +54,8 @@ const PILLARS = {
   ],
   en: [
     {
-      accentHex: "#A818FF",
-      accentRgb: "168, 24, 255",
+      accentHex: "#C015FF",
+      accentRgb: "192, 21, 255",
       variant: "layers",
       title: "Engineering & Product",
       description: "Websites, web platforms, custom software, and mobile applications.",
@@ -66,8 +66,8 @@ const PILLARS = {
       ],
     },
     {
-      accentHex: "#145EFF",
-      accentRgb: "20, 94, 255",
+      accentHex: "#0069F8",
+      accentRgb: "0, 105, 248",
       variant: "orbit",
       title: "Automation, AI & Data",
       description: "System integration, process automation, AI, and data.",
@@ -78,8 +78,8 @@ const PILLARS = {
       ],
     },
     {
-      accentHex: "#00C885",
-      accentRgb: "0, 200, 133",
+      accentHex: "#00E8B2",
+      accentRgb: "0, 232, 178",
       variant: "prism",
       title: "Communication & Growth",
       description: "Digital strategy, campaigns, social media, and e-commerce.",
@@ -175,8 +175,8 @@ export default function Home() {
               />
               <p className="type-body text-muted max-w-xl text-pretty">
                 {locale === "pt"
-                  ? "Engenharia, inteligência artificial e comunicação para resolver problemas reais."
-                  : "Engineering, artificial intelligence, and communication to solve real problems."}
+                  ? "Unimos engenharia de software, inteligência artificial e comunicação estratégica para conceber soluções digitais fiáveis, elegantes e orientadas a resultados."
+                  : "We unite software engineering, artificial intelligence, and strategic communication to deliver reliable, refined digital solutions built for measurable impact."}
               </p>
             </div>
             <Link
@@ -242,14 +242,14 @@ export default function Home() {
             />
             <p className="type-body text-muted max-w-md text-pretty">
               {locale === "pt"
-                ? "Conte-nos o que pretende construir, otimizar ou escalar."
-                : "Tell us what you want to build, optimize, or scale."}
+                ? "Partilhe o que pretende construir, otimizar ou escalar - respondemos em menos de 24 horas úteis para agendar uma conversa inicial."
+                : "Share what you aim to build, optimize, or scale - we reply within 24 business hours to schedule an initial conversation."}
             </p>
             <Link
               href="/contacto"
               className="group inline-flex items-center gap-1.5 text-xs sm:text-sm text-muted hover:text-foreground transition-colors mt-3 w-fit"
             >
-              <span>{locale === "pt" ? "Página de contacto & FAQ" : "Contact page & FAQ"}</span>
+              <span>{locale === "pt" ? "Ver página de contactos" : "View contact page"}</span>
               <span
                 aria-hidden="true"
                 className="transition-transform duration-200 group-hover:translate-x-0.5"

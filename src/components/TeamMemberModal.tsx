@@ -75,7 +75,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     linkedinUrl: "https://www.linkedin.com/in/jos%C3%A9-pedroso-46663b396",
     phone: "+351 929 332 271",
     phoneHref: "tel:+351929332271",
-    accentRgb: "0, 200, 133",
+    accentRgb: "0, 232, 178",
   },
   "joao-miguel-santos-gouveia": {
     fullName: "João Miguel Santos Gouveia",
@@ -92,7 +92,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     linkedinUrl: "https://www.linkedin.com/in/jo%C3%A3o-gouveia-7baba4385",
     phone: "+351 919 464 665",
     phoneHref: "tel:+351919464665",
-    accentRgb: "168, 24, 255",
+    accentRgb: "192, 21, 255",
   },
   "miguel-marques-silva": {
     fullName: "Miguel Marques Silva",
@@ -129,7 +129,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     linkedinUrl: "https://www.linkedin.com/in/miguel-marques-silva",
     phone: "+351 930 426 057",
     phoneHref: "tel:+351930426057",
-    accentRgb: "20, 94, 255",
+    accentRgb: "0, 105, 248",
   },
   "hugo-mateus-sa": {
     fullName: "Hugo Mateus Ferreira Sá",
@@ -158,7 +158,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     linkedinUrl: "https://www.linkedin.com/in/hugo-s%C3%A1-924b9332a/",
     phone: "+351 911 764 432",
     phoneHref: "tel:+351911764432",
-    accentRgb: "20, 94, 255",
+    accentRgb: "0, 105, 248",
   },
   "vitor-hugo-carneiro": {
     fullName: "Vitor Hugo Marques Carneiro",
@@ -175,7 +175,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     linkedinUrl: "https://www.linkedin.com/in/vitor-carneiro0/",
     phone: "+351 964 234 045",
     phoneHref: "tel:+351964234045",
-    accentRgb: "168, 24, 255",
+    accentRgb: "192, 21, 255",
   },
   "goncalo-jose-silva": {
     fullName: "Gonçalo José Cunha da Silva",
@@ -206,7 +206,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     linkedinUrl: "https://www.linkedin.com/in/gon%C3%A7alo-silva-83a632433",
     phone: "+351 926 538 871",
     phoneHref: "tel:+351926538871",
-    accentRgb: "0, 200, 133",
+    accentRgb: "0, 232, 178",
   },
 };
 
@@ -281,7 +281,7 @@ export default function TeamMemberModal({
   const hoverAmount = useSpring(hoverTarget, SPRING_CONFIG);
 
   const profile = member ? TEAM_PROFILES[member.id] : undefined;
-  const accentRgb = profile?.accentRgb ?? "20, 94, 255";
+  const accentRgb = profile?.accentRgb ?? "0, 105, 248";
 
   const glareX = useTransform(smoothX, [-0.5, 0.5], [10, 90]);
   const glareY = useTransform(smoothY, [-0.5, 0.5], [10, 90]);

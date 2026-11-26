@@ -56,42 +56,42 @@ const teamMembers: TeamMember[] = [
     name: "José Pedroso",
     initials: "JP",
     department: "Marketing & Comunicação",
-    accentRgb: "0, 200, 133",
+    accentRgb: "0, 232, 178",
   },
   {
     id: "joao-miguel-santos-gouveia",
     name: "João Gouveia",
     initials: "JG",
     department: "Produto & Tecnologia",
-    accentRgb: "168, 24, 255",
+    accentRgb: "192, 21, 255",
   },
   {
     id: "miguel-marques-silva",
     name: "Miguel Silva",
     initials: "MS",
     department: "Produto & Tecnologia",
-    accentRgb: "20, 94, 255",
+    accentRgb: "0, 105, 248",
   },
   {
     id: "hugo-mateus-sa",
     name: "Hugo Sá",
     initials: "HS",
     department: "Diagnóstico & Negócio",
-    accentRgb: "20, 94, 255",
+    accentRgb: "0, 105, 248",
   },
   {
     id: "vitor-hugo-carneiro",
     name: "Vitor Carneiro",
     initials: "VC",
     department: "Produto & Tecnologia",
-    accentRgb: "168, 24, 255",
+    accentRgb: "192, 21, 255",
   },
   {
     id: "goncalo-jose-silva",
     name: "Gonçalo Silva",
     initials: "GS",
     department: "Marketing & Comunicação",
-    accentRgb: "0, 200, 133",
+    accentRgb: "0, 232, 178",
   },
 ];
 
@@ -348,8 +348,8 @@ export default function TeamSection() {
             />
             <p className="type-body text-muted max-w-xl mt-3 text-pretty">
               {locale === "pt"
-                ? "Especialistas em tecnologia, comunicação e estratégia."
-                : "Specialists in technology, communication, and strategy."}
+                ? "Especialistas multidisciplinares em tecnologia, negócio e comunicação, focados em entregas de elevado rigor."
+                : "Multidisciplinary specialists across technology, business, and communication focused on high-rigor delivery."}
             </p>
           </div>
           <Link
@@ -436,7 +436,7 @@ export default function TeamSection() {
         {/* ─── Linha horizontal inferior com indicador em gradiente (apenas desktop) ─── */}
         <div className="hidden md:block mt-6 sm:mt-8 h-[1.5px] w-full bg-border overflow-hidden relative">
           <div
-            className={`h-full w-1/6 bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            className={`h-full w-1/6 bg-gradient-to-r from-[#C015FF] via-[#0069F8] to-[#00E8B2] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               activeIndex !== null ? "opacity-100" : "opacity-0"
             }`}
             style={{

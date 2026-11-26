@@ -85,11 +85,11 @@ const CATEGORY_LABELS: Record<Locale, Record<Exclude<CategoryId, "all">, string>
 };
 
 const GRADIENT_BLUE_MINT =
-  "linear-gradient(170deg, rgba(255,255,255,0.96) 0%, rgba(226,238,255,0.92) 26%, #145EFF 64%, #00C885 100%)";
+  "linear-gradient(170deg, rgba(255,255,255,0.96) 0%, rgba(224,240,255,0.92) 26%, #0069F8 64%, #00E8B2 100%)";
 const GRADIENT_VIOLET_BLUE =
-  "linear-gradient(170deg, rgba(255,255,255,0.96) 0%, rgba(243,230,255,0.92) 26%, #8F18FF 64%, #145EFF 100%)";
+  "linear-gradient(170deg, rgba(255,255,255,0.96) 0%, rgba(248,230,255,0.92) 26%, #C015FF 64%, #0069F8 100%)";
 const GRADIENT_MINT_BLUE =
-  "linear-gradient(170deg, rgba(255,255,255,0.96) 0%, rgba(224,251,238,0.92) 26%, #00B074 64%, #145EFF 100%)";
+  "linear-gradient(170deg, rgba(255,255,255,0.96) 0%, rgba(220,252,244,0.92) 26%, #00E8B2 64%, #0069F8 100%)";
 
 const SERVICES: ServiceItem[] = [
   {
@@ -687,10 +687,10 @@ export default function ServicesCarousel() {
                   : [{ text: "Our " }, { text: "Services", italic: true }]
               }
             />
-            <p className="type-body text-muted mt-1.5 text-pretty">
+            <p className="type-body text-muted mt-1.5 max-w-xl text-pretty">
               {locale === "pt"
-                ? "Soluções digitais desenhadas à medida do seu negócio."
-                : "Digital solutions tailored to your business."}
+                ? "Soluções digitais sob medida que combinam tecnologia, automação e posicionamento de marca."
+                : "Tailored digital solutions combining engineering, automation, and brand positioning."}
             </p>
           </div>
           <Link
@@ -892,7 +892,7 @@ export default function ServicesCarousel() {
                   onClick={() => rotateToIndex(index)}
                   className={`w-2 h-2 rounded-full transition-colors duration-300 cursor-pointer ${
                     selected
-                      ? "bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896]"
+                      ? "bg-gradient-to-r from-[#C015FF] via-[#0069F8] to-[#00E8B2]"
                       : "bg-border-strong/55 hover:bg-foreground/45"
                   }`}
                 />

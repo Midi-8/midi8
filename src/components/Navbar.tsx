@@ -101,14 +101,14 @@ export default function Navbar() {
         <div
           className={`relative mx-auto flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] transition-[max-width,height,border-radius,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             isIsland
-              ? "max-w-5xl h-14 px-5 sm:px-6 rounded-2xl backdrop-blur-md backdrop-saturate-150 border border-white/65 ring-1 ring-black/[0.06] shadow-[0_14px_34px_-12px_rgba(20,94,255,0.2),0_6px_18px_-8px_rgba(168,24,255,0.14)]"
+              ? "max-w-5xl h-14 px-5 sm:px-6 rounded-2xl backdrop-blur-md backdrop-saturate-150 border border-white/65 ring-1 ring-black/[0.06] shadow-[0_14px_34px_-12px_rgba(0,105,248,0.2),0_6px_18px_-8px_rgba(192,21,255,0.14)]"
               : "max-w-7xl h-16 px-5 sm:px-6 rounded-none bg-transparent border border-transparent"
           }`}
           style={
             isIsland
               ? {
                   background:
-                    "linear-gradient(110deg, rgba(168, 24, 255, 0.16) 0%, rgba(20, 94, 255, 0.15) 50%, rgba(0, 232, 150, 0.16) 100%), rgba(255, 255, 255, 0.76)",
+                    "linear-gradient(110deg, rgba(192, 21, 255, 0.16) 0%, rgba(0, 105, 248, 0.15) 50%, rgba(0, 232, 178, 0.16) 100%), rgba(255, 255, 255, 0.76)",
                 }
               : undefined
           }
@@ -121,12 +121,12 @@ export default function Navbar() {
             aria-label={locale === "pt" ? "midi8 - Página inicial" : "midi8 - Home"}
           >
             <Image
-              src="/midi8-logo.webp"
+              src="/midi8-brand-logo.webp?v=official"
               alt="midi8"
-              width={725}
-              height={253}
+              width={774}
+              height={293}
               priority
-              sizes="(max-width: 640px) 84px, 96px"
+              unoptimized
               className="h-6 sm:h-[26px] w-auto transition-opacity duration-200 group-hover:opacity-75"
             />
           </Link>
@@ -149,7 +149,7 @@ export default function Navbar() {
                   {link.label}
                   <span
                     aria-hidden="true"
-                    className={`pointer-events-none absolute left-3.5 right-3.5 bottom-0.5 h-[1.5px] rounded-full bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896] transition-all duration-300 ${
+                    className={`pointer-events-none absolute left-3.5 right-3.5 bottom-0.5 h-[1.5px] rounded-full bg-gradient-to-r from-[#C015FF] via-[#0069F8] to-[#00E8B2] transition-all duration-300 ${
                       isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
                     }`}
                   />

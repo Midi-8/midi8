@@ -92,16 +92,19 @@ function Field({
 
 export default function ContactForm({
   initialArea,
+  initialAreas,
   initialMessage,
 }: {
   initialArea?: Area;
+  initialAreas?: Area[];
   initialMessage?: string;
 } = {}) {
   const [errors, setErrors] = useState<ContactErrors>({});
   const [status, setStatus] = useState<Status>("idle");
-  const [selectedAreas, setSelectedAreas] = useState<Area[]>(() =>
-    initialArea ? [initialArea] : []
-  );
+  const [selectedAreas, setSelectedAreas] = useState<Area[]>(() => {
+    if (initialAreas && initialAreas.length > 0) return initialAreas;
+    return initialArea ? [initialArea] : [];
+  });
   const [sentData, setSentData] = useState<ContactRequest | null>(null);
   const { locale } = useLanguage();
 
@@ -235,9 +238,11 @@ export default function ContactForm({
         <textarea
           id="message"
           name="message"
-          rows={3}
+          rows={initialMessage ? 9 : 3}
           defaultValue={initialMessage ?? ""}
-          className="neu-field resize-none min-h-20 sm:min-h-28 max-sm:!py-2 max-sm:!px-2.5 max-sm:!text-xs"
+          className={`neu-field resize-y max-sm:!py-2 max-sm:!px-2.5 max-sm:!text-xs ${
+            initialMessage ? "min-h-44 sm:min-h-52 leading-relaxed" : "min-h-20 sm:min-h-28"
+          }`}
           placeholder={copy.messagePlaceholder}
           {...invalid("message")}
         />

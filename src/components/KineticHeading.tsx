@@ -76,7 +76,7 @@ export default function KineticHeading({
           const isLastWord = wordIdx === seg.words.length - 1;
           return (
             <span key={`${segIdx}-${wordIdx}`}>
-              <span className="inline-block overflow-hidden align-bottom pb-[0.16em] -mb-[0.16em] px-[0.08em] -mx-[0.08em]">
+              <span className="inline-block overflow-hidden align-bottom pt-[0.12em] -mt-[0.12em] pb-[0.28em] -mb-[0.28em] px-[0.14em] -mx-[0.14em]">
                 <motion.span
                   initial={{ y: "75%", opacity: 0, filter: "blur(8px)" }}
                   animate={

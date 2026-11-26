@@ -71,12 +71,12 @@ export default function Hero() {
         >
           <h1 className="flex justify-center">
             <Image
-              src="/midi8-logo.webp"
+              src="/midi8-brand-logo.webp?v=official"
               alt="midi8"
-              width={725}
-              height={253}
+              width={774}
+              height={293}
               priority
-              sizes="(max-width: 640px) 70vw, (max-width: 1024px) 52vw, 460px"
+              unoptimized
               className="w-[clamp(14rem,62vw,29rem)] h-auto select-none"
             />
           </h1>

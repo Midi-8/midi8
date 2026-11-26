@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
 import KineticHeading from "@/components/KineticHeading";
 import ContactForm from "@/components/ContactForm";
-import { useLanguage, type Locale } from "@/context/LanguageContext";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   AREAS,
   CONTACT_EMAIL,
@@ -16,45 +14,19 @@ import {
   type Area,
 } from "@/lib/contact";
 
-const FAQS: Record<Locale, { q: string; a: string }[]> = {
-  pt: [
-    {
-      q: "Quanto tempo demoram a responder?",
-      a: "Respondemos sempre em menos de 24 horas úteis, diretamente com um membro técnico ou estratégico da equipa para agendar uma breve conversa.",
-    },
-    {
-      q: "A primeira reunião tem algum custo?",
-      a: "Não. A primeira sessão de diagnóstico (20-30 minutos) é totalmente gratuita e serve para compreender o desafio e perceber se somos o parceiro certo.",
-    },
-    {
-      q: "Como funcionam os orçamentos e prazos?",
-      a: "Trabalhamos com propostas fechadas por projeto (com prazos e entregáveis claros) ou em modelo de acompanhamento mensal para evolução contínua e campanhas.",
-    },
-  ],
-  en: [
-    {
-      q: "How quickly do you reply?",
-      a: "We always reply within 24 business hours, directly from a technical or strategy lead to schedule a short discovery call.",
-    },
-    {
-      q: "Does the first meeting cost anything?",
-      a: "No. Our initial 20-30 minute diagnostic call is completely free and designed to understand your challenge and confirm fit.",
-    },
-    {
-      q: "How do pricing and timelines work?",
-      a: "We offer fixed-scope project proposals with clear milestones, as well as monthly retainers for continuous product iteration and marketing campaigns.",
-    },
-  ],
-};
-
 export default function ContactoContent() {
   const { locale } = useLanguage();
   const searchParams = useSearchParams();
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  const areaParam = searchParams.get("area");
+  const areaParams = searchParams.getAll("area");
   const briefParam = searchParams.get("brief") ?? undefined;
-  const initialArea = AREAS.find((a) => a === areaParam) as Area | undefined;
+  const initialAreas = Array.from(
+    new Set(
+      areaParams.filter((value): value is Area =>
+        (AREAS as readonly string[]).includes(value)
+      )
+    )
+  );
 
   const contacts = [
     {
@@ -104,7 +76,7 @@ export default function ContactoContent() {
   return (
     <main className="flex-1 text-foreground overflow-x-clip">
       {/* ─── Cabeçalho + Formulário ─── */}
-      <section className="relative w-full pt-28 sm:pt-36 pb-14 sm:pb-24 px-4 sm:px-6 overflow-hidden">
+      <section className="relative w-full pt-28 sm:pt-36 pb-16 sm:pb-28 px-4 sm:px-6 overflow-hidden">
         <div aria-hidden="true" className="top-aurora-fade opacity-70" />
         <div aria-hidden="true" className="top-aurora-grain" />
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 studio-dot-grid opacity-55" />
@@ -140,15 +112,15 @@ export default function ContactoContent() {
               />
               <p className="type-body text-muted max-w-md text-pretty">
                 {locale === "pt"
-                  ? "Partilhe os seus objetivos e respondemos em menos de 24 horas para marcar uma conversa de diagnóstico gratuita."
-                  : "Share your goals and we will get back within 24 hours to schedule a free discovery conversation."}
+                  ? "Partilhe o contexto e os objetivos da sua organização. Respondemos em menos de 24 horas úteis para agendar uma conversa inicial de diagnóstico, sem compromisso."
+                  : "Share your organization's context and goals. We reply within 24 business hours to schedule an initial, no-obligation discovery conversation."}
               </p>
             </div>
 
             <div className="lg:col-span-7 lg:row-span-2">
               <ContactForm
-                key={`${initialArea ?? "default"}-${briefParam ?? ""}`}
-                initialArea={initialArea}
+                key={`${initialAreas.join("|") || "default"}-${briefParam ?? ""}`}
+                initialAreas={initialAreas}
                 initialMessage={briefParam}
               />
             </div>
@@ -181,66 +153,6 @@ export default function ContactoContent() {
                 ))}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── FAQ Rápida ─── */}
-      <section className="w-full py-14 sm:py-20 px-4 sm:px-6">
-        <div className="max-w-3xl mx-auto">
-          <p className="type-label text-subtle mb-2">
-            {locale === "pt" ? "O que acontece a seguir" : "What happens next"}
-          </p>
-          <h2 className="type-headline-md text-foreground mb-6 sm:mb-8">
-            {locale === "pt" ? "Perguntas frequentes." : "Frequently asked questions."}
-          </h2>
-
-          <div className="flex flex-col gap-3">
-            {FAQS[locale].map((faq, idx) => {
-              const isOpen = openFaq === idx;
-              return (
-                <div
-                  key={faq.q}
-                  className="rounded-2xl border border-black/[0.08] bg-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_1px_2px_rgba(15,23,42,0.04)] overflow-hidden"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setOpenFaq(isOpen ? null : idx)}
-                    aria-expanded={isOpen}
-                    className="w-full flex items-center justify-between gap-4 p-4 sm:p-5 text-left cursor-pointer"
-                  >
-                    <span className="text-sm sm:text-base font-bold text-foreground">
-                      {faq.q}
-                    </span>
-                    <span
-                      aria-hidden="true"
-                      className={`w-7 h-7 rounded-lg bg-surface border border-border flex items-center justify-center text-foreground shrink-0 transition-transform duration-300 ${
-                        isOpen ? "rotate-45" : ""
-                      }`}
-                    >
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />
-                      </svg>
-                    </span>
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                        className="overflow-hidden"
-                      >
-                        <p className="px-4 sm:px-5 pb-4 sm:pb-5 text-xs sm:text-sm text-muted leading-relaxed text-pretty">
-                          {faq.a}
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
           </div>
         </div>
       </section>

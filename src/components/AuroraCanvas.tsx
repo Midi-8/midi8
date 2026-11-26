@@ -73,13 +73,13 @@ void main() {
 
   float cursorGlow = exp(-mDist * 4.5) * (0.12 + uVelocity * 0.35);
 
-  vec3 cViolet = vec3(0.659, 0.094, 1.0);
-  vec3 cBlue   = vec3(0.078, 0.369, 1.0);
-  vec3 cMint   = vec3(0.0, 0.910, 0.588);
+  vec3 cViolet = vec3(0.753, 0.082, 1.0);
+  vec3 cBlue   = vec3(0.0, 0.412, 0.973);
+  vec3 cMint   = vec3(0.0, 0.910, 0.698);
 
   float wSum = gViolet + gBlue + gMint + 0.0001;
   vec3 col = (cViolet * gViolet + cBlue * gBlue + cMint * gMint) / wSum;
-  col = mix(col, vec3(0.45, 0.72, 1.0), clamp(cursorGlow * 0.4 + (fluid - 0.45) * 0.22, 0.0, 0.35));
+  col = mix(col, vec3(0.32, 0.74, 0.98), clamp(cursorGlow * 0.4 + (fluid - 0.45) * 0.22, 0.0, 0.35));
 
   float topBand = smoothstep(0.58, 0.99, uv.y);
   float fluidMod = mix(0.76, 1.16, fluid);

@@ -14,6 +14,7 @@ const organizationJsonLd = {
   "@type": "ProfessionalService",
   name: "midi8",
   url: siteUrl,
+  logo: `${siteUrl}/midi8-brand-logo.webp`,
   email: CONTACT_EMAIL,
   telephone: CONTACT_PHONE,
   description:
@@ -42,13 +43,13 @@ export const metadata: Metadata = {
   title: "midi8",
   icons: {
     icon: [
-      { url: "/m8-icon-32.png?v=m8", type: "image/png", sizes: "32x32" },
-      { url: "/m8-icon.png?v=m8", type: "image/png", sizes: "64x64" },
-      { url: "/m8-icon.svg?v=m8", type: "image/svg+xml", sizes: "any" },
+      { url: "/favicon-8-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-8-64.png", type: "image/png", sizes: "64x64" },
+      { url: "/favicon-8-192.png", type: "image/png", sizes: "192x192" },
     ],
-    shortcut: [{ url: "/m8-icon.png?v=m8", type: "image/png" }],
+    shortcut: [{ url: "/favicon-8-64.png", type: "image/png" }],
     apple: [
-      { url: "/m8-apple-icon.png?v=m8", sizes: "180x180", type: "image/png" },
+      { url: "/favicon-8-180.png", sizes: "180x180", type: "image/png" },
     ],
   },
   description:
