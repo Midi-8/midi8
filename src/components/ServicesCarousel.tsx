@@ -20,7 +20,7 @@ export function ServiceCategoryTag({
         window.dispatchEvent(new CustomEvent("midi8:select-category", { detail: category }));
         document.getElementById("servicos")?.scrollIntoView({ behavior: "smooth" });
       }}
-      className="rounded-full bg-white/90 border border-border px-2.5 py-0.5 text-[11px] text-muted hover:text-foreground hover:border-border-strong transition-colors cursor-pointer"
+      className="rounded-full bg-white/90 border border-border px-2.5 py-0.5 text-[11px] text-muted hover:text-foreground hover:border-border-strong active:scale-[0.97] transition-all cursor-pointer"
     >
       {label}
     </button>
@@ -677,7 +677,7 @@ export default function ServicesCarousel() {
                 : [{ text: "Our " }, { text: "Services", italic: true }]
             }
           />
-          <p className="type-body text-muted mt-1.5">
+          <p className="type-body text-muted mt-1.5 text-pretty">
             {locale === "pt"
               ? "Soluções digitais desenhadas à medida do seu negócio."
               : "Digital solutions tailored to your business."}
@@ -693,7 +693,7 @@ export default function ServicesCarousel() {
                 key={cat.id}
                 type="button"
                 onClick={() => handleCategoryChange(cat.id)}
-                className={`shrink-0 px-3.5 py-1 rounded-full text-xs sm:text-sm font-normal transition-all cursor-pointer border ${
+                className={`shrink-0 px-3.5 py-1 rounded-full text-xs sm:text-sm font-normal active:scale-[0.97] transition-all cursor-pointer border ${
                   selected
                     ? "bg-foreground text-white border-foreground"
                     : "bg-surface text-muted border-transparent hover:text-foreground hover:bg-surface-light"

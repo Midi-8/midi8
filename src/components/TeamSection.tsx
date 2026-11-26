@@ -202,10 +202,10 @@ function TeamMemberCard({
         className="relative w-full aspect-[4/5] origin-bottom will-change-transform"
       >
         <div
-          className={`relative isolate w-full h-full rounded-[16px] sm:rounded-[26px] overflow-hidden border [transform:translateZ(0)] transition-[box-shadow,background-color,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-focus-visible:ring-2 group-focus-visible:ring-brand-blue group-focus-visible:ring-offset-4 ${
+          className={`relative isolate w-full h-full rounded-2xl overflow-hidden border [transform:translateZ(0)] transition-[box-shadow,background-color,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-focus-visible:ring-2 group-focus-visible:ring-brand-blue group-focus-visible:ring-offset-4 ${
             isActive
-              ? "bg-white border-black/[0.14] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_22px_46px_-18px_rgba(15,23,42,0.2)]"
-              : "bg-white/90 border-black/[0.07] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_24px_-18px_rgba(15,23,42,0.1)]"
+              ? "bg-white border-black/[0.14] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_2px_4px_rgba(15,23,42,0.05),0_22px_46px_-18px_rgba(15,23,42,0.2)]"
+              : "bg-white/95 border-black/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_1px_2px_rgba(15,23,42,0.04),0_12px_26px_-18px_rgba(15,23,42,0.12)]"
           }`}
         >
           {/* Gradiente cromático suave de estúdio ao passar o rato */}
@@ -344,7 +344,7 @@ export default function TeamSection() {
                   ]
             }
           />
-          <p className="type-body text-muted max-w-xl mt-3">
+          <p className="type-body text-muted max-w-xl mt-3 text-pretty">
             {locale === "pt"
               ? "Especialistas em tecnologia, comunicação e estratégia."
               : "Specialists in technology, communication, and strategy."}
@@ -371,7 +371,7 @@ export default function TeamSection() {
                   setActiveIndex(null);
                 }}
                 aria-pressed={selected}
-                className={`shrink-0 px-3.5 py-1 rounded-full text-xs sm:text-sm font-normal transition-all cursor-pointer border ${
+                className={`shrink-0 px-3.5 py-1 rounded-full text-xs sm:text-sm font-normal active:scale-[0.97] transition-all cursor-pointer border ${
                   selected
                     ? "bg-foreground text-white border-foreground"
                     : "bg-surface text-muted border-transparent hover:text-foreground hover:bg-surface-light"

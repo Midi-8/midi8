@@ -378,7 +378,7 @@ export default function TeamMemberModal({
                 : { opacity: 0, y: 12, scale: 0.98 }
             }
             transition={{ duration: 0.35, ease: EASE }}
-            className="relative w-full max-w-[540px] max-h-[88dvh] overflow-y-auto no-scrollbar rounded-2xl bg-white/96 border border-black/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_28px_70px_-20px_rgba(15,23,42,0.26)] p-4 sm:p-7"
+            className="relative w-full max-w-[540px] max-h-[88dvh] overflow-y-auto no-scrollbar rounded-2xl bg-white/96 border border-black/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_2px_6px_rgba(15,23,42,0.06),0_32px_76px_-22px_rgba(15,23,42,0.28)] p-4 sm:p-7"
           >
             {/* Reflexo especular dinâmico igual aos cards da página */}
             <motion.div
@@ -613,7 +613,7 @@ export default function TeamMemberModal({
                       href={profile.linkedinUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-center gap-3 rounded-xl border border-border bg-white p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-light hover:shadow-[0_12px_28px_-18px_rgba(15,23,42,0.14)]"
+                      className="group flex items-center gap-3 rounded-xl border border-border bg-white p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-light hover:shadow-[0_1px_2px_rgba(15,23,42,0.04),0_14px_28px_-18px_rgba(15,23,42,0.16)] active:scale-[0.98]"
                     >
                       <span className="w-8 h-8 rounded-lg bg-surface border border-border flex items-center justify-center text-foreground shrink-0 transition-colors group-hover:bg-foreground group-hover:text-white group-hover:border-foreground">
                         <svg
@@ -636,7 +636,7 @@ export default function TeamMemberModal({
 
                     <a
                       href={profile.phoneHref}
-                      className="group flex items-center gap-3 rounded-xl border border-border bg-white p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-light hover:shadow-[0_12px_28px_-18px_rgba(15,23,42,0.14)]"
+                      className="group flex items-center gap-3 rounded-xl border border-border bg-white p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-light hover:shadow-[0_1px_2px_rgba(15,23,42,0.04),0_14px_28px_-18px_rgba(15,23,42,0.16)] active:scale-[0.98]"
                     >
                       <span className="w-8 h-8 rounded-lg bg-surface border border-border flex items-center justify-center text-foreground shrink-0 transition-colors group-hover:bg-foreground group-hover:text-white group-hover:border-foreground">
                         <svg

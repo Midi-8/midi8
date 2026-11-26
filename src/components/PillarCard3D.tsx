@@ -231,7 +231,7 @@ export default function PillarCard3D({
         <div
           aria-hidden="true"
           style={{ transform: "translateZ(0px)" }}
-          className="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden bg-white/95 border border-black/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]"
+          className="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden bg-white/95 border border-black/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_1px_2px_rgba(15,23,42,0.04),0_16px_34px_-22px_rgba(15,23,42,0.14)]"
         >
           <motion.div
             style={
@@ -265,7 +265,7 @@ export default function PillarCard3D({
             <h3 className="text-[15px] sm:text-2xl font-normal text-foreground leading-snug mb-1 sm:mb-2">
               {title}
             </h3>
-            <p className="text-[11.5px] sm:text-sm text-muted leading-snug sm:leading-relaxed">{description}</p>
+            <p className="text-[11.5px] sm:text-sm text-muted leading-snug sm:leading-relaxed text-pretty">{description}</p>
           </div>
         </div>
 

@@ -76,8 +76,8 @@ function Field({
   children: ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-1 sm:gap-2">
-      <label htmlFor={id} className="text-xs sm:text-sm text-secondary">
+    <div className="group flex flex-col gap-1 sm:gap-2">
+      <label htmlFor={id} className="text-xs sm:text-sm text-muted group-focus-within:text-foreground transition-colors">
         {label}
       </label>
       {children}
@@ -190,7 +190,7 @@ export default function ContactForm() {
           {AREAS.map((area) => {
             const isSelected = selectedAreas.includes(area);
             return (
-              <label key={area} className="neu-option justify-start max-sm:!py-2 max-sm:!px-2.5 max-sm:!text-[11px] max-sm:!gap-1.5">
+              <label key={area} className="neu-option justify-start active:scale-[0.98] transition-transform max-sm:!py-2 max-sm:!px-2.5 max-sm:!text-[11px] max-sm:!gap-1.5">
                 <input
                   type="checkbox"
                   name="areas"
@@ -250,7 +250,7 @@ export default function ContactForm() {
       )}
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
-        <p className="text-xs text-subtle leading-relaxed">
+        <p className="text-xs text-subtle leading-relaxed text-pretty">
           {copy.privacyPrefix}{" "}
           <Link href="/privacidade" className="underline underline-offset-4 hover:text-foreground transition-colors">
             {copy.privacyLink}

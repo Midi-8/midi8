@@ -145,8 +145,9 @@ export default function Home() {
       <Hero />
 
       {/* ─── 01. A Midi8 ─── */}
-      <section id="sobre" className="relative w-full py-14 sm:py-28 px-4 sm:px-6 scroll-mt-16">
-        <div className="max-w-7xl w-full mx-auto">
+      <section id="sobre" className="relative w-full py-14 sm:py-28 px-4 sm:px-6 scroll-mt-16 overflow-hidden">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 studio-dot-grid opacity-70" />
+        <div className="relative z-10 max-w-7xl w-full mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -170,7 +171,7 @@ export default function Home() {
                     ]
               }
             />
-            <p className="type-body text-muted max-w-xl">
+            <p className="type-body text-muted max-w-xl text-pretty">
               {locale === "pt"
                 ? "Engenharia, inteligência artificial e comunicação para resolver problemas reais."
                 : "Engineering, artificial intelligence, and communication to solve real problems."}
@@ -190,15 +191,28 @@ export default function Home() {
         </div>
       </section>
 
+      <div aria-hidden="true" className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="section-divider" />
+      </div>
+
       {/* ─── 02. Serviços ─── */}
       <ServicesCarousel />
+
+      <div aria-hidden="true" className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="section-divider" />
+      </div>
 
       {/* ─── 03. Equipa ─── */}
       <TeamSection />
 
+      <div aria-hidden="true" className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="section-divider" />
+      </div>
+
       {/* ─── 04. Contactos ─── */}
-      <section id="contacto" className="w-full py-14 sm:py-28 px-4 sm:px-6 scroll-mt-16">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-x-16 lg:gap-y-7 items-start">
+      <section id="contacto" className="relative w-full py-14 sm:py-28 px-4 sm:px-6 scroll-mt-16 overflow-hidden">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 studio-dot-grid opacity-60" />
+        <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-x-16 lg:gap-y-7 items-start">
           {/* Cabeçalho */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -223,7 +237,7 @@ export default function Home() {
                     ]
               }
             />
-            <p className="type-body text-muted max-w-md">
+            <p className="type-body text-muted max-w-md text-pretty">
               {locale === "pt"
                 ? "Conte-nos o que pretende construir, otimizar ou escalar."
                 : "Tell us what you want to build, optimize, or scale."}
@@ -255,7 +269,7 @@ export default function Home() {
                   key={c.label}
                   href={c.href}
                   {...(c.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className="group flex items-start lg:items-center justify-between gap-3 lg:gap-4 rounded-2xl border border-black/[0.08] bg-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_12px_28px_-22px_rgba(15,23,42,0.16)] p-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-light hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_16px_34px_-20px_rgba(15,23,42,0.18)]"
+                  className="group flex items-start lg:items-center justify-between gap-3 lg:gap-4 rounded-2xl border border-black/[0.08] bg-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_1px_2px_rgba(15,23,42,0.04),0_14px_30px_-20px_rgba(15,23,42,0.14)] p-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-border-light hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_2px_4px_rgba(15,23,42,0.05),0_20px_38px_-18px_rgba(15,23,42,0.18)] active:scale-[0.98]"
                 >
                   <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2.5 lg:gap-3 min-w-0 w-full">
                     <span className="w-8 h-8 lg:w-9 lg:h-9 rounded-xl bg-surface border border-border flex items-center justify-center text-foreground shrink-0 transition-colors group-hover:bg-foreground group-hover:text-white group-hover:border-foreground">
