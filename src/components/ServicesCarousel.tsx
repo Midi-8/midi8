@@ -867,10 +867,10 @@ export default function ServicesCarousel() {
                   aria-selected={selected}
                   aria-label={`${service.title[locale]} (${index + 1}/${total})`}
                   onClick={() => rotateToIndex(index)}
-                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  className={`w-2 h-2 rounded-full transition-colors duration-300 cursor-pointer ${
                     selected
-                      ? "w-7 bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896]"
-                      : "w-1.5 bg-border-strong/55 hover:bg-foreground/45"
+                      ? "bg-gradient-to-r from-[#A818FF] via-[#145EFF] to-[#00E896]"
+                      : "bg-border-strong/55 hover:bg-foreground/45"
                   }`}
                 />
               );

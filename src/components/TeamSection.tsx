@@ -2,7 +2,6 @@
 
 import { useCallback, useState, type PointerEvent } from "react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import {
   motion,
   useMotionValue,
@@ -25,8 +24,9 @@ type Department =
 interface TeamMember {
   id: string;
   name: string;
+  initials: string;
   department: Department;
-  image: string;
+  accentRgb: string;
 }
 
 const DEPARTMENT_LABELS: Record<Locale, Record<Department, string>> = {
@@ -53,38 +53,44 @@ const teamMembers: TeamMember[] = [
   {
     id: "jose-francisco-pedroso",
     name: "José Pedroso",
+    initials: "JP",
     department: "Marketing & Comunicação",
-    image: "/team/member-3.webp",
+    accentRgb: "0, 200, 133",
   },
   {
     id: "joao-miguel-santos-gouveia",
     name: "João Gouveia",
+    initials: "JG",
     department: "Produto & Tecnologia",
-    image: "/team/member-2.webp",
+    accentRgb: "168, 24, 255",
   },
   {
     id: "miguel-marques-silva",
     name: "Miguel Silva",
+    initials: "MS",
     department: "Produto & Tecnologia",
-    image: "/team/member-1.webp",
+    accentRgb: "20, 94, 255",
   },
   {
     id: "hugo-mateus-sa",
     name: "Hugo Sá",
+    initials: "HS",
     department: "Diagnóstico & Negócio",
-    image: "/team/member-4.webp",
+    accentRgb: "20, 94, 255",
   },
   {
     id: "vitor-hugo-carneiro",
     name: "Vitor Carneiro",
+    initials: "VC",
     department: "Produto & Tecnologia",
-    image: "/team/member-5.webp",
+    accentRgb: "168, 24, 255",
   },
   {
     id: "goncalo-jose-silva",
     name: "Gonçalo Silva",
+    initials: "GS",
     department: "Marketing & Comunicação",
-    image: "/team/member-6.webp",
+    accentRgb: "0, 200, 133",
   },
 ];
 
@@ -185,7 +191,7 @@ function TeamMemberCard({
             : "cursor-pointer z-0"
       }`}
     >
-      {/* Retrato com efeito 3D Dock e janela de paralaxe interna */}
+      {/* Card editorial cerâmico com monograma e indicador clicável ↗ no canto */}
       <motion.div
         animate={
           prefersReducedMotion
@@ -196,38 +202,76 @@ function TeamMemberCard({
         className="relative w-full aspect-[4/5] origin-bottom will-change-transform"
       >
         <div
-          className={`relative isolate w-full h-full rounded-[16px] sm:rounded-[32px] overflow-hidden [transform:translateZ(0)] transition-[box-shadow,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-focus-visible:ring-2 group-focus-visible:ring-brand-blue group-focus-visible:ring-offset-4 ${
+          className={`relative isolate w-full h-full rounded-[16px] sm:rounded-[26px] overflow-hidden border [transform:translateZ(0)] transition-[box-shadow,background-color,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-focus-visible:ring-2 group-focus-visible:ring-brand-blue group-focus-visible:ring-offset-4 ${
             isActive
-              ? "bg-[#e4e6eb] shadow-[0_26px_54px_-16px_rgba(15,23,42,0.24)]"
-              : "bg-[#d5d7dc]"
+              ? "bg-white border-black/[0.14] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_22px_46px_-18px_rgba(15,23,42,0.2)]"
+              : "bg-white/90 border-black/[0.07] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_24px_-18px_rgba(15,23,42,0.1)]"
           }`}
         >
-          <motion.div
-            style={prefersReducedMotion ? undefined : { x: imgX, y: imgY }}
-            animate={prefersReducedMotion ? undefined : { scale: isActive ? 1.08 : 1 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className={`absolute inset-0 transition-colors duration-300 ${
-              isActive ? "bg-[#e4e6eb]" : "bg-[#d5d7dc]"
+          {/* Gradiente cromático suave de estúdio ao passar o rato */}
+          <div
+            aria-hidden="true"
+            style={{
+              background: `radial-gradient(circle at 80% 18%, rgba(${member.accentRgb}, 0.14) 0%, rgba(${member.accentRgb}, 0.04) 42%, transparent 72%)`,
+            }}
+            className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ${
+              isActive ? "opacity-100" : "opacity-45"
+            }`}
+          />
+
+          {/* Número discreto no canto superior esquerdo */}
+          <span
+            aria-hidden="true"
+            className={`absolute top-2.5 left-2.5 sm:top-4 sm:left-4 font-sans text-[10px] sm:text-[11px] tracking-widest tabular-nums transition-colors duration-300 ${
+              isActive ? "text-foreground/70" : "text-subtle/75"
             }`}
           >
-            <Image
-              src={member.image}
-              alt={`${member.name} — ${translatedDepartment}`}
-              fill
-              sizes="(max-width: 640px) 30vw, (max-width: 768px) 31vw, 220px"
-              className={`object-cover object-top rounded-[16px] sm:rounded-[32px] mix-blend-multiply transition-[filter,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                isActive
-                  ? "grayscale-0 contrast-100 opacity-100"
-                  : "grayscale contrast-[0.92] opacity-85"
+            {String(index + 1).padStart(2, "0")}
+          </span>
+
+          {/* Indicador clicável ↗ no canto superior direito */}
+          <span
+            aria-hidden="true"
+            className={`absolute top-2 right-2 sm:top-3.5 sm:right-3.5 w-6 h-6 sm:w-8 sm:h-8 rounded-full border flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              isActive
+                ? "bg-foreground border-foreground text-white shadow-xs"
+                : "bg-surface/90 border-border text-muted group-hover:text-foreground"
+            }`}
+          >
+            <svg
+              className={`w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                isActive ? "translate-x-[1px] -translate-y-[1px]" : ""
               }`}
-            />
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.9}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </span>
+
+          {/* Monograma editorial centrado com paralaxe suave */}
+          <motion.div
+            aria-hidden="true"
+            style={prefersReducedMotion ? undefined : { x: imgX, y: imgY }}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          >
+            <span
+              className={`font-display italic font-normal text-3xl sm:text-5xl tracking-tight leading-none transition-all duration-300 ${
+                isActive ? "text-foreground scale-105" : "text-foreground/75"
+              }`}
+            >
+              {member.initials}
+            </span>
           </motion.div>
 
+          {/* Barra inferior fina que ganha nitidez no hover */}
           <div
-            className={`pointer-events-none absolute inset-0 rounded-[16px] sm:rounded-[32px] shadow-[inset_0_0_24px_6px_rgba(255,255,255,0.68)] transition-opacity duration-500 ${
-              isActive ? "opacity-100" : "opacity-0"
-            }`}
             aria-hidden="true"
+            className={`pointer-events-none absolute inset-x-3 sm:inset-x-4 bottom-2.5 sm:bottom-3.5 h-px transition-colors duration-300 ${
+              isActive ? "bg-foreground/20" : "bg-border/70"
+            }`}
           />
         </div>
       </motion.div>
@@ -404,7 +448,7 @@ export default function TeamSection() {
               ? {
                   id: openMember.id,
                   name: openMember.name,
-                  image: openMember.image,
+                  initials: openMember.initials,
                   department: deptLabels[openMember.department],
                 }
               : null

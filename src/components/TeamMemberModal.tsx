@@ -7,7 +7,6 @@ import {
   type PointerEvent,
 } from "react";
 import { createPortal } from "react-dom";
-import Image from "next/image";
 import {
   AnimatePresence,
   motion,
@@ -243,7 +242,7 @@ const COPY = {
 export interface ModalMember {
   id: string;
   name: string;
-  image: string;
+  initials: string;
   department: string;
 }
 
@@ -379,7 +378,7 @@ export default function TeamMemberModal({
                 : { opacity: 0, y: 12, scale: 0.98 }
             }
             transition={{ duration: 0.35, ease: EASE }}
-            className="relative w-full max-w-[700px] max-h-[88dvh] overflow-y-auto no-scrollbar rounded-2xl bg-white/96 border border-black/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_28px_70px_-20px_rgba(15,23,42,0.26)] p-4 sm:p-7"
+            className="relative w-full max-w-[540px] max-h-[88dvh] overflow-y-auto no-scrollbar rounded-2xl bg-white/96 border border-black/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_28px_70px_-20px_rgba(15,23,42,0.26)] p-4 sm:p-7"
           >
             {/* Reflexo especular dinâmico igual aos cards da página */}
             <motion.div
@@ -480,40 +479,28 @@ export default function TeamMemberModal({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.2, ease: EASE }}
-                className="relative z-10 grid grid-cols-1 sm:grid-cols-[210px_1fr] gap-4 sm:gap-6 items-start"
+                className="relative z-10 flex flex-col gap-3.5 sm:gap-4 min-w-0"
               >
-                {/* ─── Coluna Esquerda: Retrato com o mesmo acabamento dos cards da equipa ─── */}
-                <div className="relative mx-auto sm:mx-0 w-28 sm:w-full aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden bg-[#e4e6eb] border border-black/[0.06] shadow-[0_18px_38px_-18px_rgba(15,23,42,0.2)]">
-                  <Image
-                    src={member.image}
-                    alt={`${profile.fullName} — ${member.department}`}
-                    fill
-                    sizes="(max-width: 640px) 112px, 210px"
-                    className="object-cover object-top rounded-xl sm:rounded-2xl mix-blend-multiply"
-                    priority
-                  />
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 rounded-xl sm:rounded-2xl shadow-[inset_0_0_22px_5px_rgba(255,255,255,0.68)]"
-                  />
-                </div>
-
-                {/* ─── Coluna Direita: Nome completo, Idade, Formação, Certificações, LinkedIn e Telemóvel ─── */}
-                <div className="flex flex-col gap-3 sm:gap-4 min-w-0">
-                  {/* Nome Completo + Idade */}
-                  <div>
-                    <div className="flex flex-wrap items-baseline justify-between gap-2">
-                      <h3
-                        id="team-modal-name"
-                        className="font-sans text-lg sm:text-2xl font-semibold tracking-tight text-foreground leading-snug"
-                      >
-                        {profile.fullName}
-                      </h3>
-                      <span className="inline-flex items-center rounded-full bg-surface border border-border px-2.5 py-0.5 text-xs font-sans text-secondary shrink-0">
-                        {profile.age} {copy.yearsUnit}
-                      </span>
-                    </div>
+                {/* ─── Nome completo + Monograma + Idade ─── */}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span
+                      aria-hidden="true"
+                      className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-surface border border-border flex items-center justify-center font-display italic text-lg sm:text-xl text-foreground shrink-0"
+                    >
+                      {member.initials}
+                    </span>
+                    <h3
+                      id="team-modal-name"
+                      className="font-sans text-lg sm:text-2xl font-semibold tracking-tight text-foreground leading-snug"
+                    >
+                      {profile.fullName}
+                    </h3>
                   </div>
+                  <span className="inline-flex items-center rounded-full bg-surface border border-border px-2.5 py-0.5 text-xs font-sans text-secondary shrink-0 mt-1">
+                    {profile.age} {copy.yearsUnit}
+                  </span>
+                </div>
 
                   {/* Formação */}
                   <div className="rounded-xl bg-surface/75 border border-border p-3.5">
@@ -676,7 +663,6 @@ export default function TeamMemberModal({
                       </div>
                     </a>
                   </div>
-                </div>
               </motion.div>
             </AnimatePresence>
           </motion.div>
