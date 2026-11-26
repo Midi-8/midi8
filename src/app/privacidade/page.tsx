@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "midi8",
   description:
     "Informação transparente sobre o tratamento de dados pessoais, direitos dos titulares e conformidade com o RGPD na midi8.",
+  alternates: { canonical: "/privacidade" },
   openGraph: {
     title: "Política de Privacidade | midi8",
     description:

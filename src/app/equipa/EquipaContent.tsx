@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import KineticHeading from "@/components/KineticHeading";
 import { TEAM_PROFILES } from "@/components/TeamMemberModal";
@@ -179,24 +180,43 @@ export default function EquipaContent() {
                       }`}
                     >
                       <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                        <span
-                          aria-hidden="true"
-                          style={
-                            isActive
-                              ? {
-                                  background: `radial-gradient(circle at 30% 25%, rgba(${accentRgb}, 0.22), rgba(${accentRgb}, 0.06) 75%)`,
-                                  borderColor: `rgba(${accentRgb}, 0.35)`,
-                                }
-                              : undefined
-                          }
-                          className={`w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl border flex items-center justify-center font-display italic text-sm sm:text-lg shrink-0 transition-all duration-300 ${
-                            isActive
-                              ? "text-foreground"
-                              : "bg-surface border-border text-foreground/70 group-hover:text-foreground"
-                          }`}
-                        >
-                          {member.initials}
-                        </span>
+                        {memberProfile?.image ? (
+                          <span
+                            style={
+                              isActive
+                                ? { borderColor: `rgba(${accentRgb}, 0.4)` }
+                                : undefined
+                            }
+                            className="relative w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl overflow-hidden border border-black/[0.08] bg-white shrink-0 transition-all duration-300"
+                          >
+                            <Image
+                              src={memberProfile.image}
+                              alt={member.shortName}
+                              fill
+                              sizes="44px"
+                              className="object-cover object-top"
+                            />
+                          </span>
+                        ) : (
+                          <span
+                            aria-hidden="true"
+                            style={
+                              isActive
+                                ? {
+                                    background: `radial-gradient(circle at 30% 25%, rgba(${accentRgb}, 0.22), rgba(${accentRgb}, 0.06) 75%)`,
+                                    borderColor: `rgba(${accentRgb}, 0.35)`,
+                                  }
+                                : undefined
+                            }
+                            className={`w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl border flex items-center justify-center font-display italic text-sm sm:text-lg shrink-0 transition-all duration-300 ${
+                              isActive
+                                ? "text-foreground"
+                                : "bg-surface border-border text-foreground/70 group-hover:text-foreground"
+                            }`}
+                          >
+                            {member.initials}
+                          </span>
+                        )}
                         <div className="min-w-0">
                           <p
                             className={`text-xs sm:text-base truncate transition-colors ${
@@ -262,16 +282,11 @@ export default function EquipaContent() {
                       className="relative z-10 flex flex-col justify-between gap-4 sm:gap-6 h-full"
                     >
                       <div className="flex flex-col gap-4 sm:gap-5">
-                        {/* Topo: departamento, idade e setas anterior/próximo */}
+                        {/* Topo: departamento e setas anterior/próximo */}
                         <div className="flex items-center justify-between gap-2 sm:gap-3">
-                          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                            <span className="inline-flex items-center rounded-full bg-surface border border-border px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs text-secondary">
-                              {deptLabels[activeMember.department]}
-                            </span>
-                            <span className="inline-flex items-center rounded-full bg-white/80 border border-border px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs text-subtle tabular-nums">
-                              {profile.age} {locale === "pt" ? "Anos" : "Years old"}
-                            </span>
-                          </div>
+                          <span className="inline-flex items-center rounded-full bg-surface border border-border px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs text-secondary">
+                            {deptLabels[activeMember.department]}
+                          </span>
 
                           {visibleMembers.length > 1 && (
                             <div className="flex items-center gap-1.5 shrink-0">
@@ -299,40 +314,58 @@ export default function EquipaContent() {
                           )}
                         </div>
 
-                        {/* Identidade */}
-                        <div className="flex items-center gap-3 sm:gap-4">
-                          <span
-                            aria-hidden="true"
-                            style={{
-                              background: `radial-gradient(circle at 30% 25%, rgba(${profile.accentRgb}, 0.2), rgba(${profile.accentRgb}, 0.05) 75%)`,
-                              borderColor: `rgba(${profile.accentRgb}, 0.3)`,
-                            }}
-                            className="w-11 h-11 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl border flex items-center justify-center font-display italic text-xl sm:text-3xl text-foreground shrink-0"
-                          >
-                            {activeMember.initials}
-                          </span>
-                          <div>
+                        {/* Identidade + Formação alinhadas ao lado do retrato (uniforme para todos os membros) */}
+                        <div className="grid grid-cols-[104px_1fr] sm:grid-cols-[176px_1fr] gap-x-4 gap-y-3.5 sm:gap-x-6 sm:gap-y-3 items-start">
+                          <div className="sm:row-span-2">
+                            {profile.image ? (
+                              <div className="relative w-[104px] h-[132px] sm:w-[176px] sm:h-[224px] rounded-2xl overflow-hidden bg-white border border-black/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_18px_36px_-20px_rgba(15,23,42,0.22)]">
+                                <Image
+                                  src={profile.image}
+                                  alt={profile.fullName}
+                                  fill
+                                  sizes="(max-width: 640px) 112px, 192px"
+                                  className="object-cover object-top"
+                                />
+                              </div>
+                            ) : (
+                              <span
+                                aria-hidden="true"
+                                style={{
+                                  background: `radial-gradient(circle at 30% 25%, rgba(${profile.accentRgb}, 0.2), rgba(${profile.accentRgb}, 0.05) 75%)`,
+                                  borderColor: `rgba(${profile.accentRgb}, 0.3)`,
+                                }}
+                                className="w-[104px] h-[132px] sm:w-[176px] sm:h-[224px] rounded-2xl border flex items-center justify-center font-display italic text-3xl sm:text-5xl text-foreground"
+                              >
+                                {activeMember.initials}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="min-w-0 self-center sm:self-start sm:pt-0.5">
                             <h2 className="text-lg sm:text-2xl font-bold text-foreground leading-tight">
                               {profile.fullName}
                             </h2>
+                            <p className="text-xs sm:text-sm text-subtle tabular-nums mt-1">
+                              {profile.age} {locale === "pt" ? "Anos" : "Years old"}
+                            </p>
                             <p className="text-xs sm:text-sm text-muted mt-0.5">
                               {deptLabels[activeMember.department]}
                             </p>
                           </div>
-                        </div>
 
-                        {/* Formação */}
-                        <div className="rounded-xl sm:rounded-2xl bg-surface/80 border border-border p-3.5 sm:p-5">
-                          <p className="text-[10px] uppercase tracking-wider text-subtle mb-1.5 sm:mb-2">
-                            {locale === "pt" ? "Formação" : "Education"}
-                          </p>
-                          <ul className="flex flex-col gap-1 sm:gap-1.5">
-                            {profile.education[locale].map((deg) => (
-                              <li key={deg} className="text-xs sm:text-sm text-foreground leading-snug">
-                                {deg}
-                              </li>
-                            ))}
-                          </ul>
+                          {/* Formação diretamente em baixo do departamento */}
+                          <div className="col-span-2 sm:col-span-1 sm:col-start-2 rounded-xl sm:rounded-2xl bg-surface/80 border border-border p-3.5 sm:p-4">
+                            <p className="text-[10px] uppercase tracking-wider text-subtle mb-1.5">
+                              {locale === "pt" ? "Formação" : "Education"}
+                            </p>
+                            <ul className="flex flex-col gap-1">
+                              {profile.education[locale].map((deg) => (
+                                <li key={deg} className="text-xs sm:text-sm text-foreground leading-snug">
+                                  {deg}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
 
                         {/* Certificações */}

@@ -38,8 +38,8 @@ export const CONTACT_PHONE = "+351 930 426 057";
 export const CONTACT_PHONE_HREF = "tel:+351930426057";
 export const SOCIAL = {
   linkedin: "https://www.linkedin.com/company/midi8/",
-  instagram: "https://www.instagram.com/midi8.dev/",
-  instagramHandle: "@midi8.dev",
+  instagram: "https://www.instagram.com/midi8.co/",
+  instagramHandle: "@midi8.co",
 } as const;
 
 const LIMITS = { name: 100, email: 254, company: 120 } as const;

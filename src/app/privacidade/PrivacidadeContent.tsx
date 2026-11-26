@@ -1,470 +1,814 @@
 "use client";
 
 import Link from "next/link";
-import { useLanguage } from "@/context/LanguageContext";
-import { CONTACT_EMAIL } from "@/lib/contact";
+import KineticHeading from "@/components/KineticHeading";
+import { useLanguage, type Locale } from "@/context/LanguageContext";
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/lib/contact";
+
+const ACCENTS = ["#C015FF", "#0069F8", "#00E8B2"] as const;
+
+interface TocItem {
+  id: string;
+  code: string;
+  label: Record<Locale, string>;
+}
+
+const TOC: TocItem[] = [
+  {
+    id: "responsavel",
+    code: "01",
+    label: { pt: "Responsável pelo Tratamento", en: "Data Controller" },
+  },
+  {
+    id: "dados-finalidades",
+    code: "02",
+    label: { pt: "Dados & Finalidades", en: "Data & Purposes" },
+  },
+  {
+    id: "conservacao",
+    code: "03",
+    label: { pt: "Prazos de Conservação", en: "Retention Periods" },
+  },
+  {
+    id: "subcontratantes",
+    code: "04",
+    label: { pt: "Subcontratantes & EEE", en: "Processors & EEA" },
+  },
+  {
+    id: "cookies",
+    code: "05",
+    label: { pt: "Cookies & Armazenamento", en: "Cookies & Storage" },
+  },
+  {
+    id: "seguranca",
+    code: "06",
+    label: { pt: "Segurança Técnica", en: "Technical Security" },
+  },
+  {
+    id: "direitos",
+    code: "07",
+    label: { pt: "Direitos dos Titulares", en: "Data Subject Rights" },
+  },
+  {
+    id: "cnpd",
+    code: "08",
+    label: { pt: "Autoridade de Controlo", en: "Supervisory Authority" },
+  },
+  {
+    id: "alteracoes",
+    code: "09",
+    label: { pt: "Alterações à Política", en: "Policy Updates" },
+  },
+];
+
+const HIGHLIGHTS: Record<Locale, { title: string; text: string; color: string }[]> = {
+  pt: [
+    {
+      title: "Minimização rigorosa",
+      text: "Recolhemos apenas os dados essenciais para responder ao seu pedido ou assegurar a estabilidade técnica.",
+      color: "#C015FF",
+    },
+    {
+      title: "Zero rastreamento",
+      text: "Sem cookies publicitários, de marketing, analíticos ou perfis comportamentais de terceiros.",
+      color: "#0069F8",
+    },
+    {
+      title: "Controlo total (RGPD)",
+      text: "Pode aceder, retificar ou apagar os seus dados gratuitamente com resposta garantida até 30 dias.",
+      color: "#00E8B2",
+    },
+  ],
+  en: [
+    {
+      title: "Strict minimization",
+      text: "We collect only the data strictly required to reply to your inquiry or keep the platform secure.",
+      color: "#C015FF",
+    },
+    {
+      title: "Zero tracking",
+      text: "No advertising, marketing, analytics, or third-party behavioral tracking cookies.",
+      color: "#0069F8",
+    },
+    {
+      title: "Full GDPR control",
+      text: "Access, rectify, export, or erase your personal data free of charge within a 30-day response window.",
+      color: "#00E8B2",
+    },
+  ],
+};
+
+const RIGHTS: Record<Locale, { title: string; desc: string }[]> = {
+  pt: [
+    {
+      title: "Direito de Acesso",
+      desc: "Confirmar se os seus dados são objeto de tratamento e obter cópia integral dos mesmos.",
+    },
+    {
+      title: "Direito de Retificação",
+      desc: "Solicitar a correção imediata de dados pessoais inexatos ou o preenchimento de dados incompletos.",
+    },
+    {
+      title: "Direito ao Apagamento",
+      desc: "Pedir a eliminação dos seus dados («direito a ser esquecido») dentro dos limites legais aplicáveis.",
+    },
+    {
+      title: "Direito à Limitação",
+      desc: "Solicitar a suspensão temporária do tratamento enquanto se verifica a exatidão ou licitude dos dados.",
+    },
+    {
+      title: "Direito de Portabilidade",
+      desc: "Receber os dados fornecidos num formato estruturado, de uso corrente e leitura automática.",
+    },
+    {
+      title: "Direito de Oposição",
+      desc: "Opor-se em qualquer momento ao tratamento fundamentado em interesses legítimos da midi8.",
+    },
+  ],
+  en: [
+    {
+      title: "Right of Access",
+      desc: "Confirm whether your personal data is being processed and request a complete copy.",
+    },
+    {
+      title: "Right to Rectification",
+      desc: "Request prompt correction of inaccurate records or completion of incomplete personal data.",
+    },
+    {
+      title: "Right to Erasure",
+      desc: "Request deletion of your personal data (\"right to be forgotten\") within applicable legal limits.",
+    },
+    {
+      title: "Right to Restriction",
+      desc: "Request temporary suspension of processing while accuracy or legal grounds are verified.",
+    },
+    {
+      title: "Right to Portability",
+      desc: "Receive your submitted personal data in a structured, commonly used, machine-readable format.",
+    },
+    {
+      title: "Right to Object",
+      desc: "Object at any time to processing grounded on midi8's legitimate interests.",
+    },
+  ],
+};
+
+function ClauseCard({
+  id,
+  code,
+  title,
+  accentIndex,
+  children,
+}: {
+  id: string;
+  code: string;
+  title: string;
+  accentIndex: number;
+  children: React.ReactNode;
+}) {
+  const accent = ACCENTS[accentIndex % ACCENTS.length];
+  return (
+    <section
+      id={id}
+      aria-labelledby={`${id}-heading`}
+      className="scroll-mt-28 rounded-2xl border border-black/[0.08] bg-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_1px_2px_rgba(15,23,42,0.04),0_16px_34px_-24px_rgba(15,23,42,0.12)] p-5 sm:p-8"
+    >
+      <div className="flex items-center gap-2.5 mb-4">
+        <span
+          aria-hidden="true"
+          className="w-2 h-2 rounded-full shrink-0"
+          style={{ backgroundColor: accent }}
+        />
+        <span className="text-[11px] font-bold tracking-widest uppercase text-subtle tabular-nums">
+          {code}
+        </span>
+      </div>
+      <h2
+        id={`${id}-heading`}
+        className="text-lg sm:text-2xl font-bold text-foreground tracking-tight leading-snug mb-4"
+      >
+        {title}
+      </h2>
+      <div className="space-y-4 text-sm sm:text-[15px] text-secondary leading-relaxed">
+        {children}
+      </div>
+    </section>
+  );
+}
 
 export default function PrivacidadeContent() {
   const { locale } = useLanguage();
+  const isEn = locale === "en";
+  const highlights = HIGHLIGHTS[locale];
+  const rights = RIGHTS[locale];
 
-  if (locale === "en") {
-    return (
-      <main className="flex-1 text-foreground pt-28 pb-16">
-        <article className="max-w-4xl mx-auto px-6">
-          {/* Page Header */}
-          <header className="mb-12 border-b border-border pb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
-              Privacy Policy
-            </h1>
-            <p className="text-sm text-subtle">
-              Last updated:{" "}
-              <time dateTime="2026-11">November 2026</time>
-            </p>
-          </header>
+  return (
+    <main className="flex-1 text-foreground overflow-x-clip">
+      {/* ─── Cabeçalho Editorial com Aurora Oficial midi8 ─── */}
+      <section className="relative w-full pt-24 sm:pt-36 pb-8 sm:pb-14 px-4 sm:px-6 overflow-hidden">
+        <div aria-hidden="true" className="top-aurora-fade opacity-70" />
+        <div aria-hidden="true" className="top-aurora-grain" />
 
-          {/* Overview & Framework */}
-          <div className="space-y-8 text-secondary text-sm sm:text-base leading-relaxed">
-            <section className="bg-surface/40 border border-border rounded-2xl p-6">
-              <p className="text-secondary">
-                <strong>midi8</strong> values the privacy and security of the personal data of its
-                users, clients, and partners. This Privacy Policy outlines clearly and transparently how
-                we collect, use, process, and protect personal data in strict compliance with the{" "}
-                <strong>General Data Protection Regulation (GDPR - Regulation (EU) 2016/679)</strong> and{" "}
-                <strong>Law no. 58/2019, of August 8</strong> (Portuguese Personal Data Protection Act).
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <div className="flex items-center gap-2 text-xs text-subtle mb-4 sm:mb-6">
+            <Link href="/" className="hover:text-foreground transition-colors">
+              {isEn ? "Home" : "Início"}
+            </Link>
+            <span aria-hidden="true">/</span>
+            <span className="text-foreground">
+              {isEn ? "Privacy Policy" : "Política de Privacidade"}
+            </span>
+          </div>
+
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div className="max-w-3xl">
+              <KineticHeading
+                className="type-headline-lg text-foreground mb-3.5 sm:mb-5"
+                segments={
+                  isEn
+                    ? [
+                        { text: "Privacy " },
+                        { text: "Policy", italic: true },
+                        { text: "." },
+                      ]
+                    : [
+                        { text: "Política de " },
+                        { text: "Privacidade", italic: true },
+                        { text: "." },
+                      ]
+                }
+              />
+              <p className="type-body text-muted text-pretty">
+                {isEn
+                  ? "How midi8 collects, processes, and safeguards personal data in strict compliance with the General Data Protection Regulation (EU 2016/679) and Portuguese Law no. 58/2019."
+                  : "Como a midi8 recolhe, trata e protege dados pessoais em estrita conformidade com o Regulamento Geral sobre a Proteção de Dados (RGPD - Regulamento UE 2016/679) e a Lei n.º 58/2019."}
               </p>
-            </section>
+            </div>
 
-            {/* 1. Controller */}
-            <section aria-labelledby="resp-tratamento" className="space-y-3">
-              <h2 id="resp-tratamento" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-                1. Identification of the Data Controller
-              </h2>
-              <p>
-                The controller responsible for processing your personal data within this website and associated services is:
-              </p>
-              <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-xl border border-border">
-                <li>
-                  <strong>Entity:</strong> midi8 - Software Engineering and Digital Systems
-                </li>
-                <li>
-                  <strong>Jurisdiction:</strong> Portugal
-                </li>
-                <li>
-                  <strong>Privacy Contact Email:</strong>{" "}
-                  <a href={`mailto:${CONTACT_EMAIL}`} className="text-brand-blue hover:underline">
-                    {CONTACT_EMAIL}
-                  </a>
-                </li>
-              </ul>
-            </section>
+            <div className="flex flex-wrap items-center gap-2.5 text-xs text-subtle shrink-0">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 border border-black/[0.08] px-3 py-1.5 text-foreground">
+                <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-[#00E8B2]" />
+                {isEn ? "Updated: " : "Atualizado: "}
+                <time dateTime="2026-11" className="font-bold">
+                  {isEn ? "November 2026" : "Novembro 2026"}
+                </time>
+              </span>
+              <span className="inline-flex items-center rounded-full bg-white/90 border border-black/[0.08] px-3 py-1.5 text-muted">
+                {isEn ? "Portugal · EU (GDPR)" : "Portugal · UE (RGPD)"}
+              </span>
+              <Link
+                href="/termos"
+                className="inline-flex items-center gap-1.5 rounded-full bg-white/90 border border-black/[0.08] px-3 py-1.5 text-foreground hover:bg-foreground hover:text-white hover:border-foreground transition-colors"
+              >
+                <span>{isEn ? "Terms & Conditions" : "Termos e Condições"}</span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </div>
 
-            {/* 2. Data Collected & Purposes */}
-            <section aria-labelledby="dados-recolhidos" className="space-y-3">
-              <h2 id="dados-recolhidos" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-                2. Data Collected, Purposes, and Lawful Grounds
-              </h2>
-              <p>
-                We only process personal data that is strictly necessary for the following legitimate purposes:
-              </p>
-              <div className="space-y-4">
-                <div className="p-4 rounded-xl bg-surface/40 border border-border">
-                  <h3 className="text-base font-bold text-foreground mb-1">
-                    a) Contact Forms and Technical Meeting Scheduling
-                  </h3>
-                  <p className="text-sm text-muted mb-2">
-                    <strong>Data:</strong> Name, email address, company name, areas of interest, and project overview.
-                  </p>
-                  <p className="text-sm text-muted">
-                    <strong>Legal Basis:</strong> Pre-contractual steps taken at the request of the data subject (Article 6(1)(b) of the GDPR).
-                  </p>
+          {/* Resumo Executivo em 3 pilares */}
+          <div className="mt-8 sm:mt-10 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+            {highlights.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-2xl border border-black/[0.08] bg-white/90 backdrop-blur-sm p-4 sm:p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_10px_24px_-18px_rgba(15,23,42,0.12)]"
+              >
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span
+                    aria-hidden="true"
+                    className="w-2 h-2 rounded-full shrink-0"
+                    style={{ backgroundColor: item.color }}
+                  />
+                  <p className="text-sm font-bold text-foreground">{item.title}</p>
                 </div>
-
-                <div className="p-4 rounded-xl bg-surface/40 border border-border">
-                  <h3 className="text-base font-bold text-foreground mb-1">
-                    b) Browsing and Infrastructure Security
-                  </h3>
-                  <p className="text-sm text-muted mb-2">
-                    <strong>Data:</strong> IP address, technical server logs, and browser metadata essential for site security and resilience.
-                  </p>
-                  <p className="text-sm text-muted">
-                    <strong>Legal Basis:</strong> Legitimate interest of midi8 in maintaining server integrity, uptime, and cybersecurity (Article 6(1)(f) of the GDPR).
-                  </p>
-                </div>
+                <p className="text-xs sm:text-[13px] text-muted leading-relaxed text-pretty">
+                  {item.text}
+                </p>
               </div>
-            </section>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            {/* 3. Retention Periods */}
-            <section aria-labelledby="prazos-conservacao" className="space-y-3">
-              <h2 id="prazos-conservacao" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-                3. Data Retention Periods
-              </h2>
-              <p>
-                Personal data is retained only for the period strictly necessary to fulfill the purposes for which it was gathered:
+      {/* ─── Conteúdo Legal Estruturado (Índice Sticky + Cláusulas Cerâmicas) ─── */}
+      <section className="relative w-full pt-4 pb-16 sm:pb-24 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+          {/* Índice Mobile Horizontal */}
+          <nav
+            aria-label={isEn ? "Table of contents" : "Índice da política"}
+            className="lg:hidden flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"
+          >
+            {TOC.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className="inline-flex items-center gap-1.5 shrink-0 rounded-full border border-black/[0.08] bg-white/95 px-3 py-1.5 text-xs text-muted hover:text-foreground hover:border-border-light transition-colors"
+              >
+                <span className="font-bold text-subtle tabular-nums">{item.code}</span>
+                <span>{item.label[locale]}</span>
+              </a>
+            ))}
+          </nav>
+
+          {/* Barra Lateral Sticky (Desktop) */}
+          <aside className="hidden lg:flex lg:col-span-4 lg:sticky lg:top-24 flex-col gap-4">
+            <nav
+              aria-label={isEn ? "Table of contents" : "Índice da política"}
+              className="rounded-2xl border border-black/[0.08] bg-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_1px_2px_rgba(15,23,42,0.04),0_16px_34px_-24px_rgba(15,23,42,0.12)] p-5"
+            >
+              <p className="text-[11px] font-bold uppercase tracking-widest text-subtle mb-3.5 px-2">
+                {isEn ? "Contents" : "Índice"}
               </p>
-              <ul className="list-disc pl-5 space-y-1 text-secondary">
-                <li>
-                  <strong>Commercial and pre-contractual inquiries:</strong> Up to 12 months after the last communication, unless a contractual engagement follows.
-                </li>
-                <li>
-                  <strong>Data originating from service contracts:</strong> For the duration of the agreement and statutory fiscal/accounting retention requirements (typically 10 years under Portuguese law).
-                </li>
-                <li>
-                  <strong>Technical security logs:</strong> Up to a maximum of 6 months.
-                </li>
+              <ul className="flex flex-col gap-0.5">
+                {TOC.map((item, idx) => (
+                  <li key={item.id}>
+                    <a
+                      href={`#${item.id}`}
+                      className="group flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-[13px] text-muted hover:text-foreground hover:bg-surface/80 transition-colors"
+                    >
+                      <span
+                        className="text-[11px] font-bold tabular-nums transition-colors"
+                        style={{ color: ACCENTS[idx % ACCENTS.length] }}
+                      >
+                        {item.code}
+                      </span>
+                      <span className="truncate">{item.label[locale]}</span>
+                    </a>
+                  </li>
+                ))}
               </ul>
-            </section>
+            </nav>
 
-            {/* 4. Processors & Third Parties */}
-            <section aria-labelledby="destinatarios" className="space-y-3">
-              <h2 id="destinatarios" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-                4. Sharing with Processors and Third Parties
-              </h2>
-              <p>
-                midi8 does not sell, rent, or transfer personal data to third parties for marketing purposes. For the operation of our digital infrastructure, we engage trusted service providers acting as processors under strict security and GDPR compliance guarantees:
+            <div className="rounded-2xl border border-black/[0.08] bg-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_1px_2px_rgba(15,23,42,0.04)] p-5">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-subtle mb-2">
+                {isEn ? "Privacy Contact" : "Contacto de Privacidade"}
               </p>
-              <ul className="list-disc pl-5 space-y-1 text-secondary">
-                <li>Vercel: application hosting and content delivery network (CDN).</li>
-                <li>Resend: email dispatch service for inquiries submitted through our contact form.</li>
-                <li>Google (Gmail): secure business email communications.</li>
-              </ul>
-              <p className="text-sm text-muted">
-                Any international data transfers outside the European Economic Area (EEA) rely on Standard Contractual Clauses approved by the European Commission or equivalent adequacy decisions.
+              <p className="text-xs text-muted leading-relaxed mb-3.5">
+                {isEn
+                  ? "Questions about your personal data or GDPR requests? Reach our team directly."
+                  : "Questões sobre os seus dados pessoais ou pedidos ao abrigo do RGPD? Fale diretamente connosco."}
               </p>
-            </section>
-
-            {/* 5. Cookies */}
-            <section aria-labelledby="cookies" className="space-y-3">
-              <h2 id="cookies" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-                5. Cookies and Tracking Technologies
-              </h2>
-              <p>
-                This website is built with a data-minimization approach and{" "}
-                <strong>does not use advertising, marketing, third-party tracking, or profiling cookies</strong>.
-              </p>
-              <p className="text-sm text-muted">
-                Browsing relies exclusively on technical mechanisms strictly necessary for security, content delivery, and correct operation, exempt from consent for non-essential cookies under the ePrivacy Directive and Law no. 41/2004.
-              </p>
-            </section>
-
-            {/* 6. Data Subject Rights */}
-            <section aria-labelledby="direitos-titular" className="space-y-3">
-              <h2 id="direitos-titular" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-                6. Rights of Data Subjects
-              </h2>
-              <p>
-                Under Articles 15 to 22 of the GDPR, you have the right to exercise free of charge with midi8:
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                <div className="p-3 bg-surface/40 rounded-xl border border-border">
-                  <strong className="text-foreground block">Right of Access</strong>
-                  Confirm whether your data is being processed and request a copy.
-                </div>
-                <div className="p-3 bg-surface/40 rounded-xl border border-border">
-                  <strong className="text-foreground block">Right to Rectification</strong>
-                  Request correction of inaccurate or incomplete personal records.
-                </div>
-                <div className="p-3 bg-surface/40 rounded-xl border border-border">
-                  <strong className="text-foreground block">Right to Erasure</strong>
-                  Request deletion of data (&quot;right to be forgotten&quot;) within legal grounds.
-                </div>
-                <div className="p-3 bg-surface/40 rounded-xl border border-border">
-                  <strong className="text-foreground block">Right to Restriction</strong>
-                  Request temporary suspension of processing in qualifying circumstances.
-                </div>
-                <div className="p-3 bg-surface/40 rounded-xl border border-border">
-                  <strong className="text-foreground block">Right to Data Portability</strong>
-                  Receive personal data in a structured, commonly used, machine-readable format.
-                </div>
-                <div className="p-3 bg-surface/40 rounded-xl border border-border">
-                  <strong className="text-foreground block">Right to Object</strong>
-                  Object at any time to processing based on legitimate interest grounds.
-                </div>
-              </div>
-              <p className="pt-2">
-                To exercise any of these rights, submit your written request to{" "}
-                <a href={`mailto:${CONTACT_EMAIL}`} className="text-brand-blue hover:underline">
+              <div className="flex flex-col gap-1.5 text-xs mb-4">
+                <a
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  className="font-bold text-foreground hover:text-brand-blue transition-colors break-all"
+                >
                   {CONTACT_EMAIL}
                 </a>
-                . Requests are handled within a maximum of 30 days.
-              </p>
-            </section>
-
-            {/* 7. Supervisory Authority */}
-            <section aria-labelledby="cnpd" className="space-y-3 bg-surface/40 p-5 rounded-2xl border border-border">
-              <h2 id="cnpd" className="text-lg sm:text-xl font-normal text-foreground tracking-tight">
-                7. Right to Lodge a Complaint with the Supervisory Authority (CNPD)
-              </h2>
-              <p>
-                If you consider that the processing of your data infringes the GDPR or applicable regulations, you have the right to lodge a complaint with the Portuguese supervisory authority:
-              </p>
-              <div className="text-xs sm:text-sm text-muted space-y-1">
-                <p><strong>Comissão Nacional de Proteção de Dados (CNPD)</strong></p>
-                <p>Av. D. Carlos I, 134 - 1.º, 1200-651 Lisboa, Portugal</p>
-                <p>Website: <a href="https://www.cnpd.pt" target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:underline">www.cnpd.pt</a></p>
+                <a
+                  href={CONTACT_PHONE_HREF}
+                  className="text-muted hover:text-foreground transition-colors"
+                >
+                  {CONTACT_PHONE}
+                </a>
               </div>
-            </section>
+              <Link
+                href="/contacto"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-foreground hover:text-brand-blue transition-colors"
+              >
+                <span>{isEn ? "Go to contact form" : "Abrir formulário de contacto"}</span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </aside>
 
-            {/* 8. Changes to Policy */}
-            <section aria-labelledby="alteracoes" className="space-y-3">
-              <h2 id="alteracoes" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-                8. Changes to this Privacy Policy
-              </h2>
+          {/* Coluna Principal de Cláusulas */}
+          <article className="lg:col-span-8 flex flex-col gap-4 sm:gap-5">
+            {/* 01. Responsável */}
+            <ClauseCard
+              id="responsavel"
+              code="01"
+              title={
+                isEn
+                  ? "Identification of the Data Controller"
+                  : "Identificação do Responsável pelo Tratamento"
+              }
+              accentIndex={0}
+            >
               <p>
-                midi8 reserves the right to revise this Privacy Policy at any time to reflect operational, technical, or legislative developments. Updated versions take effect immediately upon publication on this page.
+                {isEn
+                  ? "The entity responsible for processing personal data collected through this website and associated digital services is:"
+                  : "A entidade responsável pelo tratamento dos dados pessoais recolhidos através deste website e dos serviços digitais associados é:"}
               </p>
-            </section>
+              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div className="rounded-xl bg-surface/75 border border-border p-3.5">
+                  <dt className="text-[11px] uppercase tracking-wider text-subtle mb-1">
+                    {isEn ? "Entity" : "Entidade"}
+                  </dt>
+                  <dd className="text-sm font-bold text-foreground">
+                    midi8
+                  </dd>
+                  <dd className="text-xs text-muted mt-0.5">
+                    {isEn
+                      ? "Technology, Software, Automation & Digital Communication"
+                      : "Tecnologia, Software, Automação & Comunicação Digital"}
+                  </dd>
+                </div>
+                <div className="rounded-xl bg-surface/75 border border-border p-3.5">
+                  <dt className="text-[11px] uppercase tracking-wider text-subtle mb-1">
+                    {isEn ? "Jurisdiction & Contact" : "Jurisdição & Contacto"}
+                  </dt>
+                  <dd className="text-sm font-bold text-foreground">Portugal (UE)</dd>
+                  <dd className="text-xs text-muted mt-0.5">
+                    <a
+                      href={`mailto:${CONTACT_EMAIL}`}
+                      className="text-brand-blue hover:underline break-all"
+                    >
+                      {CONTACT_EMAIL}
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </ClauseCard>
 
-            {/* Bottom Nav */}
-            <div className="pt-8 border-t border-border flex items-center justify-between">
+            {/* 02. Dados e Finalidades */}
+            <ClauseCard
+              id="dados-finalidades"
+              code="02"
+              title={
+                isEn
+                  ? "Data Collected, Purposes, and Lawful Grounds"
+                  : "Dados Recolhidos, Finalidades e Fundamentos de Licitude"
+              }
+              accentIndex={1}
+            >
+              <p>
+                {isEn
+                  ? "We process only personal data that is strictly necessary, proportional, and directly linked to the following explicit purposes:"
+                  : "Tratamos apenas os dados pessoais estritamente necessários, proporcionais e diretamente ligados às seguintes finalidades determinadas:"}
+              </p>
+              <div className="grid grid-cols-1 gap-3.5 pt-1">
+                <div className="rounded-xl bg-surface/75 border border-border p-4 sm:p-5">
+                  <p className="text-sm sm:text-base font-bold text-foreground mb-2">
+                    {isEn
+                      ? "a) Contact Requests, Briefings, and Meeting Scheduling"
+                      : "a) Pedidos de Contacto, Briefings e Agendamento de Reuniões"}
+                  </p>
+                  <div className="space-y-1.5 text-xs sm:text-sm text-muted">
+                    <p>
+                      <strong className="text-foreground">
+                        {isEn ? "Data processed: " : "Dados tratados: "}
+                      </strong>
+                      {isEn
+                        ? "Name, email address, company name, areas of interest, and project message voluntarily submitted by the user."
+                        : "Nome, endereço de email, empresa, áreas de interesse e mensagem/briefing submetidos voluntariamente pelo utilizador."}
+                    </p>
+                    <p>
+                      <strong className="text-foreground">
+                        {isEn ? "Lawful basis: " : "Fundamento jurídico: "}
+                      </strong>
+                      {isEn
+                        ? "Pre-contractual steps taken at the request of the data subject (Article 6(1)(b) of the GDPR)."
+                        : "Diligências pré-contratuais a pedido do titular dos dados (artigo 6.º, n.º 1, alínea b) do RGPD)."}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="rounded-xl bg-surface/75 border border-border p-4 sm:p-5">
+                  <p className="text-sm sm:text-base font-bold text-foreground mb-2">
+                    {isEn
+                      ? "b) Infrastructure Security, Abuse Prevention, and Uptime"
+                      : "b) Segurança da Infraestrutura, Prevenção de Abuso e Disponibilidade"}
+                  </p>
+                  <div className="space-y-1.5 text-xs sm:text-sm text-muted">
+                    <p>
+                      <strong className="text-foreground">
+                        {isEn ? "Data processed: " : "Dados tratados: "}
+                      </strong>
+                      {isEn
+                        ? "IP address, technical HTTP request logs, and rate-limiting telemetry required to prevent spam and safeguard server stability."
+                        : "Endereço IP, registos técnicos de pedidos (logs) e metadados de limitação de taxa necessários para prevenir spam e proteger a integridade dos servidores."}
+                    </p>
+                    <p>
+                      <strong className="text-foreground">
+                        {isEn ? "Lawful basis: " : "Fundamento jurídico: "}
+                      </strong>
+                      {isEn
+                        ? "Legitimate interest of midi8 in ensuring network security, service resilience, and fraud prevention (Article 6(1)(f) of the GDPR)."
+                        : "Interesse legítimo da midi8 em assegurar a cibersegurança, resiliência da infraestrutura e prevenção de abuso (artigo 6.º, n.º 1, alínea f) do RGPD)."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </ClauseCard>
+
+            {/* 03. Prazos de Conservação */}
+            <ClauseCard
+              id="conservacao"
+              code="03"
+              title={isEn ? "Data Retention Periods" : "Prazos de Conservação dos Dados"}
+              accentIndex={2}
+            >
+              <p>
+                {isEn
+                  ? "Personal data is retained strictly for the period required to fulfill the purpose for which it was collected or to comply with mandatory legal obligations:"
+                  : "Os dados pessoais são conservados apenas durante o período estritamente necessário à finalidade que justificou a recolha ou para cumprimento de obrigações legais imperativas:"}
+              </p>
+              <div className="overflow-hidden rounded-xl border border-border divide-y divide-border text-xs sm:text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-1 sm:gap-4 bg-surface/75 p-3.5 sm:px-4">
+                  <span className="sm:col-span-5 font-bold text-foreground">
+                    {isEn ? "Commercial & pre-contractual inquiries" : "Contactos comerciais e pré-contratuais"}
+                  </span>
+                  <span className="sm:col-span-7 text-muted">
+                    {isEn
+                      ? "Up to 12 months from the last interaction, unless a contractual engagement follows."
+                      : "Até 12 meses após a última interação, salvo celebração de relação contratual posterior."}
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-1 sm:gap-4 bg-white p-3.5 sm:px-4">
+                  <span className="sm:col-span-5 font-bold text-foreground">
+                    {isEn ? "Contractual & billing records" : "Dados contratuais e de faturação"}
+                  </span>
+                  <span className="sm:col-span-7 text-muted">
+                    {isEn
+                      ? "Duration of the contract plus statutory fiscal and accounting retention periods (10 years under Portuguese tax law)."
+                      : "Durante a vigência do contrato e pelos prazos legais imperativos de arquivo fiscal e contabilístico (10 anos sob a lei portuguesa)."}
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-1 sm:gap-4 bg-surface/75 p-3.5 sm:px-4">
+                  <span className="sm:col-span-5 font-bold text-foreground">
+                    {isEn ? "Technical security logs" : "Registos técnicos de segurança (logs)"}
+                  </span>
+                  <span className="sm:col-span-7 text-muted">
+                    {isEn ? "Up to a maximum of 6 months." : "Até um máximo de 6 meses."}
+                  </span>
+                </div>
+              </div>
+            </ClauseCard>
+
+            {/* 04. Subcontratantes */}
+            <ClauseCard
+              id="subcontratantes"
+              code="04"
+              title={
+                isEn
+                  ? "Processors and International Transfers"
+                  : "Subcontratantes e Transferências Internacionais"
+              }
+              accentIndex={0}
+            >
+              <p>
+                {isEn
+                  ? "midi8 never sells, rents, or trades personal data to third parties. To operate our digital infrastructure reliably, we rely exclusively on vetted processors subject to GDPR-compliant data processing agreements:"
+                  : "A midi8 não vende, aluga nem cede dados pessoais a terceiros para fins comerciais. Para assegurar o funcionamento fiável da nossa infraestrutura digital, recorremos apenas a subcontratantes de referência com garantias de conformidade com o RGPD:"}
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                <div className="rounded-xl bg-surface/75 border border-border p-3.5">
+                  <p className="text-sm font-bold text-foreground mb-1">Vercel</p>
+                  <p className="text-xs text-muted leading-relaxed">
+                    {isEn
+                      ? "Application hosting, TLS encryption, and global edge content delivery (CDN)."
+                      : "Alojamento da aplicação web, encriptação TLS e distribuição segura de conteúdos (CDN)."}
+                  </p>
+                </div>
+                <div className="rounded-xl bg-surface/75 border border-border p-3.5">
+                  <p className="text-sm font-bold text-foreground mb-1">Resend</p>
+                  <p className="text-xs text-muted leading-relaxed">
+                    {isEn
+                      ? "Transactional email routing for messages submitted through the contact form."
+                      : "Encaminhamento transacional por email dos pedidos submetidos no formulário de contacto."}
+                  </p>
+                </div>
+                <div className="rounded-xl bg-surface/75 border border-border p-3.5">
+                  <p className="text-sm font-bold text-foreground mb-1">Google (Gmail)</p>
+                  <p className="text-xs text-muted leading-relaxed">
+                    {isEn
+                      ? "Reception, archiving, and direct response to client email communications."
+                      : "Receção, arquivo e resposta direta às comunicações de correio eletrónico."}
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs sm:text-sm text-muted">
+                {isEn
+                  ? "Whenever technical operations involve transfers outside the European Economic Area (EEA), such transfers are safeguarded by European Commission Standard Contractual Clauses (SCCs) or adequacy decisions (such as the EU-US Data Privacy Framework)."
+                  : "Sempre que existam transferências internacionais de dados para fora do Espaço Económico Europeu (EEE), estas realizam-se ao abrigo de Cláusulas Contratuais-Tipo aprovadas pela Comissão Europeia ou decisões de adequação válidas (como o EU-US Data Privacy Framework)."}
+              </p>
+            </ClauseCard>
+
+            {/* 05. Cookies e Armazenamento Local */}
+            <ClauseCard
+              id="cookies"
+              code="05"
+              title={
+                isEn
+                  ? "Cookies and Local Browser Storage"
+                  : "Cookies e Armazenamento Local"
+              }
+              accentIndex={1}
+            >
+              <p>
+                {isEn ? (
+                  <>
+                    This website is engineered under a privacy-by-design architecture and{" "}
+                    <strong className="text-foreground">
+                      does not set advertising, marketing, behavioral analytics, or third-party tracking cookies
+                    </strong>
+                    .
+                  </>
+                ) : (
+                  <>
+                    Este website foi concebido segundo o princípio de privacidade desde a conceção e{" "}
+                    <strong className="text-foreground">
+                      não utiliza cookies publicitários, de marketing, de analítica comportamental nem de rastreamento de terceiros
+                    </strong>
+                    .
+                  </>
+                )}
+              </p>
+              <div className="rounded-xl bg-surface/75 border border-border p-4 text-xs sm:text-sm text-muted space-y-2">
+                <p className="font-bold text-foreground">
+                  {isEn
+                    ? "Strictly Necessary Preference Storage"
+                    : "Armazenamento Técnico Estritamente Necessário"}
+                </p>
+                <p>
+                  {isEn
+                    ? "The website stores a single technical key in your browser's local storage (midi8-locale) solely to remember your explicitly selected display language (PT or EN). No personal identifiers are stored or transmitted to third parties."
+                    : "O website guarda apenas uma chave técnica no armazenamento local do navegador (midi8-locale) com o objetivo exclusivo de memorizar o idioma escolhido pelo utilizador (PT ou EN). Não é armazenado nem transmitido a terceiros qualquer identificador pessoal."}
+                </p>
+                <p>
+                  {isEn
+                    ? "Because no non-essential cookies or tracking technologies are deployed, prior cookie consent banners are not required under the ePrivacy Directive and Article 5 of Portuguese Law no. 41/2004. Should analytics or marketing tools ever be introduced in the future, this policy will be updated beforehand alongside an explicit consent mechanism."
+                    : "Por não serem utilizados cookies não essenciais nem mecanismos de rastreamento, a navegação dispensa banner de consentimento nos termos da Diretiva ePrivacy e do artigo 5.º da Lei n.º 41/2004. Caso venham a ser integradas ferramentas analíticas ou de marketing no futuro, esta política será previamente atualizada e acompanhada de gestão explícita de consentimento."}
+                </p>
+              </div>
+            </ClauseCard>
+
+            {/* 06. Segurança Técnica */}
+            <ClauseCard
+              id="seguranca"
+              code="06"
+              title={
+                isEn
+                  ? "Technical and Organizational Security Measures"
+                  : "Medidas Técnicas e Organizativas de Segurança"
+              }
+              accentIndex={2}
+            >
+              <p>
+                {isEn
+                  ? "Pursuant to Article 32 of the GDPR, midi8 applies appropriate technical and organizational controls to protect personal data against unauthorized access, alteration, disclosure, or accidental loss:"
+                  : "Nos termos do artigo 32.º do RGPD, a midi8 aplica medidas técnicas e organizativas adequadas para proteger os dados pessoais contra acesso não autorizado, alteração, divulgação ou perda acidental:"}
+              </p>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm text-muted">
+                <li className="rounded-xl bg-surface/75 border border-border px-3.5 py-2.5">
+                  <strong className="text-foreground block mb-0.5">
+                    {isEn ? "End-to-end HTTPS / TLS" : "Encriptação HTTPS / TLS"}
+                  </strong>
+                  {isEn
+                    ? "All communications between your browser and our servers are encrypted in transit."
+                    : "Todas as comunicações entre o navegador e os servidores decorrem encriptadas em trânsito."}
+                </li>
+                <li className="rounded-xl bg-surface/75 border border-border px-3.5 py-2.5">
+                  <strong className="text-foreground block mb-0.5">
+                    {isEn ? "Server-side validation & anti-abuse" : "Validação e proteção anti-abuso"}
+                  </strong>
+                  {isEn
+                    ? "Strict input sanitization, payload size limits, honeypot filtering, and rate limiting."
+                    : "Validação rigorosa no servidor, limites de carga, deteção de bots e limitação de taxa."}
+                </li>
+                <li className="rounded-xl bg-surface/75 border border-border px-3.5 py-2.5">
+                  <strong className="text-foreground block mb-0.5">
+                    {isEn ? "Restricted internal access" : "Acesso interno restrito"}
+                  </strong>
+                  {isEn
+                    ? "Access to client inquiries is restricted strictly to authorized team members."
+                    : "O acesso aos pedidos submetidos é limitado exclusivamente a membros autorizados da equipa."}
+                </li>
+                <li className="rounded-xl bg-surface/75 border border-border px-3.5 py-2.5">
+                  <strong className="text-foreground block mb-0.5">
+                    {isEn ? "Minimal data surface" : "Superfície de dados mínima"}
+                  </strong>
+                  {isEn
+                    ? "No unnecessary user accounts, hidden trackers, or third-party ad scripts."
+                    : "Sem contas desnecessárias, rastreadores ocultos ou scripts publicitários de terceiros."}
+                </li>
+              </ul>
+            </ClauseCard>
+
+            {/* 07. Direitos dos Titulares */}
+            <ClauseCard
+              id="direitos"
+              code="07"
+              title={isEn ? "Rights of Data Subjects" : "Direitos dos Titulares dos Dados"}
+              accentIndex={0}
+            >
+              <p>
+                {isEn
+                  ? "Under Articles 15 to 22 of the GDPR, you may exercise the following rights free of charge at any time:"
+                  : "Nos termos dos artigos 15.º a 22.º do RGPD, o titular dos dados pode exercer gratuitamente, em qualquer momento, os seguintes direitos:"}
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                {rights.map((right) => (
+                  <div
+                    key={right.title}
+                    className="rounded-xl bg-surface/75 border border-border p-3.5 sm:p-4"
+                  >
+                    <p className="text-sm font-bold text-foreground mb-1">{right.title}</p>
+                    <p className="text-xs text-muted leading-relaxed">{right.desc}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs sm:text-sm text-muted pt-1">
+                {isEn ? (
+                  <>
+                    To exercise any of these rights, send your written request to{" "}
+                    <a
+                      href={`mailto:${CONTACT_EMAIL}`}
+                      className="font-bold text-brand-blue hover:underline"
+                    >
+                      {CONTACT_EMAIL}
+                    </a>
+                    . We respond to all verified requests within a maximum of 30 calendar days.
+                  </>
+                ) : (
+                  <>
+                    Para exercer qualquer um destes direitos, envie o seu pedido por escrito para{" "}
+                    <a
+                      href={`mailto:${CONTACT_EMAIL}`}
+                      className="font-bold text-brand-blue hover:underline"
+                    >
+                      {CONTACT_EMAIL}
+                    </a>
+                    . Todos os pedidos verificados recebem resposta no prazo máximo de 30 dias.
+                  </>
+                )}
+              </p>
+            </ClauseCard>
+
+            {/* 08. CNPD */}
+            <ClauseCard
+              id="cnpd"
+              code="08"
+              title={
+                isEn
+                  ? "Right to Lodge a Complaint (CNPD)"
+                  : "Reclamação junto da Autoridade de Controlo (CNPD)"
+              }
+              accentIndex={1}
+            >
+              <p>
+                {isEn
+                  ? "Without prejudice to any administrative or judicial remedy, if you believe that the processing of your personal data infringes the GDPR or Portuguese legislation, you have the right to lodge a complaint with the national supervisory authority:"
+                  : "Sem prejuízo de qualquer outra via de recurso administrativo ou judicial, caso considere que o tratamento dos seus dados pessoais viola o RGPD ou a legislação nacional em vigor, tem o direito de apresentar reclamação junto da autoridade de controlo em Portugal:"}
+              </p>
+              <div className="rounded-xl bg-surface/75 border border-border p-4 text-xs sm:text-sm text-muted space-y-1">
+                <p className="font-bold text-foreground">
+                  Comissão Nacional de Proteção de Dados (CNPD)
+                </p>
+                <p>Av. D. Carlos I, 134 - 1.º, 1200-651 Lisboa, Portugal</p>
+                <p>
+                  Website:{" "}
+                  <a
+                    href="https://www.cnpd.pt"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-bold text-brand-blue hover:underline"
+                  >
+                    www.cnpd.pt
+                  </a>
+                </p>
+              </div>
+            </ClauseCard>
+
+            {/* 09. Alterações */}
+            <ClauseCard
+              id="alteracoes"
+              code="09"
+              title={
+                isEn
+                  ? "Amendments to this Privacy Policy"
+                  : "Alterações à Presente Política"
+              }
+              accentIndex={2}
+            >
+              <p>
+                {isEn
+                  ? "midi8 reserves the right to revise this Privacy Policy at any time to reflect technical, operational, or regulatory developments. The most recent version is always published on this page with its effective date clearly indicated."
+                  : "A midi8 reserva-se o direito de atualizar esta Política de Privacidade sempre que necessário para refletir evoluções técnicas, operacionais ou legislativas. A versão em vigor encontra-se permanentemente disponível nesta página com indicação da data de revisão."}
+              </p>
+            </ClauseCard>
+
+            {/* Navegação Inferior */}
+            <div className="mt-4 pt-6 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <Link
                 href="/"
                 className="inline-flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors"
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Back to home page
+                <span aria-hidden="true">←</span>
+                <span>{isEn ? "Back to home page" : "Voltar à página inicial"}</span>
               </Link>
               <Link
                 href="/termos"
-                className="text-sm text-brand-blue hover:underline"
+                className="inline-flex items-center gap-1.5 text-sm font-bold text-foreground hover:text-brand-blue transition-colors"
               >
-                View Terms &amp; Conditions →
+                <span>{isEn ? "Read Terms & Conditions" : "Consultar Termos e Condições"}</span>
+                <span aria-hidden="true">→</span>
               </Link>
             </div>
-          </div>
-        </article>
-      </main>
-    );
-  }
-
-  // Versão em Português (PT)
-  return (
-    <main className="flex-1 text-foreground pt-28 pb-16">
-      <article className="max-w-4xl mx-auto px-6">
-        {/* Cabeçalho da Página */}
-        <header className="mb-12 border-b border-border pb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
-            Política de Privacidade
-          </h1>
-          <p className="text-sm text-subtle">
-            Última atualização:{" "}
-            <time dateTime="2026-11">Novembro de 2026</time>
-          </p>
-        </header>
-
-        {/* Resumo e Enquadramento */}
-        <div className="space-y-8 text-secondary text-sm sm:text-base leading-relaxed">
-          <section className="bg-surface/40 border border-border rounded-2xl p-6">
-            <p className="text-secondary">
-              A <strong>midi8</strong> valoriza a privacidade e a segurança dos dados pessoais dos
-              seus utilizadores, clientes e parceiros. Esta Política de Privacidade descreve, de
-              forma clara e transparente, como recolhemos, utilizamos, tratamos e protegemos os
-              dados pessoais em estrita conformidade com o <strong>Regulamento Geral sobre a Proteção de Dados (RGPD - Regulamento UE 2016/679)</strong> e com a <strong>Lei n.º 58/2019, de 8 de agosto</strong> (lei portuguesa de proteção de dados pessoais).
-            </p>
-          </section>
-
-          {/* 1. Responsável pelo Tratamento */}
-          <section aria-labelledby="resp-tratamento" className="space-y-3">
-            <h2 id="resp-tratamento" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-              1. Identificação do Responsável pelo Tratamento
-            </h2>
-            <p>
-              O responsável pelo tratamento dos seus dados pessoais no âmbito deste website e dos serviços prestados é:
-            </p>
-            <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-xl border border-border">
-              <li>
-                <strong>Entidade:</strong> midi8 - Engenharia de Software e Sistemas Digitais
-              </li>
-              <li>
-                <strong>Jurisdição:</strong> Portugal
-              </li>
-              <li>
-                <strong>Contacto de Email para Privacidade:</strong>{" "}
-                <a href={`mailto:${CONTACT_EMAIL}`} className="text-brand-blue hover:underline">
-                  {CONTACT_EMAIL}
-                </a>
-              </li>
-            </ul>
-          </section>
-
-          {/* 2. Dados Recolhidos e Finalidades */}
-          <section aria-labelledby="dados-recolhidos" className="space-y-3">
-            <h2 id="dados-recolhidos" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-              2. Dados Recolhidos, Finalidades e Fundamentos de Licitude
-            </h2>
-            <p>
-              Tratamos apenas os dados estritamente necessários para as seguintes finalidades legítimas:
-            </p>
-            <div className="space-y-4">
-              <div className="p-4 rounded-xl bg-surface/40 border border-border">
-                <h3 className="text-base font-bold text-foreground mb-1">
-                  a) Formulários de Contacto e Agendamento de Reuniões Técnicas
-                </h3>
-                <p className="text-sm text-muted mb-2">
-                  <strong>Dados:</strong> Nome, endereço de email, empresa, áreas de interesse e descrição do projeto.
-                </p>
-                <p className="text-sm text-muted">
-                  <strong>Fundamento:</strong> Diligências pré-contratuais a pedido do titular dos dados (artigo 6.º, n.º 1, alínea b) do RGPD).
-                </p>
-              </div>
-
-              <div className="p-4 rounded-xl bg-surface/40 border border-border">
-                <h3 className="text-base font-bold text-foreground mb-1">
-                  b) Navegação e Segurança da Infraestrutura
-                </h3>
-                <p className="text-sm text-muted mb-2">
-                  <strong>Dados:</strong> Endereço IP, registos técnicos do servidor (logs) e tipo de navegador, necessários à segurança e ao funcionamento do site.
-                </p>
-                <p className="text-sm text-muted">
-                  <strong>Fundamento:</strong> Interesse legítimo da midi8 em garantir a integridade, resiliência e segurança cibernética dos seus servidores (artigo 6.º, n.º 1, alínea f) do RGPD).
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* 3. Prazos de Conservação */}
-          <section aria-labelledby="prazos-conservacao" className="space-y-3">
-            <h2 id="prazos-conservacao" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-              3. Prazos de Conservação dos Dados
-            </h2>
-            <p>
-              Os dados pessoais são conservados apenas durante o período estritamente necessário à prossecução da finalidade para a qual foram recolhidos:
-            </p>
-            <ul className="list-disc pl-5 space-y-1 text-secondary">
-              <li>
-                <strong>Contactos comerciais e pré-contratuais:</strong> Até 12 meses após o último contacto, caso não se estabeleça relação contratual posterior.
-              </li>
-              <li>
-                <strong>Dados decorrentes de contratos de prestação de serviços:</strong> Durante a vigência do contrato e pelos prazos legais imperativos de arquivo fiscal e contabilístico (geralmente 10 anos sob a lei portuguesa).
-              </li>
-              <li>
-                <strong>Logs técnicos de segurança:</strong> Até um máximo de 6 meses.
-              </li>
-            </ul>
-          </section>
-
-          {/* 4. Subcontratantes e Destinatários */}
-          <section aria-labelledby="destinatarios" className="space-y-3">
-            <h2 id="destinatarios" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-              4. Partilha com Subcontratantes e Terceiros
-            </h2>
-            <p>
-              A midi8 não comercializa nem cede dados pessoais a terceiros para fins de marketing. Para o regular funcionamento da infraestrutura digital, recorremos a fornecedores de serviços na qualidade de subcontratantes, os quais garantem elevados padrões de segurança e conformidade com o RGPD:
-            </p>
-            <ul className="list-disc pl-5 space-y-1 text-secondary">
-              <li>Vercel: alojamento do website e rede de distribuição de conteúdos (CDN).</li>
-              <li>Resend: envio por email dos pedidos submetidos no formulário de contacto.</li>
-              <li>Google (Gmail): receção e gestão do correio eletrónico.</li>
-            </ul>
-            <p className="text-sm text-muted">
-              Sempre que existam transferências internacionais de dados para fora do Espaço Económico Europeu (EEE), estas realizam-se mediante Cláusulas Contratuais-Tipo aprovadas pela Comissão Europeia ou garantias de adequação equivalentes.
-            </p>
-          </section>
-
-          {/* 5. Cookies e Tecnologias de Rastreamento */}
-          <section aria-labelledby="cookies" className="space-y-3">
-            <h2 id="cookies" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-              5. Cookies e Tecnologias de Rastreamento
-            </h2>
-            <p>
-              Este website foi concebido sob o princípio da minimização de dados e{" "}
-              <strong>não utiliza cookies publicitários, de marketing, de terceiros nem de rastreamento analítico</strong>.
-            </p>
-            <p className="text-sm text-muted">
-              A navegação decorre apenas com recursos técnicos estritamente necessários à segurança, entrega de conteúdos e correto funcionamento da aplicação, dispensando consentimento para cookies não essenciais nos termos da Diretiva ePrivacy e da Lei n.º 41/2004.
-            </p>
-          </section>
-
-          {/* 6. Direitos dos Titulares */}
-          <section aria-labelledby="direitos-titular" className="space-y-3">
-            <h2 id="direitos-titular" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-              6. Direitos dos Titulares dos Dados
-            </h2>
-            <p>
-              Nos termos dos artigos 15.º a 22.º do RGPD, o utilizador tem o direito de exercer gratuitamente perante a midi8:
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-              <div className="p-3 bg-surface/40 rounded-xl border border-border">
-                <strong className="text-foreground block">Direito de Acesso</strong>
-                Obter confirmação sobre se os seus dados são tratados e aceder aos mesmos.
-              </div>
-              <div className="p-3 bg-surface/40 rounded-xl border border-border">
-                <strong className="text-foreground block">Direito de Retificação</strong>
-                Solicitar a correção de dados inexatos ou incompletos.
-              </div>
-              <div className="p-3 bg-surface/40 rounded-xl border border-border">
-                <strong className="text-foreground block">Direito ao Apagamento</strong>
-                Pedir a eliminação dos dados («direito a ser esquecido») dentro dos limites legais.
-              </div>
-              <div className="p-3 bg-surface/40 rounded-xl border border-border">
-                <strong className="text-foreground block">Direito à Limitação</strong>
-                Solicitar a suspensão temporária do tratamento em circunstâncias específicas.
-              </div>
-              <div className="p-3 bg-surface/40 rounded-xl border border-border">
-                <strong className="text-foreground block">Direito de Portabilidade</strong>
-                Receber os dados fornecidos em formato estruturado e legível por máquina.
-              </div>
-              <div className="p-3 bg-surface/40 rounded-xl border border-border">
-                <strong className="text-foreground block">Direito de Oposição</strong>
-                Opor-se ao tratamento de dados fundamentado em interesses legítimos.
-              </div>
-            </div>
-            <p className="pt-2">
-              Para exercer qualquer um destes direitos, envie o seu pedido por escrito para{" "}
-              <a href={`mailto:${CONTACT_EMAIL}`} className="text-brand-blue hover:underline">
-                {CONTACT_EMAIL}
-              </a>
-              . A resposta será prestada no prazo máximo de 30 dias.
-            </p>
-          </section>
-
-          {/* 7. Reclamação junto da CNPD */}
-          <section aria-labelledby="cnpd" className="space-y-3 bg-surface/40 p-5 rounded-2xl border border-border">
-            <h2 id="cnpd" className="text-lg sm:text-xl font-normal text-foreground tracking-tight">
-              7. Direito de Reclamação junto da Autoridade de Controlo (CNPD)
-            </h2>
-            <p>
-              Caso considere que o tratamento dos seus dados viola o RGPD ou a legislação nacional em vigor, tem o direito de apresentar uma reclamação à autoridade de controlo em Portugal:
-            </p>
-            <div className="text-xs sm:text-sm text-muted space-y-1">
-              <p><strong>Comissão Nacional de Proteção de Dados (CNPD)</strong></p>
-              <p>Av. D. Carlos I, 134 - 1.º, 1200-651 Lisboa, Portugal</p>
-              <p>Website: <a href="https://www.cnpd.pt" target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:underline">www.cnpd.pt</a></p>
-            </div>
-          </section>
-
-          {/* 8. Alterações à Política */}
-          <section aria-labelledby="alteracoes" className="space-y-3">
-            <h2 id="alteracoes" className="text-xl sm:text-2xl font-normal text-foreground tracking-tight">
-              8. Alterações à presente Política
-            </h2>
-            <p>
-              A midi8 reserva-se o direito de atualizar esta Política de Privacidade a qualquer momento para refletir eventuais alterações técnicas, operacionais ou legislativas. A versão atualizada entrará imediatamente em vigor após publicação nesta página.
-            </p>
-          </section>
-
-          {/* Voltar ao Início */}
-          <div className="pt-8 border-t border-border flex items-center justify-between">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Voltar à página inicial
-            </Link>
-            <Link
-              href="/termos"
-              className="text-sm text-brand-blue hover:underline"
-            >
-              Consultar Termos e Condições →
-            </Link>
-          </div>
+          </article>
         </div>
-      </article>
+      </section>
     </main>
   );
 }
-

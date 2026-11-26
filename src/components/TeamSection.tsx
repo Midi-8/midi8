@@ -2,6 +2,7 @@
 
 import { useCallback, useState, type PointerEvent } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import {
   motion,
@@ -28,6 +29,7 @@ interface TeamMember {
   initials: string;
   department: Department;
   accentRgb: string;
+  image?: string;
 }
 
 const DEPARTMENT_LABELS: Record<Locale, Record<Department, string>> = {
@@ -78,6 +80,7 @@ const teamMembers: TeamMember[] = [
     initials: "HS",
     department: "Diagnóstico & Negócio",
     accentRgb: "0, 105, 248",
+    image: "/team/member-4.png",
   },
   {
     id: "vitor-hugo-carneiro",
@@ -220,13 +223,45 @@ function TeamMemberCard({
             }`}
           />
 
+          {/* Retrato de estúdio ou monograma editorial com paralaxe suave */}
+          {member.image ? (
+            <motion.div
+              style={prefersReducedMotion ? undefined : { x: imgX, y: imgY }}
+              className="absolute inset-0 pointer-events-none"
+            >
+              <Image
+                src={member.image}
+                alt={member.name}
+                fill
+                sizes="(max-width: 768px) 34vw, 18vw"
+                className={`object-cover object-top transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  isActive ? "scale-[1.08]" : "scale-[1.03]"
+                }`}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              aria-hidden="true"
+              style={prefersReducedMotion ? undefined : { x: imgX, y: imgY }}
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            >
+              <span
+                className={`font-display italic font-normal text-3xl sm:text-5xl tracking-tight leading-none transition-all duration-300 ${
+                  isActive ? "text-foreground scale-105" : "text-foreground/75"
+                }`}
+              >
+                {member.initials}
+              </span>
+            </motion.div>
+          )}
+
           {/* Indicador clicável ↗ no canto superior direito */}
           <span
             aria-hidden="true"
-            className={`absolute top-2 right-2 sm:top-3.5 sm:right-3.5 w-6 h-6 sm:w-8 sm:h-8 rounded-full border flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            className={`absolute z-10 top-2 right-2 sm:top-3.5 sm:right-3.5 w-6 h-6 sm:w-8 sm:h-8 rounded-full border flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               isActive
                 ? "bg-foreground border-foreground text-white shadow-xs"
-                : "bg-surface/90 border-border text-muted group-hover:text-foreground"
+                : "bg-white/90 border-border text-muted group-hover:text-foreground"
             }`}
           >
             <svg
@@ -242,28 +277,15 @@ function TeamMemberCard({
             </svg>
           </span>
 
-          {/* Monograma editorial centrado com paralaxe suave */}
-          <motion.div
-            aria-hidden="true"
-            style={prefersReducedMotion ? undefined : { x: imgX, y: imgY }}
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
-          >
-            <span
-              className={`font-display italic font-normal text-3xl sm:text-5xl tracking-tight leading-none transition-all duration-300 ${
-                isActive ? "text-foreground scale-105" : "text-foreground/75"
-              }`}
-            >
-              {member.initials}
-            </span>
-          </motion.div>
-
           {/* Barra inferior fina que ganha nitidez no hover */}
-          <div
-            aria-hidden="true"
-            className={`pointer-events-none absolute inset-x-3 sm:inset-x-4 bottom-2.5 sm:bottom-3.5 h-px transition-colors duration-300 ${
-              isActive ? "bg-foreground/20" : "bg-border/70"
-            }`}
-          />
+          {!member.image && (
+            <div
+              aria-hidden="true"
+              className={`pointer-events-none absolute inset-x-3 sm:inset-x-4 bottom-2.5 sm:bottom-3.5 h-px transition-colors duration-300 ${
+                isActive ? "bg-foreground/20" : "bg-border/70"
+              }`}
+            />
+          )}
         </div>
       </motion.div>
 

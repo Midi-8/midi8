@@ -7,6 +7,7 @@ import {
   type PointerEvent,
 } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import {
   AnimatePresence,
   motion,
@@ -43,6 +44,7 @@ export interface TeamProfile {
   phone: string;
   phoneHref: string;
   accentRgb: string;
+  image?: string;
 }
 
 export const TEAM_PROFILES: Record<string, TeamProfile> = {
@@ -159,6 +161,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     phone: "+351 911 764 432",
     phoneHref: "tel:+351911764432",
     accentRgb: "0, 105, 248",
+    image: "/team/member-4.png",
   },
   "vitor-hugo-carneiro": {
     fullName: "Vitor Hugo Marques Carneiro",
@@ -481,25 +484,37 @@ export default function TeamMemberModal({
                 transition={{ duration: 0.2, ease: EASE }}
                 className="relative z-10 flex flex-col gap-3.5 sm:gap-4 min-w-0"
               >
-                {/* ─── Nome completo + Monograma + Idade ─── */}
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3 min-w-0">
+                {/* ─── Retrato/Monograma + Nome completo + Idade ─── */}
+                <div className="flex items-center gap-3.5 min-w-0">
+                  {profile.image ? (
+                    <div className="relative w-12 h-14 sm:w-14 sm:h-16 rounded-xl overflow-hidden bg-white border border-black/[0.08] shadow-2xs shrink-0">
+                      <Image
+                        src={profile.image}
+                        alt={profile.fullName}
+                        fill
+                        sizes="64px"
+                        className="object-cover object-top"
+                      />
+                    </div>
+                  ) : (
                     <span
                       aria-hidden="true"
-                      className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-surface border border-border flex items-center justify-center font-display italic text-lg sm:text-xl text-foreground shrink-0"
+                      className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-surface border border-border flex items-center justify-center font-display italic text-lg sm:text-xl text-foreground shrink-0"
                     >
                       {member.initials}
                     </span>
+                  )}
+                  <div className="min-w-0">
                     <h3
                       id="team-modal-name"
                       className="font-sans text-lg sm:text-2xl font-bold tracking-tight text-foreground leading-snug"
                     >
                       {profile.fullName}
                     </h3>
+                    <p className="text-xs sm:text-sm text-subtle tabular-nums mt-0.5">
+                      {profile.age} {copy.yearsUnit}
+                    </p>
                   </div>
-                  <span className="inline-flex items-center rounded-full bg-surface border border-border px-2.5 py-0.5 text-xs font-sans text-secondary shrink-0 mt-1">
-                    {profile.age} {copy.yearsUnit}
-                  </span>
                 </div>
 
                   {/* Formação */}

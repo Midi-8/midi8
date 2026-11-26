@@ -154,14 +154,26 @@ export default function WorkMethodCarousel() {
   const { locale } = useLanguage();
   const prefersReducedMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState<1 | -1>(1);
   const total = PROCESS_STEPS.length;
   const activeStep = PROCESS_STEPS[activeIndex];
 
   const stepBy = useCallback(
-    (delta: number) => {
+    (delta: 1 | -1) => {
+      setDirection(delta);
       setActiveIndex((prev) => (prev + delta + total) % total);
     },
     [total]
+  );
+
+  const selectIndex = useCallback(
+    (targetIndex: number) => {
+      if (targetIndex === activeIndex) return;
+      const diff = getCircularDiff(targetIndex, activeIndex, total);
+      setDirection(diff >= 0 ? 1 : -1);
+      setActiveIndex(targetIndex);
+    },
+    [activeIndex, total]
   );
 
   return (
@@ -210,7 +222,7 @@ export default function WorkMethodCarousel() {
                   <button
                     key={step.id}
                     type="button"
-                    onClick={() => setActiveIndex(idx)}
+                    onClick={() => selectIndex(idx)}
                     aria-pressed={isActive}
                     className={`group relative text-left rounded-xl sm:rounded-2xl border p-3 sm:p-5 transition-all duration-300 active:scale-[0.98] cursor-pointer ${
                       isActive
@@ -250,8 +262,8 @@ export default function WorkMethodCarousel() {
 
           {/* ─── Coluna Direita: Carrossel Vertical 3D em Gradiente ─── */}
           <div className="lg:col-span-7 flex flex-col items-center">
-            {/* Setas centradas em cima do carrossel */}
-            <div className="mb-2.5 sm:mb-3 flex items-center justify-center gap-2.5">
+            {/* Controlos Anterior / Próximo centrados em cima do carrossel */}
+            <div className="mb-3 sm:mb-4 flex items-center justify-center gap-3">
               <button
                 type="button"
                 onClick={() => stepBy(-1)}
@@ -259,9 +271,15 @@ export default function WorkMethodCarousel() {
                 className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-black/[0.09] bg-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_4px_12px_-6px_rgba(15,23,42,0.14)] flex items-center justify-center text-foreground hover:bg-foreground hover:text-white hover:border-foreground active:scale-95 transition-all cursor-pointer"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-5 5m5-5l5 5" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5m0 0l5-5m-5 5l5 5" />
                 </svg>
               </button>
+              <span
+                aria-live="polite"
+                className="min-w-[54px] text-center text-[11px] font-bold tracking-widest text-subtle tabular-nums select-none"
+              >
+                {activeStep.code} / 0{total}
+              </span>
               <button
                 type="button"
                 onClick={() => stepBy(1)}
@@ -269,18 +287,24 @@ export default function WorkMethodCarousel() {
                 className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-black/[0.09] bg-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_4px_12px_-6px_rgba(15,23,42,0.14)] flex items-center justify-center text-foreground hover:bg-foreground hover:text-white hover:border-foreground active:scale-95 transition-all cursor-pointer"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m0 0l-5-5m5 5l5-5" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14m0 0l-5-5m5 5l-5 5" />
                 </svg>
               </button>
             </div>
-            {/* ─── Mobile (< sm): Cartão único compacto, limpo e proporcional ao telemóvel ─── */}
-            <div className="sm:hidden w-full">
-              <AnimatePresence mode="wait">
+            {/* ─── Mobile (< sm): Cartão único compacto com transição direcional ─── */}
+            <div className="sm:hidden w-full overflow-hidden">
+              <AnimatePresence mode="wait" custom={direction}>
                 <motion.article
                   key={activeStep.id}
-                  initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={prefersReducedMotion ? undefined : { opacity: 0, y: -12 }}
+                  custom={direction}
+                  variants={{
+                    enter: (dir: number) => ({ opacity: 0, x: dir * 24 }),
+                    center: { opacity: 1, x: 0 },
+                    exit: (dir: number) => ({ opacity: 0, x: -dir * 24 }),
+                  }}
+                  initial={prefersReducedMotion ? false : "enter"}
+                  animate="center"
+                  exit={prefersReducedMotion ? undefined : "exit"}
                   transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
                   className="relative w-full rounded-2xl overflow-hidden border border-white/75 shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_20px_42px_-22px_rgba(0,105,248,0.3)]"
                 >
@@ -345,10 +369,10 @@ export default function WorkMethodCarousel() {
               aria-label={locale === "pt" ? "Carrossel vertical de método de trabalho" : "Vertical work process carousel"}
               tabIndex={0}
               onKeyDown={(e) => {
-                if (e.key === "ArrowUp") {
+                if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
                   e.preventDefault();
                   stepBy(-1);
-                } else if (e.key === "ArrowDown") {
+                } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
                   e.preventDefault();
                   stepBy(1);
                 }
@@ -360,26 +384,39 @@ export default function WorkMethodCarousel() {
                 const diff = getCircularDiff(index, activeIndex, total);
                 const isCenter = diff === 0;
                 const isAdjacent = Math.abs(diff) === 1;
+                const isOpposite = Math.abs(diff) === 2;
 
-                // Posicionamento vertical em cascata 3D
+                // Posicionamento vertical em cascata 3D sem saltos do cartão oposto
                 const yOffset =
-                  diff === 0 ? 0 : diff === -1 ? -86 : diff === 1 ? 86 : diff < 0 ? -134 : 134;
-                const scale = isCenter ? 1 : isAdjacent ? 0.91 : 0.82;
+                  diff === 0
+                    ? 0
+                    : diff === -1
+                      ? -86
+                      : diff === 1
+                        ? 86
+                        : direction > 0
+                          ? -128
+                          : 128;
+                const scale = isCenter ? 1 : isAdjacent ? 0.91 : 0.8;
                 const rotateX = prefersReducedMotion
                   ? 0
                   : diff === 0
                     ? 0
                     : diff < 0
                       ? 8
-                      : -8;
-                const opacity = isCenter ? 1 : isAdjacent ? 0.52 : 0.12;
+                      : isOpposite
+                        ? direction > 0
+                          ? 10
+                          : -10
+                        : -8;
+                const opacity = isCenter ? 1 : isAdjacent ? 0.52 : 0;
                 const zIndex = isCenter ? 30 : isAdjacent ? 20 : 10;
 
                 return (
                   <motion.article
                     key={step.id}
                     onClick={() => {
-                      if (!isCenter) setActiveIndex(index);
+                      if (!isCenter) selectIndex(index);
                     }}
                     initial={false}
                     animate={{
@@ -508,7 +545,7 @@ export default function WorkMethodCarousel() {
                   <button
                     key={step.id}
                     type="button"
-                    onClick={() => setActiveIndex(idx)}
+                    onClick={() => selectIndex(idx)}
                     aria-label={`${locale === "pt" ? "Fase" : "Stage"} ${step.code}`}
                     aria-current={isActive ? "step" : undefined}
                     className="w-2.5 h-2.5 rounded-full transition-colors duration-300 cursor-pointer"
