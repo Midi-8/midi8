@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import KineticHeading from "@/components/KineticHeading";
+import BriefBuilder from "@/components/BriefBuilder";
 import { useLanguage, type Locale } from "@/context/LanguageContext";
 import type { Area } from "@/lib/contact";
 
@@ -72,7 +73,7 @@ const CATALOG: ServiceCatalogItem[] = [
     id: "web-design",
     category: "web-software",
     contactArea: "Web, Software & Mobile",
-    timeline: { pt: "2 – 4 semanas", en: "2 – 4 weeks" },
+    timeline: { pt: "2 - 4 semanas", en: "2 - 4 weeks" },
     title: { pt: "Web Design e Desenvolvimento Web", en: "Web Design & Web Development" },
     description: {
       pt: "Criação de websites e plataformas digitais que combinam design cuidado, desempenho extremo e experiência de utilização.",
@@ -87,7 +88,7 @@ const CATALOG: ServiceCatalogItem[] = [
     id: "desenvolvimento-software",
     category: "web-software",
     contactArea: "Web, Software & Mobile",
-    timeline: { pt: "4 – 10 semanas", en: "4 – 10 weeks" },
+    timeline: { pt: "4 - 10 semanas", en: "4 - 10 weeks" },
     title: { pt: "Desenvolvimento de Software", en: "Custom Software Development" },
     description: {
       pt: "Conceção de software e aplicações web à medida para responder a necessidades operacionais específicas.",
@@ -102,7 +103,7 @@ const CATALOG: ServiceCatalogItem[] = [
     id: "desenvolvimento-mobile",
     category: "web-software",
     contactArea: "Web, Software & Mobile",
-    timeline: { pt: "6 – 12 semanas", en: "6 – 12 weeks" },
+    timeline: { pt: "6 - 12 semanas", en: "6 - 12 weeks" },
     title: { pt: "Desenvolvimento Mobile", en: "Mobile App Development" },
     description: {
       pt: "Aplicações iOS e Android desenhadas para fluidez, retenção e integração total com o ecossistema da empresa.",
@@ -117,7 +118,7 @@ const CATALOG: ServiceCatalogItem[] = [
     id: "solucoes-tecnologicas",
     category: "ia-automacao",
     contactArea: "Automação, IA & Dados",
-    timeline: { pt: "2 – 6 semanas", en: "2 – 6 weeks" },
+    timeline: { pt: "2 - 6 semanas", en: "2 - 6 weeks" },
     title: { pt: "Desenvolvimento de Soluções Tecnológicas", en: "Technology Solutions Engineering" },
     description: {
       pt: "Identificação de gargalos e criação de ferramentas digitais práticas para transformar ideias em sistemas funcionais.",
@@ -132,7 +133,7 @@ const CATALOG: ServiceCatalogItem[] = [
     id: "automacao-processos",
     category: "ia-automacao",
     contactArea: "Automação, IA & Dados",
-    timeline: { pt: "1 – 3 semanas", en: "1 – 3 weeks" },
+    timeline: { pt: "1 - 3 semanas", en: "1 - 3 weeks" },
     title: { pt: "Automação de Processos", en: "Process Automation" },
     description: {
       pt: "Sistemas e integrações que eliminam tarefas repetitivas, reduzem erros manuais e aumentam a produtividade.",
@@ -147,7 +148,7 @@ const CATALOG: ServiceCatalogItem[] = [
     id: "ia-llms",
     category: "ia-automacao",
     contactArea: "Automação, IA & Dados",
-    timeline: { pt: "2 – 5 semanas", en: "2 – 5 weeks" },
+    timeline: { pt: "2 - 5 semanas", en: "2 - 5 weeks" },
     title: { pt: "Inteligência Artificial & LLMs", en: "Artificial Intelligence & LLMs" },
     description: {
       pt: "Assistentes, agentes internos e fluxos com modelos de linguagem integrados nos dados reais da sua organização.",
@@ -162,7 +163,7 @@ const CATALOG: ServiceCatalogItem[] = [
     id: "analise-dados",
     category: "ia-automacao",
     contactArea: "Automação, IA & Dados",
-    timeline: { pt: "2 – 4 semanas", en: "2 – 4 weeks" },
+    timeline: { pt: "2 - 4 semanas", en: "2 - 4 weeks" },
     title: { pt: "Análise de Dados & Business Intelligence", en: "Data Analytics & Business Intelligence" },
     description: {
       pt: "Transformação de dados dispersos em dashboards claros, modelos estatísticos e indicadores acionáveis.",
@@ -177,7 +178,7 @@ const CATALOG: ServiceCatalogItem[] = [
     id: "estrategia-comunicacao",
     category: "marketing",
     contactArea: "Estratégia, Marketing & Campanhas",
-    timeline: { pt: "2 – 3 semanas", en: "2 – 3 weeks" },
+    timeline: { pt: "2 - 3 semanas", en: "2 - 3 weeks" },
     title: { pt: "Estratégia e Comunicação", en: "Strategy & Brand Communication" },
     description: {
       pt: "Estratégias de comunicação alinhadas com os objetivos da marca, com uma mensagem coerente para o público certo.",
@@ -222,7 +223,7 @@ const CATALOG: ServiceCatalogItem[] = [
     id: "branding-identidade",
     category: "marketing",
     contactArea: "Estratégia, Marketing & Campanhas",
-    timeline: { pt: "2 – 4 semanas", en: "2 – 4 weeks" },
+    timeline: { pt: "2 - 4 semanas", en: "2 - 4 weeks" },
     title: { pt: "Identidade Visual & Direção Criativa", en: "Brand Identity & Creative Direction" },
     description: {
       pt: "Sistemas visuais minimalistas e memoráveis pensados para funcionar em digital, produto e comunicação institucional.",
@@ -237,7 +238,7 @@ const CATALOG: ServiceCatalogItem[] = [
     id: "consultoria-informatica",
     category: "consultoria-ecom",
     contactArea: "Consultoria & E-commerce",
-    timeline: { pt: "1 – 2 semanas", en: "1 – 2 weeks" },
+    timeline: { pt: "1 - 2 semanas", en: "1 - 2 weeks" },
     title: { pt: "Consultoria Tecnológica & Diagnóstico", en: "Technology & Business Consulting" },
     description: {
       pt: "Apoio à decisão técnica e de negócio para escolher a arquitetura, ferramentas e investimentos certos sem desperdício.",
@@ -252,7 +253,7 @@ const CATALOG: ServiceCatalogItem[] = [
     id: "ecommerce",
     category: "consultoria-ecom",
     contactArea: "Consultoria & E-commerce",
-    timeline: { pt: "3 – 6 semanas", en: "3 – 6 weeks" },
+    timeline: { pt: "3 - 6 semanas", en: "3 - 6 weeks" },
     title: { pt: "E-commerce & Otimização de Conversão", en: "E-commerce & Conversion Optimization" },
     description: {
       pt: "Lojas online rápidas e otimizadas para venda, integradas com faturação, logística, pagamentos e campanhas.",
@@ -314,8 +315,8 @@ export default function ServicosContent() {
             />
             <p className="type-body text-muted max-w-2xl text-pretty">
               {locale === "pt"
-                ? "Da primeira arquitetura web à automação com inteligência artificial e campanhas de crescimento — escolha um serviço para pedir proposta diretamente."
-                : "From foundational web architecture to AI automation and growth campaigns — pick any service to request a tailored proposal."}
+                ? "Da primeira arquitetura web à automação com inteligência artificial e campanhas de crescimento - escolha um serviço para pedir proposta diretamente."
+                : "From foundational web architecture to AI automation and growth campaigns - pick any service to request a tailored proposal."}
             </p>
           </div>
 
@@ -341,10 +342,6 @@ export default function ServicosContent() {
           </div>
         </div>
       </section>
-
-      <div aria-hidden="true" className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="section-divider" />
-      </div>
 
       {/* ─── Grelha Completa dos Serviços ─── */}
       <section className="relative w-full py-12 sm:py-20 px-4 sm:px-6 overflow-hidden">
@@ -403,24 +400,8 @@ export default function ServicosContent() {
             ))}
           </div>
 
-          {/* CTA de diagnóstico */}
-          <div className="mt-12 sm:mt-16 rounded-2xl border border-black/[0.08] bg-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_1px_2px_rgba(15,23,42,0.04),0_20px_44px_-26px_rgba(15,23,42,0.14)] p-6 sm:p-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-            <div className="max-w-xl">
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
-                {locale === "pt"
-                  ? "Não tem a certeza de qual serviço escolher?"
-                  : "Not sure which service fits best?"}
-              </h2>
-              <p className="type-body text-muted text-pretty">
-                {locale === "pt"
-                  ? "Conte-nos o desafio atual da sua empresa e desenhamos uma proposta combinada à medida."
-                  : "Tell us about your current challenge and we will craft a tailored combined plan."}
-              </p>
-            </div>
-            <Link href="/contacto" className="cta-button shrink-0 w-fit">
-              {locale === "pt" ? "Agendar diagnóstico" : "Book a discovery call"}
-            </Link>
-          </div>
+          {/* Construtor rápido de briefing */}
+          <BriefBuilder />
         </div>
       </section>
     </main>

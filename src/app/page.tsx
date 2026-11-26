@@ -119,7 +119,7 @@ export default function Home() {
     },
     {
       label: "LinkedIn",
-      value: "Midi8",
+      value: "midi8",
       href: SOCIAL.linkedin,
       icon: (
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -145,7 +145,7 @@ export default function Home() {
     <main className="flex-1 text-foreground overflow-x-clip">
       <Hero />
 
-      {/* ─── 01. A Midi8 ─── */}
+      {/* ─── 01. A midi8 ─── */}
       <section id="sobre" className="relative w-full py-14 sm:py-28 px-4 sm:px-6 scroll-mt-16 overflow-hidden">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 studio-dot-grid opacity-70" />
         <div className="relative z-10 max-w-7xl w-full mx-auto">
@@ -183,7 +183,7 @@ export default function Home() {
               href="/sobre"
               className="group inline-flex items-center gap-1.5 text-xs sm:text-sm text-muted hover:text-foreground transition-colors shrink-0 w-fit"
             >
-              <span>{locale === "pt" ? "Explorar a Midi8" : "Explore Midi8"}</span>
+              <span>{locale === "pt" ? "Explorar a midi8" : "Explore midi8"}</span>
               <span
                 aria-hidden="true"
                 className="transition-transform duration-200 group-hover:translate-x-0.5"
@@ -206,23 +206,11 @@ export default function Home() {
         </div>
       </section>
 
-      <div aria-hidden="true" className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="section-divider" />
-      </div>
-
       {/* ─── 02. Serviços ─── */}
       <ServicesCarousel />
 
-      <div aria-hidden="true" className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="section-divider" />
-      </div>
-
       {/* ─── 03. Equipa ─── */}
       <TeamSection />
-
-      <div aria-hidden="true" className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="section-divider" />
-      </div>
 
       {/* ─── 04. Contactos ─── */}
       <section id="contacto" className="relative w-full py-14 sm:py-28 px-4 sm:px-6 scroll-mt-16 overflow-hidden">

@@ -19,7 +19,7 @@ import {
 import type { Locale } from "@/context/LanguageContext";
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Perfis da equipa — estrutura com os campos oficiais:
+   Perfis da equipa - estrutura com os campos oficiais:
    Departamento · Nome completo · Idade · Formação · Certificações · LinkedIn · Telemóvel
    ───────────────────────────────────────────────────────────────────────── */
 
@@ -146,11 +146,11 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     },
     certifications: {
       pt: [
-        "Excel II — Advanced User",
+        "Excel II - Advanced User",
         "STATA & Applied Econometrics",
       ],
       en: [
-        "Excel II — Advanced User",
+        "Excel II - Advanced User",
         "STATA & Applied Econometrics",
       ],
     },

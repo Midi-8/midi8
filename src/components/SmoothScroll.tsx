@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 
 /**
- * SmoothScroll — inércia física sedosa em toda a página com Lenis.
+ * SmoothScroll - inércia física sedosa em toda a página com Lenis.
  * Respeita `prefers-reduced-motion` e pausa automaticamente quando um modal
  * bloqueia o scroll do `body`.
  */

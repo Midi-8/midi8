@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════════════════════
-   Midi8 Design System — Light Minimalist + Top Brand Aurora Fade
+   midi8 Design System - Light Minimalist + Top Brand Aurora Fade
    (Violet #A818FF · Cobalt #145EFF · Electric Mint #00E896 sobre branco puro).
    ═══════════════════════════════════════════════════════════════════════ */
 
@@ -34,7 +34,7 @@
   /* ── Tipografia (estrutura pronta para Neue Haas Grotesk Display 400/700; fallback temporário: Inter) ── */
   --font-primary: "Neue Haas Grotesk Display", var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  /* ── Escala tipográfica (Swiss Grotesk equilibrada para o layout Midi8) ── */
+  /* ── Escala tipográfica (Swiss Grotesk equilibrada para o layout midi8) ── */
   --text-display: clamp(3.5rem, 9vw, 8.5rem);               /* 56px → 136px */
   --text-headline-lg: clamp(1.75rem, 3.6vw, 3.25rem);       /* 28px → 52px */
   --text-headline-md: clamp(1.25rem, 2.2vw, 2.125rem);      /* 20px → 34px */
@@ -191,13 +191,6 @@
     background-size: 24px 24px;
     -webkit-mask-image: radial-gradient(ellipse 72% 68% at 50% 50%, #000 32%, transparent 100%);
     mask-image: radial-gradient(ellipse 72% 68% at 50% 50%, #000 32%, transparent 100%);
-  }
-
-  /* Separador horizontal editorial que desvanece nas extremidades */
-  .section-divider {
-    height: 1px;
-    width: 100%;
-    background: linear-gradient(90deg, transparent 0%, rgba(15, 23, 42, 0.12) 22%, rgba(15, 23, 42, 0.12) 78%, transparent 100%);
   }
 }
 

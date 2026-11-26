@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Midi8 — Tecnologia, IA & Marketing Digital",
-    short_name: "Midi8",
+    name: "midi8 - Tecnologia, IA & Marketing Digital",
+    short_name: "midi8",
     description:
       "Web Design, Desenvolvimento de Software e Mobile, Automação de Processos, IA & LLMs, Análise de Dados, E-commerce e Estratégia Digital.",
     start_url: "/",

@@ -72,7 +72,7 @@ export default function Hero() {
           <h1 className="flex justify-center">
             <Image
               src="/midi8-logo.webp"
-              alt="Midi8"
+              alt="midi8"
               width={725}
               height={253}
               priority
@@ -89,7 +89,7 @@ export default function Hero() {
       {/* Indicador discreto de scroll no fundo do Hero */}
       <motion.a
         href="#sobre"
-        aria-label="Continuar para A Midi8"
+        aria-label="Continuar para A midi8"
         style={prefersReducedMotion ? undefined : { opacity: cueOpacity }}
         className="group absolute bottom-7 sm:bottom-9 left-1/2 -translate-x-1/2 z-10 inline-flex flex-col items-center gap-1.5 text-subtle/75 hover:text-foreground transition-colors"
       >

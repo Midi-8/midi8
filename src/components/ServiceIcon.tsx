@@ -11,7 +11,7 @@ interface ServiceIconProps {
 }
 
 /**
- * ServiceIcon – a small wrapper that adds a subtle hover animation to service icons.
+ * ServiceIcon - a small wrapper that adds a subtle hover animation to service icons.
  * It uses Framer Motion for smooth scaling.
  */
 export default function ServiceIcon({ icon, className = "" }: ServiceIconProps) {

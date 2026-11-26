@@ -12,7 +12,7 @@ const SECTION_IDS = ["sobre", "servicos", "equipa", "contacto"] as const;
 
 const NAV_LINKS = {
   pt: [
-    { sectionId: "sobre", label: "A Midi8", href: "/sobre" },
+    { sectionId: "sobre", label: "A midi8", href: "/sobre" },
     { sectionId: "servicos", label: "Serviços", href: "/servicos" },
     { sectionId: "equipa", label: "Equipa", href: "/equipa" },
     { sectionId: "contacto", label: "Contactos", href: "/contacto" },
@@ -118,11 +118,11 @@ export default function Navbar() {
             href="/"
             onClick={() => setMobileOpen(false)}
             className="inline-flex items-center group shrink-0 justify-self-start"
-            aria-label={locale === "pt" ? "Midi8 — Página inicial" : "Midi8 — Home"}
+            aria-label={locale === "pt" ? "midi8 - Página inicial" : "midi8 - Home"}
           >
             <Image
               src="/midi8-logo.webp"
-              alt="Midi8"
+              alt="midi8"
               width={725}
               height={253}
               priority
@@ -343,7 +343,7 @@ export default function Navbar() {
             </nav>
 
             <p className="text-xs text-subtle pt-4 border-t border-border">
-              © 2026 Midi8
+              © 2026 midi8
             </p>
           </motion.div>
         )}

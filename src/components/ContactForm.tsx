@@ -90,7 +90,13 @@ function Field({
   );
 }
 
-export default function ContactForm({ initialArea }: { initialArea?: Area } = {}) {
+export default function ContactForm({
+  initialArea,
+  initialMessage,
+}: {
+  initialArea?: Area;
+  initialMessage?: string;
+} = {}) {
   const [errors, setErrors] = useState<ContactErrors>({});
   const [status, setStatus] = useState<Status>("idle");
   const [selectedAreas, setSelectedAreas] = useState<Area[]>(() =>
@@ -229,8 +235,9 @@ export default function ContactForm({ initialArea }: { initialArea?: Area } = {}
         <textarea
           id="message"
           name="message"
-          rows={2}
-          className="neu-field resize-none min-h-16 sm:min-h-28 max-sm:!py-2 max-sm:!px-2.5 max-sm:!text-xs"
+          rows={3}
+          defaultValue={initialMessage ?? ""}
+          className="neu-field resize-none min-h-20 sm:min-h-28 max-sm:!py-2 max-sm:!px-2.5 max-sm:!text-xs"
           placeholder={copy.messagePlaceholder}
           {...invalid("message")}
         />

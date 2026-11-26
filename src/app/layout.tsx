@@ -12,7 +12,7 @@ import "./globals.css";
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  name: "Midi8",
+  name: "midi8",
   url: siteUrl,
   email: CONTACT_EMAIL,
   telephone: CONTACT_PHONE,
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  title: "Midi8",
+  title: "midi8",
   icons: {
     icon: [
       { url: "/m8-icon-32.png?v=m8", type: "image/png", sizes: "32x32" },
@@ -63,12 +63,12 @@ export const metadata: Metadata = {
     "consultoria informática",
     "e-commerce",
     "desenvolvimento mobile",
-    "Midi8",
+    "midi8",
   ],
-  authors: [{ name: "Midi8" }],
+  authors: [{ name: "midi8" }],
   openGraph: {
-    title: "Midi8",
-    siteName: "Midi8",
+    title: "midi8",
+    siteName: "midi8",
     url: siteUrl,
     description:
       "Web Design, Software, Automação, IA, Marketing Digital e Consultoria num único parceiro.",
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Midi8",
+    title: "midi8",
     description:
       "Web Design, Software, Automação, IA, Marketing Digital e Consultoria num único parceiro.",
   },

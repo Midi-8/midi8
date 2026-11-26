@@ -14,9 +14,9 @@ const FOOTER_TEXT = {
     privacy: "Política de Privacidade",
     terms: "Termos e Condições",
     top: "Topo",
-    toTopLabel: "Midi8 — Página inicial",
+    toTopLabel: "midi8 - Página inicial",
     sectionLinks: [
-      { label: "A Midi8", href: "/sobre" },
+      { label: "A midi8", href: "/sobre" },
       { label: "Serviços", href: "/servicos" },
       { label: "Equipa", href: "/equipa" },
       { label: "Contactos", href: "/contacto" },
@@ -30,7 +30,7 @@ const FOOTER_TEXT = {
     privacy: "Privacy Policy",
     terms: "Terms & Conditions",
     top: "Top",
-    toTopLabel: "Midi8 — Home",
+    toTopLabel: "midi8 - Home",
     sectionLinks: [
       { label: "About", href: "/sobre" },
       { label: "Services", href: "/servicos" },
@@ -53,7 +53,7 @@ export default function Footer() {
     <footer className="relative text-foreground bg-white border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-7 pb-5 sm:pt-12 sm:pb-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-10 items-start">
-          {/* Marca & Slogan (slogan sempre por baixo de Midi8) */}
+          {/* Marca & Slogan (slogan sempre por baixo de midi8) */}
           <div className="md:col-span-5 flex flex-col gap-1.5 md:gap-2">
             <Link
               href="/"
@@ -62,7 +62,7 @@ export default function Footer() {
             >
               <Image
                 src="/midi8-logo.webp"
-                alt="Midi8"
+                alt="midi8"
                 width={725}
                 height={253}
                 sizes="(max-width: 640px) 84px, 96px"
@@ -150,7 +150,7 @@ export default function Footer() {
 
       {/* Barra Legal Minimalista */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 border-t border-border/80 pt-3.5 pb-4 sm:pt-5 sm:pb-8 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4 text-[11px] sm:text-xs text-subtle">
-        <p>© {currentYear} Midi8. {copy.rights}</p>
+        <p>© {currentYear} midi8. {copy.rights}</p>
         <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
           <Link href="/privacidade" className="hover:text-foreground transition-colors">
             {copy.privacy}

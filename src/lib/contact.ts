@@ -92,8 +92,8 @@ export function validateContact(d: ContactRequest, locale: "pt" | "en" = "pt"): 
 export function contactMailto(d: ContactRequest, locale: "pt" | "en" = "pt"): string {
   const isEn = locale === "en";
   const subject = isEn
-    ? `Schedule meeting — ${d.company || d.name || "Midi8"}`
-    : `Agendar reunião — ${d.company || d.name || "Midi8"}`;
+    ? `Schedule meeting - ${d.company || d.name || "midi8"}`
+    : `Agendar reunião - ${d.company || d.name || "midi8"}`;
 
   const translatedAreas = d.areas
     .map((area) => (isEn ? AREA_LABELS.en[area] || area : area))

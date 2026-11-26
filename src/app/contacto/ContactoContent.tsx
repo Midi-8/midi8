@@ -24,7 +24,7 @@ const FAQS: Record<Locale, { q: string; a: string }[]> = {
     },
     {
       q: "A primeira reunião tem algum custo?",
-      a: "Não. A primeira sessão de diagnóstico (20–30 minutos) é totalmente gratuita e serve para compreender o desafio e perceber se somos o parceiro certo.",
+      a: "Não. A primeira sessão de diagnóstico (20-30 minutos) é totalmente gratuita e serve para compreender o desafio e perceber se somos o parceiro certo.",
     },
     {
       q: "Como funcionam os orçamentos e prazos?",
@@ -38,7 +38,7 @@ const FAQS: Record<Locale, { q: string; a: string }[]> = {
     },
     {
       q: "Does the first meeting cost anything?",
-      a: "No. Our initial 20–30 minute diagnostic call is completely free and designed to understand your challenge and confirm fit.",
+      a: "No. Our initial 20-30 minute diagnostic call is completely free and designed to understand your challenge and confirm fit.",
     },
     {
       q: "How do pricing and timelines work?",
@@ -53,6 +53,7 @@ export default function ContactoContent() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const areaParam = searchParams.get("area");
+  const briefParam = searchParams.get("brief") ?? undefined;
   const initialArea = AREAS.find((a) => a === areaParam) as Area | undefined;
 
   const contacts = [
@@ -78,7 +79,7 @@ export default function ContactoContent() {
     },
     {
       label: "LinkedIn",
-      value: "Midi8",
+      value: "midi8",
       href: SOCIAL.linkedin,
       icon: (
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -145,7 +146,11 @@ export default function ContactoContent() {
             </div>
 
             <div className="lg:col-span-7 lg:row-span-2">
-              <ContactForm key={initialArea ?? "default"} initialArea={initialArea} />
+              <ContactForm
+                key={`${initialArea ?? "default"}-${briefParam ?? ""}`}
+                initialArea={initialArea}
+                initialMessage={briefParam}
+              />
             </div>
 
             <div className="lg:col-span-5">
@@ -179,10 +184,6 @@ export default function ContactoContent() {
           </div>
         </div>
       </section>
-
-      <div aria-hidden="true" className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="section-divider" />
-      </div>
 
       {/* ─── FAQ Rápida ─── */}
       <section className="w-full py-14 sm:py-20 px-4 sm:px-6">

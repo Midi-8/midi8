@@ -26,8 +26,8 @@ export default function TermosContent() {
           <div className="space-y-8 text-secondary text-sm sm:text-base leading-relaxed">
             <section className="bg-surface/40 border border-border rounded-2xl p-6">
               <p className="text-secondary">
-                Welcome to the <strong>Midi8</strong> website. Access to and use of this website,
-                as well as the engagement of any digital services rendered by Midi8, are governed by
+                Welcome to the <strong>midi8</strong> website. Access to and use of this website,
+                as well as the engagement of any digital services rendered by midi8, are governed by
                 these <strong>Terms and Conditions</strong>. By browsing this website or submitting
                 inquiries and technical requests, you explicitly and unreservedly agree to the terms
                 set forth herein.
@@ -44,7 +44,7 @@ export default function TermosContent() {
               </p>
               <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-xl border border-border">
                 <li>
-                  <strong>Entity:</strong> Midi8 — Software Engineering and Digital Systems
+                  <strong>Entity:</strong> midi8 - Software Engineering and Digital Systems
                 </li>
                 <li>
                   <strong>Jurisdiction:</strong> Portugal
@@ -64,7 +64,7 @@ export default function TermosContent() {
                 2. Scope of Services
               </h2>
               <p>
-                Midi8 specializes in digital solutions, custom software engineering, artificial intelligence, and strategic communications for businesses, including:
+                midi8 specializes in digital solutions, custom software engineering, artificial intelligence, and strategic communications for businesses, including:
               </p>
               <ul className="list-disc pl-5 space-y-1 text-secondary">
                 <li>
@@ -91,10 +91,10 @@ export default function TermosContent() {
                 3. Intellectual and Industrial Property
               </h2>
               <p>
-                All content published on this website — including trademarks, logotypes, textual copy, images, visual assets, interactive graphics, source code, and design architecture — is the exclusive property of Midi8 or third parties who have authorized its use, protected under the <strong>Portuguese Copyright and Related Rights Code</strong> and the <strong>Industrial Property Code</strong>.
+                All content published on this website - including trademarks, logotypes, textual copy, images, visual assets, interactive graphics, source code, and design architecture - is the exclusive property of midi8 or third parties who have authorized its use, protected under the <strong>Portuguese Copyright and Related Rights Code</strong> and the <strong>Industrial Property Code</strong>.
               </p>
               <p>
-                Any reproduction, copy, modification, distribution, reverse engineering, or commercial exploitation, in whole or in part, without prior written authorization from Midi8 is strictly prohibited.
+                Any reproduction, copy, modification, distribution, reverse engineering, or commercial exploitation, in whole or in part, without prior written authorization from midi8 is strictly prohibited.
               </p>
             </section>
 
@@ -108,7 +108,7 @@ export default function TermosContent() {
               </p>
               <ul className="list-disc pl-5 space-y-1 text-secondary">
                 <li>Actions intended to impair, overload, or disrupt server infrastructure or related network services.</li>
-                <li>Attempting unauthorized access to restricted systems, databases, or IT environments of Midi8.</li>
+                <li>Attempting unauthorized access to restricted systems, databases, or IT environments of midi8.</li>
                 <li>Submitting fraudulent, defamatory, offensive, or malicious code via contact and proposal forms.</li>
               </ul>
             </section>
@@ -119,7 +119,7 @@ export default function TermosContent() {
                 5. Limitation of Liability
               </h2>
               <p>
-                Midi8 applies engineering industry standards to maintain website uptime and technical reliability. However, it cannot guarantee uninterrupted service free from transient maintenance downtime, third-party network outages, or unforeseeable force majeure circumstances.
+                midi8 applies engineering industry standards to maintain website uptime and technical reliability. However, it cannot guarantee uninterrupted service free from transient maintenance downtime, third-party network outages, or unforeseeable force majeure circumstances.
               </p>
               <p className="text-sm text-muted">
                 Information on this website is for general informational purposes and does not substitute tailored technical scoping for contractual commitments.
@@ -132,7 +132,7 @@ export default function TermosContent() {
                 6. External Links
               </h2>
               <p>
-                This website may contain links to third-party services and platforms (such as LinkedIn or Instagram). Midi8 does not control external websites and assumes no liability for their operational practices, terms, or privacy standards.
+                This website may contain links to third-party services and platforms (such as LinkedIn or Instagram). midi8 does not control external websites and assumes no liability for their operational practices, terms, or privacy standards.
               </p>
             </section>
 
@@ -142,7 +142,7 @@ export default function TermosContent() {
                 7. Amendments to Terms &amp; Conditions
               </h2>
               <p>
-                Midi8 reserves the right to amend these Terms and Conditions unilaterally at any time. Changes become effective immediately upon publication on this website. Periodic review of this page is encouraged.
+                midi8 reserves the right to amend these Terms and Conditions unilaterally at any time. Changes become effective immediately upon publication on this website. Periodic review of this page is encouraged.
               </p>
             </section>
 
@@ -202,8 +202,8 @@ export default function TermosContent() {
         <div className="space-y-8 text-secondary text-sm sm:text-base leading-relaxed">
           <section className="bg-surface/40 border border-border rounded-2xl p-6">
             <p className="text-secondary">
-              Bem-vindo ao website da <strong>Midi8</strong>. O acesso e a utilização deste website,
-              bem como a contratação de quaisquer serviços digitais prestados pela Midi8, regem-se pelos
+              Bem-vindo ao website da <strong>midi8</strong>. O acesso e a utilização deste website,
+              bem como a contratação de quaisquer serviços digitais prestados pela midi8, regem-se pelos
               presentes <strong>Termos e Condições</strong>. Ao navegar neste website ou ao submeter
               pedidos de contacto e propostas técnicas, o utilizador declara aceitar expressamente e sem reservas as disposições aqui enunciadas.
             </p>
@@ -219,7 +219,7 @@ export default function TermosContent() {
             </p>
             <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-xl border border-border">
               <li>
-                <strong>Entidade:</strong> Midi8 — Engenharia de Software e Sistemas Digitais
+                <strong>Entidade:</strong> midi8 - Engenharia de Software e Sistemas Digitais
               </li>
               <li>
                 <strong>Jurisdição:</strong> Portugal
@@ -239,7 +239,7 @@ export default function TermosContent() {
               2. Objeto e Âmbito dos Serviços
             </h2>
             <p>
-              A Midi8 é especializada em serviços digitais, engenharia de software, inteligência artificial e comunicação estratégica para empresas, nomeadamente:
+              A midi8 é especializada em serviços digitais, engenharia de software, inteligência artificial e comunicação estratégica para empresas, nomeadamente:
             </p>
             <ul className="list-disc pl-5 space-y-1 text-secondary">
               <li>
@@ -266,10 +266,10 @@ export default function TermosContent() {
               3. Propriedade Intelectual e Industrial
             </h2>
             <p>
-              Todos os conteúdos presentes neste website — incluindo, designadamente, marcas, logótipos, textos, imagens, ilustrações, gráficos interativos, código-fonte e estrutura de design visual — constituem propriedade exclusiva da Midi8 ou de terceiros que autorizaram legitimamente o seu uso, encontrando-se protegidos pelo <strong>Código do Direito de Autor e dos Direitos Conexos</strong> e pelo <strong>Código da Propriedade Industrial</strong>.
+              Todos os conteúdos presentes neste website - incluindo, designadamente, marcas, logótipos, textos, imagens, ilustrações, gráficos interativos, código-fonte e estrutura de design visual - constituem propriedade exclusiva da midi8 ou de terceiros que autorizaram legitimamente o seu uso, encontrando-se protegidos pelo <strong>Código do Direito de Autor e dos Direitos Conexos</strong> e pelo <strong>Código da Propriedade Industrial</strong>.
             </p>
             <p>
-              É estritamente proibida qualquer reprodução, cópia, distribuição, descompilação, engenharia inversa ou exploração comercial, total ou parcial, sem autorização prévia e escrita da Midi8.
+              É estritamente proibida qualquer reprodução, cópia, distribuição, descompilação, engenharia inversa ou exploração comercial, total ou parcial, sem autorização prévia e escrita da midi8.
             </p>
           </section>
 
@@ -283,7 +283,7 @@ export default function TermosContent() {
             </p>
             <ul className="list-disc pl-5 space-y-1 text-secondary">
               <li>Realizar ações que possam danificar, sobrecarregar ou inutilizar a infraestrutura dos servidores ou redes associadas.</li>
-              <li>Tentar aceder sem autorização a áreas restritas, bases de dados ou sistemas informáticos da Midi8.</li>
+              <li>Tentar aceder sem autorização a áreas restritas, bases de dados ou sistemas informáticos da midi8.</li>
               <li>Submeter através dos formulários de contacto conteúdos difamatórios, fraudulentos, vírus ou código malicioso.</li>
             </ul>
           </section>
@@ -294,7 +294,7 @@ export default function TermosContent() {
               5. Limitação de Responsabilidade
             </h2>
             <p>
-              A Midi8 adota as melhores práticas de engenharia para assegurar a disponibilidade contínua e a precisão técnica das informações apresentadas no website. Contudo, não garante a total ausência de interrupções temporárias decorrentes de manutenção, falhas de telecomunicações alheias ou incidentes imprevisíveis de força maior.
+              A midi8 adota as melhores práticas de engenharia para assegurar a disponibilidade contínua e a precisão técnica das informações apresentadas no website. Contudo, não garante a total ausência de interrupções temporárias decorrentes de manutenção, falhas de telecomunicações alheias ou incidentes imprevisíveis de força maior.
             </p>
             <p className="text-sm text-muted">
               A informação contida no website é de caráter geral e informativo, não dispensando uma consulta técnica prévia para a definição de especificações contratuais definitivas.
@@ -307,7 +307,7 @@ export default function TermosContent() {
               6. Ligações Externas (Links para Terceiros)
             </h2>
             <p>
-              Este website pode conter hiperligações para websites ou plataformas externas (como LinkedIn ou Instagram). A Midi8 não exerce controlo sobre esses sítios de terceiros e não assume qualquer responsabilidade pelas respetivas políticas de privacidade ou conteúdos.
+              Este website pode conter hiperligações para websites ou plataformas externas (como LinkedIn ou Instagram). A midi8 não exerce controlo sobre esses sítios de terceiros e não assume qualquer responsabilidade pelas respetivas políticas de privacidade ou conteúdos.
             </p>
           </section>
 
@@ -317,7 +317,7 @@ export default function TermosContent() {
               7. Alterações aos Termos e Condições
             </h2>
             <p>
-              A Midi8 reserva-se o direito de rever e modificar unilateralmente os presentes Termos e Condições em qualquer momento. As alterações entram em vigor a partir da sua publicação no website. Recomenda-se a consulta periódica desta página.
+              A midi8 reserva-se o direito de rever e modificar unilateralmente os presentes Termos e Condições em qualquer momento. As alterações entram em vigor a partir da sua publicação no website. Recomenda-se a consulta periódica desta página.
             </p>
           </section>
 

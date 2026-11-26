@@ -127,8 +127,8 @@ export default function EquipaContent() {
             />
             <p className="type-body text-muted max-w-2xl text-pretty">
               {locale === "pt"
-                ? "Fala diretamente com quem desenha, programa e escala o seu projeto — sem camadas intermédias."
-                : "Speak directly with the people who design, engineer, and scale your project — zero middle layers."}
+                ? "Fala diretamente com quem desenha, programa e escala o seu projeto - sem camadas intermédias."
+                : "Speak directly with the people who design, engineer, and scale your project - zero middle layers."}
             </p>
           </div>
 
@@ -162,10 +162,6 @@ export default function EquipaContent() {
           </div>
         </div>
       </section>
-
-      <div aria-hidden="true" className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="section-divider" />
-      </div>
 
       {/* ─── Perfis Detalhados ─── */}
       <section className="relative w-full py-12 sm:py-20 px-4 sm:px-6 overflow-hidden">
@@ -315,10 +311,6 @@ export default function EquipaContent() {
           </div>
         </div>
       </section>
-
-      <div aria-hidden="true" className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="section-divider" />
-      </div>
 
       {/* ─── Como as 3 Disciplinas Colaboram ─── */}
       <section className="w-full py-14 sm:py-24 px-4 sm:px-6">

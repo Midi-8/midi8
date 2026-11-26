@@ -2,7 +2,7 @@ import { CONTACT_EMAIL, toContactRequest, validateContact } from "@/lib/contact"
 
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 const RATE_MAX_REQUESTS = 5;
-const MAX_BODY_BYTES = 64 * 1024; // 64 KB — protege contra payloads abusivos sem limitar textos normais
+const MAX_BODY_BYTES = 64 * 1024; // 64 KB - protege contra payloads abusivos sem limitar textos normais
 const requestLog = new Map<string, number[]>();
 
 const NO_STORE_HEADERS = { "Cache-Control": "no-store" } as const;
@@ -131,10 +131,10 @@ export async function POST(request: Request) {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: process.env.CONTACT_FROM ?? "Midi8 <site@midi8.com>",
+      from: process.env.CONTACT_FROM ?? "midi8 <site@midi8.com>",
       to: [process.env.CONTACT_TO ?? CONTACT_EMAIL],
       reply_to: data.email,
-      subject: `Pedido de reunião — ${safeCompany} (${safeAreas})`,
+      subject: `Pedido de reunião - ${safeCompany} (${safeAreas})`,
       text: [
         `Nome: ${data.name}`,
         `Email: ${data.email}`,

@@ -26,7 +26,7 @@ export default function PrivacidadeContent() {
           <div className="space-y-8 text-secondary text-sm sm:text-base leading-relaxed">
             <section className="bg-surface/40 border border-border rounded-2xl p-6">
               <p className="text-secondary">
-                <strong>Midi8</strong> values the privacy and security of the personal data of its
+                <strong>midi8</strong> values the privacy and security of the personal data of its
                 users, clients, and partners. This Privacy Policy outlines clearly and transparently how
                 we collect, use, process, and protect personal data in strict compliance with the{" "}
                 <strong>General Data Protection Regulation (GDPR - Regulation (EU) 2016/679)</strong> and{" "}
@@ -44,7 +44,7 @@ export default function PrivacidadeContent() {
               </p>
               <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-xl border border-border">
                 <li>
-                  <strong>Entity:</strong> Midi8 — Software Engineering and Digital Systems
+                  <strong>Entity:</strong> midi8 - Software Engineering and Digital Systems
                 </li>
                 <li>
                   <strong>Jurisdiction:</strong> Portugal
@@ -87,7 +87,7 @@ export default function PrivacidadeContent() {
                     <strong>Data:</strong> IP address, technical server logs, and browser metadata essential for site security and resilience.
                   </p>
                   <p className="text-sm text-muted">
-                    <strong>Legal Basis:</strong> Legitimate interest of Midi8 in maintaining server integrity, uptime, and cybersecurity (Article 6(1)(f) of the GDPR).
+                    <strong>Legal Basis:</strong> Legitimate interest of midi8 in maintaining server integrity, uptime, and cybersecurity (Article 6(1)(f) of the GDPR).
                   </p>
                 </div>
               </div>
@@ -120,7 +120,7 @@ export default function PrivacidadeContent() {
                 4. Sharing with Processors and Third Parties
               </h2>
               <p>
-                Midi8 does not sell, rent, or transfer personal data to third parties for marketing purposes. For the operation of our digital infrastructure, we engage trusted service providers acting as processors under strict security and GDPR compliance guarantees:
+                midi8 does not sell, rent, or transfer personal data to third parties for marketing purposes. For the operation of our digital infrastructure, we engage trusted service providers acting as processors under strict security and GDPR compliance guarantees:
               </p>
               <ul className="list-disc pl-5 space-y-1 text-secondary">
                 <li>Vercel: application hosting and content delivery network (CDN).</li>
@@ -152,7 +152,7 @@ export default function PrivacidadeContent() {
                 6. Rights of Data Subjects
               </h2>
               <p>
-                Under Articles 15 to 22 of the GDPR, you have the right to exercise free of charge with Midi8:
+                Under Articles 15 to 22 of the GDPR, you have the right to exercise free of charge with midi8:
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div className="p-3 bg-surface/40 rounded-xl border border-border">
@@ -210,7 +210,7 @@ export default function PrivacidadeContent() {
                 8. Changes to this Privacy Policy
               </h2>
               <p>
-                Midi8 reserves the right to revise this Privacy Policy at any time to reflect operational, technical, or legislative developments. Updated versions take effect immediately upon publication on this page.
+                midi8 reserves the right to revise this Privacy Policy at any time to reflect operational, technical, or legislative developments. Updated versions take effect immediately upon publication on this page.
               </p>
             </section>
 
@@ -257,7 +257,7 @@ export default function PrivacidadeContent() {
         <div className="space-y-8 text-secondary text-sm sm:text-base leading-relaxed">
           <section className="bg-surface/40 border border-border rounded-2xl p-6">
             <p className="text-secondary">
-              A <strong>Midi8</strong> valoriza a privacidade e a segurança dos dados pessoais dos
+              A <strong>midi8</strong> valoriza a privacidade e a segurança dos dados pessoais dos
               seus utilizadores, clientes e parceiros. Esta Política de Privacidade descreve, de
               forma clara e transparente, como recolhemos, utilizamos, tratamos e protegemos os
               dados pessoais em estrita conformidade com o <strong>Regulamento Geral sobre a Proteção de Dados (RGPD - Regulamento UE 2016/679)</strong> e com a <strong>Lei n.º 58/2019, de 8 de agosto</strong> (lei portuguesa de proteção de dados pessoais).
@@ -274,7 +274,7 @@ export default function PrivacidadeContent() {
             </p>
             <ul className="list-disc pl-5 space-y-1 text-xs sm:text-sm text-muted bg-surface/40 p-4 rounded-xl border border-border">
               <li>
-                <strong>Entidade:</strong> Midi8 — Engenharia de Software e Sistemas Digitais
+                <strong>Entidade:</strong> midi8 - Engenharia de Software e Sistemas Digitais
               </li>
               <li>
                 <strong>Jurisdição:</strong> Portugal
@@ -317,7 +317,7 @@ export default function PrivacidadeContent() {
                   <strong>Dados:</strong> Endereço IP, registos técnicos do servidor (logs) e tipo de navegador, necessários à segurança e ao funcionamento do site.
                 </p>
                 <p className="text-sm text-muted">
-                  <strong>Fundamento:</strong> Interesse legítimo da Midi8 em garantir a integridade, resiliência e segurança cibernética dos seus servidores (artigo 6.º, n.º 1, alínea f) do RGPD).
+                  <strong>Fundamento:</strong> Interesse legítimo da midi8 em garantir a integridade, resiliência e segurança cibernética dos seus servidores (artigo 6.º, n.º 1, alínea f) do RGPD).
                 </p>
               </div>
             </div>
@@ -350,7 +350,7 @@ export default function PrivacidadeContent() {
               4. Partilha com Subcontratantes e Terceiros
             </h2>
             <p>
-              A Midi8 não comercializa nem cede dados pessoais a terceiros para fins de marketing. Para o regular funcionamento da infraestrutura digital, recorremos a fornecedores de serviços na qualidade de subcontratantes, os quais garantem elevados padrões de segurança e conformidade com o RGPD:
+              A midi8 não comercializa nem cede dados pessoais a terceiros para fins de marketing. Para o regular funcionamento da infraestrutura digital, recorremos a fornecedores de serviços na qualidade de subcontratantes, os quais garantem elevados padrões de segurança e conformidade com o RGPD:
             </p>
             <ul className="list-disc pl-5 space-y-1 text-secondary">
               <li>Vercel: alojamento do website e rede de distribuição de conteúdos (CDN).</li>
@@ -382,7 +382,7 @@ export default function PrivacidadeContent() {
               6. Direitos dos Titulares dos Dados
             </h2>
             <p>
-              Nos termos dos artigos 15.º a 22.º do RGPD, o utilizador tem o direito de exercer gratuitamente perante a Midi8:
+              Nos termos dos artigos 15.º a 22.º do RGPD, o utilizador tem o direito de exercer gratuitamente perante a midi8:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
               <div className="p-3 bg-surface/40 rounded-xl border border-border">
@@ -440,7 +440,7 @@ export default function PrivacidadeContent() {
               8. Alterações à presente Política
             </h2>
             <p>
-              A Midi8 reserva-se o direito de atualizar esta Política de Privacidade a qualquer momento para refletir eventuais alterações técnicas, operacionais ou legislativas. A versão atualizada entrará imediatamente em vigor após publicação nesta página.
+              A midi8 reserva-se o direito de atualizar esta Política de Privacidade a qualquer momento para refletir eventuais alterações técnicas, operacionais ou legislativas. A versão atualizada entrará imediatamente em vigor após publicação nesta página.
             </p>
           </section>
 

@@ -3,12 +3,12 @@ import { Suspense } from "react";
 import ContactoContent from "./ContactoContent";
 
 export const metadata: Metadata = {
-  title: "Midi8",
+  title: "midi8",
   description:
-    "Fale com a Midi8 para agendar uma reunião de diagnóstico gratuita e dar vida ao seu próximo projeto digital.",
+    "Fale com a midi8 para agendar uma reunião de diagnóstico gratuita e dar vida ao seu próximo projeto digital.",
   alternates: { canonical: "/contacto" },
   openGraph: {
-    title: "Contactos | Midi8",
+    title: "Contactos | midi8",
     description:
       "Respondemos em menos de 24 horas. Fale diretamente com a nossa equipa.",
     type: "website",
