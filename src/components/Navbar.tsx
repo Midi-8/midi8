@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import MagneticButton from "@/components/MagneticButton";
 import { useLanguage } from "@/context/LanguageContext";
@@ -104,16 +105,22 @@ export default function Navbar() {
               : undefined
           }
         >
-          {/* Logo tipográfico à esquerda */}
+          {/* Logótipo à esquerda */}
           <Link
             href="/#hero"
             onClick={() => setMobileOpen(false)}
-            className="inline-flex items-baseline group shrink-0 justify-self-start text-foreground"
+            className="inline-flex items-center group shrink-0 justify-self-start"
             aria-label={locale === "pt" ? "Midi8 — Página inicial" : "Midi8 — Home"}
           >
-            <span className="font-display text-2xl sm:text-[1.75rem] font-medium tracking-tight text-foreground leading-none transition-opacity duration-200 group-hover:opacity-75">
-              Midi<em className="italic font-normal">8</em>
-            </span>
+            <Image
+              src="/midi8-logo.webp"
+              alt="Midi8"
+              width={725}
+              height={253}
+              priority
+              sizes="(max-width: 640px) 84px, 96px"
+              className="h-6 sm:h-[26px] w-auto transition-opacity duration-200 group-hover:opacity-75"
+            />
           </Link>
 
           {/* Desktop Links */}

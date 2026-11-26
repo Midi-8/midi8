@@ -88,6 +88,7 @@ export function renderBrandOgImage() {
 
           <div
             style={{
+              display: "flex",
               fontSize: "46px",
               fontWeight: 500,
               letterSpacing: "-0.02em",
@@ -96,7 +97,9 @@ export function renderBrandOgImage() {
               marginTop: "8px",
             }}
           >
-            move forward, fast
+            <span>move&nbsp;</span>
+            <span style={{ fontStyle: "italic", fontWeight: 400 }}>forward</span>
+            <span>, fast</span>
           </div>
 
           <div

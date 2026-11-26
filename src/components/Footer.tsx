@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF, SOCIAL } from "@/lib/contact";
 
@@ -53,19 +54,24 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-7 pb-5 sm:pt-12 sm:pb-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-10 items-start">
           {/* Marca & Slogan (slogan sempre por baixo de Midi8) */}
-          <div className="md:col-span-5 flex flex-col gap-0.5 md:gap-1">
+          <div className="md:col-span-5 flex flex-col gap-1.5 md:gap-2">
             <Link
               href="/#hero"
               onClick={scrollToTop}
-              className="inline-flex items-baseline group w-fit text-foreground"
+              className="inline-flex items-center group w-fit"
               aria-label={copy.toTopLabel}
             >
-              <span className="font-display text-2xl sm:text-[1.75rem] font-medium tracking-tight text-foreground leading-none transition-opacity duration-200 group-hover:opacity-75">
-                Midi<em className="italic font-normal">8</em>
-              </span>
+              <Image
+                src="/midi8-logo.webp"
+                alt="Midi8"
+                width={725}
+                height={253}
+                sizes="(max-width: 640px) 84px, 96px"
+                className="h-6 sm:h-[26px] w-auto transition-opacity duration-200 group-hover:opacity-75"
+              />
             </Link>
             <p className="font-display text-base sm:text-xl text-muted tracking-tight leading-tight">
-              move forward, fast
+              move <em className="italic font-normal">forward</em>, fast
             </p>
           </div>
 

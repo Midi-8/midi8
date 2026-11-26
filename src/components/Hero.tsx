@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import {
   motion,
   useReducedMotion,
@@ -67,11 +68,19 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <h1 className="font-display text-[clamp(4.1rem,16vw,11.5rem)] font-medium tracking-tight leading-[0.9] text-foreground">
-            Midi<em className="italic font-normal">8</em>
+          <h1 className="flex justify-center">
+            <Image
+              src="/midi8-logo.webp"
+              alt="Midi8"
+              width={725}
+              height={253}
+              priority
+              sizes="(max-width: 640px) 70vw, (max-width: 1024px) 52vw, 460px"
+              className="w-[clamp(14rem,62vw,29rem)] h-auto select-none"
+            />
           </h1>
-          <p className="font-display text-[clamp(1.65rem,6.5vw,5rem)] font-medium tracking-tight leading-[1.02] text-foreground/85 mt-2.5 sm:mt-4">
-            move forward, fast
+          <p className="font-display text-[clamp(1.65rem,6.5vw,4.5rem)] font-medium tracking-tight leading-[1.02] text-foreground/85 mt-4 sm:mt-6">
+            move <em className="italic font-normal">forward</em>, fast
           </p>
         </motion.div>
       </motion.div>
