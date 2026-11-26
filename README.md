@@ -172,7 +172,7 @@ Crie um ficheiro `.env.local` (não versionado) ou configure na **Vercel (`Setti
 | `NEXT_PUBLIC_SITE_URL` | Recomendada | `https://midi8.pt` | URL canónico usado em SEO, sitemap, robots, JSON-LD e OG Image |
 | `RESEND_API_KEY` | Opcional* | `re_xxxxxxxxx` | Chave da API Resend para envio automático do formulário `/contacto` |
 | `CONTACT_FROM` | Opcional | `midi8 <site@midi8.pt>` | Remetente verificado no Resend |
-| `CONTACT_TO` | Opcional | `geral@midi8.pt` | Endereço de destino dos pedidos submetidos |
+| `CONTACT_TO` | Opcional | `midi8.clientes@gmail.com` | Endereço de destino dos pedidos submetidos |
 
 *\*Sem `RESEND_API_KEY`, o formulário mantém funcionamento total com fallback seguro via `mailto:`.*
 
