@@ -209,6 +209,16 @@ export default function AuroraCanvas() {
     };
     window.addEventListener("pointermove", onPointerMove, { passive: true });
 
+    const render = (now: number) => {
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.uniform1f(uTime, (now - startTime) * 0.001);
+      gl.uniform2f(uResolution, width, height);
+      gl.uniform2f(uMouse, smoothMouseX, smoothMouseY);
+      gl.uniform1f(uVelocity, smoothVelocity);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    };
+
     const drawFrame = (now: number) => {
       rafId = null;
       if (document.hidden || !isInView) return;
@@ -218,13 +228,7 @@ export default function AuroraCanvas() {
       smoothVelocity += (targetVelocity - smoothVelocity) * 0.1;
       targetVelocity *= 0.9;
 
-      gl.clearColor(0, 0, 0, 0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.uniform1f(uTime, (now - startTime) * 0.001);
-      gl.uniform2f(uResolution, width, height);
-      gl.uniform2f(uMouse, smoothMouseX, smoothMouseY);
-      gl.uniform1f(uVelocity, smoothVelocity);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      render(now);
 
       if (!hasRevealed) {
         hasRevealed = true;
@@ -251,6 +255,8 @@ export default function AuroraCanvas() {
 
     const ro = new ResizeObserver(() => {
       resize();
+      // Redimensionar limpa o buffer e o observer corre depois do rAF: redesenhar antes do paint.
+      render(performance.now());
     });
     ro.observe(canvas);
 
