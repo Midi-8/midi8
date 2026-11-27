@@ -39,7 +39,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center px-6 py-24 overflow-hidden"
+      className="relative min-h-[100svh] w-full flex flex-col items-center justify-center px-6 py-24 overflow-hidden"
     >
       {/* Fade aurora only at the top of the Hero */}
       <motion.div
