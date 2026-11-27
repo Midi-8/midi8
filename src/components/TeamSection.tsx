@@ -59,7 +59,7 @@ const teamMembers: TeamMember[] = [
     initials: "JP",
     department: "Marketing & Comunicação",
     accentRgb: "0, 232, 178",
-    image: "/team/jose-pedroso.webp",
+    image: "/team/jose-pedroso-v2.webp",
   },
   {
     id: "joao-miguel-santos-gouveia",
