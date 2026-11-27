@@ -59,6 +59,7 @@ const teamMembers: TeamMember[] = [
     initials: "JP",
     department: "Marketing & Comunicação",
     accentRgb: "0, 232, 178",
+    image: "/team/jose-pedroso.webp",
   },
   {
     id: "joao-miguel-santos-gouveia",
@@ -66,6 +67,7 @@ const teamMembers: TeamMember[] = [
     initials: "JG",
     department: "Produto & Tecnologia",
     accentRgb: "192, 21, 255",
+    image: "/team/joao-gouveia.webp",
   },
   {
     id: "miguel-marques-silva",
@@ -73,6 +75,7 @@ const teamMembers: TeamMember[] = [
     initials: "MS",
     department: "Produto & Tecnologia",
     accentRgb: "0, 105, 248",
+    image: "/team/miguel-silva.webp",
   },
   {
     id: "hugo-mateus-sa",
@@ -88,6 +91,7 @@ const teamMembers: TeamMember[] = [
     initials: "VC",
     department: "Produto & Tecnologia",
     accentRgb: "192, 21, 255",
+    image: "/team/vitor-carneiro.webp",
   },
   {
     id: "goncalo-jose-silva",
@@ -95,6 +99,7 @@ const teamMembers: TeamMember[] = [
     initials: "GS",
     department: "Marketing & Comunicação",
     accentRgb: "0, 232, 178",
+    image: "/team/goncalo-silva.webp",
   },
 ];
 

@@ -1,4 +1,5 @@
 import { CONTACT_EMAIL, toContactRequest, validateContact } from "@/lib/contact";
+import { buildContactEmail } from "@/lib/contactEmail";
 import { siteDomain } from "@/lib/site";
 
 const RATE_WINDOW_MS = 10 * 60 * 1000;
@@ -40,10 +41,6 @@ function isSameOrigin(request: Request): boolean {
   }
 
   return true;
-}
-
-function sanitizeHeaderValue(value: string): string {
-  return value.replace(/[\r\n]+/g, " ").trim().slice(0, 200);
 }
 
 function isRateLimited(ip: string, now: number): boolean {
@@ -125,8 +122,7 @@ export async function POST(request: Request) {
     return jsonResponse({ error: "unconfigured" }, 503);
   }
 
-  const safeCompany = sanitizeHeaderValue(data.company);
-  const safeAreas = sanitizeHeaderValue(data.areas.join(", "));
+  const email = buildContactEmail(data);
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -135,15 +131,7 @@ export async function POST(request: Request) {
       from: process.env.CONTACT_FROM ?? `midi8 <site@${siteDomain}>`,
       to: [process.env.CONTACT_TO ?? CONTACT_EMAIL],
       reply_to: data.email,
-      subject: `Pedido de reunião - ${safeCompany} (${safeAreas})`,
-      text: [
-        `Nome: ${data.name}`,
-        `Email: ${data.email}`,
-        `Empresa: ${data.company}`,
-        `Áreas: ${data.areas.join(", ")}`,
-        "",
-        data.message,
-      ].join("\n"),
+      ...email,
     }),
   }).catch(() => null);
 
