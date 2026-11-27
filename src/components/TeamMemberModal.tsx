@@ -79,7 +79,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     phone: "+351 929 332 271",
     phoneHref: "tel:+351929332271",
     accentRgb: "0, 232, 178",
-    image: "/team/jose-pedroso-v2.webp",
+    image: "/team/jose-pedroso-v3.webp",
   },
   "joao-miguel-santos-gouveia": {
     fullName: "João Miguel Santos Gouveia",
