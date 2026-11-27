@@ -78,6 +78,7 @@ export default function BriefBuilder() {
     urgencies.find((u) => u.id === selectedUrgency)?.label ?? urgencies[1].label;
 
   // Texto estruturado e indentado para pré-preencher o formulário em /contacto
+  // O email interno (src/lib/contactEmail.ts) reconhece este formato: mudar os dois juntos.
   const generatedBrief =
     locale === "pt"
       ? [
