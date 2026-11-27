@@ -8,7 +8,7 @@ import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF, SOCIAL } from "@/lib/
 const FOOTER_TEXT = {
   pt: {
     sectionsTitle: "Secções",
-    contactTitle: "Contacto",
+    contactTitle: "Contactos",
     socialTitle: "Redes",
     rights: "Todos os direitos reservados.",
     privacy: "Política de Privacidade",
@@ -74,7 +74,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Secções, Redes e Contactos distribuídos por toda a largura no mobile/tablet (e colunas normais no desktop) */}
+          {/* Secções, Contactos e Redes alinhados à esquerda com distribuição coerente */}
           <div className="w-full md:col-span-7 flex justify-between gap-4 sm:gap-8 md:grid md:grid-cols-7 md:gap-x-8 items-start">
             {/* Secções */}
             <div className="md:col-span-2 flex flex-col gap-2 md:gap-3 shrink-0">
@@ -95,8 +95,29 @@ export default function Footer() {
               </ul>
             </div>
 
+            {/* Contacto */}
+            <div className="md:col-span-3 flex flex-col gap-2 md:gap-3 min-w-0">
+              <p className="text-[10px] sm:text-xs uppercase tracking-wider text-subtle">
+                {copy.contactTitle}
+              </p>
+              <div className="flex flex-col gap-1.5 md:gap-2 text-[11.5px] sm:text-sm min-w-0">
+                <a
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  className="text-muted hover:text-foreground transition-colors break-all sm:break-normal w-fit"
+                >
+                  {CONTACT_EMAIL}
+                </a>
+                <a
+                  href={CONTACT_PHONE_HREF}
+                  className="text-muted hover:text-foreground transition-colors whitespace-nowrap w-fit"
+                >
+                  {CONTACT_PHONE}
+                </a>
+              </div>
+            </div>
+
             {/* Redes Sociais */}
-            <div className="md:col-span-2 md:order-last flex flex-col gap-2 md:gap-3 shrink-0">
+            <div className="md:col-span-2 flex flex-col gap-2 md:gap-3 shrink-0">
               <p className="text-[10px] sm:text-xs uppercase tracking-wider text-subtle">
                 {copy.socialTitle}
               </p>
@@ -122,27 +143,6 @@ export default function Footer() {
                   </a>
                 </li>
               </ul>
-            </div>
-
-            {/* Contacto */}
-            <div className="md:col-span-3 flex flex-col gap-2 md:gap-3 min-w-0 max-md:text-right max-md:items-end">
-              <p className="text-[10px] sm:text-xs uppercase tracking-wider text-subtle">
-                {copy.contactTitle}
-              </p>
-              <div className="flex flex-col gap-1.5 md:gap-2 text-[11.5px] sm:text-sm min-w-0 max-md:items-end">
-                <a
-                  href={`mailto:${CONTACT_EMAIL}`}
-                  className="text-muted hover:text-foreground transition-colors break-all sm:break-normal w-fit"
-                >
-                  {CONTACT_EMAIL}
-                </a>
-                <a
-                  href={CONTACT_PHONE_HREF}
-                  className="text-muted hover:text-foreground transition-colors whitespace-nowrap w-fit"
-                >
-                  {CONTACT_PHONE}
-                </a>
-              </div>
             </div>
           </div>
         </div>
