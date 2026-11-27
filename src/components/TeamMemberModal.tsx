@@ -78,6 +78,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     phone: "+351 929 332 271",
     phoneHref: "tel:+351929332271",
     accentRgb: "0, 232, 178",
+    image: "/team/jose-pedroso.webp",
   },
   "joao-miguel-santos-gouveia": {
     fullName: "João Miguel Santos Gouveia",
@@ -95,6 +96,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     phone: "+351 919 464 665",
     phoneHref: "tel:+351919464665",
     accentRgb: "192, 21, 255",
+    image: "/team/joao-gouveia.webp",
   },
   "miguel-marques-silva": {
     fullName: "Miguel Marques Silva",
@@ -132,6 +134,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     phone: "+351 930 426 057",
     phoneHref: "tel:+351930426057",
     accentRgb: "0, 105, 248",
+    image: "/team/miguel-silva.webp",
   },
   "hugo-mateus-sa": {
     fullName: "Hugo Mateus Ferreira Sá",
@@ -179,6 +182,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     phone: "+351 964 234 045",
     phoneHref: "tel:+351964234045",
     accentRgb: "192, 21, 255",
+    image: "/team/vitor-carneiro.webp",
   },
   "goncalo-jose-silva": {
     fullName: "Gonçalo José Cunha da Silva",
@@ -210,6 +214,7 @@ export const TEAM_PROFILES: Record<string, TeamProfile> = {
     phone: "+351 926 538 871",
     phoneHref: "tel:+351926538871",
     accentRgb: "0, 232, 178",
+    image: "/team/goncalo-silva.webp",
   },
 };
 
