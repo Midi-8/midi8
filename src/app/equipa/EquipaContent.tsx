@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import KineticHeading from "@/components/KineticHeading";
+import LinkedInIcon from "@/components/LinkedInIcon";
 import { TEAM_PROFILES } from "@/components/TeamMemberModal";
 import { useLanguage, type Locale } from "@/context/LanguageContext";
 
@@ -434,8 +435,8 @@ export default function EquipaContent() {
                           rel="noopener noreferrer"
                           className="cta-button justify-center"
                         >
+                          <LinkedInIcon className="w-4 h-4 shrink-0" />
                           <span>LinkedIn</span>
-                          <span aria-hidden="true">↗</span>
                         </a>
                         <a
                           href={profile.phoneHref}
